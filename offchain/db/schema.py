@@ -96,6 +96,27 @@ def init_market_database(db_path: str = "deltagrid.db") -> None:
     )
     """)
 
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS pool_price_snapshots (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        pool_id INTEGER NOT NULL,
+        chain_id INTEGER NOT NULL,
+        protocol TEXT NOT NULL,
+        pool_address TEXT NOT NULL,
+        token0_address TEXT NOT NULL,
+        token1_address TEXT NOT NULL,
+        price_token1_per_token0 TEXT NOT NULL,
+        price_token0_per_token1 TEXT NOT NULL,
+        liquidity_score INTEGER NOT NULL,
+        source TEXT NOT NULL,
+        block_number INTEGER,
+        created_at_utc TEXT NOT NULL,
+        FOREIGN KEY(pool_id) REFERENCES pools(id),
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
     cur.execute("""
     CREATE TABLE IF NOT EXISTS simulated_opportunities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -397,3 +418,92 @@ def insert_risk_decision(
     conn.close()
 
     return int(decision_id)
+
+
+def list_pools(db_path: str) -> list[dict]:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    rows = cur.execute("""
+    SELECT
+        id,
+        chain_id,
+        protocol,
+        pool_address,
+        token0_address,
+        token1_address,
+        fee_bps
+    FROM pools
+    ORDER BY id
+    """).fetchall()
+
+    conn.close()
+
+    return [
+        {
+            "id": row[0],
+            "chain_id": row[1],
+            "protocol": row[2],
+            "pool_address": row[3],
+            "token0_address": row[4],
+            "token1_address": row[5],
+            "fee_bps": row[6],
+        }
+        for row in rows
+    ]
+
+
+def insert_pool_price_snapshot(
+    db_path: str,
+    pool_id: int,
+    chain_id: int,
+    protocol: str,
+    pool_address: str,
+    token0_address: str,
+    token1_address: str,
+    price_token1_per_token0: str,
+    price_token0_per_token1: str,
+    liquidity_score: int,
+    source: str,
+    block_number: int | None = None,
+) -> int:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+    INSERT INTO pool_price_snapshots (
+        pool_id,
+        chain_id,
+        protocol,
+        pool_address,
+        token0_address,
+        token1_address,
+        price_token1_per_token0,
+        price_token0_per_token1,
+        liquidity_score,
+        source,
+        block_number,
+        created_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        pool_id,
+        chain_id,
+        protocol,
+        pool_address.lower(),
+        token0_address.lower(),
+        token1_address.lower(),
+        price_token1_per_token0,
+        price_token0_per_token1,
+        liquidity_score,
+        source,
+        block_number,
+        utc_now(),
+    ))
+
+    snapshot_id = cur.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return int(snapshot_id)
