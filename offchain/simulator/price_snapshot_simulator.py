@@ -7,7 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-getcontext().prec = 40
+getcontext().prec = 50
 
 OFFCHAIN_ROOT = Path(__file__).resolve().parents[1]
 
@@ -25,6 +25,10 @@ load_dotenv(OFFCHAIN_ROOT / "config" / ".env")
 
 DEFAULT_DB_PATH = os.getenv("DB_PATH", "deltagrid.db")
 
+WETH = "0x4200000000000000000000000000000000000006"
+USDC = "0x0000000000000000000000000000000000000001"
+DAI = "0x0000000000000000000000000000000000000002"
+
 
 def resolve_db_path(db_path: str) -> str:
     candidate = Path(db_path)
@@ -35,33 +39,35 @@ def resolve_db_path(db_path: str) -> str:
     return str(OFFCHAIN_ROOT / candidate)
 
 
-def simulated_price_for_pool(pool: dict) -> tuple[str, str, int]:
+def local_price_for_pool(pool: dict) -> dict:
     token0 = pool["token0_address"].lower()
     token1 = pool["token1_address"].lower()
 
-    weth = "0x4200000000000000000000000000000000000006"
-    usdc_demo = "0x0000000000000000000000000000000000000001"
-    dai_demo = "0x0000000000000000000000000000000000000002"
+    pair = (token0, token1)
 
-    if token0 == weth and token1 == usdc_demo:
-        price_1_per_0 = Decimal("3000")
+    if pair == (WETH.lower(), USDC.lower()):
+        price_token1_per_token0 = Decimal("3000")
         liquidity_score = 90
 
-    elif token0 == usdc_demo and token1 == dai_demo:
-        price_1_per_0 = Decimal("1")
+    elif pair == (USDC.lower(), DAI.lower()):
+        price_token1_per_token0 = Decimal("1")
         liquidity_score = 80
 
+    elif pair == (DAI.lower(), WETH.lower()):
+        price_token1_per_token0 = Decimal("0.00034")
+        liquidity_score = 85
+
     else:
-        price_1_per_0 = Decimal("1")
+        price_token1_per_token0 = Decimal("1")
         liquidity_score = 50
 
-    price_0_per_1 = Decimal("1") / price_1_per_0
+    price_token0_per_token1 = Decimal("1") / price_token1_per_token0
 
-    return (
-        format(price_1_per_0, "f"),
-        format(price_0_per_1, "f"),
-        liquidity_score,
-    )
+    return {
+        "price_token1_per_token0": format(price_token1_per_token0, "f"),
+        "price_token0_per_token1": format(price_token0_per_token1, "f"),
+        "liquidity_score": liquidity_score,
+    }
 
 
 def generate_pool_price_snapshots(
@@ -73,11 +79,10 @@ def generate_pool_price_snapshots(
     init_market_database(resolved_db_path)
 
     pools = list_pools(resolved_db_path)
-
     snapshot_ids = []
 
     for pool in pools:
-        price_1_per_0, price_0_per_1, liquidity_score = simulated_price_for_pool(pool)
+        price = local_price_for_pool(pool)
 
         snapshot_id = insert_pool_price_snapshot(
             db_path=resolved_db_path,
@@ -87,9 +92,9 @@ def generate_pool_price_snapshots(
             pool_address=pool["pool_address"],
             token0_address=pool["token0_address"],
             token1_address=pool["token1_address"],
-            price_token1_per_token0=price_1_per_0,
-            price_token0_per_token1=price_0_per_1,
-            liquidity_score=liquidity_score,
+            price_token1_per_token0=price["price_token1_per_token0"],
+            price_token0_per_token1=price["price_token0_per_token1"],
+            liquidity_score=price["liquidity_score"],
             source="local_simulator",
             block_number=block_number,
         )
@@ -106,18 +111,8 @@ def generate_pool_price_snapshots(
 def main() -> None:
     parser = argparse.ArgumentParser(description="DeltaGrid pool price snapshot simulator")
 
-    parser.add_argument(
-        "--db-path",
-        default=DEFAULT_DB_PATH,
-        help="SQLite database path",
-    )
-
-    parser.add_argument(
-        "--block-number",
-        type=int,
-        default=None,
-        help="Optional block number to attach to snapshots",
-    )
+    parser.add_argument("--db-path", default=DEFAULT_DB_PATH)
+    parser.add_argument("--block-number", type=int, default=None)
 
     args = parser.parse_args()
 
