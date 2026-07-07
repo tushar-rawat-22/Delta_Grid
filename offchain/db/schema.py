@@ -117,6 +117,24 @@ def init_market_database(db_path: str = "deltagrid.db") -> None:
     )
     """)
 
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS route_candidates (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        chain_id INTEGER NOT NULL,
+        start_token_address TEXT NOT NULL,
+        end_token_address TEXT NOT NULL,
+        hops INTEGER NOT NULL,
+        route_json TEXT NOT NULL,
+        estimated_output_per_input TEXT NOT NULL,
+        min_liquidity_score INTEGER NOT NULL,
+        source TEXT NOT NULL,
+        block_number INTEGER,
+        created_at_utc TEXT NOT NULL,
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
     cur.execute("""
     CREATE TABLE IF NOT EXISTS simulated_opportunities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -507,3 +525,103 @@ def insert_pool_price_snapshot(
     conn.close()
 
     return int(snapshot_id)
+
+
+def list_latest_pool_price_snapshots(db_path: str) -> list[dict]:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    rows = cur.execute("""
+    SELECT
+        s.id,
+        s.pool_id,
+        s.chain_id,
+        s.protocol,
+        s.pool_address,
+        s.token0_address,
+        s.token1_address,
+        s.price_token1_per_token0,
+        s.price_token0_per_token1,
+        s.liquidity_score,
+        s.source,
+        s.block_number
+    FROM pool_price_snapshots s
+    INNER JOIN (
+        SELECT pool_id, MAX(id) AS max_id
+        FROM pool_price_snapshots
+        GROUP BY pool_id
+    ) latest
+    ON s.pool_id = latest.pool_id
+    AND s.id = latest.max_id
+    ORDER BY s.id
+    """).fetchall()
+
+    conn.close()
+
+    return [
+        {
+            "id": row[0],
+            "pool_id": row[1],
+            "chain_id": row[2],
+            "protocol": row[3],
+            "pool_address": row[4],
+            "token0_address": row[5],
+            "token1_address": row[6],
+            "price_token1_per_token0": row[7],
+            "price_token0_per_token1": row[8],
+            "liquidity_score": row[9],
+            "source": row[10],
+            "block_number": row[11],
+        }
+        for row in rows
+    ]
+
+
+def insert_route_candidate(
+    db_path: str,
+    chain_id: int,
+    start_token_address: str,
+    end_token_address: str,
+    hops: int,
+    route_json: str,
+    estimated_output_per_input: str,
+    min_liquidity_score: int,
+    source: str,
+    block_number: int | None = None,
+) -> int:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+    INSERT INTO route_candidates (
+        chain_id,
+        start_token_address,
+        end_token_address,
+        hops,
+        route_json,
+        estimated_output_per_input,
+        min_liquidity_score,
+        source,
+        block_number,
+        created_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        chain_id,
+        start_token_address.lower(),
+        end_token_address.lower(),
+        hops,
+        route_json,
+        estimated_output_per_input,
+        min_liquidity_score,
+        source,
+        block_number,
+        utc_now(),
+    ))
+
+    route_id = cur.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return int(route_id)
