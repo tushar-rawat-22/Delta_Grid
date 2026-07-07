@@ -1,0 +1,26 @@
+# Environment files
+.env
+*.env
+contracts/.env
+offchain/config/.env
+
+# Foundry build outputs
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Local dependencies cloned manually
+contracts/lib/
+
+# Python
+offchain/.venv/
+__pycache__/
+*.pyc
+
+# Databases and logs
+*.db
+*.sqlite
+*.log
+
+# OS files
+.DS_Store
