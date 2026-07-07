@@ -255,3 +255,54 @@ Safety:
 - no signing
 - no trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Token and Pool Seed Registry
+
+Files:
+
+- offchain/config/seed_tokens.json
+- offchain/config/seed_pools.json
+- offchain/db/seed_registry.py
+- offchain/tests/test_seed_registry.py
+
+Capabilities:
+
+- loads token seed data
+- loads pool seed data
+- upserts chains
+- upserts tokens
+- upserts pools
+- supports idempotent seeding
+
+Verified:
+
+- chains 1
+- tokens 3
+- pools 2
+
+Seeded tokens:
+
+- WETH
+- USDC_DEMO
+- DAI_DEMO
+
+Seeded pools:
+
+- demo-uniswap-v3 WETH/USDC_DEMO
+- demo-uniswap-v3 USDC_DEMO/DAI_DEMO
+
+Commit:
+
+- 16e6824 Add token and pool seed registry
+
+Safety:
+
+- no private keys
+- no signing
+- no trades
+- no real capital

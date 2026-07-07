@@ -320,3 +320,28 @@ Status:
 Related commit:
 
 - 4737dca Connect chain monitor to market schema
+
+
+---
+
+## Decision 012: Add Token and Pool Seed Registry
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Add JSON seed files and a seed loader for known tokens and pools.
+
+Reason:
+
+- DeltaGrid needs stable local token and pool data before route building or opportunity detection.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 16e6824 Add token and pool seed registry

@@ -797,3 +797,58 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 6 Completion Record
+
+Date:
+
+- 2026-07-07
+
+Status:
+
+- Complete
+- Verified
+- Committed
+
+Commit:
+
+- 16e6824 Add token and pool seed registry
+
+Files:
+
+- offchain/config/seed_tokens.json
+- offchain/config/seed_pools.json
+- offchain/db/seed_registry.py
+- offchain/tests/test_seed_registry.py
+
+Verified database counts:
+
+- chains 1
+- tokens 3
+- pools 2
+
+Seeded tokens:
+
+- WETH
+- USDC_DEMO
+- DAI_DEMO
+
+Seeded pools:
+
+- demo-uniswap-v3 WETH/USDC_DEMO
+- demo-uniswap-v3 USDC_DEMO/DAI_DEMO
+
+Next recommended mission:
+
+- Mission 7: Pool price snapshot simulator
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
