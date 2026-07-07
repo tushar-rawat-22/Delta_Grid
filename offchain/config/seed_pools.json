@@ -1,0 +1,22 @@
+[
+  {
+    "chain_id": 84532,
+    "chain_name": "Base Sepolia",
+    "rpc_url": "https://sepolia.base.org",
+    "protocol": "demo-uniswap-v3",
+    "pool_address": "0x0000000000000000000000000000000000001000",
+    "token0_address": "0x4200000000000000000000000000000000000006",
+    "token1_address": "0x0000000000000000000000000000000000000001",
+    "fee_bps": 30
+  },
+  {
+    "chain_id": 84532,
+    "chain_name": "Base Sepolia",
+    "rpc_url": "https://sepolia.base.org",
+    "protocol": "demo-uniswap-v3",
+    "pool_address": "0x0000000000000000000000000000000000002000",
+    "token0_address": "0x0000000000000000000000000000000000000001",
+    "token1_address": "0x0000000000000000000000000000000000000002",
+    "fee_bps": 30
+  }
+]
