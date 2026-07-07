@@ -345,3 +345,28 @@ Status:
 Related commit:
 
 - 16e6824 Add token and pool seed registry
+
+
+---
+
+## Decision 013: Add Pool Price Snapshot Simulator
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Add local simulated price snapshots for seeded pools.
+
+Reason:
+
+- DeltaGrid needs pool prices before route building and opportunity detection.
+
+Status:
+
+- Active
+
+Related commit:
+
+- c4bcbfd Add pool price snapshot simulator

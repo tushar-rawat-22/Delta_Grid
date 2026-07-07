@@ -306,3 +306,48 @@ Safety:
 - no signing
 - no trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Pool Price Snapshot Simulator
+
+Files:
+
+- offchain/db/schema.py
+- offchain/simulator/price_snapshot_simulator.py
+- offchain/tests/test_price_snapshot_simulator.py
+
+Capabilities:
+
+- adds pool_price_snapshots table
+- reads seeded pools
+- generates local simulated prices
+- stores token1/token0 price
+- stores token0/token1 price
+- stores liquidity score
+- stores source as local_simulator
+- attaches optional block number
+
+Verified:
+
+- pools 2
+- pool_price_snapshots 2
+
+Latest snapshots:
+
+- WETH/USDC_DEMO price_token1_per_token0 3000
+- USDC_DEMO/DAI_DEMO price_token1_per_token0 1
+
+Commit:
+
+- c4bcbfd Add pool price snapshot simulator
+
+Safety:
+
+- no private keys
+- no signing
+- no trades
+- no real capital
