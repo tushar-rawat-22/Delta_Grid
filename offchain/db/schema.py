@@ -243,6 +243,36 @@ def init_market_database(db_path: str = "deltagrid.db") -> None:
     )
     """)
 
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS opportunity_detections (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        route_candidate_id INTEGER NOT NULL,
+        chain_id INTEGER NOT NULL,
+        opportunity_type TEXT NOT NULL,
+        start_token_address TEXT NOT NULL,
+        end_token_address TEXT NOT NULL,
+        estimated_output_per_input TEXT NOT NULL,
+        gross_edge_bps TEXT NOT NULL,
+        fee_bps TEXT NOT NULL,
+        slippage_bps TEXT NOT NULL,
+        gas_cost_bps TEXT NOT NULL,
+        safety_buffer_bps TEXT NOT NULL,
+        total_cost_bps TEXT NOT NULL,
+        net_edge_bps TEXT NOT NULL,
+        min_liquidity_score INTEGER NOT NULL,
+        risk_score INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        rejection_reasons_json TEXT NOT NULL,
+        assumptions_json TEXT NOT NULL,
+        source TEXT NOT NULL,
+        block_number INTEGER,
+        created_at_utc TEXT NOT NULL,
+        FOREIGN KEY(route_candidate_id) REFERENCES route_candidates(id),
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
     cur.execute("""
     CREATE TABLE IF NOT EXISTS simulated_opportunities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -1136,3 +1166,127 @@ def list_backtest_trades(db_path: str, run_id: int) -> list[dict]:
         }
         for row in rows
     ]
+
+
+def list_route_candidates(db_path: str) -> list[dict]:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    rows = cur.execute("""
+    SELECT
+        id,
+        chain_id,
+        start_token_address,
+        end_token_address,
+        hops,
+        route_json,
+        estimated_output_per_input,
+        min_liquidity_score,
+        source,
+        block_number,
+        created_at_utc
+    FROM route_candidates
+    ORDER BY id
+    """).fetchall()
+
+    conn.close()
+
+    return [
+        {
+            "id": row[0],
+            "chain_id": row[1],
+            "start_token_address": row[2],
+            "end_token_address": row[3],
+            "hops": row[4],
+            "route_json": row[5],
+            "estimated_output_per_input": row[6],
+            "min_liquidity_score": row[7],
+            "source": row[8],
+            "block_number": row[9],
+            "created_at_utc": row[10],
+        }
+        for row in rows
+    ]
+
+
+def insert_opportunity_detection(
+    db_path: str,
+    route_candidate_id: int,
+    chain_id: int,
+    opportunity_type: str,
+    start_token_address: str,
+    end_token_address: str,
+    estimated_output_per_input: str,
+    gross_edge_bps: str,
+    fee_bps: str,
+    slippage_bps: str,
+    gas_cost_bps: str,
+    safety_buffer_bps: str,
+    total_cost_bps: str,
+    net_edge_bps: str,
+    min_liquidity_score: int,
+    risk_score: int,
+    status: str,
+    rejection_reasons_json: str,
+    assumptions_json: str,
+    source: str,
+    block_number: int | None = None,
+) -> int:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+    INSERT INTO opportunity_detections (
+        route_candidate_id,
+        chain_id,
+        opportunity_type,
+        start_token_address,
+        end_token_address,
+        estimated_output_per_input,
+        gross_edge_bps,
+        fee_bps,
+        slippage_bps,
+        gas_cost_bps,
+        safety_buffer_bps,
+        total_cost_bps,
+        net_edge_bps,
+        min_liquidity_score,
+        risk_score,
+        status,
+        rejection_reasons_json,
+        assumptions_json,
+        source,
+        block_number,
+        created_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        route_candidate_id,
+        chain_id,
+        opportunity_type,
+        start_token_address.lower(),
+        end_token_address.lower(),
+        estimated_output_per_input,
+        gross_edge_bps,
+        fee_bps,
+        slippage_bps,
+        gas_cost_bps,
+        safety_buffer_bps,
+        total_cost_bps,
+        net_edge_bps,
+        min_liquidity_score,
+        risk_score,
+        status,
+        rejection_reasons_json,
+        assumptions_json,
+        source,
+        block_number,
+        utc_now(),
+    ))
+
+    detection_id = cur.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return int(detection_id)
