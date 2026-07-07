@@ -458,3 +458,56 @@ Safety:
 - no signing
 - no real trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Strategy Metrics and Regime Analysis
+
+Files:
+
+- offchain/db/schema.py
+- offchain/backtest/regime_analysis.py
+- offchain/tests/test_regime_analysis.py
+
+Capabilities:
+
+- labels historical candles by market regime
+- classifies bull, bear, and sideways regimes
+- classifies high-volatility and low-volatility regimes
+- stores market_regime_labels
+- stores strategy_regime_metrics
+- evaluates strategy performance by regime
+- generates GO / NO_GO / INSUFFICIENT_SAMPLE verdicts
+
+Verified:
+
+- market_regime_labels 720
+- strategy_regime_metrics 5
+
+Latest regime results:
+
+- bull: net PnL 1401.95, verdict NO_GO
+- bear: net PnL -4002.04, verdict INSUFFICIENT_SAMPLE
+- sideways: net PnL -1647.34, verdict NO_GO
+- high_volatility: net PnL -369.74, verdict INSUFFICIENT_SAMPLE
+- low_volatility: net PnL -3877.69, verdict NO_GO
+
+Commit:
+
+- 64644d1 Add strategy regime analysis
+
+Recommendation:
+
+- Regime analysis framework GO
+- MA crossover strategy NO-GO
+- Live trading NO-GO
+
+Safety:
+
+- no private keys
+- no signing
+- no real trades
+- no real capital

@@ -444,3 +444,54 @@ Status:
 Verdict:
 
 - NO-GO
+
+
+---
+
+## Decision 017: Add Strategy Regime Analysis
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Add market regime labeling and regime-level strategy performance metrics.
+
+Reason:
+
+- DeltaGrid must identify which market conditions help or destroy a strategy before approving live testing.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 64644d1 Add strategy regime analysis
+
+---
+
+## Decision 018: Reject MA Crossover Across Regimes
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Reject the MA crossover baseline across market regimes.
+
+Reason:
+
+- The strategy fails in bear, sideways, and low-volatility regimes.
+- The profitable bull regime still does not pass strict approval rules.
+- Sample sizes are not strong enough for confidence.
+
+Status:
+
+- Active
+
+Verdict:
+
+- NO-GO
