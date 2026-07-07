@@ -495,3 +495,52 @@ Status:
 Verdict:
 
 - NO-GO
+
+
+---
+
+## Decision 019: Add Optimized Opportunity Detector
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add a strict opportunity detector that validates route candidates before any execution logic.
+
+Reason:
+
+- DeltaGrid must reject fake opportunities before capital is ever at risk.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 3502dae Add optimized opportunity detector
+
+---
+
+## Decision 020: Reject Current Conversion Routes
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject current WETH to DAI and DAI to WETH routes as profit opportunities.
+
+Reason:
+
+- They are not closed-loop arbitrage routes.
+
+Status:
+
+- Active
+
+Verdict:
+
+- NO-GO

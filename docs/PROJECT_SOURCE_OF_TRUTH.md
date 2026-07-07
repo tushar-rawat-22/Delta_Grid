@@ -1086,3 +1086,66 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 11 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Commit:
+
+- 3502dae Add optimized opportunity detector
+
+Files:
+
+- offchain/db/schema.py
+- offchain/detector/__init__.py
+- offchain/detector/opportunity_detector.py
+- offchain/tests/test_opportunity_detector.py
+
+Table added:
+
+- opportunity_detections
+
+Verified tests:
+
+- 20 tests passed
+
+Verified detector output:
+
+- routes_seen 2
+- detections_created 2
+- approved 0
+- rejected 2
+
+Current rejection reason:
+
+- not_closed_loop_route
+
+Investment committee verdict:
+
+- Detector framework GO
+- Current opportunities NO-GO
+- Live trading NO-GO
+
+Next recommended mission:
+
+- Mission 12: Closed-loop route builder and backtest validation
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

@@ -511,3 +511,53 @@ Safety:
 - no signing
 - no real trades
 - no real capital
+
+
+---
+
+## 2026-07-08
+
+### Added: Optimized Opportunity Detector
+
+Files:
+
+- offchain/db/schema.py
+- offchain/detector/__init__.py
+- offchain/detector/opportunity_detector.py
+- offchain/tests/test_opportunity_detector.py
+
+Capabilities:
+
+- reads route candidates
+- classifies opportunity type
+- rejects non-closed-loop routes
+- calculates gross edge
+- applies fee, slippage, gas, and safety buffer
+- calculates net edge
+- checks liquidity threshold
+- assigns risk score
+- stores rejection reasons
+- stores assumptions
+- keeps detector research-only
+
+Verified:
+
+- 20 tests passed
+- routes_seen 2
+- detections_created 2
+- approved 0
+- rejected 2
+
+Current rejection reason:
+
+- not_closed_loop_route
+
+Commit:
+
+- 3502dae Add optimized opportunity detector
+
+Recommendation:
+
+- Detector framework GO
+- Current opportunities NO-GO
+- Live trading NO-GO
