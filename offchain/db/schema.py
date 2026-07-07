@@ -204,6 +204,45 @@ def init_market_database(db_path: str = "deltagrid.db") -> None:
     )
     """)
 
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS market_regime_labels (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        chain_id INTEGER NOT NULL,
+        symbol TEXT NOT NULL,
+        timeframe TEXT NOT NULL,
+        timestamp_utc TEXT NOT NULL,
+        trend_regime TEXT NOT NULL,
+        volatility_regime TEXT NOT NULL,
+        rolling_return_pct TEXT NOT NULL,
+        rolling_volatility_pct TEXT NOT NULL,
+        source TEXT NOT NULL,
+        created_at_utc TEXT NOT NULL,
+        updated_at_utc TEXT NOT NULL,
+        UNIQUE(chain_id, symbol, timeframe, timestamp_utc, source),
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS strategy_regime_metrics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id INTEGER NOT NULL,
+        regime_type TEXT NOT NULL,
+        regime_name TEXT NOT NULL,
+        trades_count INTEGER NOT NULL,
+        net_pnl TEXT NOT NULL,
+        avg_trade_pnl TEXT NOT NULL,
+        profit_factor TEXT NOT NULL,
+        win_rate_pct TEXT NOT NULL,
+        total_costs TEXT NOT NULL,
+        verdict TEXT NOT NULL,
+        notes TEXT NOT NULL,
+        created_at_utc TEXT NOT NULL,
+        FOREIGN KEY(run_id) REFERENCES backtest_runs(id)
+    )
+    """)
+
     cur.execute("""
     CREATE TABLE IF NOT EXISTS simulated_opportunities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -939,3 +978,161 @@ def insert_backtest_trade(
     conn.close()
 
     return int(trade_id)
+
+
+def insert_market_regime_label(
+    db_path: str,
+    chain_id: int,
+    symbol: str,
+    timeframe: str,
+    timestamp_utc: str,
+    trend_regime: str,
+    volatility_regime: str,
+    rolling_return_pct: str,
+    rolling_volatility_pct: str,
+    source: str,
+) -> None:
+    conn = connect(db_path)
+    cur = conn.cursor()
+    now = utc_now()
+
+    cur.execute("""
+    INSERT INTO market_regime_labels (
+        chain_id,
+        symbol,
+        timeframe,
+        timestamp_utc,
+        trend_regime,
+        volatility_regime,
+        rolling_return_pct,
+        rolling_volatility_pct,
+        source,
+        created_at_utc,
+        updated_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(chain_id, symbol, timeframe, timestamp_utc, source)
+    DO UPDATE SET
+        trend_regime = excluded.trend_regime,
+        volatility_regime = excluded.volatility_regime,
+        rolling_return_pct = excluded.rolling_return_pct,
+        rolling_volatility_pct = excluded.rolling_volatility_pct,
+        updated_at_utc = excluded.updated_at_utc
+    """, (
+        chain_id,
+        symbol,
+        timeframe,
+        timestamp_utc,
+        trend_regime,
+        volatility_regime,
+        rolling_return_pct,
+        rolling_volatility_pct,
+        source,
+        now,
+        now,
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def insert_strategy_regime_metric(
+    db_path: str,
+    run_id: int,
+    regime_type: str,
+    regime_name: str,
+    trades_count: int,
+    net_pnl: str,
+    avg_trade_pnl: str,
+    profit_factor: str,
+    win_rate_pct: str,
+    total_costs: str,
+    verdict: str,
+    notes: str,
+) -> int:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+    INSERT INTO strategy_regime_metrics (
+        run_id,
+        regime_type,
+        regime_name,
+        trades_count,
+        net_pnl,
+        avg_trade_pnl,
+        profit_factor,
+        win_rate_pct,
+        total_costs,
+        verdict,
+        notes,
+        created_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        run_id,
+        regime_type,
+        regime_name,
+        trades_count,
+        net_pnl,
+        avg_trade_pnl,
+        profit_factor,
+        win_rate_pct,
+        total_costs,
+        verdict,
+        notes,
+        utc_now(),
+    ))
+
+    metric_id = cur.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return int(metric_id)
+
+
+def list_backtest_trades(db_path: str, run_id: int) -> list[dict]:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    rows = cur.execute("""
+    SELECT
+        id,
+        chain_id,
+        symbol,
+        entry_timestamp_utc,
+        exit_timestamp_utc,
+        side,
+        entry_price,
+        exit_price,
+        quantity,
+        gross_pnl,
+        costs,
+        net_pnl,
+        return_pct
+    FROM backtest_trades
+    WHERE run_id = ?
+    ORDER BY id
+    """, (run_id,)).fetchall()
+
+    conn.close()
+
+    return [
+        {
+            "id": row[0],
+            "chain_id": row[1],
+            "symbol": row[2],
+            "entry_timestamp_utc": row[3],
+            "exit_timestamp_utc": row[4],
+            "side": row[5],
+            "entry_price": row[6],
+            "exit_price": row[7],
+            "quantity": row[8],
+            "gross_pnl": row[9],
+            "costs": row[10],
+            "net_pnl": row[11],
+            "return_pct": row[12],
+        }
+        for row in rows
+    ]
