@@ -197,3 +197,52 @@ Pivots requiring documentation:
 - moving to mainnet
 - using capital
 - adding live execution
+
+
+---
+
+## Decision 007: Add Local Profit Simulator
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Build offchain/simulator/profit_simulator.py.
+
+Reason:
+
+- DeltaGrid needs deterministic local trade simulation before testnet execution.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 691cde4 Add local profit simulator and risk engine
+
+---
+
+## Decision 008: Add Risk Scoring Engine
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Build offchain/risk/risk_engine.py.
+
+Reason:
+
+- Every simulated opportunity must be approved or rejected by explicit risk rules before any future execution layer.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 691cde4 Add local profit simulator and risk engine
