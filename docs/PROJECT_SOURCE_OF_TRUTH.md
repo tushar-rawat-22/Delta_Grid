@@ -1149,3 +1149,72 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 12 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Commit:
+
+- bb3ad35 Add closed-loop route builder
+
+Files:
+
+- offchain/config/seed_pools.json
+- offchain/simulator/price_snapshot_simulator.py
+- offchain/simulator/closed_loop_route_builder.py
+- offchain/tests/test_closed_loop_route_builder.py
+
+Main result:
+
+- created closed-loop routes
+- approved one simulated profitable closed-loop route
+- rejected one weak closed-loop route
+
+Verified database counts:
+
+- pools 3
+- pool_price_snapshots 5
+- route_candidates 4
+- opportunity_detections 6
+
+Approved opportunity:
+
+- closed_loop_arbitrage
+- net_edge_bps 150.00000
+- risk_score 88
+
+Rejected opportunity:
+
+- closed_loop_arbitrage
+- net_edge_bps -246.0784313725490196078431372549019607843
+- reasons gross_edge_not_positive and net_edge_below_minimum
+
+Investment committee verdict:
+
+- Closed-loop route framework GO
+- Simulated opportunity RESEARCH_GO
+- Live trading NO-GO
+
+Next recommended mission:
+
+- Mission 13: Real historical market data ingestion and strategy validation
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

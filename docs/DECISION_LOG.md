@@ -544,3 +544,57 @@ Status:
 Verdict:
 
 - NO-GO
+
+
+---
+
+## Decision 021: Add Closed-Loop Route Builder
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add a closed-loop route builder that creates A to B to C to A route candidates.
+
+Reason:
+
+- Opportunity detection requires closed-loop routes before arbitrage-style profit can be evaluated.
+
+Status:
+
+- Active
+
+Related commit:
+
+- bb3ad35 Add closed-loop route builder
+
+---
+
+## Decision 022: Keep Approved Closed-Loop Opportunity Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not approve live trading even though one simulated closed-loop route was approved.
+
+Reason:
+
+- The approved opportunity is synthetic.
+- It has not been tested on real historical market data.
+- It has not passed testnet execution.
+- It has not passed mainnet-fork execution.
+- Capital risk remains forbidden.
+
+Status:
+
+- Active
+
+Verdict:
+
+- RESEARCH_GO
+- LIVE_NO_GO

@@ -561,3 +561,57 @@ Recommendation:
 - Detector framework GO
 - Current opportunities NO-GO
 - Live trading NO-GO
+
+
+---
+
+## 2026-07-08
+
+### Added: Closed-Loop Route Builder
+
+Files:
+
+- offchain/config/seed_pools.json
+- offchain/simulator/price_snapshot_simulator.py
+- offchain/simulator/closed_loop_route_builder.py
+- offchain/tests/test_closed_loop_route_builder.py
+
+Capabilities:
+
+- adds third demo pool
+- creates WETH to USDC to DAI to WETH route
+- creates closed-loop route candidates
+- sends closed-loop routes to opportunity detector
+- validates profitable and unprofitable loops
+- keeps all logic research-only
+
+Verified:
+
+- pools 3
+- route_candidates 4
+- opportunity_detections 6
+- one closed-loop route approved
+- one closed-loop route rejected
+
+Approved route:
+
+- multiplier 1.02000
+- gross_edge_bps 200.00000
+- total_cost_bps 50
+- net_edge_bps 150.00000
+- risk_score 88
+
+Rejected route:
+
+- multiplier 0.98039215686274509803921568627450980392156862745096
+- reason gross_edge_not_positive
+- reason net_edge_below_minimum
+
+Commit:
+
+- bb3ad35 Add closed-loop route builder
+
+Recommendation:
+
+- Closed-loop framework GO
+- Live trading NO-GO
