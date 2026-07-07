@@ -962,3 +962,66 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 9 Completion Record
+
+Date:
+
+- 2026-07-07
+
+Status:
+
+- Complete
+- Verified
+- Committed
+
+Commit:
+
+- 7b863f5 Add historical data and backtest framework
+
+Files:
+
+- offchain/db/schema.py
+- offchain/backtest/__init__.py
+- offchain/backtest/historical_data.py
+- offchain/backtest/metrics.py
+- offchain/backtest/backtest_engine.py
+- offchain/tests/test_backtest_framework.py
+
+Tables added:
+
+- historical_candles
+- backtest_runs
+- backtest_trades
+
+Latest baseline backtest:
+
+- strategy ma_crossover_baseline
+- version v1
+- symbol WETH_USDC_DEMO
+- net return -42.47%
+- max drawdown 55.30%
+- Sharpe -1.44
+- profit factor 0.42
+- win rate 29.41%
+- trades 17
+
+Investment committee verdict:
+
+- Framework GO
+- MA crossover strategy NO-GO
+
+Next recommended mission:
+
+- Mission 10: Strategy metrics and regime analysis
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

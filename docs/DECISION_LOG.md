@@ -395,3 +395,52 @@ Status:
 Related commit:
 
 - e73b359 Add local route builder
+
+
+---
+
+## Decision 015: Add Historical Data and Backtest Framework
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Add historical candle storage, backtest run storage, trade storage, metrics, and baseline backtest engine.
+
+Reason:
+
+- DeltaGrid must prove strategies through reproducible backtests before live testing.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 7b863f5 Add historical data and backtest framework
+
+---
+
+## Decision 016: Reject MA Crossover Baseline for Live Use
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Do not approve the MA crossover baseline for live trading.
+
+Reason:
+
+- Backtest showed negative return, high drawdown, negative Sharpe, poor profit factor, and weak win rate.
+
+Status:
+
+- Active
+
+Verdict:
+
+- NO-GO

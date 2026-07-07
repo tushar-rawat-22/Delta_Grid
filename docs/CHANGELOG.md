@@ -398,3 +398,63 @@ Safety:
 - no signing
 - no trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Historical Data and Backtest Framework
+
+Files:
+
+- offchain/db/schema.py
+- offchain/backtest/__init__.py
+- offchain/backtest/historical_data.py
+- offchain/backtest/metrics.py
+- offchain/backtest/backtest_engine.py
+- offchain/tests/test_backtest_framework.py
+
+Capabilities:
+
+- stores historical candles
+- stores backtest runs
+- stores backtest trades
+- generates synthetic multi-regime data
+- runs MA crossover baseline backtest
+- calculates net return
+- calculates max drawdown
+- calculates Sharpe ratio
+- calculates profit factor
+- calculates win rate
+- includes fee assumptions
+- includes slippage assumptions
+
+Verified latest backtest:
+
+- strategy ma_crossover_baseline
+- version v1
+- symbol WETH_USDC_DEMO
+- net_return_pct -42.47
+- max_drawdown_pct 55.30
+- sharpe_ratio -1.44
+- profit_factor 0.42
+- win_rate_pct 29.41
+- trades_count 17
+- status research_only
+
+Commit:
+
+- 7b863f5 Add historical data and backtest framework
+
+Recommendation:
+
+- Framework GO
+- MA crossover strategy NO-GO
+
+Safety:
+
+- no private keys
+- no signing
+- no real trades
+- no real capital
