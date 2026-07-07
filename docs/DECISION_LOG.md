@@ -370,3 +370,28 @@ Status:
 Related commit:
 
 - c4bcbfd Add pool price snapshot simulator
+
+
+---
+
+## Decision 014: Add Local Route Builder
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Add a local route builder that creates two-hop token routes from latest pool price snapshots.
+
+Reason:
+
+- DeltaGrid needs route candidates before opportunity detection.
+
+Status:
+
+- Active
+
+Related commit:
+
+- e73b359 Add local route builder

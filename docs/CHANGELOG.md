@@ -351,3 +351,50 @@ Safety:
 - no signing
 - no trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Local Route Builder
+
+Files:
+
+- offchain/db/schema.py
+- offchain/simulator/route_builder.py
+- offchain/tests/test_route_builder.py
+
+Capabilities:
+
+- adds route_candidates table
+- reads latest pool price snapshots
+- builds two-hop routes
+- stores route candidates
+- stores estimated output per input
+- stores minimum liquidity score
+- stores route JSON
+- stores source as local_route_builder
+- attaches block number
+
+Verified:
+
+- 13 Python tests passed
+- pool_price_snapshots 2
+- route_candidates 2
+
+Routes created:
+
+- WETH to DAI_DEMO
+- DAI_DEMO to WETH
+
+Commit:
+
+- e73b359 Add local route builder
+
+Safety:
+
+- no private keys
+- no signing
+- no trades
+- no real capital

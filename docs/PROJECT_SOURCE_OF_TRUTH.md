@@ -907,3 +907,58 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 8 Completion Record
+
+Date:
+
+- 2026-07-07
+
+Status:
+
+- Complete
+- Verified
+- Committed
+
+Commit:
+
+- e73b359 Add local route builder
+
+Files:
+
+- offchain/db/schema.py
+- offchain/simulator/route_builder.py
+- offchain/tests/test_route_builder.py
+
+Database table added:
+
+- route_candidates
+
+Verified database counts:
+
+- pool_price_snapshots 2
+- route_candidates 2
+
+Verified routes:
+
+- WETH to DAI_DEMO
+- DAI_DEMO to WETH
+
+Verified tests:
+
+- 13 Python tests passed
+
+Next recommended mission:
+
+- Mission 9: Opportunity detector
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
