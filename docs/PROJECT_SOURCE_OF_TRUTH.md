@@ -735,3 +735,65 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 5 Completion Record
+
+Date:
+
+- 2026-07-07
+
+Status:
+
+- Complete
+- Tested
+- Live monitor verified
+- Committed
+
+Commit:
+
+- 4737dca Connect chain monitor to market schema
+
+Files:
+
+- offchain/indexer/__init__.py
+- offchain/indexer/chain_monitor.py
+- offchain/tests/test_chain_monitor_schema_integration.py
+
+Verified tests:
+
+- 8 Python tests passed
+
+Verified live monitor:
+
+- chain_id 84532
+- block_number 43831432
+- gas_price_wei 6000000
+
+Verified database counts:
+
+- block_logs 5
+- chains 1
+- blocks 2
+- gas_snapshots 2
+
+Completed foundation:
+
+- Chain monitor now writes into market schema
+- Legacy block_logs still supported
+- blocks table receives live monitor data
+- gas_snapshots table receives live monitor data
+
+Next recommended mission:
+
+- Mission 6: Token and pool seed registry
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

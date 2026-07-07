@@ -211,3 +211,47 @@ Safety:
 - no signing
 - no real trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Chain Monitor Market Schema Integration
+
+Files:
+
+- offchain/indexer/__init__.py
+- offchain/indexer/chain_monitor.py
+- offchain/tests/test_chain_monitor_schema_integration.py
+
+Capabilities:
+
+- monitor now writes to block_logs
+- monitor now writes to chains
+- monitor now writes to blocks
+- monitor now writes to gas_snapshots
+- supports --once mode
+- preserves safe read-only behavior
+
+Verified:
+
+- 8 Python tests passed
+- live monitor connected to chain_id 84532
+- latest live block stored: 43831432
+- gas stored: 6000000
+- block_logs count: 5
+- chains count: 1
+- blocks count: 2
+- gas_snapshots count: 2
+
+Commit:
+
+- 4737dca Connect chain monitor to market schema
+
+Safety:
+
+- no private keys
+- no signing
+- no trades
+- no real capital

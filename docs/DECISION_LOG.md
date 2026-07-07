@@ -295,3 +295,28 @@ Status:
 Related commit:
 
 - 3d75dc6 Add market data schema and opportunity store
+
+
+---
+
+## Decision 011: Connect Monitor to Market Schema
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Update chain_monitor.py to write block and gas snapshots into the new market schema.
+
+Reason:
+
+- DeltaGrid needs one consistent database layer before adding pool indexing or route discovery.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 4737dca Connect chain monitor to market schema
