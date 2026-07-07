@@ -1,0 +1,607 @@
+# DeltaGrid Project Source of Truth
+
+## 1. Purpose
+
+This file is the main memory document for DeltaGrid.
+
+It exists to prevent:
+
+- project drift
+- silly iterations
+- random feature changes
+- unclear technical direction
+- repeated rework
+- accidental mixing with SkillMint
+- premature real-money execution
+- undocumented pivots
+- unsafe private key usage
+
+Rule:
+
+Every major technical decision, architecture change, workflow change, environment change, dependency change, or pivot must be documented here or inside docs/ADR before implementation.
+
+---
+
+## 2. Project Identity
+
+Project name:
+
+- DeltaGrid
+
+Project type:
+
+- Research-first DeFi indexing, monitoring, simulation, execution, and risk-management platform.
+
+Current phase:
+
+- Local + testnet research only.
+
+Current rule:
+
+- No real capital.
+- No mainnet deployment.
+- No private key usage.
+- No transaction signing.
+- No live trading.
+
+Correct positioning:
+
+- DeltaGrid is not a money bot.
+- DeltaGrid is a research-first DeFi execution and risk platform.
+- The system must observe, simulate, validate, and pass promotion gates before execution.
+
+---
+
+## 3. Current Confirmed State
+
+### 3.1 Smart Contract Foundation
+
+Status:
+
+- Complete
+- Tested
+- Committed
+
+Files:
+
+- contracts/src/DeltaGridRegistry.sol
+- contracts/src/DeltaGridRiskGuard.sol
+- contracts/src/DeltaGridExecutor.sol
+- contracts/src/MockOracle.sol
+- contracts/test/DeltaGrid.t.sol
+- contracts/foundry.toml
+- contracts/remappings.txt
+
+Verified result:
+
+- 6 Solidity tests passed
+- 0 failed
+- forge build successful
+- forge test successful
+
+Commit:
+
+- 33d66e0 Complete DeltaGrid smart contract foundation
+
+Purpose:
+
+- Registry allowlists
+- Risk guard checks
+- Executor safety validation
+- Mock oracle for testing
+- Contract-level safety foundation
+
+---
+
+### 3.2 Safe Offchain Chain Monitor
+
+Status:
+
+- Complete
+- Tested
+- Committed
+
+Files:
+
+- offchain/indexer/chain_monitor.py
+- offchain/config/.env.example
+- offchain/requirements.txt
+
+Runtime mode:
+
+- Safe monitoring only
+- No private keys
+- No signing
+- No real trades
+
+Confirmed RPC:
+
+- https://sepolia.base.org
+
+Confirmed chain:
+
+- Base Sepolia
+
+Confirmed chain ID:
+
+- 84532
+
+Confirmed block logs:
+
+- 43829854
+- 43829857
+- 43829860
+- 43829863
+
+Confirmed database example:
+
+- ('2026-07-07T12:39:57.301908+00:00', 84532, 43829854, '6000000')
+
+Commit:
+
+- 571044c Add safe offchain chain monitor
+
+Purpose:
+
+- Prove RPC connectivity
+- Prove Python environment works
+- Prove SQLite logging works
+- Create safe blockchain data foundation
+
+---
+
+## 4. Technical Decisions Already Made
+
+| Area | Decision | Reason | Status |
+|---|---|---|---|
+| Project folder | Use ~/deltagrid | Keep separate from SkillMint | Active |
+| Development phase | Local + testnet only | Avoid real capital risk | Active |
+| Smart contracts | Use Foundry | Strong Solidity testing | Active |
+| Offchain language | Use Python 3.12 | Good for indexing, data, simulation, risk | Active |
+| Python isolation | Use offchain/.venv | Avoid dependency conflicts | Active |
+| Dependencies | Use requirements.txt | Reproducible setup | Active |
+| Config | Track .env.example, ignore .env | Prevent secrets leak | Active |
+| Chain | Start with Base Sepolia | Safe testnet monitoring | Active |
+| Database | Use SQLite locally | Simple local storage | Active |
+| Git | Atomic commits | Clean history and rollback | Active |
+| Staging | Selective git add | Avoid accidental commits | Active |
+| Execution | No signing yet | Safety-first | Active |
+
+---
+
+## 5. Environment Setup
+
+### 5.1 Python virtual environment
+
+Location:
+
+- offchain/.venv
+
+Commands used:
+
+    cd ~/deltagrid/offchain
+    python3.12 -m venv .venv
+    source .venv/bin/activate
+
+Reason:
+
+- Keeps DeltaGrid dependencies isolated.
+- Prevents conflict with SkillMint.
+- Prevents global Python pollution.
+
+---
+
+### 5.2 Dependencies
+
+Installed packages:
+
+- web3
+- python-dotenv
+- requests
+- pandas
+- pydantic
+- sqlalchemy
+
+Command used:
+
+    python -m pip install web3 python-dotenv requests pandas pydantic sqlalchemy
+
+Dependency snapshot command:
+
+    python -m pip freeze > requirements.txt
+
+Tracked dependency file:
+
+- offchain/requirements.txt
+
+Rule:
+
+Whenever dependencies change, run:
+
+    cd ~/deltagrid/offchain
+    source .venv/bin/activate
+    python -m pip freeze > requirements.txt
+
+Then commit requirements.txt with the related code change.
+
+---
+
+## 6. Running the Offchain Monitor
+
+Go to offchain folder:
+
+    cd ~/deltagrid/offchain
+
+Activate environment:
+
+    source .venv/bin/activate
+
+Run monitor:
+
+    python indexer/chain_monitor.py
+
+Expected output:
+
+    DeltaGrid Chain Monitor
+    Mode: safe monitoring only
+    No private keys. No signing. No real trades.
+    RPC: https://sepolia.base.org
+    Connected to chain_id=84532
+
+Stop:
+
+    Control + C
+
+---
+
+## 7. Verify SQLite Logs
+
+Run:
+
+    cd ~/deltagrid/offchain
+    source .venv/bin/activate
+
+    python - <<'PYTHON'
+    import sqlite3
+
+    conn = sqlite3.connect("deltagrid.db")
+    cur = conn.cursor()
+
+    rows = cur.execute("""
+    SELECT timestamp_utc, chain_id, block_number, gas_price_wei
+    FROM block_logs
+    ORDER BY id DESC
+    LIMIT 10
+    """).fetchall()
+
+    for row in rows:
+        print(row)
+
+    conn.close()
+    PYTHON
+
+Expected:
+
+- Recent rows should show timestamp, chain_id, block number, and gas price.
+
+---
+
+## 8. Git Workflow
+
+### 8.1 Current branch
+
+Current branch:
+
+- master
+
+Do not rename yet unless needed.
+
+---
+
+### 8.2 Commit style
+
+Use atomic commits.
+
+Good examples:
+
+    git commit -m "Complete DeltaGrid smart contract foundation"
+    git commit -m "Add safe offchain chain monitor"
+    git commit -m "Add risk scoring simulator"
+    git commit -m "Document offchain environment setup"
+
+Bad examples:
+
+    git commit -m "update"
+    git commit -m "changes"
+    git commit -m "final"
+    git commit -m "working"
+
+---
+
+### 8.3 Selective staging rule
+
+Do not blindly use:
+
+    git add .
+
+Use selective staging:
+
+    git add specific/file1 specific/file2 specific/file3
+
+Actual command used for Mission 2:
+
+    git add offchain/indexer/chain_monitor.py offchain/config/.env.example offchain/requirements.txt
+
+Reason:
+
+Selective staging prevents accidental commits of:
+
+- .env
+- .venv
+- databases
+- logs
+- private keys
+- cache files
+- unrelated experiments
+
+---
+
+## 9. Directory Boundaries
+
+### contracts/
+
+Purpose:
+
+- Solidity code
+- Foundry tests
+- Smart contract safety layer
+
+Allowed:
+
+- .sol contracts
+- Foundry tests
+- foundry.toml
+- remappings.txt
+
+Not allowed:
+
+- Python indexers
+- SQLite databases
+- private keys
+- live execution scripts without review
+
+---
+
+### offchain/indexer/
+
+Purpose:
+
+- Blockchain observation
+- RPC polling
+- Block logging
+- Event indexing later
+
+Current file:
+
+- offchain/indexer/chain_monitor.py
+
+Not allowed yet:
+
+- trading
+- signing
+- private keys
+- live execution
+
+---
+
+### offchain/config/
+
+Purpose:
+
+- Environment configuration
+
+Tracked:
+
+- offchain/config/.env.example
+
+Not tracked:
+
+- offchain/config/.env
+
+Rule:
+
+- Commit .env.example.
+- Never commit .env.
+
+---
+
+### docs/
+
+Purpose:
+
+- Source of truth
+- ADRs
+- Decision logs
+- Changelog
+- Drift prevention
+
+Rule:
+
+- Every pivot must be documented.
+- Every major technical decision needs an ADR.
+- Every completed mission updates CHANGELOG.
+
+---
+
+## 10. Environment Configuration
+
+Current .env.example:
+
+    RPC_URL=https://sepolia.base.org
+    POLL_SECONDS=5
+    DB_PATH=deltagrid.db
+
+Current variables:
+
+| Variable | Purpose | Current value |
+|---|---|---|
+| RPC_URL | RPC endpoint | https://sepolia.base.org |
+| POLL_SECONDS | Monitor polling interval | 5 |
+| DB_PATH | SQLite database path | deltagrid.db |
+
+Future variables may include:
+
+- CHAIN_NAME
+- CHAIN_ID
+- LOG_LEVEL
+- PRIMARY_RPC_URL
+- FALLBACK_RPC_URL
+- DATABASE_URL
+- ALERT_WEBHOOK_URL
+
+Private keys are not allowed in early phases.
+
+---
+
+## 11. Safety Rules
+
+Current forbidden actions:
+
+- No real capital
+- No mainnet deployment
+- No live private key usage
+- No transaction signing
+- No live trading
+- No sandwiching
+- No exploit-style MEV
+- No public yield promises
+- No automatic execution before simulation
+- No mixing DeltaGrid with SkillMint
+
+Current allowed actions:
+
+- Compile contracts
+- Run tests
+- Monitor testnet blocks
+- Log gas and block data
+- Use SQLite locally
+- Build local simulators
+- Build risk scoring
+- Write documentation
+
+---
+
+## 12. Promotion Gates
+
+Gate 1:
+
+- Local contracts compile
+- Status: complete
+
+Gate 2:
+
+- Contract tests pass
+- Status: complete
+
+Gate 3:
+
+- Offchain monitor runs safely
+- Status: complete
+
+Gate 4:
+
+- Block and gas logs stored
+- Status: complete
+
+Gate 5:
+
+- Local profit simulator works
+- Status: next
+
+Gate 6:
+
+- Risk scoring engine works
+- Status: next
+
+Gate 7:
+
+- Testnet-only simulation
+
+Gate 8:
+
+- Fork tests
+
+Gate 9:
+
+- Paper/demo validation
+
+Gate 10:
+
+- Tiny live-capital experiment
+
+Gate 11:
+
+- Scale only after evidence
+
+---
+
+## 13. Pivot Rules
+
+A pivot must be documented before implementation if it changes:
+
+- chain
+- RPC provider
+- database
+- execution model
+- risk model
+- private key handling
+- smart contract architecture
+- indexing scope
+- strategy logic
+- simulation methodology
+- deployment target
+- capital usage
+
+Pivot template:
+
+    Date:
+    Current approach:
+    Problem:
+    Proposed change:
+    Why this is needed:
+    Risks:
+    Rollback plan:
+    Approved:
+
+---
+
+## 14. Next Mission
+
+Mission 3:
+
+- Build local profit simulator
+- Build risk scoring engine
+
+Allowed directories:
+
+- offchain/simulator/
+- offchain/risk/
+- docs/
+
+Not allowed yet:
+
+- mainnet deployment
+- private key usage
+- real transaction signing
+- real capital
+- live trading
+
+Mission 3 success criteria:
+
+- Gross profit can be calculated
+- Gas cost can be included
+- Flash-loan fee can be included
+- Slippage cost can be included
+- Net profit can be calculated
+- Risk score can approve or reject a simulated trade
+- All outputs are deterministic
