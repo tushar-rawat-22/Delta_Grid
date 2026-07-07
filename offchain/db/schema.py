@@ -135,6 +135,75 @@ def init_market_database(db_path: str = "deltagrid.db") -> None:
     )
     """)
 
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS historical_candles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        chain_id INTEGER NOT NULL,
+        symbol TEXT NOT NULL,
+        timeframe TEXT NOT NULL,
+        timestamp_utc TEXT NOT NULL,
+        open TEXT NOT NULL,
+        high TEXT NOT NULL,
+        low TEXT NOT NULL,
+        close TEXT NOT NULL,
+        volume TEXT NOT NULL,
+        source TEXT NOT NULL,
+        created_at_utc TEXT NOT NULL,
+        updated_at_utc TEXT NOT NULL,
+        UNIQUE(chain_id, symbol, timeframe, timestamp_utc, source),
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS backtest_runs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        strategy_name TEXT NOT NULL,
+        strategy_version TEXT NOT NULL,
+        chain_id INTEGER NOT NULL,
+        symbol TEXT NOT NULL,
+        timeframe TEXT NOT NULL,
+        start_timestamp_utc TEXT NOT NULL,
+        end_timestamp_utc TEXT NOT NULL,
+        initial_capital TEXT NOT NULL,
+        final_equity TEXT NOT NULL,
+        net_return_pct TEXT NOT NULL,
+        max_drawdown_pct TEXT NOT NULL,
+        sharpe_ratio TEXT NOT NULL,
+        profit_factor TEXT NOT NULL,
+        win_rate_pct TEXT NOT NULL,
+        trades_count INTEGER NOT NULL,
+        total_costs TEXT NOT NULL,
+        assumptions_json TEXT NOT NULL,
+        status TEXT NOT NULL,
+        created_at_utc TEXT NOT NULL,
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS backtest_trades (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        run_id INTEGER NOT NULL,
+        chain_id INTEGER NOT NULL,
+        symbol TEXT NOT NULL,
+        entry_timestamp_utc TEXT NOT NULL,
+        exit_timestamp_utc TEXT NOT NULL,
+        side TEXT NOT NULL,
+        entry_price TEXT NOT NULL,
+        exit_price TEXT NOT NULL,
+        quantity TEXT NOT NULL,
+        gross_pnl TEXT NOT NULL,
+        costs TEXT NOT NULL,
+        net_pnl TEXT NOT NULL,
+        return_pct TEXT NOT NULL,
+        created_at_utc TEXT NOT NULL,
+        FOREIGN KEY(run_id) REFERENCES backtest_runs(id),
+        FOREIGN KEY(chain_id) REFERENCES chains(chain_id)
+    )
+    """)
+
     cur.execute("""
     CREATE TABLE IF NOT EXISTS simulated_opportunities (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -625,3 +694,248 @@ def insert_route_candidate(
     conn.close()
 
     return int(route_id)
+
+
+def insert_historical_candle(
+    db_path: str,
+    chain_id: int,
+    symbol: str,
+    timeframe: str,
+    timestamp_utc: str,
+    open_price: str,
+    high_price: str,
+    low_price: str,
+    close_price: str,
+    volume: str,
+    source: str,
+) -> None:
+    conn = connect(db_path)
+    cur = conn.cursor()
+    now = utc_now()
+
+    cur.execute("""
+    INSERT INTO historical_candles (
+        chain_id,
+        symbol,
+        timeframe,
+        timestamp_utc,
+        open,
+        high,
+        low,
+        close,
+        volume,
+        source,
+        created_at_utc,
+        updated_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(chain_id, symbol, timeframe, timestamp_utc, source)
+    DO UPDATE SET
+        open = excluded.open,
+        high = excluded.high,
+        low = excluded.low,
+        close = excluded.close,
+        volume = excluded.volume,
+        updated_at_utc = excluded.updated_at_utc
+    """, (
+        chain_id,
+        symbol,
+        timeframe,
+        timestamp_utc,
+        open_price,
+        high_price,
+        low_price,
+        close_price,
+        volume,
+        source,
+        now,
+        now,
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def list_historical_candles(
+    db_path: str,
+    chain_id: int,
+    symbol: str,
+    timeframe: str,
+    source: str | None = None,
+) -> list[dict]:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    if source:
+        rows = cur.execute("""
+        SELECT timestamp_utc, open, high, low, close, volume, source
+        FROM historical_candles
+        WHERE chain_id = ?
+        AND symbol = ?
+        AND timeframe = ?
+        AND source = ?
+        ORDER BY timestamp_utc
+        """, (chain_id, symbol, timeframe, source)).fetchall()
+    else:
+        rows = cur.execute("""
+        SELECT timestamp_utc, open, high, low, close, volume, source
+        FROM historical_candles
+        WHERE chain_id = ?
+        AND symbol = ?
+        AND timeframe = ?
+        ORDER BY timestamp_utc
+        """, (chain_id, symbol, timeframe)).fetchall()
+
+    conn.close()
+
+    return [
+        {
+            "timestamp_utc": row[0],
+            "open": row[1],
+            "high": row[2],
+            "low": row[3],
+            "close": row[4],
+            "volume": row[5],
+            "source": row[6],
+        }
+        for row in rows
+    ]
+
+
+def insert_backtest_run(
+    db_path: str,
+    strategy_name: str,
+    strategy_version: str,
+    chain_id: int,
+    symbol: str,
+    timeframe: str,
+    start_timestamp_utc: str,
+    end_timestamp_utc: str,
+    initial_capital: str,
+    final_equity: str,
+    net_return_pct: str,
+    max_drawdown_pct: str,
+    sharpe_ratio: str,
+    profit_factor: str,
+    win_rate_pct: str,
+    trades_count: int,
+    total_costs: str,
+    assumptions_json: str,
+    status: str,
+) -> int:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+    INSERT INTO backtest_runs (
+        strategy_name,
+        strategy_version,
+        chain_id,
+        symbol,
+        timeframe,
+        start_timestamp_utc,
+        end_timestamp_utc,
+        initial_capital,
+        final_equity,
+        net_return_pct,
+        max_drawdown_pct,
+        sharpe_ratio,
+        profit_factor,
+        win_rate_pct,
+        trades_count,
+        total_costs,
+        assumptions_json,
+        status,
+        created_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        strategy_name,
+        strategy_version,
+        chain_id,
+        symbol,
+        timeframe,
+        start_timestamp_utc,
+        end_timestamp_utc,
+        initial_capital,
+        final_equity,
+        net_return_pct,
+        max_drawdown_pct,
+        sharpe_ratio,
+        profit_factor,
+        win_rate_pct,
+        trades_count,
+        total_costs,
+        assumptions_json,
+        status,
+        utc_now(),
+    ))
+
+    run_id = cur.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return int(run_id)
+
+
+def insert_backtest_trade(
+    db_path: str,
+    run_id: int,
+    chain_id: int,
+    symbol: str,
+    entry_timestamp_utc: str,
+    exit_timestamp_utc: str,
+    side: str,
+    entry_price: str,
+    exit_price: str,
+    quantity: str,
+    gross_pnl: str,
+    costs: str,
+    net_pnl: str,
+    return_pct: str,
+) -> int:
+    conn = connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+    INSERT INTO backtest_trades (
+        run_id,
+        chain_id,
+        symbol,
+        entry_timestamp_utc,
+        exit_timestamp_utc,
+        side,
+        entry_price,
+        exit_price,
+        quantity,
+        gross_pnl,
+        costs,
+        net_pnl,
+        return_pct,
+        created_at_utc
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        run_id,
+        chain_id,
+        symbol,
+        entry_timestamp_utc,
+        exit_timestamp_utc,
+        side,
+        entry_price,
+        exit_price,
+        quantity,
+        gross_pnl,
+        costs,
+        net_pnl,
+        return_pct,
+        utc_now(),
+    ))
+
+    trade_id = cur.lastrowid
+
+    conn.commit()
+    conn.close()
+
+    return int(trade_id)
