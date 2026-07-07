@@ -246,3 +246,52 @@ Status:
 Related commit:
 
 - 691cde4 Add local profit simulator and risk engine
+
+
+---
+
+## Decision 009: Add Market Data Schema
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Build offchain/db/schema.py.
+
+Reason:
+
+- DeltaGrid needs structured storage before real pool indexing, route discovery, or testnet simulations.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 3d75dc6 Add market data schema and opportunity store
+
+---
+
+## Decision 010: Add Opportunity Store
+
+Date:
+
+- 2026-07-07
+
+Decision:
+
+- Store simulated opportunities and risk decisions in dedicated database tables.
+
+Reason:
+
+- Every simulated opportunity should be linked to a risk decision for traceability.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 3d75dc6 Add market data schema and opportunity store

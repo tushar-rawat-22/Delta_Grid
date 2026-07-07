@@ -145,3 +145,69 @@ Safety:
 - no signing
 - no real trades
 - no real capital
+
+
+---
+
+## 2026-07-07
+
+### Added: Market Data Schema and Opportunity Store
+
+Files:
+
+- offchain/db/__init__.py
+- offchain/db/schema.py
+- offchain/db/opportunity_store_demo.py
+- offchain/tests/test_market_schema.py
+
+Capabilities:
+
+- creates schema_migrations table
+- creates chains table
+- creates blocks table
+- creates gas_snapshots table
+- creates tokens table
+- creates pools table
+- creates simulated_opportunities table
+- creates risk_decisions table
+- inserts demo chain
+- inserts demo block
+- inserts demo gas snapshot
+- inserts demo tokens
+- inserts demo pool
+- inserts demo simulated opportunity
+- inserts demo risk decision
+
+Verified database counts:
+
+- chains 1
+- blocks 1
+- gas_snapshots 1
+- tokens 2
+- pools 1
+- simulated_opportunities 1
+- risk_decisions 1
+
+Verified latest opportunity:
+
+- demo_arbitrage
+- chain_id 84532
+- block_number 43829863
+- net_profit_wei 3000000000000000
+
+Verified latest risk decision:
+
+- risk_score 100
+- approved 1
+- reasons_json []
+
+Commit:
+
+- 3d75dc6 Add market data schema and opportunity store
+
+Safety:
+
+- no private keys
+- no signing
+- no real trades
+- no real capital

@@ -657,3 +657,81 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 4 Completion Record
+
+Date:
+
+- 2026-07-07
+
+Status:
+
+- Complete
+- Verified
+- Committed
+
+Commit:
+
+- 3d75dc6 Add market data schema and opportunity store
+
+Files:
+
+- offchain/db/__init__.py
+- offchain/db/schema.py
+- offchain/db/opportunity_store_demo.py
+- offchain/tests/test_market_schema.py
+
+Database tables added:
+
+- schema_migrations
+- chains
+- blocks
+- gas_snapshots
+- tokens
+- pools
+- simulated_opportunities
+- risk_decisions
+
+Verified database counts:
+
+- chains 1
+- blocks 1
+- gas_snapshots 1
+- tokens 2
+- pools 1
+- simulated_opportunities 1
+- risk_decisions 1
+
+Verified opportunity:
+
+- demo_arbitrage
+- chain_id 84532
+- block_number 43829863
+- net_profit_wei 3000000000000000
+
+Verified risk decision:
+
+- risk_score 100
+- approved 1
+- reasons_json []
+
+Completed foundation:
+
+- Market data schema
+- Opportunity store
+- Risk decision store
+
+Next recommended mission:
+
+- Mission 5: Connect chain monitor to market database schema
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
