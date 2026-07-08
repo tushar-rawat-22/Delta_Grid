@@ -701,3 +701,61 @@ Recommendation:
 - Strategy validation framework GO
 - MA crossover strategy NO-GO
 - Live trading NO-GO
+
+
+---
+
+## 2026-07-08
+
+### Added: Strategy Candidate Lab
+
+Files:
+
+- offchain/backtest/strategy_candidate_lab.py
+- offchain/tests/test_strategy_candidate_lab.py
+
+Capabilities:
+
+- tests multiple strategy candidates
+- compares each candidate against buy-and-hold
+- ranks candidates using rank_score
+- stores candidate results in SQLite
+- rejects all candidates if none pass
+- keeps global verdict research-only
+
+Verified:
+
+- 31 tests passed
+- ETHUSDT candles seen: 1277
+- candidate_results: 5
+- approved_count: 0
+- rejected_or_insufficient: 5
+
+Best candidate:
+
+- ma_crossover fast_20_slow_60
+
+Best candidate result:
+
+- net return: 96.21%
+- benchmark return: 30.44%
+- excess return: 65.77%
+- max drawdown: 40.90%
+- Sharpe: 0.676
+- profit factor: 2.145
+- trades: 12
+- verdict: NO_GO_DRAWDOWN_TOO_HIGH
+
+Global verdict:
+
+- REJECT_ALL_NO_LIVE_TRADING
+
+Commit:
+
+- f7b06b9 Add strategy candidate lab
+
+Recommendation:
+
+- Candidate lab framework GO
+- Best candidate WATCHLIST_ONLY
+- Live trading NO-GO

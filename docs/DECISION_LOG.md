@@ -693,3 +693,51 @@ Verdict:
 
 - STRATEGY_NO_GO
 - LIVE_NO_GO
+
+
+---
+
+## Decision 027: Add Strategy Candidate Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add a multi-strategy candidate lab.
+
+Reason:
+
+- DeltaGrid needs to test multiple strategies instead of depending on one MA crossover baseline.
+
+Status:
+
+- Active
+
+Related commit:
+
+- f7b06b9 Add strategy candidate lab
+
+---
+
+## Decision 028: Reject All Mission 15 Candidates
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject all Mission 15 strategy candidates for live trading.
+
+Reason:
+
+- approved_count is 0
+- best candidate exceeded drawdown limit
+- global verdict is REJECT_ALL_NO_LIVE_TRADING
+
+Verdict:
+
+- REJECT_ALL
+- LIVE_NO_GO

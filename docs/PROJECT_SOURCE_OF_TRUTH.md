@@ -1350,3 +1350,72 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 15 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- f7b06b9 Add strategy candidate lab
+
+Files:
+
+- offchain/backtest/strategy_candidate_lab.py
+- offchain/tests/test_strategy_candidate_lab.py
+
+Verified tests:
+
+- 31 tests passed
+
+Verified database:
+
+- candidate_results: 5
+
+Real ETHUSDT candidate lab:
+
+- candles_seen: 1277
+- candidate_count: 5
+- approved_count: 0
+- rejected_or_insufficient: 5
+
+Best candidate:
+
+- ma_crossover fast_20_slow_60
+
+Best candidate verdict:
+
+- NO_GO_DRAWDOWN_TOO_HIGH
+
+Global verdict:
+
+- REJECT_ALL_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Strategy candidate lab framework GO
+- Best candidate WATCHLIST_ONLY
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 16: Drawdown Control and Regime Filter Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
