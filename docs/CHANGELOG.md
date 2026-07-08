@@ -1394,3 +1394,39 @@ Verdict:
 
 - Multi-symbol funding scanner GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Candidate Ranking Engine
+
+Files:
+
+- offchain/backtest/candidate_ranking_engine.py
+- offchain/tests/test_candidate_ranking_engine.py
+
+Tables:
+
+- candidate_ranking_results
+- candidate_ranking_summary
+
+Capabilities:
+
+- loads multi-symbol funding scan results
+- enriches candidates with walk-forward context
+- enriches candidates with liquidation risk context
+- enriches candidates with execution cost context
+- computes composite ranking score
+- aggregates rejection reasons
+- ranks candidates across symbols
+- produces research-only GO / NO-GO verdict
+
+Commit:
+
+- c51213b Add candidate ranking engine
+
+Verdict:
+
+- Candidate ranking engine GO
+- Live trading NO-GO

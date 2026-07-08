@@ -1479,3 +1479,54 @@ Verdict:
 
 - SCANNER_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 059: Add Candidate Ranking Engine
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only candidate ranking engine.
+
+Reason:
+
+- Multi-symbol scanner output needs second-level ranking before paper trading.
+- Ranking must aggregate scanner score, funding edge, liquidity, risk gates, execution cost, and rejection reasons.
+
+Status:
+
+- Active
+
+Related commit:
+
+- c51213b Add candidate ranking engine
+
+---
+
+## Decision 060: Keep Candidate Ranking Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not trade ranked candidates.
+
+Reason:
+
+- Ranking is only candidate selection.
+- No paper trading engine yet.
+- No capital allocation engine.
+- No risk governor.
+- No execution gateway.
+- No private keys or signing.
+
+Verdict:
+
+- RANKING_ENGINE_GO
+- LIVE_NO_GO
