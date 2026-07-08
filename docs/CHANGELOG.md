@@ -1245,3 +1245,37 @@ Verdict:
 - Funding backtest engine GO
 - Current ETHUSDT candidate NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Funding Strategy Walk-Forward Validation
+
+Files:
+
+- offchain/backtest/funding_walk_forward_validation.py
+- offchain/tests/test_funding_walk_forward_validation.py
+
+Tables:
+
+- funding_walk_forward_split_results
+- funding_walk_forward_summary
+
+Capabilities:
+
+- builds walk-forward train/test funding splits
+- evaluates multiple funding strategy parameter variants
+- records split-level results
+- records summary-level validation results
+- computes stability score
+- produces research-only GO / NO-GO verdict
+
+Commit:
+
+- b929c20 Add funding walk forward validation
+
+Verdict:
+
+- Funding walk-forward validation GO
+- Live trading NO-GO

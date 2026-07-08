@@ -2137,3 +2137,61 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 26 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- b929c20 Add funding walk forward validation
+
+Files:
+
+- offchain/backtest/funding_walk_forward_validation.py
+- offchain/tests/test_funding_walk_forward_validation.py
+
+Tables added:
+
+- funding_walk_forward_split_results
+- funding_walk_forward_summary
+
+Run label:
+
+- mission_26_funding_walk_forward_validation
+
+Source run:
+
+- mission_23_funding_basis_ingestion
+
+Latest run summary:
+
+- loose_entry5_exit2_hold20_cost20|2|0|2|2|-0.17630900000000000000000000000000000000|-0.35261800000000000000000000000000000000|0.18350200000000000000000000000000000000|0|5.51507700|NO_GO_WALK_FORWARD_STABILITY|REWORK_FUNDING_ENTRY_EXIT_RULES || balanced_entry8_exit4_hold20_cost20|2|0|2|2|-0.18456750000000000000000000000000000000|-0.36913500000000000000000000000000000000|0.18910900000000000000000000000000000000|0|5.51507700|NO_GO_WALK_FORWARD_STABILITY|REWORK_FUNDING_ENTRY_EXIT_RULES || strict_entry10_exit5_hold20_cost20|2|0|2|0|0|0|0|0|5.51507700|INSUFFICIENT_TOTAL_TRADES|BROADEN_SAMPLE_OR_LOWER_THRESHOLDS
+
+Mission verdict:
+
+- Funding walk-forward validation GO
+- Current variants depend on real funding path
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 27: Liquidation + Leverage Risk Model
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

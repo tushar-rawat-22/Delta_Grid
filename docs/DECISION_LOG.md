@@ -1280,3 +1280,54 @@ Verdict:
 - BACKTEST_ENGINE_GO
 - CURRENT_CANDIDATE_NO_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 051: Add Funding Walk-Forward Validation
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only walk-forward validation for funding strategy variants.
+
+Reason:
+
+- Mission 25 created a backtest engine.
+- Funding strategy needs split-level stability validation before any deeper risk work.
+
+Status:
+
+- Active
+
+Related commit:
+
+- b929c20 Add funding walk forward validation
+
+---
+
+## Decision 052: Keep Walk-Forward Funding Validation Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not use walk-forward funding validation results for live trading.
+
+Reason:
+
+- No liquidation model.
+- No leverage model.
+- No exchange-risk model.
+- No risk governor.
+- No capital allocation engine.
+- No private keys or signing.
+
+Verdict:
+
+- WALK_FORWARD_ENGINE_GO
+- LIVE_NO_GO
