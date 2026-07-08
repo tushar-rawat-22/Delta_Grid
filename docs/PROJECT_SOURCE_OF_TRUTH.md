@@ -1483,3 +1483,73 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 17 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 0ef95c8 Add walk-forward candidate lab
+
+Files:
+
+- offchain/backtest/walk_forward_candidate_lab.py
+- offchain/tests/test_walk_forward_candidate_lab.py
+
+Verified tests:
+
+- 37 tests passed
+
+Verified database:
+
+- split_results: 35
+- summary_results: 7
+
+Real ETHUSDT walk-forward lab:
+
+- candles_seen: 1277
+- candidate_count: 7
+- splits_tested: 5
+- approved_count: 0
+- rejected_or_insufficient: 7
+
+Best candidate:
+
+- ma_crossover fast_20_slow_60
+
+Best candidate verdict:
+
+- NO_GO_WALK_FORWARD_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Walk-forward framework GO
+- Strategy candidates NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 18: Strategy Diagnostics and Failure Attribution
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

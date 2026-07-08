@@ -821,3 +821,55 @@ Recommendation:
 - Drawdown control framework GO
 - Strategy candidates NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Walk-Forward Candidate Lab
+
+Files:
+
+- offchain/backtest/walk_forward_candidate_lab.py
+- offchain/tests/test_walk_forward_candidate_lab.py
+
+Capabilities:
+
+- tests multiple candidates across walk-forward splits
+- stores split-level results
+- stores candidate summary results
+- calculates GO split count
+- calculates stability score
+- rejects candidates that fail walk-forward validation
+
+Verified:
+
+- 37 tests passed
+- ETHUSDT candles seen: 1277
+- candidates tested: 7
+- walk-forward splits: 5
+- split_results: 35
+- summary_results: 7
+- approved_count: 0
+
+Best candidate:
+
+- ma_crossover fast_20_slow_60
+
+Best candidate verdict:
+
+- NO_GO_WALK_FORWARD_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_NO_LIVE_TRADING
+
+Commit:
+
+- 0ef95c8 Add walk-forward candidate lab
+
+Recommendation:
+
+- Walk-forward framework GO
+- Strategy candidates NO-GO
+- Live trading NO-GO

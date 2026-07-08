@@ -789,3 +789,51 @@ Verdict:
 
 - REJECT_ALL
 - LIVE_NO_GO
+
+---
+
+## Decision 031: Add Walk-Forward Candidate Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add walk-forward validation for all candidate strategies.
+
+Reason:
+
+- Full-period performance can be misleading.
+- Strategy candidates must be tested across multiple unseen windows.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 0ef95c8 Add walk-forward candidate lab
+
+---
+
+## Decision 032: Reject Mission 17 Candidates
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject all Mission 17 candidates for live trading.
+
+Reason:
+
+- approved_count is 0
+- best candidate had 0 GO splits
+- global verdict is REJECT_ALL_NO_LIVE_TRADING
+
+Verdict:
+
+- REJECT_ALL
+- LIVE_NO_GO
