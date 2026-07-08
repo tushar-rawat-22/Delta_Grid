@@ -1163,3 +1163,40 @@ Verdict:
 - Public ingestion GO
 - Strategy NOT YET TESTED
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Delta-Neutral Funding Strategy Lab
+
+Files:
+
+- offchain/backtest/delta_neutral_funding_lab.py
+- offchain/tests/test_delta_neutral_funding_lab.py
+
+Tables:
+
+- delta_neutral_funding_lab_results
+- delta_neutral_funding_lab_summary
+
+Capabilities:
+
+- evaluates ingested funding history
+- evaluates spot/perp basis
+- applies basis penalty
+- applies execution-cost assumption
+- estimates expected annualized edge
+- estimates stress edge
+- estimates 30-day carry
+- produces GO / NO-GO verdict
+- records research-only summary
+
+Commit:
+
+- 2be3c61 Add delta neutral funding strategy lab
+
+Verdict:
+
+- Funding strategy lab GO
+- Live trading NO-GO

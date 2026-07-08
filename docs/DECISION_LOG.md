@@ -1180,3 +1180,54 @@ Verdict:
 
 - INGESTION_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 047: Add Delta-Neutral Funding Strategy Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only strategy lab for delta-neutral funding candidates.
+
+Reason:
+
+- Mission 23 ingests real funding and basis data.
+- The system needs a scoring layer before deeper backtesting.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 2be3c61 Add delta neutral funding strategy lab
+
+---
+
+## Decision 048: Keep Delta-Neutral Funding Strategy Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not trade delta-neutral funding signals.
+
+Reason:
+
+- No liquidation model.
+- No exchange-risk model.
+- No execution simulator.
+- No position sizing engine.
+- No risk governor.
+- No private keys or signing.
+
+Verdict:
+
+- STRATEGY_LAB_GO
+- LIVE_NO_GO
