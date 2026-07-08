@@ -883,3 +883,52 @@ Verdict:
 
 - STABILITY_REWORK_REQUIRED
 - LIVE_NO_GO
+
+---
+
+## Decision 035: Add Stability Rework Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add stability rework lab to test stricter controlled MA variants.
+
+Reason:
+
+- Mission 18 found weak walk-forward stability as the primary failure.
+- Mission 19 must test whether stability can be improved without overfitting.
+
+Status:
+
+- Active
+
+Related commit:
+
+- f93a531 Add stability rework lab
+
+---
+
+## Decision 036: Reject Stability Rework Variants
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject all Mission 19 stability variants for live trading.
+
+Reason:
+
+- approved_count is 0
+- best variant had 0 GO splits
+- best variant reduced drawdown but produced negative average returns
+- global verdict is REJECT_ALL_STABILITY_VARIANTS_NO_LIVE_TRADING
+
+Verdict:
+
+- REJECT_ALL
+- LIVE_NO_GO

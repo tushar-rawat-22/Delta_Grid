@@ -921,3 +921,56 @@ Recommendation:
 - Diagnostics framework GO
 - Strategy candidates NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Stability Rework Lab
+
+Files:
+
+- offchain/backtest/stability_rework_lab.py
+- offchain/tests/test_stability_rework_lab.py
+
+Capabilities:
+
+- tests stricter controlled MA variants
+- adds volatility-gated variants
+- adds drawdown-guarded variants
+- adds cooldown-based variants
+- stores split-level stability rework results
+- stores summary-level stability rework results
+- calculates consistency score
+- recommends next action per variant
+
+Verified:
+
+- ETHUSDT candles seen: 1277
+- variants tested: 5
+- walk-forward splits: 5
+- split_results: 25
+- summary_results: 5
+- approved_count: 0
+
+Best variant:
+
+- stability_controlled_ma fast_20_slow_100_stop_8_trail_12_vol55_dd20_cd20
+
+Best variant verdict:
+
+- NO_GO_STABILITY_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_STABILITY_VARIANTS_NO_LIVE_TRADING
+
+Commit:
+
+- f93a531 Add stability rework lab
+
+Recommendation:
+
+- Stability rework framework GO
+- Strategy variants NO-GO
+- Live trading NO-GO

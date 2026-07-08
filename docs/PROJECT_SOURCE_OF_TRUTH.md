@@ -1626,3 +1626,69 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 19 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- f93a531 Add stability rework lab
+
+Files:
+
+- offchain/backtest/stability_rework_lab.py
+- offchain/tests/test_stability_rework_lab.py
+
+Verified database:
+
+- split_results: 25
+- summary_results: 5
+
+Real ETHUSDT stability rework lab:
+
+- candles_seen: 1277
+- variant_count: 5
+- splits_tested: 5
+- approved_count: 0
+- rejected_or_insufficient: 5
+
+Best variant:
+
+- stability_controlled_ma fast_20_slow_100_stop_8_trail_12_vol55_dd20_cd20
+
+Best variant verdict:
+
+- NO_GO_STABILITY_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_STABILITY_VARIANTS_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Stability rework framework GO
+- Strategy variants NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 20: Regime-Specific Stability Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
