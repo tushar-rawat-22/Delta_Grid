@@ -1530,3 +1530,52 @@ Verdict:
 
 - RANKING_ENGINE_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 061: Add Paper Trading Engine
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only paper trading engine.
+
+Reason:
+
+- Candidate ranking must be tested through simulated positions, simulated PnL, equity curve, and paper-trading gates before dashboarding or alerts.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 93bb586 Add paper trading engine
+
+---
+
+## Decision 062: Keep Paper Trading Separate From Live Trading
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Paper trading results cannot trigger real trades.
+
+Reason:
+
+- No exchange gateway.
+- No live order book.
+- No capital allocation governor.
+- No risk governor.
+- No private keys or signing.
+
+Verdict:
+
+- PAPER_ENGINE_GO
+- LIVE_NO_GO

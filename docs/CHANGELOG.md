@@ -1430,3 +1430,43 @@ Verdict:
 
 - Candidate ranking engine GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Paper Trading Engine
+
+Files:
+
+- offchain/backtest/paper_trading_engine.py
+- offchain/tests/test_paper_trading_engine.py
+
+Tables:
+
+- paper_trading_positions
+- paper_trading_trades
+- paper_trading_equity_curve
+- paper_trading_summary
+
+Capabilities:
+
+- loads ranked candidates
+- filters paper-trade eligible candidates
+- creates simulated positions
+- simulates long spot / short perpetual trades
+- computes funding accrual
+- subtracts execution cost
+- computes paper PnL
+- builds paper equity curve
+- computes drawdown, win rate, and profit factor
+- produces research-only GO / NO-GO paper verdict
+
+Commit:
+
+- 93bb586 Add paper trading engine
+
+Verdict:
+
+- Paper trading engine GO
+- Live trading NO-GO

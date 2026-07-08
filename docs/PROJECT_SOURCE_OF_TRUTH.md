@@ -2423,3 +2423,63 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 31 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 93bb586 Add paper trading engine
+
+Files:
+
+- offchain/backtest/paper_trading_engine.py
+- offchain/tests/test_paper_trading_engine.py
+
+Tables added:
+
+- paper_trading_positions
+- paper_trading_trades
+- paper_trading_equity_curve
+- paper_trading_summary
+
+Run label:
+
+- mission_31_paper_trading_engine
+
+Source ranking run:
+
+- mission_30_candidate_ranking_engine
+
+Latest run summary:
+
+- summary=(18, 0, 0, 0, '10000', '10000', '0', '0', '0', '0', '0', 'NO_GO_NO_ELIGIBLE_PAPER_CANDIDATES', 'KEEP_SCANNING_AND_WAIT_FOR_RANKED_CANDIDATES') positions=[]
+
+Mission verdict:
+
+- Paper trading engine GO
+- Current paper verdict depends on ranked candidates
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 32: Research Dashboard + Alerts
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
