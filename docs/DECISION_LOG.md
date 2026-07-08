@@ -1766,3 +1766,43 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 36 Decision - Add Shadow Replay Performance Reporter
+
+Decision:
+
+- Add a performance-style reporter for shadow candidate replay results.
+
+Reason:
+
+- Mission 35 generates controlled replay scenarios.
+- DeltaGrid needs a compact research report before adding more automation.
+- Approval/rejection rates and safety breach counts must be visible.
+
+Files:
+
+- offchain/backtest/shadow_replay_performance_reporter.py
+- offchain/tests/test_shadow_replay_performance_reporter.py
+
+Related code commit:
+
+- 36cb1fd Add shadow replay performance reporter
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

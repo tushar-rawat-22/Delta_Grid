@@ -1630,3 +1630,47 @@ Verdict:
 
 - Mission 35 replay harness GO
 - Live trading NO-GO
+
+---
+
+## Mission 36 - Shadow Replay Performance Reporter
+
+Added:
+
+- shadow replay performance reporter
+- aggregate replay metrics
+- approval rate
+- rejection rate
+- paper position rate
+- live trading breach count
+- scenario distribution
+- scenario verdict counts
+- markdown research report
+- SQLite persistence for performance reports
+
+Files:
+
+- offchain/backtest/shadow_replay_performance_reporter.py
+- offchain/tests/test_shadow_replay_performance_reporter.py
+
+Tables:
+
+- shadow_replay_performance_reports
+
+Code commit:
+
+- 36cb1fd Add shadow replay performance reporter
+
+Safety:
+
+- live trading remains disabled
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 36 performance reporting GO
+- Live trading NO-GO

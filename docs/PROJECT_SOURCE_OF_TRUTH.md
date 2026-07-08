@@ -2693,3 +2693,52 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 36 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 36cb1fd Add shadow replay performance reporter
+
+Files:
+
+- offchain/backtest/shadow_replay_performance_reporter.py
+- offchain/tests/test_shadow_replay_performance_reporter.py
+- docs/ADR/ADR-0036-shadow-replay-performance-reporter.md
+
+Tables added:
+
+- shadow_replay_performance_reports
+
+Purpose:
+
+- Summarize Mission 35 shadow replay results.
+- Report approval rate, rejection rate, paper-position rate, safety breaches, scenario distribution, and verdict counts.
+- Produce a markdown research report.
+
+Mission verdict:
+
+- Shadow replay performance reporter GO
+- Research reporting improved
+- Live trading NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Continue shadow research infrastructure.
