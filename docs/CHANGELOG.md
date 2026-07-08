@@ -1131,3 +1131,35 @@ Verdict:
 - Data model GO
 - Strategy NOT YET TESTED
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Funding / Basis Ingestion
+
+Files:
+
+- offchain/backtest/funding_basis_ingestion.py
+- offchain/tests/test_funding_basis_ingestion.py
+
+Capabilities:
+
+- fetches public Binance Futures funding history
+- fetches public Binance Futures mark price and index price
+- fetches public Binance Futures open interest
+- writes funding rows into funding_rates
+- writes mark/index/open-interest row into perp_mark_prices
+- writes spot/perp basis snapshot
+- writes delta-neutral research candidate
+- writes ingestion audit row
+
+Commit:
+
+- 266f90d Add funding basis ingestion
+
+Verdict:
+
+- Public ingestion GO
+- Strategy NOT YET TESTED
+- Live trading NO-GO

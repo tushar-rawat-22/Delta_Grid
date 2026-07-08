@@ -1955,3 +1955,60 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 23 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 266f90d Add funding basis ingestion
+
+Files:
+
+- offchain/backtest/funding_basis_ingestion.py
+- offchain/tests/test_funding_basis_ingestion.py
+
+Run label:
+
+- mission_23_funding_basis_ingestion
+
+Latest run summary:
+
+- 20|1|1|1|0.00002844|3.11418000|-0.03464239274341806018053250034036187713858|3.11418000|NO_GO_LOW_FUNDING|OK
+
+Tables used:
+
+- funding_rates
+- perp_mark_prices
+- spot_perp_basis_snapshots
+- delta_neutral_research_candidates
+- funding_basis_ingestion_runs
+
+Mission verdict:
+
+- Funding / basis ingestion GO
+- Delta-neutral strategy NOT YET TESTED
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 24: Delta-Neutral Funding Strategy Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

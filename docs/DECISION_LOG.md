@@ -1131,3 +1131,52 @@ Verdict:
 
 - DATA_MODEL_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 045: Add Funding / Basis Ingestion
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add public Binance Futures ingestion for funding history, mark price, index price, and open interest.
+
+Reason:
+
+- Mission 22 created the data model.
+- Mission 23 must populate it with real public market data before any strategy test.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 266f90d Add funding basis ingestion
+
+---
+
+## Decision 046: Funding Data Is Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Keep funding / basis ingestion research-only.
+
+Reason:
+
+- Ingestion is not a strategy.
+- Delta-neutral execution is not built.
+- Risk models are incomplete.
+- Liquidation, execution, borrow, and exchange-risk layers are missing.
+
+Verdict:
+
+- INGESTION_GO
+- LIVE_NO_GO
