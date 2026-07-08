@@ -1035,3 +1035,62 @@ Recommendation:
 - Compression breakout framework GO
 - Compression breakout variants NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Volatility-Targeted Time-Series Momentum Lab
+
+Files:
+
+- offchain/backtest/vt_tsmom_lab.py
+- offchain/tests/test_vt_tsmom_lab.py
+
+Capabilities:
+
+- multi-horizon momentum scoring
+- EMA trend filter
+- ADX trend confirmation
+- ATR stop and trailing exit
+- volatility-targeted position sizing
+- regime-aware filtering
+- split-level VT-TSMOM results
+- summary-level VT-TSMOM results
+- stability scoring
+- research-only global verdict
+
+Verified:
+
+- ETHUSDT candles seen: 1277
+- variants tested: 3
+- walk-forward splits: 5
+- split_results: 15
+- summary_results: 3
+- approved_count: 0
+
+Best variant:
+
+- vt_tsmom lb21_63_126_ema200_adx18_vol25_atr3
+
+Best variant verdict:
+
+- NO_GO_STABILITY_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_VT_TSMOM_VARIANTS_NO_LIVE_TRADING
+
+Split verdict finding:
+
+- all splits were INSUFFICIENT_TRADES
+
+Commit:
+
+- 8258dbf Add volatility targeted TSMOM lab
+
+Recommendation:
+
+- VT-TSMOM framework GO
+- VT-TSMOM variants NO-GO
+- Live trading NO-GO

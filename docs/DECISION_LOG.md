@@ -1032,3 +1032,54 @@ Verdict:
 
 - REJECT_ALL
 - LIVE_NO_GO
+
+---
+
+## Decision 041: Add Volatility-Targeted TSMOM Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add volatility-targeted time-series momentum candidate lab.
+
+Reason:
+
+- Prior moving-average variants failed stability.
+- The system needs a more institutional trend-following candidate.
+- VT-TSMOM uses multi-horizon momentum, volatility targeting, trend confirmation, and regime filters.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 8258dbf Add volatility targeted TSMOM lab
+
+---
+
+## Decision 042: Reject Mission 21 VT-TSMOM Variants
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject all Mission 21 VT-TSMOM variants for live trading.
+
+Reason:
+
+- approved_count is 0
+- all variants had 0 GO splits
+- all split verdicts were INSUFFICIENT_TRADES
+- best variants generated 0 trades
+- global verdict is REJECT_ALL_VT_TSMOM_VARIANTS_NO_LIVE_TRADING
+
+Verdict:
+
+- REJECT_ALL
+- LIVE_NO_GO

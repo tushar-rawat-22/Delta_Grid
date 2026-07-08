@@ -1819,3 +1819,83 @@ Future missions:
 Live trading:
 
 - NO-GO
+
+---
+
+# Mission 21 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 8258dbf Add volatility targeted TSMOM lab
+
+Files:
+
+- offchain/backtest/vt_tsmom_lab.py
+- offchain/tests/test_vt_tsmom_lab.py
+
+Verified database:
+
+- vt_tsmom_split_results: 15
+- vt_tsmom_summary: 3
+
+Real ETHUSDT VT-TSMOM lab:
+
+- candles_seen: 1277
+- variant_count: 3
+- splits_tested: 5
+- approved_count: 0
+- rejected_or_insufficient: 3
+
+Best variant:
+
+- vt_tsmom lb21_63_126_ema200_adx18_vol25_atr3
+
+Best variant metrics:
+
+- avg_net_return_pct: 0
+- avg_excess_return_pct: 0.768523426844253155392564442645334614844
+- worst_drawdown_pct: 0
+- avg_sharpe_ratio: 0
+- avg_profit_factor: 0
+- total_trades: 0
+- total_momentum_signals: 0
+
+Best variant verdict:
+
+- NO_GO_STABILITY_FAILURE
+
+Split verdict finding:
+
+- all VT-TSMOM split verdicts were INSUFFICIENT_TRADES
+
+Global verdict:
+
+- REJECT_ALL_VT_TSMOM_VARIANTS_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- VT-TSMOM framework GO
+- VT-TSMOM variants NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 22: Funding / Basis Data Model
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
