@@ -1331,3 +1331,52 @@ Verdict:
 
 - WALK_FORWARD_ENGINE_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 053: Add Liquidation + Leverage Risk Model
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only liquidation and leverage risk model for delta-neutral funding strategies.
+
+Reason:
+
+- Funding strategy cannot be promoted without liquidation distance, stress buffer, leverage safety, funding reversal, and basis shock checks.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 8558405 Add liquidation leverage risk model
+
+---
+
+## Decision 054: Keep Leverage Risk Model Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not use leverage risk results for live trading.
+
+Reason:
+
+- No live execution layer.
+- No capital allocation engine.
+- No risk governor.
+- No exchange-risk model.
+- No private keys or signing.
+
+Verdict:
+
+- RISK_MODEL_GO
+- LIVE_NO_GO

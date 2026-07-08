@@ -1279,3 +1279,42 @@ Verdict:
 
 - Funding walk-forward validation GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Liquidation + Leverage Risk Model
+
+Files:
+
+- offchain/backtest/liquidation_leverage_risk_model.py
+- offchain/tests/test_liquidation_leverage_risk_model.py
+
+Tables:
+
+- liquidation_leverage_risk_results
+- liquidation_leverage_risk_summary
+
+Capabilities:
+
+- computes short perpetual liquidation price
+- computes liquidation buffer percentage
+- applies adverse spot shock
+- applies adverse basis shock
+- computes stressed mark price
+- computes post-stress liquidation buffer
+- computes funding reversal loss
+- computes execution cost
+- estimates total stress loss
+- estimates max safe leverage
+- produces research-only GO / NO-GO verdict
+
+Commit:
+
+- 8558405 Add liquidation leverage risk model
+
+Verdict:
+
+- Liquidation + leverage risk model GO
+- Live trading NO-GO
