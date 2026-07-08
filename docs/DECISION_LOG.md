@@ -598,3 +598,49 @@ Verdict:
 
 - RESEARCH_GO
 - LIVE_NO_GO
+
+
+---
+
+## Decision 023: Add Real Historical Market Data Ingestion
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add Binance Spot historical candle ingestion.
+
+Reason:
+
+- DeltaGrid needs real market data before any strategy can be trusted.
+
+Status:
+
+- Active
+
+---
+
+## Decision 024: Keep MA Crossover Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not approve MA crossover for live trading.
+
+Reason:
+
+- positive return but weak risk-adjusted performance
+- high drawdown
+- weak Sharpe
+- weak profit factor
+- poor bear and sideways performance
+
+Verdict:
+
+- RESEARCH_ONLY
+- LIVE_NO_GO

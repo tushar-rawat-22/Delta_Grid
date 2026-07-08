@@ -615,3 +615,45 @@ Recommendation:
 
 - Closed-loop framework GO
 - Live trading NO-GO
+
+
+---
+
+## 2026-07-08
+
+### Added: Real Historical Market Data Ingestion
+
+Files:
+
+- offchain/backtest/binance_historical_data.py
+- offchain/tests/test_binance_historical_data.py
+
+Capabilities:
+
+- fetches Binance Spot candles
+- normalizes OHLCV data
+- stores real candles in historical_candles
+- supports real-data backtesting
+- supports real-data regime analysis
+
+Verified:
+
+- 25 tests passed
+- ETHUSDT candles ingested: 1277
+- source: binance_spot
+- timeframe: 1d
+
+Backtest:
+
+- net return: 30.77%
+- max drawdown: 44.94%
+- Sharpe: 0.388
+- profit factor: 1.187
+- win rate: 33.33%
+- trades: 24
+
+Recommendation:
+
+- Data ingestion framework GO
+- Strategy RESEARCH_ONLY
+- Live trading NO-GO
