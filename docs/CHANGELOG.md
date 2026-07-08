@@ -974,3 +974,64 @@ Recommendation:
 - Stability rework framework GO
 - Strategy variants NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Mission 20 Regime Kernel and Compression Breakout Lab
+
+Files:
+
+- offchain/backtest/indicator_engine.py
+- offchain/tests/test_indicator_engine.py
+- offchain/backtest/regime_kernel.py
+- offchain/tests/test_regime_kernel.py
+- offchain/backtest/compression_breakout_lab.py
+- offchain/tests/test_compression_breakout_lab.py
+
+Capabilities:
+
+- shared indicator engine
+- reusable regime classification
+- compression-to-expansion breakout candidate lab
+- split-level compression breakout results
+- summary-level compression breakout results
+- stability scoring
+- research-only global verdict
+
+Verified:
+
+- tests passed: 60
+- ETHUSDT candles seen: 1277
+- variants tested: 3
+- walk-forward splits: 5
+- split_results: 15
+- summary_results: 3
+- approved_count: 0
+
+Best variant:
+
+- compression_breakout donchian40_exit15_bb30_atr65_vol105_ema50
+
+Best variant verdict:
+
+- NO_GO_STABILITY_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_COMPRESSION_BREAKOUT_VARIANTS_NO_LIVE_TRADING
+
+Commits:
+
+- 7939c29 Add shared indicator engine
+- df58279 Add regime kernel
+- d8b0037 Add compression breakout lab
+
+Recommendation:
+
+- Indicator engine GO
+- Regime kernel GO
+- Compression breakout framework GO
+- Compression breakout variants NO-GO
+- Live trading NO-GO

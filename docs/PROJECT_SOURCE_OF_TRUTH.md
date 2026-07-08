@@ -1692,3 +1692,91 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 20 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commits:
+
+- 7939c29 Add shared indicator engine
+- df58279 Add regime kernel
+- d8b0037 Add compression breakout lab
+
+Files:
+
+- offchain/backtest/indicator_engine.py
+- offchain/tests/test_indicator_engine.py
+- offchain/backtest/regime_kernel.py
+- offchain/tests/test_regime_kernel.py
+- offchain/backtest/compression_breakout_lab.py
+- offchain/tests/test_compression_breakout_lab.py
+
+Tests:
+
+- 60 passed
+
+Verified database:
+
+- compression_breakout_split_results: 15
+- compression_breakout_summary: 3
+
+Real ETHUSDT compression breakout lab:
+
+- candles_seen: 1277
+- variant_count: 3
+- splits_tested: 5
+- approved_count: 0
+- rejected_or_insufficient: 3
+
+Best variant:
+
+- compression_breakout donchian40_exit15_bb30_atr65_vol105_ema50
+
+Best variant metrics:
+
+- avg_net_return_pct: -0.396776545013587001489934869237738922756
+- avg_excess_return_pct: 0.371746881830666153902629573407595692088
+- worst_drawdown_pct: 1.983882725067935007449674346188694613780
+- avg_sharpe_ratio: -0.5018140033361846611830239793745038497856
+- avg_profit_factor: 0
+- total_trades: 1
+- total_compression_signals: 113
+
+Best variant verdict:
+
+- NO_GO_STABILITY_FAILURE
+
+Global verdict:
+
+- REJECT_ALL_COMPRESSION_BREAKOUT_VARIANTS_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Indicator engine GO
+- Regime kernel GO
+- Compression breakout framework GO
+- Compression breakout variants NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 21: Volatility-Targeted Time-Series Momentum Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

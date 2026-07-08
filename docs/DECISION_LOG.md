@@ -932,3 +932,103 @@ Verdict:
 
 - REJECT_ALL
 - LIVE_NO_GO
+
+---
+
+## Decision 037: Add Shared Indicator Engine
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add reusable indicator engine for all future strategy labs.
+
+Reason:
+
+- Indicators should not be rewritten inside every strategy file.
+- Future strategies need consistent SMA, EMA, ATR, RSI, ADX, Bollinger, Donchian, volatility, and percentile calculations.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 7939c29 Add shared indicator engine
+
+---
+
+## Decision 038: Add Regime Kernel
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add reusable regime classifier.
+
+Reason:
+
+- Mission 18 and Mission 19 showed that one strategy across all market conditions is weak.
+- Future strategies must be tested inside market regimes.
+
+Status:
+
+- Active
+
+Related commit:
+
+- df58279 Add regime kernel
+
+---
+
+## Decision 039: Add Compression Breakout Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add compression breakout candidate lab as the first regime-aware institutional strategy test.
+
+Reason:
+
+- The system needs candidates that exploit specific market states.
+- Compression breakout targets low-volatility compression followed by expansion.
+
+Status:
+
+- Active
+
+Related commit:
+
+- d8b0037 Add compression breakout lab
+
+---
+
+## Decision 040: Reject Mission 20 Compression Breakout Variants
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject all Mission 20 compression breakout variants for live trading.
+
+Reason:
+
+- approved_count is 0
+- best variant had 0 GO splits
+- total trades were only 1
+- average Sharpe was negative
+- global verdict is REJECT_ALL_COMPRESSION_BREAKOUT_VARIANTS_NO_LIVE_TRADING
+
+Verdict:
+
+- REJECT_ALL
+- LIVE_NO_GO
