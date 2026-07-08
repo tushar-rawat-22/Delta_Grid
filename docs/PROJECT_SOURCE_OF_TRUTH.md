@@ -2253,3 +2253,61 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 28 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- d85a533 Add execution cost slippage simulator
+
+Files:
+
+- offchain/backtest/execution_cost_slippage_simulator.py
+- offchain/tests/test_execution_cost_slippage_simulator.py
+
+Tables added:
+
+- execution_cost_slippage_results
+- execution_cost_slippage_summary
+
+Run label:
+
+- mission_28_execution_cost_slippage_simulator
+
+Source run:
+
+- mission_23_funding_basis_ingestion
+
+Latest run summary:
+
+- small_10k_liquid_low_impact|7|10000|10000|0.075500|0.029862000|-0.045638000|0.3955231788079470198675496688741721854305|NO_GO_EDGE_BELOW_COST|WAIT_FOR_BETTER_EDGE_TO_COST_RATIO || medium_50k_balanced_impact|7|50000|50000|0.1400|0.029862000|-0.110138000|0.21330|NO_GO_EDGE_BELOW_COST|WAIT_FOR_BETTER_EDGE_TO_COST_RATIO || large_250k_stress_impact|7|250000|250000|3.952500|0.029862000|-3.922638000|0.007555218216318785578747628083491461100569|NO_GO_SPOT_ORDER_TOO_LARGE|REDUCE_SPOT_ORDER_SIZE_OR_REQUIRE_MORE_DEPTH
+
+Mission verdict:
+
+- Execution cost + slippage simulator GO
+- Current scenario verdicts depend on real funding edge and cost assumptions
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 29: Multi-Symbol Funding Scanner
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

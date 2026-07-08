@@ -1318,3 +1318,40 @@ Verdict:
 
 - Liquidation + leverage risk model GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Execution Cost + Slippage Simulator
+
+Files:
+
+- offchain/backtest/execution_cost_slippage_simulator.py
+- offchain/tests/test_execution_cost_slippage_simulator.py
+
+Tables:
+
+- execution_cost_slippage_results
+- execution_cost_slippage_summary
+
+Capabilities:
+
+- computes spot and perpetual leg costs
+- computes fee, spread, and slippage assumptions
+- computes participation rate
+- applies liquidity penalty
+- computes combined round-trip cost
+- computes expected funding edge
+- computes net expected edge after costs
+- computes edge-to-cost ratio
+- produces research-only GO / NO-GO verdict
+
+Commit:
+
+- d85a533 Add execution cost slippage simulator
+
+Verdict:
+
+- Execution cost + slippage simulator GO
+- Live trading NO-GO

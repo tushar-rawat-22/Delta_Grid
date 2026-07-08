@@ -1380,3 +1380,52 @@ Verdict:
 
 - RISK_MODEL_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 055: Add Execution Cost + Slippage Simulator
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only execution cost and slippage simulator.
+
+Reason:
+
+- Funding edge must survive realistic cost assumptions before multi-symbol scanning or paper trading.
+
+Status:
+
+- Active
+
+Related commit:
+
+- d85a533 Add execution cost slippage simulator
+
+---
+
+## Decision 056: Keep Execution Cost Model Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not treat simulated execution-cost results as live execution approval.
+
+Reason:
+
+- No live order book.
+- No broker/exchange fill engine.
+- No execution gateway.
+- No risk governor.
+- No private keys or signing.
+
+Verdict:
+
+- COST_MODEL_GO
+- LIVE_NO_GO
