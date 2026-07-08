@@ -2483,3 +2483,62 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 31.5 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 7889067 Add AI learning dataset registry
+
+Files:
+
+- offchain/backtest/ai_learning_registry.py
+- offchain/tests/test_ai_learning_registry.py
+
+Tables added:
+
+- ai_learning_examples
+- ai_model_registry
+
+Learning run label:
+
+- mission_31_5_ai_learning_dataset
+
+Model run label:
+
+- mission_31_5_ai_model_registry
+
+Latest run summary:
+
+- example_counts=[(0, 0, 0, 18)] model=('deltagrid_baseline_ai_candidate_scorer', 'mission_31_5_ai_model_registry_v1', 18, 0, 0, 0, 'REJECTED', 0, 0, 0, 'NO_GO_INSUFFICIENT_TRAINING_DATA', 'COLLECT_MORE_PAPER_TRADES')
+
+Mission verdict:
+
+- AI learning dataset + model registry GO
+- Model training verdict depends on paper trade sample size and class balance
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 32: Research Dashboard + Alerts
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- autonomous live trading
+- AI risk override
+- mainnet deployment
+- real capital

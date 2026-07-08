@@ -1579,3 +1579,48 @@ Verdict:
 
 - PAPER_ENGINE_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 063: Add AI Learning Dataset + Model Registry
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only AI learning dataset and model registry.
+
+Reason:
+
+- DeltaGrid needs a safe foundation for learning from historical scanner, ranking, and paper-trading outcomes.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 7889067 Add AI learning dataset registry
+
+---
+
+## Decision 064: AI Cannot Trade Or Override Risk
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- AI outputs are limited to scoring, classification, labels, and recommendations.
+
+Reason:
+
+- Autonomous retraining and live execution are unsafe without strict validation, paper-trading gates, risk governors, and human approval.
+
+Verdict:
+
+- AI_LEARNING_GO
+- AI_LIVE_TRADING_NO_GO

@@ -1470,3 +1470,39 @@ Verdict:
 
 - Paper trading engine GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: AI Learning Dataset + Model Registry
+
+Files:
+
+- offchain/backtest/ai_learning_registry.py
+- offchain/tests/test_ai_learning_registry.py
+
+Tables:
+
+- ai_learning_examples
+- ai_model_registry
+
+Capabilities:
+
+- extracts learning examples from ranked candidates
+- joins paper trading outcomes when available
+- builds AI feature dictionaries
+- builds training labels
+- separates observation-only examples from training-eligible examples
+- registers baseline model metadata
+- rejects training when data is insufficient
+- prevents paper/live approval by default
+
+Commit:
+
+- 7889067 Add AI learning dataset registry
+
+Verdict:
+
+- AI learning registry GO
+- Live trading NO-GO
