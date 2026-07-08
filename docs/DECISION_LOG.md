@@ -1429,3 +1429,53 @@ Verdict:
 
 - COST_MODEL_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 057: Add Multi-Symbol Funding Scanner
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only scanner across multiple Binance USD-M perpetual symbols.
+
+Reason:
+
+- Single-symbol ETHUSDT testing produced weak funding edge.
+- The system needs broader opportunity discovery before candidate ranking and paper trading.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 82808d2 Add multi symbol funding scanner
+
+---
+
+## Decision 058: Keep Multi-Symbol Scanner Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not trade scanner outputs.
+
+Reason:
+
+- Scanner output is only candidate discovery.
+- No paper trading engine yet.
+- No risk governor.
+- No execution gateway.
+- No private keys or signing.
+
+Verdict:
+
+- SCANNER_GO
+- LIVE_NO_GO

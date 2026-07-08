@@ -1355,3 +1355,42 @@ Verdict:
 
 - Execution cost + slippage simulator GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Multi-Symbol Funding Scanner
+
+Files:
+
+- offchain/backtest/multi_symbol_funding_scanner.py
+- offchain/tests/test_multi_symbol_funding_scanner.py
+
+Tables:
+
+- multi_symbol_funding_scan_results
+- multi_symbol_funding_scan_summary
+
+Capabilities:
+
+- scans multiple perpetual symbols
+- computes annualized funding
+- computes basis
+- estimates expected funding edge
+- applies execution cost proxy
+- computes net expected edge
+- computes edge-to-cost ratio
+- scores liquidity and funding strength
+- penalizes basis risk
+- ranks candidates
+- produces research-only GO / NO-GO verdict
+
+Commit:
+
+- 82808d2 Add multi symbol funding scanner
+
+Verdict:
+
+- Multi-symbol funding scanner GO
+- Live trading NO-GO
