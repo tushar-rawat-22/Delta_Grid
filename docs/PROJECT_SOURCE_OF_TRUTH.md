@@ -1780,3 +1780,42 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Strategy Research Roadmap Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Documented before Mission 21
+
+Roadmap file:
+
+- docs/STRATEGY_RESEARCH_ROADMAP.md
+
+Next approved research mission:
+
+- Mission 21: Volatility-Targeted Time-Series Momentum Lab
+
+Reason:
+
+- fits current OHLCV architecture
+- uses existing indicator engine
+- uses existing regime kernel
+- requires no new data source
+- replaces failed MA crossover family
+
+Future missions:
+
+- Funding / basis data model
+- Delta-neutral funding strategy lab
+- Intraday candle ingestion
+- Retail strategy hardening lab
+
+Live trading:
+
+- NO-GO
