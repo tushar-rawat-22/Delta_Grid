@@ -741,3 +741,51 @@ Verdict:
 
 - REJECT_ALL
 - LIVE_NO_GO
+
+
+---
+
+## Decision 029: Add Drawdown Control Lab
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add drawdown control testing for strategy candidates.
+
+Reason:
+
+- Mission 15 produced high returns but unacceptable drawdown.
+
+Status:
+
+- Active
+
+Related commit:
+
+- a74134e Add drawdown control lab
+
+---
+
+## Decision 030: Reject Mission 16 Candidates
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject all Mission 16 candidates for live trading.
+
+Reason:
+
+- approved_count is 0
+- best return candidate still exceeded drawdown limit
+- lowest drawdown candidate underperformed buy-and-hold
+
+Verdict:
+
+- REJECT_ALL
+- LIVE_NO_GO

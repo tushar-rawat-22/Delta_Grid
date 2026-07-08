@@ -1419,3 +1419,67 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 16 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- a74134e Add drawdown control lab
+
+Files:
+
+- offchain/backtest/drawdown_control_lab.py
+- offchain/tests/test_drawdown_control_lab.py
+
+Verified database:
+
+- drawdown_control_results: 5
+
+Real ETHUSDT drawdown control lab:
+
+- candidate_count: 5
+- approved_count: 0
+- rejected_or_insufficient: 5
+
+Best candidate:
+
+- controlled_ma fast_20_slow_60_stop_12
+
+Best candidate verdict:
+
+- NO_GO_DRAWDOWN_TOO_HIGH
+
+Global verdict:
+
+- REJECT_ALL_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Drawdown control framework GO
+- Strategy candidates NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 17: Walk-Forward Candidate Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

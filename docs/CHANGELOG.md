@@ -759,3 +759,65 @@ Recommendation:
 - Candidate lab framework GO
 - Best candidate WATCHLIST_ONLY
 - Live trading NO-GO
+
+
+---
+
+## 2026-07-08
+
+### Added: Drawdown Control Lab
+
+Files:
+
+- offchain/backtest/drawdown_control_lab.py
+- offchain/tests/test_drawdown_control_lab.py
+
+Capabilities:
+
+- tests stop-loss controls
+- tests trailing stop controls
+- tests volatility filter
+- tests drawdown guard
+- tests cooldown logic
+- stores results in SQLite
+
+Verified:
+
+- drawdown_control_results: 5
+- approved_count: 0
+- rejected_or_insufficient: 5
+
+Best candidate:
+
+- controlled_ma fast_20_slow_60_stop_12
+
+Best result:
+
+- net return: 113.87%
+- benchmark return: 30.44%
+- excess return: 83.43%
+- max drawdown: 41.87%
+- Sharpe: 0.740
+- profit factor: 2.672
+- trades: 14
+- verdict: NO_GO_DRAWDOWN_TOO_HIGH
+
+Lowest drawdown candidate:
+
+- controlled_ma fast_20_slow_60_stop_10_trail_15_maxvol_85_ddguard_25_cooldown_20
+- max drawdown: 26.69%
+- verdict: NO_GO_UNDERPERFORMS_BENCHMARK
+
+Global verdict:
+
+- REJECT_ALL_NO_LIVE_TRADING
+
+Commit:
+
+- a74134e Add drawdown control lab
+
+Recommendation:
+
+- Drawdown control framework GO
+- Strategy candidates NO-GO
+- Live trading NO-GO
