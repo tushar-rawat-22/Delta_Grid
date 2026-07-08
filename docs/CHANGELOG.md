@@ -1551,3 +1551,40 @@ Verdict:
 - Added safe default behavior that fails closed when no strong candidates exist.
 - Added tests proving live trading remains disabled.
 - Added ADR-0033 documentation.
+
+---
+
+## Mission 34 - Shadow Research Run History Inspector
+
+Added:
+
+- read-only inspector for Mission 33 shadow research pipeline history
+- summary of run counts
+- summary of verdict counts
+- latest run and latest verdict inspection
+- alert and blocking-alert inspection
+- stage-count inspection
+- report-length inspection
+- live-trading safety verification across inspected runs
+
+Files:
+
+- offchain/backtest/research_run_history_inspector.py
+- offchain/tests/test_research_run_history_inspector.py
+
+Code commit:
+
+- 1937ebd Add shadow research run history inspector
+
+Safety:
+
+- live trading remains disabled
+- no private keys
+- no signing
+- no exchange orders
+- no real capital
+
+Verdict:
+
+- Mission 34 observability GO
+- Live trading NO-GO

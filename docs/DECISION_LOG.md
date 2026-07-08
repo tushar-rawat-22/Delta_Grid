@@ -1687,3 +1687,42 @@ Fixed constraints:
 - no real capital
 
 The runner must produce a full research verdict before any future promotion discussion.
+
+---
+
+## Mission 34 Decision - Add Shadow Research Run History Inspector
+
+Decision:
+
+- Add a read-only SQLite history inspector for shadow research pipeline runs.
+
+Reason:
+
+- Mission 33 can generate shadow pipeline runs.
+- DeltaGrid needs a safe way to inspect accumulated history before adding more automation.
+- The system must preserve visibility into alerts, rejections, verdicts, stage counts, reports, and safety flags.
+
+Files:
+
+- offchain/backtest/research_run_history_inspector.py
+- offchain/tests/test_research_run_history_inspector.py
+
+Related code commit:
+
+- 1937ebd Add shadow research run history inspector
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- real capital
+- live trading
