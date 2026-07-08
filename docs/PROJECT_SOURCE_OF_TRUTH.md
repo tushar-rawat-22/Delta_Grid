@@ -2542,3 +2542,59 @@ Still forbidden:
 - AI risk override
 - mainnet deployment
 - real capital
+
+---
+
+# Mission 32 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- fe0d65a Add research dashboard alerts
+
+Files:
+
+- offchain/backtest/research_dashboard_alerts.py
+- offchain/tests/test_research_dashboard_alerts.py
+
+Tables added:
+
+- research_dashboard_snapshots
+- research_dashboard_alerts
+- research_daily_reports
+
+Run label:
+
+- mission_32_research_dashboard_alerts
+
+Latest run summary:
+
+- snapshot=(0, 0, 0, 0, 0, 'REJECTED', 11, 1, 'RESEARCH_PIPELINE_NO_GO_WAIT_FOR_EDGE_NO_LIVE_TRADING', 'KEEP_SCANNING_FOR_STRONGER_FUNDING_EDGE') alerts=[('WARNING', 'NO_SCANNER_GO_CANDIDATES', 'ETHUSDT', 'scanner', 0, 'KEEP_SCANNING_AND_WAIT_FOR_EDGE'), ('WARNING', 'NO_RANKED_GO_CANDIDATES', 'ETHUSDT', 'ranking', 0, 'KEEP_SCANNING_AND_WAIT_FOR_STRONGER_EDGE'), ('WARNING', 'PAPER_TRADING_NOT_VALIDATED', None, 'paper_trading', 0, 'KEEP_SCANNING_AND_WAIT_FOR_RANKED_CANDIDATES'), ('INFO', 'NO_ELIGIBLE_PAPER_CANDIDATES', None, 'paper_trading', 0, 'WAIT_FOR_RANKED_CANDIDATES'), ('INFO', 'AI_MODEL_NOT_APPROVED', None, 'ai_learning', 0, 'COLLECT_MORE_PAPER_TRADES'), ('INFO', 'TOP_CANDIDATE_REJECTED', 'ETHUSDT', 'ranking', 0, 'WAIT_FOR_SCANNER_GO_SIGNAL'), ('INFO', 'TOP_CANDIDATE_REJECTED', 'BTCUSDT', 'ranking', 0, 'WAIT_FOR_SCANNER_GO_SIGNAL'), ('INFO', 'TOP_CANDIDATE_REJECTED', 'SOLUSDT', 'ranking', 0, 'WAIT_FOR_SCANNER_GO_SIGNAL'), ('INFO', 'TOP_CANDIDATE_REJECTED', 'XRPUSDT', 'ranking', 0, 'WAIT_FOR_SCANNER_GO_SIGNAL'), ('INFO', 'TOP_CANDIDATE_REJECTED', 'LTCUSDT', 'ranking', 0, 'WAIT_FOR_SCANNER_GO_SIGNAL')] report=('/tmp/deltagrid_mission_32_research_dashboard_report.md', 'RESEARCH_PIPELINE_NO_GO_WAIT_FOR_EDGE_NO_LIVE_TRADING', 'KEEP_SCANNING_FOR_STRONGER_FUNDING_EDGE')
+
+Mission verdict:
+
+- Research dashboard + alerts GO
+- Current dashboard verdict depends on research pipeline status
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 33: Paper Trading Scheduler
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- autonomous live trading
+- AI risk override
+- mainnet deployment
+- real capital

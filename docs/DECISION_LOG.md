@@ -1624,3 +1624,51 @@ Verdict:
 
 - AI_LEARNING_GO
 - AI_LIVE_TRADING_NO_GO
+
+---
+
+## Decision 065: Add Research Dashboard + Alerts
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only dashboard snapshots, alerts, and daily markdown reports.
+
+Reason:
+
+- DeltaGrid needs a single system status layer before scheduling, monitoring, or alert automation.
+
+Status:
+
+- Active
+
+Related commit:
+
+- fe0d65a Add research dashboard alerts
+
+---
+
+## Decision 066: Alerts Are Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Alerts cannot trigger real trades.
+
+Reason:
+
+- No exchange gateway.
+- No risk governor.
+- No capital allocation engine.
+- No private keys or signing.
+
+Verdict:
+
+- DASHBOARD_ALERTS_GO
+- LIVE_NO_GO

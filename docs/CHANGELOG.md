@@ -1506,3 +1506,40 @@ Verdict:
 
 - AI learning registry GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Research Dashboard + Alerts
+
+Files:
+
+- offchain/backtest/research_dashboard_alerts.py
+- offchain/tests/test_research_dashboard_alerts.py
+
+Tables:
+
+- research_dashboard_snapshots
+- research_dashboard_alerts
+- research_daily_reports
+
+Capabilities:
+
+- summarizes scanner output
+- summarizes ranking output
+- summarizes paper trading output
+- summarizes AI model registry output
+- generates research alerts
+- generates blocking safety alerts
+- writes local markdown research report
+- stores dashboard snapshots and report records
+
+Commit:
+
+- fe0d65a Add research dashboard alerts
+
+Verdict:
+
+- Research dashboard + alerts GO
+- Live trading NO-GO
