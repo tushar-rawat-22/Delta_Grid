@@ -1553,3 +1553,76 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 18 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- fd38244 Add strategy diagnostics
+
+Files:
+
+- offchain/backtest/strategy_diagnostics.py
+- offchain/tests/test_strategy_diagnostics.py
+
+Diagnostic run:
+
+- mission_18_strategy_diagnostics
+
+Source run:
+
+- mission_17_walk_forward_candidate_lab
+
+Verified database:
+
+- diagnostics: 7
+
+Failure counts:
+
+- WEAK_WALK_FORWARD_STABILITY: 7
+
+Highest severity candidate:
+
+- ma_crossover fast_20_slow_60
+
+Highest severity score:
+
+- 165
+
+Recommended action:
+
+- REWORK_FOR_STABILITY
+
+Global verdict:
+
+- DIAGNOSE_ONLY_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Diagnostics framework GO
+- Strategy candidates NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 19: Stability Rework Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

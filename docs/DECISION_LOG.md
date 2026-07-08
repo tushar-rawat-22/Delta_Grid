@@ -837,3 +837,49 @@ Verdict:
 
 - REJECT_ALL
 - LIVE_NO_GO
+
+---
+
+## Decision 033: Add Strategy Diagnostics
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add diagnostic failure attribution for strategy candidates.
+
+Reason:
+
+- Rejected strategies must explain why they failed.
+- Future strategy work should be based on failure causes, not random tuning.
+
+Status:
+
+- Active
+
+Related commit:
+
+- fd38244 Add strategy diagnostics
+
+---
+
+## Decision 034: Prioritize Walk-Forward Stability
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Treat weak walk-forward stability as the primary blocker.
+
+Reason:
+
+- All 7 candidates failed primarily due to WEAK_WALK_FORWARD_STABILITY.
+
+Verdict:
+
+- STABILITY_REWORK_REQUIRED
+- LIVE_NO_GO

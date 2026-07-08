@@ -873,3 +873,51 @@ Recommendation:
 - Walk-forward framework GO
 - Strategy candidates NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Strategy Diagnostics and Failure Attribution
+
+Files:
+
+- offchain/backtest/strategy_diagnostics.py
+- offchain/tests/test_strategy_diagnostics.py
+
+Capabilities:
+
+- loads walk-forward candidate summaries
+- diagnoses why each candidate failed
+- stores failure diagnostics in SQLite
+- calculates severity score
+- assigns primary failure
+- recommends action per candidate
+
+Verified:
+
+- diagnostics: 7
+- primary failure across all candidates: WEAK_WALK_FORWARD_STABILITY
+- global verdict: DIAGNOSE_ONLY_NO_LIVE_TRADING
+
+Highest severity candidate:
+
+- ma_crossover fast_20_slow_60
+
+Highest severity score:
+
+- 165
+
+Recommended action:
+
+- REWORK_FOR_STABILITY
+
+Commit:
+
+- fd38244 Add strategy diagnostics
+
+Recommendation:
+
+- Diagnostics framework GO
+- Strategy candidates NO-GO
+- Live trading NO-GO
