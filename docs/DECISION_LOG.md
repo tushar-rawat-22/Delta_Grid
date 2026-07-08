@@ -1726,3 +1726,43 @@ Still forbidden:
 - exchange order placement
 - real capital
 - live trading
+
+---
+
+## Mission 35 Decision - Add Shadow Candidate Replay Harness
+
+Decision:
+
+- Add deterministic replay scenarios for shadow candidate research.
+
+Reason:
+
+- Mission 34 can inspect history.
+- DeltaGrid now needs controlled replay scenarios to generate richer history safely.
+- Replays must cover approvals, rejections, mixed quality, and approved-universe enforcement.
+
+Files:
+
+- offchain/backtest/shadow_candidate_replay_harness.py
+- offchain/tests/test_shadow_candidate_replay_harness.py
+
+Related code commit:
+
+- 9b09f52 Add shadow candidate replay harness
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

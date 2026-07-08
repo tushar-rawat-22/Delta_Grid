@@ -2643,3 +2643,53 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 35 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 9b09f52 Add shadow candidate replay harness
+
+Files:
+
+- offchain/backtest/shadow_candidate_replay_harness.py
+- offchain/tests/test_shadow_candidate_replay_harness.py
+- docs/ADR/ADR-0035-shadow-candidate-replay-harness.md
+
+Tables added:
+
+- shadow_candidate_replay_runs
+- shadow_candidate_replay_scenarios
+
+Purpose:
+
+- Generate deterministic shadow candidate replay scenarios.
+- Create repeatable approved, rejected, mixed, and non-universe candidate histories.
+- Support Mission 34 history inspection with richer local research data.
+
+Mission verdict:
+
+- Shadow candidate replay harness GO
+- Repeatable research simulation improved
+- Live trading NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Continue shadow research infrastructure.

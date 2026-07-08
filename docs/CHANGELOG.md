@@ -1588,3 +1588,45 @@ Verdict:
 
 - Mission 34 observability GO
 - Live trading NO-GO
+
+---
+
+## Mission 35 - Shadow Candidate Replay Harness
+
+Added:
+
+- deterministic replay harness for shadow candidate scenarios
+- fail-closed baseline replay
+- approved BTC shadow replay
+- mixed approved/rejected replay
+- non-universe rejection replay
+- SQLite replay metadata tables
+- tests for all replay paths
+
+Files:
+
+- offchain/backtest/shadow_candidate_replay_harness.py
+- offchain/tests/test_shadow_candidate_replay_harness.py
+
+Tables:
+
+- shadow_candidate_replay_runs
+- shadow_candidate_replay_scenarios
+
+Code commit:
+
+- 9b09f52 Add shadow candidate replay harness
+
+Safety:
+
+- live trading remains disabled
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 35 replay harness GO
+- Live trading NO-GO
