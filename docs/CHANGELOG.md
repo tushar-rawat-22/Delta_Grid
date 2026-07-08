@@ -1094,3 +1094,40 @@ Recommendation:
 - VT-TSMOM framework GO
 - VT-TSMOM variants NO-GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Funding / Basis Data Model
+
+Files:
+
+- offchain/backtest/funding_basis_model.py
+- offchain/tests/test_funding_basis_model.py
+
+Tables:
+
+- funding_rates
+- perp_mark_prices
+- spot_perp_basis_snapshots
+- delta_neutral_research_candidates
+
+Capabilities:
+
+- annualizes funding rates
+- calculates spot/perp basis
+- stores perpetual mark prices
+- stores basis snapshots
+- evaluates delta-neutral research candidates
+- runs synthetic research-only demo seed
+
+Commit:
+
+- 40c7ae2 Add funding basis data model
+
+Verdict:
+
+- Data model GO
+- Strategy NOT YET TESTED
+- Live trading NO-GO

@@ -1083,3 +1083,51 @@ Verdict:
 
 - REJECT_ALL
 - LIVE_NO_GO
+
+---
+
+## Decision 043: Add Funding / Basis Data Model
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add data model for perpetual funding, mark prices, spot/perp basis, and delta-neutral research candidates.
+
+Reason:
+
+- Funding / basis arbitrage is the next crypto-native structural edge after VT-TSMOM.
+- The system needs data tables before any strategy lab can be built.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 40c7ae2 Add funding basis data model
+
+---
+
+## Decision 044: Keep Funding Strategy Research-Only
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Do not trade funding / basis signals yet.
+
+Reason:
+
+- Only synthetic demo data exists.
+- Real funding-rate ingestion is not built.
+- Liquidation, borrow cost, counterparty risk, and execution risk are not modeled.
+
+Verdict:
+
+- DATA_MODEL_GO
+- LIVE_NO_GO

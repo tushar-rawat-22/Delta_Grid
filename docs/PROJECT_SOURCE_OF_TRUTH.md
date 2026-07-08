@@ -1899,3 +1899,59 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 22 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 40c7ae2 Add funding basis data model
+
+Files:
+
+- offchain/backtest/funding_basis_model.py
+- offchain/tests/test_funding_basis_model.py
+
+Tables added:
+
+- funding_rates
+- perp_mark_prices
+- spot_perp_basis_snapshots
+- delta_neutral_research_candidates
+
+Demo run:
+
+- mission_22_funding_basis_model
+
+Demo verdict:
+
+- DATA_MODEL_READY_NO_LIVE_TRADING
+
+Investment committee verdict:
+
+- Funding / basis data model GO
+- Delta-neutral strategy NOT YET TESTED
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 23: Funding / Basis Ingestion
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
