@@ -644,3 +644,52 @@ Verdict:
 
 - RESEARCH_ONLY
 - LIVE_NO_GO
+
+
+---
+
+## Decision 025: Add Strategy Validation Engine
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add benchmark comparison and walk-forward validation.
+
+Reason:
+
+- A single profitable backtest is not enough.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 47ac51b Add strategy validation engine
+
+---
+
+## Decision 026: Reject MA Crossover After Walk-Forward Validation
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Keep MA crossover rejected.
+
+Reason:
+
+- drawdown too high
+- excess return too small
+- walk-forward validation failed
+- 0 out of 5 splits passed
+
+Verdict:
+
+- STRATEGY_NO_GO
+- LIVE_NO_GO

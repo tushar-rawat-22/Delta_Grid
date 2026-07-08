@@ -1289,3 +1289,64 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+
+---
+
+# Mission 14 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 47ac51b Add strategy validation engine
+
+Files:
+
+- offchain/backtest/strategy_validation.py
+- offchain/tests/test_strategy_validation.py
+
+Verified tests:
+
+- 28 tests passed
+
+Verified database:
+
+- validation_results: 6
+
+Real ETHUSDT validation:
+
+- candles_seen: 1277
+- walk-forward splits: 5
+- GO_FOR_RESEARCH: 0
+- rejected_or_insufficient: 5
+
+Full-period verdict:
+
+- NO_GO_DRAWDOWN_TOO_HIGH
+
+Investment committee verdict:
+
+- Strategy validation framework GO
+- MA crossover strategy NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 15: Strategy Candidate Lab
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading

@@ -657,3 +657,47 @@ Recommendation:
 - Data ingestion framework GO
 - Strategy RESEARCH_ONLY
 - Live trading NO-GO
+
+
+---
+
+## 2026-07-08
+
+### Added: Strategy Validation Engine
+
+Files:
+
+- offchain/backtest/strategy_validation.py
+- offchain/tests/test_strategy_validation.py
+
+Verified:
+
+- 28 tests passed
+- ETHUSDT candles seen: 1277
+- validation_results: 6
+- walk-forward splits: 5
+- GO_FOR_RESEARCH splits: 0
+
+Full-period result:
+
+- net return: 30.77%
+- benchmark return: 30.44%
+- excess return: 0.33%
+- max drawdown: 44.94%
+- Sharpe: 0.388
+- profit factor: 1.187
+- trades: 24
+
+Verdict:
+
+- NO_GO_DRAWDOWN_TOO_HIGH
+
+Commit:
+
+- 47ac51b Add strategy validation engine
+
+Recommendation:
+
+- Strategy validation framework GO
+- MA crossover strategy NO-GO
+- Live trading NO-GO
