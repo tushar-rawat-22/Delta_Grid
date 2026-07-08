@@ -1543,3 +1543,11 @@ Verdict:
 
 - Research dashboard + alerts GO
 - Live trading NO-GO
+
+## Mission 33 - Unified Free Shadow Research Runner
+
+- Added a unified local shadow research pipeline runner.
+- Added SQLite persistence for full pipeline runs, stage results, and markdown reports.
+- Added safe default behavior that fails closed when no strong candidates exist.
+- Added tests proving live trading remains disabled.
+- Added ADR-0033 documentation.

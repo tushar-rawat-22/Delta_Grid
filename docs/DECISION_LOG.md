@@ -1672,3 +1672,18 @@ Verdict:
 
 - DASHBOARD_ALERTS_GO
 - LIVE_NO_GO
+
+## Mission 33 Decision - Unified Free Shadow Research Runner
+
+Decision: DeltaGrid will run Mission 33 as a free, local, zero-capital SHADOW_MODE research pipeline.
+
+Fixed constraints:
+
+- no live trading
+- no private keys
+- no signing
+- no paid APIs
+- no cloud dependency
+- no real capital
+
+The runner must produce a full research verdict before any future promotion discussion.
