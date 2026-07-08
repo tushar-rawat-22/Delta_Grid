@@ -1231,3 +1231,52 @@ Verdict:
 
 - STRATEGY_LAB_GO
 - LIVE_NO_GO
+
+---
+
+## Decision 049: Add Delta-Neutral Funding Backtest Engine
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Add research-only backtest engine for delta-neutral funding strategy.
+
+Reason:
+
+- Mission 24 produced a scoring layer only.
+- The system needs simulated funding path returns, trade records, basis impact, cost assumptions, and result metrics.
+
+Status:
+
+- Active
+
+Related commit:
+
+- 0792bc8 Add delta neutral funding backtest engine
+
+---
+
+## Decision 050: Reject Current ETHUSDT Funding Backtest Candidate
+
+Date:
+
+- 2026-07-08
+
+Decision:
+
+- Reject current ETHUSDT delta-neutral funding candidate.
+
+Reason:
+
+- Backtest final verdict is NO_GO_LOW_AVG_FUNDING.
+- Net return after execution cost is negative.
+- Average annualized funding is below threshold.
+
+Verdict:
+
+- BACKTEST_ENGINE_GO
+- CURRENT_CANDIDATE_NO_GO
+- LIVE_NO_GO

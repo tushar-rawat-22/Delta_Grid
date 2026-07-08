@@ -1200,3 +1200,48 @@ Verdict:
 
 - Funding strategy lab GO
 - Live trading NO-GO
+
+---
+
+## 2026-07-08
+
+### Added: Delta-Neutral Funding Backtest Engine
+
+Files:
+
+- offchain/backtest/delta_neutral_funding_backtest.py
+- offchain/tests/test_delta_neutral_funding_backtest.py
+
+Tables:
+
+- delta_neutral_funding_backtest_trades
+- delta_neutral_funding_backtest_results
+- delta_neutral_funding_backtest_summary
+
+Capabilities:
+
+- simulates long spot / short perpetual funding carry
+- accumulates funding path returns
+- models basis entry and exit impact
+- applies execution-cost assumption
+- creates trade-level records
+- creates result-level records
+- creates summary-level records
+- computes win rate, drawdown, profit factor, and net return
+- produces research-only GO / NO-GO verdict
+
+Mission 25 result:
+
+- trades_created: 1
+- final verdict: NO_GO_LOW_AVG_FUNDING
+- global verdict: REJECT_DELTA_NEUTRAL_FUNDING_BACKTEST_NO_LIVE_TRADING
+
+Commit:
+
+- 0792bc8 Add delta neutral funding backtest engine
+
+Verdict:
+
+- Funding backtest engine GO
+- Current ETHUSDT candidate NO-GO
+- Live trading NO-GO

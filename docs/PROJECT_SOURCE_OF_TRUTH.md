@@ -2070,3 +2070,70 @@ Still forbidden:
 - mainnet deployment
 - real capital
 - live trading
+
+---
+
+# Mission 25 Completion Record
+
+Date:
+
+- 2026-07-08
+
+Status:
+
+- Code complete
+- Verified
+- Committed
+
+Code commit:
+
+- 0792bc8 Add delta neutral funding backtest engine
+
+Files:
+
+- offchain/backtest/delta_neutral_funding_backtest.py
+- offchain/tests/test_delta_neutral_funding_backtest.py
+
+Tables added:
+
+- delta_neutral_funding_backtest_trades
+- delta_neutral_funding_backtest_results
+- delta_neutral_funding_backtest_summary
+
+Run label:
+
+- mission_25_delta_neutral_funding_backtest
+
+Source run:
+
+- mission_23_funding_basis_ingestion
+
+Latest run summary:
+
+- 20|1|-0.09745100000000000000000000000000000000|0.10254900|0.00000000000000000000000000000000000000000|0.2|0|0.09745100000000000000000000000000000000|0|6.46707000|1.66330500|10.95000000|NO_GO_LOW_AVG_FUNDING|WAIT_FOR_HIGHER_AVERAGE_FUNDING
+
+Mission result:
+
+- trades_created: 1
+- result rows: 1
+- summary rows: 1
+- final verdict: NO_GO_LOW_AVG_FUNDING
+- global verdict: REJECT_DELTA_NEUTRAL_FUNDING_BACKTEST_NO_LIVE_TRADING
+
+Mission verdict:
+
+- Delta-neutral funding backtest engine GO
+- Current ETHUSDT candidate NO-GO
+- Live trading NO-GO
+
+Next mission:
+
+- Mission 26: Funding Strategy Walk-Forward Validation
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- mainnet deployment
+- real capital
+- live trading
