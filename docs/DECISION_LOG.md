@@ -2783,3 +2783,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 60 Decision - Add Data Quality and Regime Intelligence
+
+Decision:
+
+- Add a data quality and market-regime layer before strategy promotion review.
+
+Reason:
+
+- Strategy scores can be misleading when data is stale, noisy, thin, or regime-unsafe.
+- Candidate promotion must be filtered by data confidence, volatility, spread, and market risk.
+- A trading firm needs risk intelligence before promotion review.
+
+Related code commit:
+
+- 92494a4 Add data quality regime intelligence engine
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

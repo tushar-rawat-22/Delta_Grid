@@ -2688,3 +2688,43 @@ Safety:
 - no exchange orders
 - no paid APIs
 - no real capital
+
+---
+
+## Mission 60 - Data Quality and Regime Intelligence Engine
+
+Added:
+
+- data quality scoring
+- funding regime classification
+- volatility regime classification
+- liquidity/spread regime classification
+- basis regime classification
+- market risk state classification
+- Mission 59 candidate regime gates
+- regime intelligence report
+
+Files:
+
+- offchain/research/data_quality_regime_intelligence_engine.py
+- offchain/tests/test_data_quality_regime_intelligence_engine.py
+
+Tables:
+
+- data_quality_regime_symbol_reports
+- data_quality_strategy_candidate_gates
+- data_quality_regime_intelligence_reports
+
+Code commit:
+
+- 92494a4 Add data quality regime intelligence engine
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital

@@ -41,3 +41,23 @@ Tables:
 - multi_strategy_research_registry
 - multi_strategy_research_candidates
 - multi_strategy_research_factory_reports
+
+---
+
+## Mission 60
+
+Name: Data Quality and Regime Intelligence Engine
+
+Purpose:
+
+- score public data quality
+- classify funding, basis, volatility, and liquidity regimes
+- classify market risk state
+- gate Mission 59 strategy candidates by regime
+- preserve shadow-only safety
+
+Tables:
+
+- data_quality_regime_symbol_reports
+- data_quality_strategy_candidate_gates
+- data_quality_regime_intelligence_reports

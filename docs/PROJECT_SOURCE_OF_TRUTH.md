@@ -3897,3 +3897,49 @@ Safety:
 Next valid phase:
 
 - Mission 60 Data Quality and Regime Intelligence Engine
+
+---
+
+# Mission 60 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 92494a4 Add data quality regime intelligence engine
+
+Mission 60 Completion Record
+
+Files:
+
+- offchain/research/data_quality_regime_intelligence_engine.py
+- offchain/tests/test_data_quality_regime_intelligence_engine.py
+- docs/ADR/ADR-0060-data-quality-regime-intelligence-engine.md
+
+Tables:
+
+- data_quality_regime_symbol_reports
+- data_quality_strategy_candidate_gates
+- data_quality_regime_intelligence_reports
+
+Purpose:
+
+- Score public data quality.
+- Classify market regimes.
+- Gate strategy candidates by data quality and regime risk.
+- Prevent poor data or unsafe regimes from advancing into promotion review.
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no exchange orders
+- no paid APIs
+
+Next valid phase:
+
+- Mission 61 Shadow Portfolio Simulator

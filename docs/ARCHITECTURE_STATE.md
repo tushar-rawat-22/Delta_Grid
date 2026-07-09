@@ -47,3 +47,24 @@ Safety boundary:
 - this layer produces research candidates only
 - it does not place trades
 - it does not allocate capital
+
+---
+
+## Data Quality and Regime Intelligence Layer
+
+Mission 60 adds the data quality and regime intelligence layer.
+
+Inputs:
+
+- historical public funding rates
+- historical public basis observations
+- multi-strategy research candidates
+
+Outputs:
+
+- symbol data-quality reports
+- market risk state
+- candidate regime gates
+- regime intelligence report
+
+This layer sits between strategy research and promotion review.
