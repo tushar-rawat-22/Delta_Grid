@@ -1862,3 +1862,47 @@ Verdict:
 - Mission 40 PnL attribution GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 41 - Local Mission Automation Harness
+
+Added:
+
+- local mission automation harness
+- dry-run mode
+- command execution wrapper
+- log generation
+- verification summaries
+- compile step planning
+- mission test planning
+- full suite planning
+- mission command planning
+- git status checks
+
+Files:
+
+- scripts/__init__.py
+- scripts/mission_control.py
+- offchain/tests/test_mission_control.py
+
+Code commit:
+
+- df295d1 Add local mission automation harness
+
+Safety:
+
+- development automation only
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 41 local automation GO
+- Live trading NO-GO
+- Capital deployment NO-GO

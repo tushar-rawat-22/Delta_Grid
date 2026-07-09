@@ -1994,3 +1994,48 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 41 Decision - Add Local Mission Automation Harness
+
+Decision:
+
+- Add local mission automation to reduce repetitive verification work.
+
+Reason:
+
+- Missions now require repeated compile, test, report, and git checks.
+- Local automation improves speed without introducing live-trading risk.
+- Automation must remain development-only at this stage.
+
+Files:
+
+- scripts/__init__.py
+- scripts/mission_control.py
+- offchain/tests/test_mission_control.py
+
+Related code commit:
+
+- df295d1 Add local mission automation harness
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

@@ -2947,3 +2947,50 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 41 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- df295d1 Add local mission automation harness
+
+Files:
+
+- scripts/__init__.py
+- scripts/mission_control.py
+- offchain/tests/test_mission_control.py
+- docs/ADR/ADR-0041-local-mission-automation-harness.md
+
+Purpose:
+
+- Automate repetitive local mission verification.
+- Produce logs and summaries for future missions.
+- Keep automation development-only and shadow-safe.
+
+Mission verdict:
+
+- Local mission automation harness GO
+- Development velocity improved
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Use automation harness for future research missions.
