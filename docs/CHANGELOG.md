@@ -2219,3 +2219,53 @@ Verdict:
 - Mission 48 promotion readiness gate GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 49 - Real Market Public Data Ingestion
+
+Added:
+
+- Binance USDS-M Futures public data ingestion
+- mark price ingestion
+- index price ingestion
+- basis bps calculation
+- funding rate ingestion
+- funding history ingestion
+- 24h ticker quote volume ingestion
+- bid/ask spread calculation
+- public data snapshot table
+- public data report table
+- offline sample mode
+- online fallback mode
+
+Files:
+
+- offchain/backtest/real_market_public_data_ingestion.py
+- offchain/tests/test_real_market_public_data_ingestion.py
+
+Tables:
+
+- real_market_public_data_snapshots
+- real_market_public_data_reports
+
+Code commit:
+
+- f6703de Add real market public data ingestion
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 49 public data ingestion GO
+- Real-market alpha engine buildout started
+- Live trading NO-GO
+- Capital deployment NO-GO

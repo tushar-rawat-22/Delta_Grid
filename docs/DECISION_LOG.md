@@ -2347,3 +2347,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 49 Decision - Add Real Market Public Data Ingestion
+
+Decision:
+
+- Add a public-data ingestion layer for Binance USDS-M Futures market data.
+
+Reason:
+
+- Mission 48 approved only real-market alpha engine buildout.
+- Profitability cannot be evaluated without real public market data.
+- Funding, basis, spread, and volume are required for the alpha scanner.
+
+Files:
+
+- offchain/backtest/real_market_public_data_ingestion.py
+- offchain/tests/test_real_market_public_data_ingestion.py
+
+Related code commit:
+
+- f6703de Add real market public data ingestion
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
