@@ -421,13 +421,48 @@ def label_pending(label: sqlite3.Row | dict[str, Any]) -> bool:
     )
 
 
-def inspect_for_leakage(value: Any) -> list[tuple[str, str]]:
-    text = json.dumps(value, sort_keys=True).lower() if isinstance(value, (dict, list)) else str(value).lower()
+SAFE_FALSE_METADATA_KEYS = {
+    "private_keys_used",
+    "orders_sent",
+    "paid_api_used",
+    "real_capital_used",
+    "model_training_enabled",
+    "autonomous_trading_enabled",
+    "automatic_strategy_reweighting_enabled",
+}
+
+
+def inspect_for_leakage(value: Any, path: str = "") -> list[tuple[str, str]]:
     hits: list[tuple[str, str]] = []
+
+    if isinstance(value, dict):
+        for key, child in value.items():
+            key_text = str(key).lower()
+            child_path = f"{path}.{key_text}" if path else key_text
+
+            if key_text in SAFE_FALSE_METADATA_KEYS and child is False:
+                continue
+
+            for term in FORBIDDEN_LEAKAGE_TERMS:
+                if term == key_text or key_text.startswith(f"{term}_"):
+                    hits.append((term, f"{child_path}={str(child)[:200]}"))
+
+            hits.extend(inspect_for_leakage(child, child_path))
+
+        return hits
+
+    if isinstance(value, list):
+        for index, child in enumerate(value):
+            child_path = f"{path}[{index}]"
+            hits.extend(inspect_for_leakage(child, child_path))
+
+        return hits
+
+    text = str(value).lower()
 
     for term in FORBIDDEN_LEAKAGE_TERMS:
         if term in text:
-            hits.append((term, text[:240]))
+            hits.append((term, f"{path}={text[:220]}"))
 
     return hits
 
