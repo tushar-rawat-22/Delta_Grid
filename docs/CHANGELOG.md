@@ -3556,3 +3556,19 @@ Safety:
 - no model training
 - no live signals
 - no autonomous live execution
+
+---
+
+## Roadmap Documentation After Mission 81
+
+Added:
+
+- full autonomous trading bot roadmap
+- honest completion percentage estimate
+- phase-by-phase future mission plan
+- live-market paper trading milestone
+- real-money live trading no-go statement
+
+File:
+
+- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md

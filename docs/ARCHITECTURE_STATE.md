@@ -518,3 +518,36 @@ research recommendations
   -> paper execution agent
   -> self-learning feedback loop
   -> offline training/evaluation/promotion gates
+
+---
+
+## Full Roadmap State After Mission 81
+
+Current architecture stage:
+
+- autonomous paper foundation
+
+Completed layers:
+
+- research recommendation engine
+- autonomous policy gate
+- autonomous paper signal engine
+
+Next layer:
+
+- paper execution agent
+
+Future layers:
+
+- self-learning feedback loop
+- offline model training harness
+- model promotion engine
+- autonomous risk governor
+- live readiness firewall
+- live market data paper adapter
+- real-time paper trading loop
+- monitoring and recovery system
+
+Full roadmap:
+
+- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md

@@ -71,3 +71,31 @@ Safety remains unchanged:
 - no exchange orders
 - no real capital
 - no model training
+
+## DeltaGrid Autonomous Bot Roadmap
+
+DeltaGrid now has a dedicated full roadmap document:
+
+- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md
+
+Current verified stage:
+
+- Mission 81 complete
+- Autonomous Paper Signal Engine complete
+- next mission is Mission 82 Paper Execution Agent
+
+Current honest completion estimate:
+
+- full autonomous AI trading bot: 25 to 30 percent complete
+- safe autonomous internal paper-trading system: 40 to 45 percent complete
+- live-market paper-trading bot: 25 to 30 percent complete
+- real-money autonomous live bot: less than 10 percent complete
+
+Next milestone:
+
+- Mission 82 Paper Execution Agent
+- Mission 83 Self-Learning Feedback Loop
+
+Live-market paper trading is planned later, after paper execution, feedback, offline learning, risk governance, and live readiness firewall work.
+
+Real-money live trading is not approved.

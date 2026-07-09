@@ -3391,3 +3391,24 @@ Not approved:
 - exchange execution
 - private key access
 - autonomous live strategy reweighting
+
+---
+
+## Roadmap Decision After Mission 81
+
+Decision:
+
+- Add a full autonomous bot roadmap document.
+- Keep Mission 82 as the next build target.
+- Define live-market paper trading as a later milestone, not the immediate next step.
+- Keep real-money live trading explicitly unapproved.
+
+Reason:
+
+- The project goal is a fully AI-integrated autonomous self-learning trading bot.
+- The system needs a visible staged roadmap from paper execution to live-market paper trading.
+- Safety gates must remain explicit.
+
+Roadmap file:
+
+- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md

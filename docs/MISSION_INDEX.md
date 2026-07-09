@@ -491,3 +491,33 @@ Important:
 - This mission does not approve model training.
 - This mission does not approve exchange execution.
 - This mission creates observe-only paper signals.
+
+---
+
+## Forward Mission Roadmap After Mission 81
+
+Next missions:
+
+- Mission 82: Paper Execution Agent
+- Mission 83: Self-Learning Feedback Loop
+- Mission 84: Offline Model Training Harness
+- Mission 85: Model Promotion Engine
+- Mission 86: Autonomous Risk Governor
+- Mission 87: Live Readiness Firewall
+- Mission 88: Live Market Data Paper Adapter
+- Mission 89: Real-Time Paper Signal Loop
+- Mission 90: Real-Time Paper Execution Loop
+- Mission 91: Live Paper PnL and Outcome Tracker
+- Mission 92: Live Paper Health Monitor
+- Mission 93: Paper Outcome Feedback Scorer
+- Mission 94: Strategy Memory and Performance Store
+- Mission 95: Offline Retraining Scheduler
+- Mission 96: Shadow Model Challenger
+- Mission 97: Paper Model Champion Selector
+- Mission 98: Autonomous Exposure Governor
+- Mission 99: Drawdown Circuit Breaker
+- Mission 100: Failure Recovery Supervisor
+
+See the full roadmap:
+
+- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md

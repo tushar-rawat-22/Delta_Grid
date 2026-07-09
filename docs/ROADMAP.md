@@ -511,3 +511,40 @@ Safety:
 - no live signal generation
 - no autonomous live execution
 - no exchange orders are sent
+
+---
+
+## Full Autonomous Bot Roadmap After Mission 81
+
+A full roadmap is now maintained in:
+
+- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md
+
+Current verified status:
+
+- Mission 80 Autonomous Policy Gate complete
+- Mission 81 Autonomous Paper Signal Engine complete
+- next mission is Mission 82 Paper Execution Agent
+
+Roadmap phases:
+
+1. Foundation and research infrastructure
+2. AI dataset, evaluation, and governance
+3. Autonomous policy and paper signal control
+4. Offline learning and model development
+5. Live market data for paper trading
+6. Continuous self-learning paper system
+7. Risk, operations, and reliability hardening
+8. Live readiness research firewall
+9. Possible future limited live pilot, not approved
+
+Current estimate:
+
+- full final bot: 25 to 30 percent complete
+- internal autonomous paper system: 40 to 45 percent complete
+- live-market paper bot: 25 to 30 percent complete
+- real-money bot: less than 10 percent complete
+
+Immediate next build:
+
+- Mission 82 Paper Execution Agent
