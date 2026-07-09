@@ -305,3 +305,34 @@ Safety:
 - no autonomous strategy changes
 - no exchange orders are sent
 - rows are not training-eligible until paper outcomes are collected
+
+---
+
+## Mission 74: AI Feature Store and Training Dataset Registry
+
+Mission 74 registers paper-only outcome dataset rows into a feature-store registry and creates training dataset registry entries.
+
+It performs:
+
+- feature-store record registration
+- training dataset registry entry creation
+- pending outcome lockout
+- training eligibility lockout
+- lineage validation
+- feature snapshot validation
+- registry quality checks
+- reporting
+
+Purpose:
+
+- preserve AI feature-store lineage
+- prepare for paper outcome collection
+- keep model training disabled until outcomes are collected
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training
+- no autonomous strategy changes
+- no exchange orders are sent

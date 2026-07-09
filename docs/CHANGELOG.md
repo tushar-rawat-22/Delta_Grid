@@ -3260,3 +3260,46 @@ Safety:
 - no paid APIs
 - no real capital
 - no autonomous strategy reweighting
+
+---
+
+## Mission 74 - AI Feature Store and Training Dataset Registry
+
+Added:
+
+- feature-store training registry
+- feature-store feature records
+- training dataset registry entries
+- training lockout checks
+- feature snapshot checks
+- source lineage checks
+- registry report
+
+Files:
+
+- offchain/ai_dataset/feature_store_training_registry.py
+- offchain/tests/test_feature_store_training_registry.py
+
+Tables:
+
+- ai_feature_store_training_registries
+- ai_feature_store_feature_records
+- ai_training_dataset_registry_entries
+- ai_feature_store_training_registry_checks
+- ai_feature_store_training_registry_reports
+
+Code commit:
+
+- 9a40c11 Add AI feature store training dataset registry
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- no model training
+- no autonomous strategy reweighting

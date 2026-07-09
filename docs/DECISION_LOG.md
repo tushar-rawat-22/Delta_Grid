@@ -3159,3 +3159,37 @@ Capital deployment:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 74 Decision - Add AI Feature Store and Training Dataset Registry
+
+Decision:
+
+- Add a local feature-store and training dataset registry after Mission 73 dataset row construction.
+
+Reason:
+
+- Dataset rows need feature-store registration before future outcome collection and training dataset activation.
+- Training must remain locked until paper outcomes are collected and labels are finalized.
+- The system must preserve no-live-trading and no-autonomous-training boundaries.
+
+Related code commit:
+
+- 9a40c11 Add AI feature store training dataset registry
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Model training:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

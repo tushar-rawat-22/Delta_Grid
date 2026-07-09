@@ -330,3 +330,25 @@ Tables:
 - ai_outcome_dataset_quality_checks
 - ai_outcome_dataset_handoffs
 - ai_outcome_dataset_reports
+
+---
+
+## Mission 74
+
+Name: AI Feature Store and Training Dataset Registry
+
+Purpose:
+
+- register feature-store records from Mission 73 rows
+- create training dataset registry entries
+- keep training locked while outcomes are pending
+- preserve full source lineage
+- prepare Mission 75 paper outcome collection and label finalization
+
+Tables:
+
+- ai_feature_store_training_registries
+- ai_feature_store_feature_records
+- ai_training_dataset_registry_entries
+- ai_feature_store_training_registry_checks
+- ai_feature_store_training_registry_reports

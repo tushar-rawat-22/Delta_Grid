@@ -336,3 +336,26 @@ Outputs:
 - AI outcome dataset report
 
 This layer creates paper-only pending rows and does not train, trade, or execute.
+
+---
+
+## AI Feature Store and Training Dataset Registry Layer
+
+Mission 74 adds a feature-store and training registry layer above the AI outcome dataset builder.
+
+Inputs:
+
+- AI outcome dataset build
+- AI outcome dataset rows
+- AI outcome dataset quality checks
+- AI outcome dataset handoff
+
+Outputs:
+
+- Feature-store registry
+- Feature-store feature records
+- Training dataset registry entries
+- Registry checks
+- Registry report
+
+This layer does not train, trade, or execute. Training is locked until paper outcomes are collected.
