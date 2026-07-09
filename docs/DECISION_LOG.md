@@ -3193,3 +3193,37 @@ Model training:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 75 Decision - Add AI Paper Outcome Collection and Label Finalizer
+
+Decision:
+
+- Add a local paper-only outcome collection and label finalization layer after Mission 74 registry lock.
+
+Reason:
+
+- Pending outcome labels need to become finalized labels before label-quality checks.
+- Training must remain locked even after labels are finalized.
+- The system must preserve no-live-trading, no-training, and no-autonomous-trading boundaries.
+
+Related code commit:
+
+- d596cc9 Add AI paper outcome label finalizer
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Model training:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

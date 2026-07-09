@@ -352,3 +352,25 @@ Tables:
 - ai_training_dataset_registry_entries
 - ai_feature_store_training_registry_checks
 - ai_feature_store_training_registry_reports
+
+---
+
+## Mission 75
+
+Name: AI Paper Outcome Collection and Label Finalizer
+
+Purpose:
+
+- collect local deterministic paper outcomes
+- finalize paper-only outcome labels
+- preserve training lock
+- mark labels as offline-evaluation candidates only
+- prepare Mission 76 label quality and leakage guard
+
+Tables:
+
+- ai_paper_outcome_collection_runs
+- ai_paper_outcome_collection_records
+- ai_paper_outcome_final_labels
+- ai_paper_outcome_collection_checks
+- ai_paper_outcome_collection_reports
