@@ -225,3 +225,24 @@ Tables:
 - paper_recovery_stability_checks
 - paper_recovery_stability_events
 - paper_recovery_stability_reports
+
+---
+
+## Mission 69
+
+Name: Multi-Cycle Paper Observation Tracker
+
+Purpose:
+
+- track paper observation across recovery stability cycles
+- calculate cumulative paper performance metrics
+- enforce cycle-level stability checks
+- prepare evidence for AI outcome learning
+- preserve no-live-trading safety
+
+Tables:
+
+- paper_multi_cycle_observation_tracks
+- paper_multi_cycle_observation_cycles
+- paper_multi_cycle_observation_checks
+- paper_multi_cycle_observation_reports

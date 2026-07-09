@@ -134,3 +134,35 @@ Safety:
 - live trading remains blocked
 - capital deployment remains blocked
 - no exchange orders are sent
+
+---
+
+## Mission 69: Multi-Cycle Paper Observation Tracker
+
+Mission 69 adds multi-cycle paper observation tracking.
+
+It evaluates:
+
+- recovery review availability
+- minimum cycle count
+- recovery decisions
+- recovery verdicts
+- recovery states
+- safety breaches
+- triggered events
+- cumulative paper PnL bps
+- worst cycle paper PnL bps
+- worst position loss bps
+- average fee drag bps
+
+Purpose:
+
+- consolidate paper observation cycles
+- create structured multi-cycle evidence
+- prepare the project for AI paper outcome learning
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no exchange orders are sent

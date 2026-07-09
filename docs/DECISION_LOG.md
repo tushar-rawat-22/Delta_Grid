@@ -3013,3 +3013,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 69 Decision - Add Multi-Cycle Paper Observation Tracker
+
+Decision:
+
+- Add a paper-only multi-cycle tracker after recovery stability monitoring.
+
+Reason:
+
+- AI outcome learning requires structured multi-cycle evidence.
+- Paper observation continuation needs cumulative and cycle-level checks.
+- Multi-cycle tracking must remain local and paper-only.
+
+Related code commit:
+
+- d5279a9 Add multi-cycle paper observation tracker
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
