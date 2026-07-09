@@ -3009,3 +3009,45 @@ Safety:
 - no exchange orders
 - no paid APIs
 - no real capital
+
+---
+
+## Mission 68 - Paper Recovery Stability Monitor
+
+Added:
+
+- paper recovery stability engine
+- kill-switch armed-state checks
+- triggered event checks
+- recovery PnL floor checks
+- fee drag checks
+- monitored position count checks
+- recovery stability event records
+- recovery stability report
+
+Files:
+
+- offchain/recovery/__init__.py
+- offchain/recovery/paper_recovery_stability_monitor.py
+- offchain/tests/test_paper_recovery_stability_monitor.py
+
+Tables:
+
+- paper_recovery_stability_reviews
+- paper_recovery_stability_checks
+- paper_recovery_stability_events
+- paper_recovery_stability_reports
+
+Code commit:
+
+- e25afdc Add paper recovery stability monitor
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital

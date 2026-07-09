@@ -2987,3 +2987,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 68 Decision - Add Paper Recovery Stability Monitor
+
+Decision:
+
+- Add a paper-only recovery stability monitor after the drawdown kill switch.
+
+Reason:
+
+- Paper observation should continue only when the armed kill switch remains stable.
+- Recovery stability needs explicit evidence before multi-cycle paper tracking.
+- Stability monitoring must remain local and paper-only.
+
+Related code commit:
+
+- e25afdc Add paper recovery stability monitor
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

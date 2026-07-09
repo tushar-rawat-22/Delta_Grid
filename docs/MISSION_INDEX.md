@@ -204,3 +204,24 @@ Tables:
 - paper_drawdown_kill_switch_checks
 - paper_drawdown_kill_switch_events
 - paper_drawdown_kill_switch_reports
+
+---
+
+## Mission 68
+
+Name: Paper Recovery Stability Monitor
+
+Purpose:
+
+- review paper drawdown kill-switch state
+- confirm paper recovery stability
+- block unstable paper observation continuation
+- record recovery checks and events
+- preserve no-live-trading safety
+
+Tables:
+
+- paper_recovery_stability_reviews
+- paper_recovery_stability_checks
+- paper_recovery_stability_events
+- paper_recovery_stability_reports

@@ -207,3 +207,26 @@ Outputs:
 - drawdown kill-switch report
 
 This layer can arm or trigger a paper-only kill switch. It cannot send live orders.
+
+---
+
+## Paper Recovery Stability Monitor Layer
+
+Mission 68 adds a paper-only recovery stability layer above the drawdown kill switch.
+
+Inputs:
+
+- paper drawdown kill-switch review
+- paper drawdown kill-switch checks
+- paper drawdown kill-switch events
+- paper observation performance run
+- paper position snapshots
+
+Outputs:
+
+- recovery stability review
+- recovery stability checks
+- recovery stability events
+- recovery stability report
+
+This layer confirms or blocks paper observation continuation. It cannot send live orders.

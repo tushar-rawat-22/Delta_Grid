@@ -103,3 +103,34 @@ Safety:
 - live trading remains blocked
 - capital deployment remains blocked
 - no exchange orders are sent
+
+---
+
+## Mission 68: Paper Recovery Stability Monitor
+
+Mission 68 adds a paper-only recovery stability layer after the paper drawdown kill switch.
+
+It evaluates:
+
+- kill-switch review availability
+- kill-switch armed decision
+- kill-switch armed verdict
+- kill-switch untriggered state
+- failed drawdown check count
+- triggered event count
+- safety invariants
+- monitored position count
+- net paper PnL recovery floor
+- fee drag threshold
+
+Purpose:
+
+- confirm stable paper recovery conditions
+- prevent continuation if kill-switch stability degrades
+- prepare the system for multi-cycle paper tracking
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no exchange orders are sent
