@@ -2259,3 +2259,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 47 Decision - Add Shadow Research Executive Daily Report
+
+Decision:
+
+- Add one board-level daily report across the shadow research pipeline.
+
+Reason:
+
+- The project now has multiple reports across replay, decision, lifecycle, PnL, break-even, close, outcome, and analytics layers.
+- The bot needs one executive summary before more strategy logic is added.
+- This improves governance without enabling live trading.
+
+Files:
+
+- offchain/backtest/shadow_research_executive_daily_report.py
+- offchain/tests/test_shadow_research_executive_daily_report.py
+
+Related code commit:
+
+- f733a84 Add shadow research executive daily report
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

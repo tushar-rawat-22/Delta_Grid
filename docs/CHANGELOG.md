@@ -2133,3 +2133,46 @@ Verdict:
 - Mission 46 outcome analytics GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 47 - Shadow Research Executive Daily Report
+
+Added:
+
+- shadow research executive daily report
+- dynamic shadow report table discovery
+- latest section verdict aggregation
+- safety issue aggregation
+- risk review aggregation
+- markdown board report
+- executive daily report table
+
+Files:
+
+- offchain/backtest/shadow_research_executive_daily_report.py
+- offchain/tests/test_shadow_research_executive_daily_report.py
+
+Tables:
+
+- shadow_research_executive_daily_reports
+
+Code commit:
+
+- f733a84 Add shadow research executive daily report
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 47 executive daily report GO
+- Live trading NO-GO
+- Capital deployment NO-GO
