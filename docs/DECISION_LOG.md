@@ -2911,3 +2911,27 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+## Mission 65 Decision - Add Capital Readiness Review
+
+Decision:
+
+- Add a capital-readiness governance layer after institutional risk control.
+
+Reason:
+
+- Paper observation readiness must be separated from real-capital approval.
+- The system needs formal evidence before longer paper monitoring.
+- Capital deployment must remain blocked until far stricter future gates exist.
+
+Related code commit:
+
+- b216235
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

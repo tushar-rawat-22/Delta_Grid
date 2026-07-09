@@ -144,3 +144,21 @@ Tables:
 - institutional_risk_control_reviews
 - institutional_risk_limit_checks
 - institutional_risk_decision_records
+
+## Mission 65
+
+Name: Capital Readiness Review
+
+Purpose:
+
+- review institutional risk-control output
+- decide whether extended paper observation can continue
+- explicitly block real capital
+- create capital-readiness evidence records
+- create capital-readiness decision records
+
+Tables:
+
+- capital_readiness_reviews
+- capital_readiness_evidence_items
+- capital_readiness_decision_records

@@ -2889,3 +2889,39 @@ Safety:
 - approval does not permit real capital
 - approval does not permit exchange orders
 - approval does not permit private keys
+
+## Mission 65 - Capital Readiness Review
+
+Added:
+
+- capital-readiness review engine
+- institutional risk-control evidence review
+- exposure evidence checks
+- cost evidence checks
+- safety evidence checks
+- capital-deployment policy check
+- capital-readiness decision records
+
+Files:
+
+- offchain/capital/__init__.py
+- offchain/capital/capital_readiness_review.py
+- offchain/tests/test_capital_readiness_review.py
+
+Tables:
+
+- capital_readiness_reviews
+- capital_readiness_evidence_items
+- capital_readiness_decision_records
+
+Code commit:
+
+- b216235
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- approval does not permit real capital
+- approval does not permit exchange orders
+- approval does not permit private keys

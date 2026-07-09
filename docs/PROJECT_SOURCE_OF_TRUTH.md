@@ -4140,3 +4140,60 @@ Safety:
 Next valid phase:
 
 - Mission 65 Capital Readiness Review
+
+# Mission 65 Completion Record
+
+Status:
+
+- Code verified
+- Documentation added
+- Approval is extended paper observation only
+
+Code commit:
+
+- b216235
+
+Mission 65 Completion Record
+
+Files:
+
+- offchain/capital/__init__.py
+- offchain/capital/capital_readiness_review.py
+- offchain/tests/test_capital_readiness_review.py
+- docs/ADR/ADR-0065-capital-readiness-review.md
+
+Tables:
+
+- capital_readiness_reviews
+- capital_readiness_evidence_items
+- capital_readiness_decision_records
+
+Verified result:
+
+- evidence_item_count: 12
+- pass_evidence_count: 12
+- warn_evidence_count: 0
+- fail_evidence_count: 0
+- position_count: 4
+- order_count: 4
+- distinct_symbol_count: 2
+- distinct_strategy_count: 3
+- observed_max_symbol_exposure_pct: 59.647996
+- observed_max_strategy_exposure_pct: 50.0
+- total_cost_bps: 3.5
+- safety_breach_count: 0
+- capital_decision: CAPITAL_READINESS_APPROVED_FOR_EXTENDED_PAPER_OBSERVATION_ONLY
+- global_verdict: CAPITAL_READINESS_REVIEW_PAPER_ONLY_READY
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no exchange orders
+- no paid APIs
+- approval scope is extended paper observation only
+
+Next valid phase:
+
+- Mission 66 Paper Observation Performance Monitor

@@ -146,3 +146,20 @@ Outputs:
 - institutional risk decision record
 
 This layer decides whether controlled paper observation can continue.
+
+## Capital Readiness Review Layer
+
+Mission 65 adds a capital-readiness governance layer above institutional risk control.
+
+Inputs:
+
+- institutional risk-control review
+- institutional risk-control decision record
+
+Outputs:
+
+- capital-readiness review
+- capital-readiness evidence items
+- capital-readiness decision record
+
+This layer approves extended paper observation only, not live trading or real capital.
