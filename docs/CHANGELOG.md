@@ -2925,3 +2925,45 @@ Safety:
 - approval does not permit real capital
 - approval does not permit exchange orders
 - approval does not permit private keys
+
+---
+
+## Mission 66 - Paper Observation Performance Monitor
+
+Added:
+
+- paper observation performance run engine
+- paper position snapshots
+- gross paper PnL calculation
+- simulated fee drag calculation
+- net paper PnL bps calculation
+- symbol and strategy PnL attribution
+- performance loss alerts
+- paper observation performance report
+
+Files:
+
+- offchain/performance/__init__.py
+- offchain/performance/paper_observation_performance_monitor.py
+- offchain/tests/test_paper_observation_performance_monitor.py
+
+Tables:
+
+- paper_observation_performance_runs
+- paper_observation_position_snapshots
+- paper_observation_performance_alerts
+- paper_observation_performance_reports
+
+Code commit:
+
+- 12dc48a Add paper observation performance monitor
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital

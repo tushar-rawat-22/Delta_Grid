@@ -163,3 +163,26 @@ Outputs:
 - capital-readiness decision record
 
 This layer approves extended paper observation only, not live trading or real capital.
+
+---
+
+## Paper Observation Performance Monitor Layer
+
+Mission 66 adds a paper-only performance monitoring layer above capital readiness.
+
+Inputs:
+
+- capital-readiness review
+- capital-readiness decision record
+- paper sandbox session
+- paper-only orders
+- paper-only positions
+
+Outputs:
+
+- paper observation performance run
+- position snapshots
+- performance alerts
+- performance report
+
+This layer monitors paper observation performance only.

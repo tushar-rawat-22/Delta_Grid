@@ -2935,3 +2935,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 66 Decision - Add Paper Observation Performance Monitor
+
+Decision:
+
+- Add paper-only performance monitoring after capital readiness review.
+
+Reason:
+
+- Extended paper observation needs position-level monitoring.
+- Paper PnL, fee drag, and loss thresholds must be tracked before future risk expansion.
+- Monitoring must remain local and paper-only.
+
+Related code commit:
+
+- 12dc48a Add paper observation performance monitor
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

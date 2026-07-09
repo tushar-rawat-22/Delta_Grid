@@ -162,3 +162,24 @@ Tables:
 - capital_readiness_reviews
 - capital_readiness_evidence_items
 - capital_readiness_decision_records
+
+---
+
+## Mission 66
+
+Name: Paper Observation Performance Monitor
+
+Purpose:
+
+- monitor paper-only position performance
+- calculate paper PnL and fee drag
+- generate performance alerts
+- persist position snapshots
+- preserve no-live-trading safety
+
+Tables:
+
+- paper_observation_performance_runs
+- paper_observation_position_snapshots
+- paper_observation_performance_alerts
+- paper_observation_performance_reports

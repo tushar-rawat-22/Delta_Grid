@@ -44,3 +44,33 @@ Add kill switches, exposure caps, circuit breakers, and audit trail.
 ### Mission 65: Capital Readiness Review
 
 Final go/no-go audit before any real-capital discussion.
+
+---
+
+## Mission 66: Paper Observation Performance Monitor
+
+Mission 66 adds paper-only performance monitoring.
+
+It evaluates:
+
+- capital-readiness approval
+- paper positions
+- gross paper PnL
+- simulated fee drag
+- net paper PnL bps
+- position loss bps
+- symbol and strategy PnL attribution
+- performance alerts
+- safety invariants
+
+Purpose:
+
+- monitor extended paper observation
+- detect loss-threshold breaches
+- preserve paper-only analytics before any future risk expansion
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no exchange orders are sent
