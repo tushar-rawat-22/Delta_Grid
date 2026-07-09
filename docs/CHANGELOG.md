@@ -2363,3 +2363,48 @@ Verdict:
 - Mission 51 alpha scanner GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 52 - Cost Calibration and Break-Even Sensitivity Engine
+
+Added:
+
+- cost calibration engine
+- break-even sensitivity scenarios
+- fee grid analysis
+- slippage grid analysis
+- holding-duration grid analysis
+- break-even funding calculation
+- symbol-level viability summary
+- calibration report table
+
+Files:
+
+- offchain/backtest/cost_calibration_break_even_sensitivity_engine.py
+- offchain/tests/test_cost_calibration_break_even_sensitivity_engine.py
+
+Tables:
+
+- cost_calibration_break_even_scenarios
+- cost_calibration_break_even_reports
+
+Code commit:
+
+- 0ea72bd Add cost calibration break-even sensitivity engine
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 52 cost calibration GO
+- Live trading NO-GO
+- Capital deployment NO-GO

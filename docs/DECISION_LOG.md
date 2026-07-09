@@ -2479,3 +2479,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 52 Decision - Add Cost Calibration and Break-Even Sensitivity Engine
+
+Decision:
+
+- Add cost calibration and break-even sensitivity after the alpha scanner.
+
+Reason:
+
+- Mission 51 found no approved alpha candidates under conservative costs.
+- BTC and ETH were watchlist-only because they were negative after cost.
+- The system needs to know whether candidates can become positive under lower fees, lower slippage, tighter spreads, or longer holding durations.
+
+Files:
+
+- offchain/backtest/cost_calibration_break_even_sensitivity_engine.py
+- offchain/tests/test_cost_calibration_break_even_sensitivity_engine.py
+
+Related code commit:
+
+- 0ea72bd Add cost calibration break-even sensitivity engine
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
