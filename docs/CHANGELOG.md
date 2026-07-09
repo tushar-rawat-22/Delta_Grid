@@ -2770,3 +2770,38 @@ Safety:
 - no exchange orders
 - no paid APIs
 - no real capital
+
+## Mission 62 - Research Promotion Board
+
+Added:
+
+- board-style promotion review
+- evidence item generation
+- portfolio risk review
+- safety policy review
+- board decision record
+- paper-sandbox-only approval scope
+
+Files:
+
+- offchain/governance/__init__.py
+- offchain/governance/research_promotion_board.py
+- offchain/tests/test_research_promotion_board.py
+
+Tables:
+
+- research_promotion_board_reviews
+- research_promotion_board_evidence_items
+- research_promotion_board_decision_records
+
+Code commit:
+
+- bf9acf6
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- approval does not permit real capital
+- approval does not permit exchange orders
+- approval does not permit private keys

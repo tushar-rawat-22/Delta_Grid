@@ -86,3 +86,21 @@ Outputs:
 - portfolio risk report
 
 This layer sits between regime-gated strategy research and promotion board review.
+
+## Research Promotion Board Layer
+
+Mission 62 adds a governance layer above the shadow portfolio simulator.
+
+Inputs:
+
+- shadow portfolio simulations
+- shadow portfolio allocations
+- shadow portfolio risk reports
+
+Outputs:
+
+- board review record
+- board evidence items
+- board decision record
+
+This layer decides whether the portfolio can advance to paper sandbox research only.

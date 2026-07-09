@@ -82,3 +82,22 @@ Tables:
 - shadow_portfolio_simulations
 - shadow_portfolio_allocations
 - shadow_portfolio_risk_reports
+
+## Mission 62
+
+Name: Research Promotion Board
+
+Purpose:
+
+- review portfolio-level evidence
+- approve, watchlist, block, or reject shadow portfolio promotion
+- create board evidence records
+- create board decision records
+- define next mission scope
+- preserve shadow-only safety
+
+Tables:
+
+- research_promotion_board_reviews
+- research_promotion_board_evidence_items
+- research_promotion_board_decision_records

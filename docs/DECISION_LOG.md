@@ -2835,3 +2835,27 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+## Mission 62 Decision - Add Research Promotion Board
+
+Decision:
+
+- Add a board-style research promotion gate before paper sandbox work.
+
+Reason:
+
+- Portfolio readiness must be reviewed by evidence, not by raw alpha score.
+- Governance is required before any simulated trading engine.
+- Approval must be scoped narrowly to paper sandbox research only.
+
+Related code commit:
+
+- bf9acf6
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
