@@ -2655,3 +2655,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 56 Decision - Add Shadow Tracking Performance Reporter
+
+Decision:
+
+- Add a reporter that summarizes shadow tracking performance from Mission 55 updates.
+
+Reason:
+
+- Mission 55 created active BTC/ETH tracking updates.
+- DeltaGrid needs performance visibility before building alerts or promotion gates.
+- Carry drift, latest funding, and spread health must be summarized before any future strategy escalation.
+
+Files:
+
+- offchain/backtest/shadow_tracking_performance_reporter.py
+- offchain/tests/test_shadow_tracking_performance_reporter.py
+
+Related code commit:
+
+- f114cc7 Add shadow tracking performance reporter
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
