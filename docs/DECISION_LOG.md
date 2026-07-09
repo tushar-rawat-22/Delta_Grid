@@ -3261,3 +3261,37 @@ Model training:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 78 Decision - Add AI Offline Evaluation Governance Board
+
+Decision:
+
+- Add a governance board after Mission 77 offline evaluation.
+
+Reason:
+
+- Offline evaluation evidence must be reviewed before research-only recommendations.
+- The board must explicitly preserve no-live-trading, no-training, and no-autonomous-trading boundaries.
+- Baseline accuracy must not be treated as profitability evidence.
+
+Related code commit:
+
+- 7e6426e Add AI offline evaluation governance board
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Model training:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

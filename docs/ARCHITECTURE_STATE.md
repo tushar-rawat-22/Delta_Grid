@@ -404,3 +404,26 @@ Outputs:
 - label quality report
 
 This layer approves labels for offline evaluation only. It does not train, trade, or execute.
+
+---
+
+## AI Offline Evaluation Governance Board Layer
+
+Mission 78 adds a governance board above the offline evaluation harness.
+
+Inputs:
+
+- offline evaluation run
+- offline evaluation cases
+- offline evaluation metrics
+- offline evaluation checks
+
+Outputs:
+
+- governance review
+- governance evidence
+- board votes
+- governance checks
+- governance report
+
+This layer is research governance only. It does not train, trade, or execute.

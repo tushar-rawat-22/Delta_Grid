@@ -394,3 +394,25 @@ Tables:
 - ai_label_quality_leakage_guard_checks
 - ai_label_quality_leakage_guard_findings
 - ai_label_quality_leakage_guard_reports
+
+---
+
+## Mission 78
+
+Name: AI Offline Evaluation Governance Board
+
+Purpose:
+
+- review Mission 77 offline evaluation evidence
+- record governance evidence
+- record board votes
+- preserve no-training/no-trading boundaries
+- approve research-only handoff to Mission 79
+
+Tables:
+
+- ai_offline_evaluation_governance_reviews
+- ai_offline_evaluation_governance_evidence
+- ai_offline_evaluation_governance_votes
+- ai_offline_evaluation_governance_checks
+- ai_offline_evaluation_governance_reports

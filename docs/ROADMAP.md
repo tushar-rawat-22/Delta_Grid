@@ -395,3 +395,27 @@ Safety:
 - no model training
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 78: AI Offline Evaluation Governance Board
+
+Mission 78 adds a governance board above the offline evaluation harness.
+
+It performs:
+
+- offline evaluation evidence review
+- evidence pass/fail recording
+- board vote recording
+- no-training governance checks
+- no-profitability-claim checks
+- research-only handoff approval
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training
+- no live signal generation
+- no autonomous strategy changes
+- no exchange orders are sent
