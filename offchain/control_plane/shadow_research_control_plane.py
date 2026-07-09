@@ -252,6 +252,14 @@ def stage_status_from_verdict(verdict: str, safety_breach_count: int) -> str:
     if safety_breach_count > 0 or "SAFETY" in verdict:
         return STAGE_BLOCKED
 
+    completed_verdicts = {
+        DATA_REFRESH_REUSED,
+        "DOCUMENTATION_REGISTRY_READY",
+    }
+
+    if verdict in completed_verdicts:
+        return STAGE_COMPLETED
+
     attention_terms = [
         "MISSING",
         "NO_",
