@@ -2303,3 +2303,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 48 Decision - Add Shadow Research Promotion Readiness Gate
+
+Decision:
+
+- Add a formal promotion readiness gate after executive daily reporting.
+
+Reason:
+
+- Mission 47 proved executive reporting is clean.
+- DeltaGrid needs a formal decision before moving from governance/reporting into real-market alpha engine development.
+- This gate approves only alpha-engine buildout while continuing to block live trading and capital deployment.
+
+Files:
+
+- offchain/backtest/shadow_research_promotion_readiness_gate.py
+- offchain/tests/test_shadow_research_promotion_readiness_gate.py
+
+Related code commit:
+
+- 1eaaa3d Add shadow research promotion readiness gate
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
