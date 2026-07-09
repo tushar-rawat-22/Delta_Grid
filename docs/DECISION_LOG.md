@@ -3099,3 +3099,33 @@ Capital deployment:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 72 Decision - Add AI Paper Dataset Expansion Scheduler
+
+Decision:
+
+- Add a controlled paper-only AI dataset expansion scheduler after AI feature quality approval.
+
+Reason:
+
+- AI learning needs more paper cycles, but expansion must be scheduled and bounded.
+- Dataset growth must remain paper-only and guarded by feature quality checks.
+- No autonomous execution should be introduced.
+
+Related code commit:
+
+- dfbdb86 Add AI paper dataset expansion scheduler
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

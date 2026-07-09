@@ -288,3 +288,23 @@ Tables:
 - ai_feature_quality_drift_guard_checks
 - ai_feature_quality_drift_guard_feature_drifts
 - ai_feature_quality_drift_guard_reports
+
+---
+
+## Mission 72
+
+Name: AI Paper Dataset Expansion Scheduler
+
+Purpose:
+
+- plan paper-only AI dataset expansion cycles
+- validate guard approval before scheduling
+- create structured schedule items
+- preserve no-live-trading and no-autonomous-trading safety
+
+Tables:
+
+- ai_paper_dataset_expansion_schedules
+- ai_paper_dataset_expansion_schedule_items
+- ai_paper_dataset_expansion_checks
+- ai_paper_dataset_expansion_reports

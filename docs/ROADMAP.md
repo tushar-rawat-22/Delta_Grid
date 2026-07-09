@@ -238,3 +238,38 @@ Safety:
 - capital deployment remains blocked
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 72: AI Paper Dataset Expansion Scheduler
+
+Mission 72 adds a controlled paper-only dataset expansion scheduler.
+
+It evaluates:
+
+- AI feature guard availability
+- guard decision approval
+- guard ready verdict
+- feature quality state
+- guard failed check count
+- feature drift status
+- max feature drift
+- learning score
+- planned cycle count
+- planned symbol count
+- projected total cycle target
+- safety invariants
+
+Purpose:
+
+- plan paper-only dataset expansion
+- avoid over-expanding too quickly
+- preserve recommendation-only AI safety
+- prepare for AI outcome dataset building
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no autonomous strategy changes
+- no exchange orders are sent
