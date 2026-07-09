@@ -1813,3 +1813,52 @@ Verdict:
 - Mission 39 lifecycle tracking GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 40 - Shadow Observation PnL Attribution Engine
+
+Added:
+
+- shadow observation PnL attribution engine
+- gross expected funding PnL calculation
+- fee cost calculation
+- spread cost calculation
+- slippage cost calculation
+- total cost calculation
+- net expected PnL calculation
+- net expected return bps
+- edge-to-cost ratio
+- attribution reports
+- SQLite persistence for attribution rows and reports
+
+Files:
+
+- offchain/backtest/shadow_observation_pnl_attribution.py
+- offchain/tests/test_shadow_observation_pnl_attribution.py
+
+Tables:
+
+- shadow_observation_pnl_attribution
+- shadow_observation_pnl_attribution_reports
+
+Code commit:
+
+- 34629c4 Add shadow observation PnL attribution engine
+
+Safety:
+
+- live trading remains disabled
+- live order sent remains zero
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 40 PnL attribution GO
+- Live trading NO-GO
+- Capital deployment NO-GO

@@ -2896,3 +2896,54 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 40 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 34629c4 Add shadow observation PnL attribution engine
+
+Files:
+
+- offchain/backtest/shadow_observation_pnl_attribution.py
+- offchain/tests/test_shadow_observation_pnl_attribution.py
+- docs/ADR/ADR-0040-shadow-observation-pnl-attribution-engine.md
+
+Tables added:
+
+- shadow_observation_pnl_attribution
+- shadow_observation_pnl_attribution_reports
+
+Purpose:
+
+- Attribute expected shadow observation PnL after fees, spread, and slippage.
+- Estimate whether funding accrual is enough to overcome execution costs.
+- Preserve safety state across attribution reports.
+
+Mission verdict:
+
+- Shadow observation PnL attribution GO
+- Cost-aware analysis improved
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Continue shadow research infrastructure.

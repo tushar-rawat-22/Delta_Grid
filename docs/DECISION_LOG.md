@@ -1946,3 +1946,51 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 40 Decision - Add Shadow Observation PnL Attribution Engine
+
+Decision:
+
+- Add cost-aware PnL attribution for shadow observations.
+
+Reason:
+
+- Mission 39 tracks expected funding accrual.
+- DeltaGrid needs to compare expected funding against fees, spread cost, and slippage cost.
+- Young observations may show negative expected net PnL after costs, which is important for close timing and strategy evaluation.
+
+Files:
+
+- offchain/backtest/shadow_observation_pnl_attribution.py
+- offchain/tests/test_shadow_observation_pnl_attribution.py
+
+Related code commit:
+
+- 34629c4 Add shadow observation PnL attribution engine
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Live order sent:
+
+- 0
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
