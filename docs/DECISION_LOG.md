@@ -2961,3 +2961,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 67 Decision - Add Paper Drawdown Kill Switch
+
+Decision:
+
+- Add a paper-only drawdown kill switch after paper performance monitoring.
+
+Reason:
+
+- Extended paper observation needs hard stop-review thresholds.
+- Paper drawdown and position-level losses must be controlled before future observation expansion.
+- Kill-switch logic must remain local and paper-only.
+
+Related code commit:
+
+- e733e19 Add paper drawdown kill switch
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

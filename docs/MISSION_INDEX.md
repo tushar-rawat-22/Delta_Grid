@@ -183,3 +183,24 @@ Tables:
 - paper_observation_position_snapshots
 - paper_observation_performance_alerts
 - paper_observation_performance_reports
+
+---
+
+## Mission 67
+
+Name: Paper Drawdown Kill Switch
+
+Purpose:
+
+- review paper observation performance runs
+- enforce paper drawdown thresholds
+- arm or trigger a paper-only kill switch
+- record drawdown checks and events
+- preserve no-live-trading safety
+
+Tables:
+
+- paper_drawdown_kill_switch_reviews
+- paper_drawdown_kill_switch_checks
+- paper_drawdown_kill_switch_events
+- paper_drawdown_kill_switch_reports

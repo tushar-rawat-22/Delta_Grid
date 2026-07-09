@@ -74,3 +74,32 @@ Safety:
 - live trading remains blocked
 - capital deployment remains blocked
 - no exchange orders are sent
+
+---
+
+## Mission 67: Paper Drawdown Kill Switch
+
+Mission 67 adds a paper-only drawdown kill switch.
+
+It evaluates:
+
+- performance run availability
+- performance readiness
+- safety invariants
+- monitored position count
+- net paper drawdown bps
+- max position loss bps
+- fee drag bps
+- performance alert count
+
+Purpose:
+
+- arm a paper-only kill switch when conditions are healthy
+- trigger stop-review behavior when paper drawdown limits fail
+- preserve no-live-trading safety
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no exchange orders are sent

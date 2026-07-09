@@ -2967,3 +2967,45 @@ Safety:
 - no exchange orders
 - no paid APIs
 - no real capital
+
+---
+
+## Mission 67 - Paper Drawdown Kill Switch
+
+Added:
+
+- paper drawdown kill-switch engine
+- performance readiness checks
+- net drawdown checks
+- position drawdown checks
+- fee drag checks
+- alert count checks
+- kill-switch event records
+- drawdown kill-switch report
+
+Files:
+
+- offchain/safety/__init__.py
+- offchain/safety/paper_drawdown_kill_switch.py
+- offchain/tests/test_paper_drawdown_kill_switch.py
+
+Tables:
+
+- paper_drawdown_kill_switch_reviews
+- paper_drawdown_kill_switch_checks
+- paper_drawdown_kill_switch_events
+- paper_drawdown_kill_switch_reports
+
+Code commit:
+
+- e733e19 Add paper drawdown kill switch
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital

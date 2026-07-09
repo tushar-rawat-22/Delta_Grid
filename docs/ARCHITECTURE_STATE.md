@@ -186,3 +186,24 @@ Outputs:
 - performance report
 
 This layer monitors paper observation performance only.
+
+---
+
+## Paper Drawdown Kill Switch Layer
+
+Mission 67 adds a paper-only safety layer above paper observation performance monitoring.
+
+Inputs:
+
+- paper observation performance run
+- paper position snapshots
+- paper performance alerts
+
+Outputs:
+
+- drawdown kill-switch review
+- drawdown checks
+- kill-switch events
+- drawdown kill-switch report
+
+This layer can arm or trigger a paper-only kill switch. It cannot send live orders.

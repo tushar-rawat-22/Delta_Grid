@@ -4244,3 +4244,50 @@ Safety:
 Next valid phase:
 
 - Mission 67 Paper Drawdown Kill Switch
+
+---
+
+# Mission 67 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- e733e19 Add paper drawdown kill switch
+
+Mission 67 Completion Record
+
+Files:
+
+- offchain/safety/__init__.py
+- offchain/safety/paper_drawdown_kill_switch.py
+- offchain/tests/test_paper_drawdown_kill_switch.py
+- docs/ADR/ADR-0067-paper-drawdown-kill-switch.md
+
+Tables:
+
+- paper_drawdown_kill_switch_reviews
+- paper_drawdown_kill_switch_checks
+- paper_drawdown_kill_switch_events
+- paper_drawdown_kill_switch_reports
+
+Purpose:
+
+- Arm or trigger a paper-only drawdown kill switch.
+- Enforce paper drawdown, position loss, fee drag, and alert thresholds.
+- Preserve explicit no-live-trading and no-real-capital safety.
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no exchange orders
+- no paid APIs
+
+Next valid phase:
+
+- Mission 68 Paper Recovery Stability Monitor
