@@ -23,3 +23,27 @@ It cannot:
 - use private keys
 - deploy capital
 - enable live trading
+
+## Multi-Strategy Research Factory Layer
+
+Mission 59 adds a strategy research factory layer.
+
+Inputs:
+
+- historical public funding rates
+- historical public basis observations
+
+Outputs:
+
+- strategy registry
+- strategy candidates
+- promotion shortlist
+- watchlist
+- rejection reasons
+- factory report
+
+Safety boundary:
+
+- this layer produces research candidates only
+- it does not place trades
+- it does not allocate capital

@@ -2648,3 +2648,43 @@ Safety:
 - no private keys
 - no exchange orders
 - no paid APIs
+
+## Mission 59 - Multi-Strategy Research Factory
+
+Added:
+
+- strategy registry
+- funding/basis carry scanner
+- funding-rate momentum scanner
+- basis mean-reversion scanner
+- volatility regime scanner
+- cross-symbol relative-strength scanner
+- strategy candidate scoring
+- promotion shortlist classification
+- watchlist/reject/data-insufficient classification
+
+Files:
+
+- offchain/research/__init__.py
+- offchain/research/multi_strategy_research_factory.py
+- offchain/tests/test_multi_strategy_research_factory.py
+
+Tables:
+
+- multi_strategy_research_registry
+- multi_strategy_research_candidates
+- multi_strategy_research_factory_reports
+
+Code commit:
+
+- 271e249
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital

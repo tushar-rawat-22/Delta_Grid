@@ -2759,3 +2759,27 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+## Mission 59 Decision - Add Multi-Strategy Research Factory
+
+Decision:
+
+- Add a research factory that evaluates multiple strategy families.
+
+Reason:
+
+- DeltaGrid should not depend on a single funding/basis hypothesis.
+- A real trading firm needs a pipeline of competing strategies.
+- Strategies must be scored, rejected, watchlisted, or shortlisted using consistent evidence.
+
+Related code commit:
+
+- 271e249
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
