@@ -1906,3 +1906,49 @@ Verdict:
 - Mission 41 local automation GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 42 - One-Command Mission Pack Runner
+
+Added:
+
+- local mission pack runner
+- JSON mission pack support
+- dry-run mode
+- safe path validation
+- forbidden content scanning
+- file overwrite support
+- append-once docs support
+- verification execution
+- optional code commit
+- optional docs commit
+- optional push
+- runtime summary logging
+
+Files:
+
+- scripts/mission_pack_runner.py
+- offchain/tests/test_mission_pack_runner.py
+
+Code commit:
+
+- 66898c0 Add one-command mission pack runner
+
+Safety:
+
+- development automation only
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 42 mission pack runner GO
+- Future mission execution can be reduced
+- Live trading NO-GO
+- Capital deployment NO-GO

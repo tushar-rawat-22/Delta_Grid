@@ -2039,3 +2039,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 42 Decision - Add One-Command Mission Pack Runner
+
+Decision:
+
+- Add local JSON mission pack execution.
+
+Reason:
+
+- Mission 41 automated verification but not file generation.
+- Future missions should be reducible to one generated pack plus one local command.
+- The system must still reject unsafe paths and forbidden content.
+
+Files:
+
+- scripts/mission_pack_runner.py
+- offchain/tests/test_mission_pack_runner.py
+
+Related code commit:
+
+- 66898c0 Add one-command mission pack runner
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
