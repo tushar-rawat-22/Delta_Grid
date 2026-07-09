@@ -2794,3 +2794,54 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 38 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 07743ad Add shadow paper observation ledger
+
+Files:
+
+- offchain/backtest/shadow_paper_observation_ledger.py
+- offchain/tests/test_shadow_paper_observation_ledger.py
+- docs/ADR/ADR-0038-shadow-paper-observation-ledger.md
+
+Tables added:
+
+- shadow_paper_observation_ledger
+- shadow_paper_observation_reports
+
+Purpose:
+
+- Track approved shadow-paper observations from Mission 37 decision gates.
+- Record open status, close status, simulated notional, expected funding edge, risk snapshot, and realized simulated outcome.
+- Preserve audit links to gate, report, replay, and scenario.
+
+Mission verdict:
+
+- Shadow paper observation ledger GO
+- Observability improved
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Continue shadow research infrastructure.

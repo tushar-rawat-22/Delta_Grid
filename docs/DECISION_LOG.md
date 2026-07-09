@@ -1850,3 +1850,51 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 38 Decision - Add Shadow Paper Observation Ledger
+
+Decision:
+
+- Add a dedicated ledger for approved shadow-paper observations.
+
+Reason:
+
+- Mission 37 approved shadow-paper observation only.
+- DeltaGrid needs auditable observation records before future automation.
+- Every observation must be linked to a decision gate, performance report, replay label, and scenario.
+
+Files:
+
+- offchain/backtest/shadow_paper_observation_ledger.py
+- offchain/tests/test_shadow_paper_observation_ledger.py
+
+Related code commit:
+
+- 07743ad Add shadow paper observation ledger
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Live order sent:
+
+- false
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

@@ -1720,3 +1720,49 @@ Verdict:
 - Mission 37 decision governance GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 38 - Shadow Paper Observation Ledger
+
+Added:
+
+- shadow-paper observation ledger
+- observation opening from approved Mission 37 decision gates
+- shadow-only ledger rows
+- observation close support
+- realized simulated outcome fields
+- observation report generator
+- markdown report generator
+- SQLite persistence for observation ledger and reports
+
+Files:
+
+- offchain/backtest/shadow_paper_observation_ledger.py
+- offchain/tests/test_shadow_paper_observation_ledger.py
+
+Tables:
+
+- shadow_paper_observation_ledger
+- shadow_paper_observation_reports
+
+Code commit:
+
+- 07743ad Add shadow paper observation ledger
+
+Safety:
+
+- live trading remains disabled
+- live order sent remains false
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 38 observation ledger GO
+- Live trading NO-GO
+- Capital deployment NO-GO
