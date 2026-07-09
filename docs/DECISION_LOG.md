@@ -2743,3 +2743,19 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+## Mission 58 Decision - Build Shadow Research Control Plane
+
+Decision:
+
+- Increase mission size from small modules to larger platform milestones.
+- Add a control plane that orchestrates the full shadow research cycle.
+- Add a documentation registry to reduce future inconsistency.
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

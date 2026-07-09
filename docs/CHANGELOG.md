@@ -2629,3 +2629,22 @@ Verdict:
 - Mission 57 shadow alert and invalidation router GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+## Mission 58 - Shadow Research Control Plane and Documentation Registry
+
+Added:
+
+- shadow research control plane
+- full shadow research cycle runner
+- stage-run table
+- cycle report table
+- documentation registry table
+- documentation consistency checks
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no exchange orders
+- no paid APIs
