@@ -436,3 +436,31 @@ Tables:
 - ai_research_recommendation_items
 - ai_research_recommendation_checks
 - ai_research_recommendation_reports
+
+---
+
+## Mission 80
+
+Name: Autonomous Policy Gate
+
+Purpose:
+
+- replace permanent Human Approval Gate with machine-checkable autonomous policy gate
+- approve only paper-only autonomous progression
+- preserve no-training/no-live-signal/no-trading boundaries
+- prepare Mission 81 Autonomous Paper Signal Engine
+
+Tables:
+
+- ai_autonomous_policy_gate_runs
+- ai_autonomous_policy_gate_rules
+- ai_autonomous_policy_gate_decisions
+- ai_autonomous_policy_gate_checks
+- ai_autonomous_policy_gate_reports
+
+Important:
+
+- This mission does not approve live trading.
+- This mission does not approve capital deployment.
+- This mission does not approve model training.
+- This mission only approves autonomous paper-only progression when rules pass.

@@ -449,3 +449,38 @@ Outputs:
 - recommendation report
 
 This layer is research-only. It does not train, signal, trade, or execute.
+
+---
+
+## Autonomous Policy Gate Layer
+
+Mission 80 adds an autonomous policy layer above the research recommendation engine.
+
+This replaces the earlier human approval direction.
+
+Inputs:
+
+- research recommendation run
+- research recommendation items
+- research recommendation checks
+
+Outputs:
+
+- autonomous policy gate run
+- policy rules
+- policy decisions
+- policy checks
+- policy report
+
+The gate approves only paper-only autonomous progression.
+
+It does not train, trade, signal live, or execute.
+
+Updated autonomy path:
+
+research recommendations
+  -> autonomous policy gate
+  -> autonomous paper signal engine
+  -> paper execution agent
+  -> self-learning feedback loop
+  -> offline training/evaluation/promotion gates

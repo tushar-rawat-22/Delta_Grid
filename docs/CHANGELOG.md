@@ -3470,3 +3470,49 @@ Safety:
 - no model training
 - no live signals
 - no autonomous strategy reweighting
+
+---
+
+## Mission 80 - Autonomous Policy Gate
+
+Changed:
+
+- Replaced the old Human Approval Gate direction with an Autonomous Policy Gate.
+
+Added:
+
+- autonomous policy gate
+- machine-checkable policy rules
+- policy decisions
+- policy checks
+- paper-only autonomy approval report
+- repository-level autonomy architecture documentation
+
+Files:
+
+- offchain/ai_dataset/autonomous_policy_gate.py
+- offchain/tests/test_autonomous_policy_gate.py
+- docs/ADR/ADR-0080-autonomous-policy-gate.md
+- docs/DELTA_AUTONOMY_ARCHITECTURE.md
+
+Tables:
+
+- ai_autonomous_policy_gate_runs
+- ai_autonomous_policy_gate_rules
+- ai_autonomous_policy_gate_decisions
+- ai_autonomous_policy_gate_checks
+- ai_autonomous_policy_gate_reports
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- no model training
+- no live signals
+- no autonomous live execution
+- no autonomous strategy reweighting

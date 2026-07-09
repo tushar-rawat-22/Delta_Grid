@@ -444,3 +444,40 @@ Safety:
 - no live signal generation
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 80: Autonomous Policy Gate
+
+Mission 80 replaces the old Human Approval Gate direction with an Autonomous Policy Gate.
+
+Reason:
+
+- DeltaGrid is intended to become a fully AI-integrated autonomous trading bot with self-learning capabilities.
+- A permanent human approval gate before every action would conflict with that objective.
+- Autonomy must still progress through machine-checkable safety policies.
+
+Mission 80 performs:
+
+- source recommendation evidence ingestion
+- autonomous policy rule evaluation
+- paper-only autonomy decisioning
+- no-training checks
+- no-live-signal checks
+- no-execution checks
+- no-capital-deployment checks
+- no-profitability-claim checks
+- report generation
+
+Approved next step:
+
+- Mission 81 Autonomous Paper Signal Engine
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training
+- no live signal generation
+- no autonomous live execution
+- no exchange orders are sent

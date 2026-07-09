@@ -3333,3 +3333,32 @@ Live signals:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 80 Decision - Replace Human Approval Gate with Autonomous Policy Gate
+
+Decision:
+
+- Do not continue with a permanent Human Approval Gate.
+- Add an Autonomous Policy Gate instead.
+
+Reason:
+
+- The project objective is a fully AI-integrated autonomous trading bot with self-learning capabilities.
+- Human approval before every action would weaken the autonomous system objective.
+- A machine-checkable policy gate preserves autonomy while keeping hard safety boundaries.
+
+Approved by policy:
+
+- autonomous paper-only progression
+
+Not approved:
+
+- live trading
+- capital deployment
+- model training
+- live signal generation
+- exchange execution
+- private key access
+- autonomous live strategy reweighting
