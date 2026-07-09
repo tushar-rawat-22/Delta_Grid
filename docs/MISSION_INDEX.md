@@ -374,3 +374,23 @@ Tables:
 - ai_paper_outcome_final_labels
 - ai_paper_outcome_collection_checks
 - ai_paper_outcome_collection_reports
+
+---
+
+## Mission 76
+
+Name: AI Label Quality and Leakage Guard
+
+Purpose:
+
+- validate finalized paper outcome labels
+- detect leakage fields before offline evaluation
+- preserve training lock
+- approve labels for offline evaluation only
+
+Tables:
+
+- ai_label_quality_leakage_guard_reviews
+- ai_label_quality_leakage_guard_checks
+- ai_label_quality_leakage_guard_findings
+- ai_label_quality_leakage_guard_reports

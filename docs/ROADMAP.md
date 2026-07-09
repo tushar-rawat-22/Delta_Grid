@@ -368,3 +368,30 @@ Safety:
 - no model training
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 76: AI Label Quality and Leakage Guard
+
+Mission 76 validates finalized paper outcome labels before offline evaluation.
+
+It performs:
+
+- label availability checks
+- allowed outcome/target label validation
+- pending-label rejection
+- label confidence checks
+- training lock validation
+- offline-evaluation candidate validation
+- lineage validation
+- forbidden leakage term inspection
+- safety checks
+- report generation
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training
+- no autonomous strategy changes
+- no exchange orders are sent

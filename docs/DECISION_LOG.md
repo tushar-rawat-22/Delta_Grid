@@ -3227,3 +3227,37 @@ Model training:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 76 Decision - Add AI Label Quality and Leakage Guard
+
+Decision:
+
+- Add a local label quality and leakage guard after Mission 75 label finalization.
+
+Reason:
+
+- Finalized labels must be validated before offline evaluation.
+- Leakage checks must run before any evaluation or model-facing step.
+- Training remains locked.
+
+Related code commit:
+
+- 1adadce Add AI label quality leakage guard
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Model training:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED
