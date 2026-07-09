@@ -2848,3 +2848,44 @@ Safety:
 - no exchange orders
 - no paid APIs
 - no real capital
+
+---
+
+## Mission 64 - Institutional Risk Control Layer
+
+Added:
+
+- institutional risk review engine
+- safety invariant limit checks
+- paper sandbox readiness checks
+- order/fill integrity checks
+- max symbol exposure checks
+- max strategy exposure checks
+- total cost bps checks
+- net deployed notional checks
+- diversification checks
+- risk decision records
+
+Files:
+
+- offchain/risk/__init__.py
+- offchain/risk/institutional_risk_control.py
+- offchain/tests/test_institutional_risk_control.py
+
+Tables:
+
+- institutional_risk_control_reviews
+- institutional_risk_limit_checks
+- institutional_risk_decision_records
+
+Code commit:
+
+- 7d01993 Add institutional risk control layer
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- approval does not permit real capital
+- approval does not permit exchange orders
+- approval does not permit private keys

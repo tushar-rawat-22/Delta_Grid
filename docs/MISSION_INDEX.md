@@ -123,3 +123,24 @@ Tables:
 - paper_sandbox_fills
 - paper_sandbox_positions
 - paper_sandbox_reports
+
+---
+
+## Mission 64
+
+Name: Institutional Risk Control Layer
+
+Purpose:
+
+- review paper sandbox sessions
+- enforce exposure and cost limits
+- verify order/fill integrity
+- verify safety invariants
+- produce institutional risk decision records
+- preserve no-live-trading safety
+
+Tables:
+
+- institutional_risk_control_reviews
+- institutional_risk_limit_checks
+- institutional_risk_decision_records

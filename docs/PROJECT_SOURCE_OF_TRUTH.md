@@ -4094,3 +4094,49 @@ Safety:
 Next valid phase:
 
 - Mission 64 Institutional Risk Control Layer
+
+---
+
+# Mission 64 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 7d01993 Add institutional risk control layer
+
+Mission 64 Completion Record
+
+Files:
+
+- offchain/risk/__init__.py
+- offchain/risk/institutional_risk_control.py
+- offchain/tests/test_institutional_risk_control.py
+- docs/ADR/ADR-0064-institutional-risk-control-layer.md
+
+Tables:
+
+- institutional_risk_control_reviews
+- institutional_risk_limit_checks
+- institutional_risk_decision_records
+
+Purpose:
+
+- Enforce institutional hard risk controls around the paper sandbox.
+- Block sessions that fail safety, exposure, cost, integrity, or diversification limits.
+- Preserve explicit no-live-trading and no-real-capital safety.
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no exchange orders
+- no paid APIs
+
+Next valid phase:
+
+- Mission 65 Capital Readiness Review

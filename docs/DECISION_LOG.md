@@ -2885,3 +2885,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 64 Decision - Add Institutional Risk Control Layer
+
+Decision:
+
+- Add a hard institutional risk-control layer after the paper sandbox.
+
+Reason:
+
+- Paper sandbox sessions need formal risk checks before observation continues.
+- Exposure, cost, diversification, and safety limits must be enforced by code.
+- No future phase should proceed without institutional-style risk evidence.
+
+Related code commit:
+
+- 7d01993 Add institutional risk control layer
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

@@ -126,3 +126,23 @@ Outputs:
 - paper sandbox report
 
 This layer does not connect to exchanges and does not send live orders.
+
+---
+
+## Institutional Risk Control Layer
+
+Mission 64 adds a hard risk-control layer above the paper trading sandbox.
+
+Inputs:
+
+- paper sandbox sessions
+- paper-only orders
+- paper-only positions
+
+Outputs:
+
+- institutional risk control review
+- institutional risk limit checks
+- institutional risk decision record
+
+This layer decides whether controlled paper observation can continue.
