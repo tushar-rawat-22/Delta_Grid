@@ -2435,3 +2435,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 51 Decision - Add Funding and Basis Alpha Scanner
+
+Decision:
+
+- Add the first alpha scanner using historical public funding and basis data.
+
+Reason:
+
+- Mission 50 produced a real historical dataset.
+- DeltaGrid needs candidate ranking before paper observation expansion.
+- Cost-adjusted carry must be tested before any strategy promotion.
+
+Files:
+
+- offchain/backtest/funding_basis_alpha_scanner.py
+- offchain/tests/test_funding_basis_alpha_scanner.py
+
+Related code commit:
+
+- 4c49417 Add funding and basis alpha scanner
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

@@ -3453,3 +3453,54 @@ Still forbidden:
 Next valid phase:
 
 - Build funding and basis alpha scanner.
+
+---
+
+# Mission 51 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 4c49417 Add funding and basis alpha scanner
+
+Files:
+
+- offchain/backtest/funding_basis_alpha_scanner.py
+- offchain/tests/test_funding_basis_alpha_scanner.py
+- docs/ADR/ADR-0051-funding-basis-alpha-scanner.md
+
+Tables added:
+
+- funding_basis_alpha_candidates
+- funding_basis_alpha_scanner_reports
+
+Purpose:
+
+- Rank public funding and basis data into alpha candidates.
+- Compute cost-adjusted carry.
+- Classify symbols as approved, watchlist, or rejected.
+- Preserve shadow-only safety constraints.
+
+Mission verdict:
+
+- Funding and basis alpha scanner GO
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Build scanner performance review and cost calibration.

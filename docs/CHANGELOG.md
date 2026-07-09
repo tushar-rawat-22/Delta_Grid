@@ -2317,3 +2317,49 @@ Verdict:
 - Alpha dataset buildout started
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 51 - Funding and Basis Alpha Scanner
+
+Added:
+
+- funding and basis alpha scanner
+- candidate ranking table
+- scanner report table
+- funding consistency metrics
+- volatility metric
+- cost-adjusted carry metric
+- alpha score
+- approved/watchlist/rejected status
+- shadow-only scanner verdicts
+
+Files:
+
+- offchain/backtest/funding_basis_alpha_scanner.py
+- offchain/tests/test_funding_basis_alpha_scanner.py
+
+Tables:
+
+- funding_basis_alpha_candidates
+- funding_basis_alpha_scanner_reports
+
+Code commit:
+
+- 4c49417 Add funding and basis alpha scanner
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 51 alpha scanner GO
+- Live trading NO-GO
+- Capital deployment NO-GO
