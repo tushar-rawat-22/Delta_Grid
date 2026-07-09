@@ -2391,3 +2391,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 50 Decision - Add Historical Public Funding and Basis Dataset Builder
+
+Decision:
+
+- Add a historical public funding and basis dataset builder.
+
+Reason:
+
+- Mission 49 proved public data ingestion works online.
+- Profitability cannot be evaluated from a single snapshot.
+- The alpha scanner needs funding persistence, basis levels, spread estimates, and per-symbol statistics.
+
+Files:
+
+- offchain/backtest/historical_public_funding_basis_dataset_builder.py
+- offchain/tests/test_historical_public_funding_basis_dataset_builder.py
+
+Related code commit:
+
+- 1ea549f Add historical public funding and basis dataset builder
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

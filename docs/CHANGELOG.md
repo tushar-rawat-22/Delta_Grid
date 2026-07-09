@@ -2269,3 +2269,51 @@ Verdict:
 - Real-market alpha engine buildout started
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 50 - Historical Public Funding and Basis Dataset Builder
+
+Added:
+
+- historical funding-rate dataset builder
+- latest basis observation builder
+- funding statistics
+- basis statistics
+- per-symbol dataset summary
+- dataset quality report
+- online public API mode
+- offline sample mode
+- fallback sample mode
+
+Files:
+
+- offchain/backtest/historical_public_funding_basis_dataset_builder.py
+- offchain/tests/test_historical_public_funding_basis_dataset_builder.py
+
+Tables:
+
+- historical_public_funding_rates
+- historical_public_basis_observations
+- historical_public_funding_basis_dataset_reports
+
+Code commit:
+
+- 1ea549f Add historical public funding and basis dataset builder
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 50 historical dataset builder GO
+- Alpha dataset buildout started
+- Live trading NO-GO
+- Capital deployment NO-GO

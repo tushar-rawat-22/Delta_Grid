@@ -3400,3 +3400,56 @@ Still forbidden:
 Next valid phase:
 
 - Build historical public funding and basis dataset.
+
+---
+
+# Mission 50 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 1ea549f Add historical public funding and basis dataset builder
+
+Files:
+
+- offchain/backtest/historical_public_funding_basis_dataset_builder.py
+- offchain/tests/test_historical_public_funding_basis_dataset_builder.py
+- docs/ADR/ADR-0050-historical-public-funding-basis-dataset-builder.md
+
+Tables added:
+
+- historical_public_funding_rates
+- historical_public_basis_observations
+- historical_public_funding_basis_dataset_reports
+
+Purpose:
+
+- Build historical funding-rate datasets.
+- Persist latest basis observations from public market snapshots.
+- Produce dataset quality metrics for the alpha scanner.
+- Preserve shadow-only safety constraints.
+
+Mission verdict:
+
+- Historical public funding and basis dataset builder GO
+- Alpha dataset foundation expanded
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Build funding and basis alpha scanner.
