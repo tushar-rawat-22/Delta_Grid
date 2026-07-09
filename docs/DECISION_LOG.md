@@ -1898,3 +1898,51 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 39 Decision - Add Shadow Observation Lifecycle Manager
+
+Decision:
+
+- Add lifecycle tracking for open shadow-paper observations.
+
+Reason:
+
+- Mission 38 opened shadow observations.
+- DeltaGrid needs age, funding-accrual, risk-status, and close-eligibility tracking.
+- Open observations must remain auditable before any future outcome analysis.
+
+Files:
+
+- offchain/backtest/shadow_observation_lifecycle_manager.py
+- offchain/tests/test_shadow_observation_lifecycle_manager.py
+
+Related code commit:
+
+- 8669899 Add shadow observation lifecycle manager
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Live order sent:
+
+- 0
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
