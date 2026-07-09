@@ -273,3 +273,35 @@ Safety:
 - capital deployment remains blocked
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 73: AI Outcome Dataset Builder Pack
+
+Mission 73 adds a larger paper-only AI outcome dataset builder pack.
+
+It performs:
+
+- schedule ingestion
+- schedule item ingestion
+- AI outcome dataset row construction
+- dataset coverage validation
+- dataset lineage validation
+- pending outcome labeling
+- training eligibility lockout
+- feature-store handoff creation
+- dataset builder reporting
+
+Purpose:
+
+- convert Mission 72 schedule items into structured AI dataset rows
+- preserve complete lineage from schedule to guard to learning to multi-cycle evidence
+- prepare Mission 74 feature-store registration
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no autonomous strategy changes
+- no exchange orders are sent
+- rows are not training-eligible until paper outcomes are collected

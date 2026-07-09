@@ -3129,3 +3129,33 @@ Capital deployment:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 73 Decision - Add AI Outcome Dataset Builder Pack
+
+Decision:
+
+- Add a larger paper-only AI outcome dataset builder after dataset expansion scheduling.
+
+Reason:
+
+- Scheduled paper dataset items need to become structured dataset rows.
+- Dataset rows must preserve full lineage and remain pending until paper outcomes are collected.
+- Feature-store handoff should exist before training dataset registration.
+
+Related code commit:
+
+- f08169b Add AI outcome dataset builder pack
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

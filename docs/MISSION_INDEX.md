@@ -308,3 +308,25 @@ Tables:
 - ai_paper_dataset_expansion_schedule_items
 - ai_paper_dataset_expansion_checks
 - ai_paper_dataset_expansion_reports
+
+---
+
+## Mission 73
+
+Name: AI Outcome Dataset Builder Pack
+
+Purpose:
+
+- build paper-only AI outcome dataset rows
+- validate dataset quality and lineage
+- keep rows pending until paper outcomes are collected
+- create feature-store handoff for Mission 74
+- preserve no-live-trading and no-autonomous-trading safety
+
+Tables:
+
+- ai_outcome_dataset_builds
+- ai_outcome_dataset_rows
+- ai_outcome_dataset_quality_checks
+- ai_outcome_dataset_handoffs
+- ai_outcome_dataset_reports
