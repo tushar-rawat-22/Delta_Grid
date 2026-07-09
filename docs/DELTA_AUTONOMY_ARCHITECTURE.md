@@ -126,3 +126,39 @@ paper signal
   -> paper deployment
 
 Live deployment will require a later, separate live-readiness firewall.
+
+---
+
+## Mission 81 Autonomous Paper Signal Engine
+
+Mission 81 introduces autonomous paper-only signal generation.
+
+This is the first step after the Autonomous Policy Gate where the system creates autonomous signal records, but those records are not live trading signals.
+
+Mission 81 signals are:
+
+- paper-only
+- observe-only
+- no-trade
+- no-order
+- no-capital
+- no-model-training
+- no-live-signal
+
+Mission 81 reads the policy-approved Mission 80 output and the Mission 79 research recommendation items.
+
+It writes a local evidence trail:
+
+- ai_autonomous_paper_signal_runs
+- ai_autonomous_paper_signals
+- ai_autonomous_paper_signal_checks
+- ai_autonomous_paper_signal_reports
+
+Mission 81 prepares the next phase:
+
+- Mission 82 Paper Execution Agent
+
+Important distinction:
+
+Autonomous paper signals are not live signals.
+They are controlled records for paper/shadow evaluation only.

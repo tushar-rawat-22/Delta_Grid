@@ -3362,3 +3362,32 @@ Not approved:
 - exchange execution
 - private key access
 - autonomous live strategy reweighting
+
+---
+
+## Mission 81 Decision - Add Autonomous Paper Signal Engine
+
+Decision:
+
+- Add an autonomous paper-only signal engine after Mission 80 policy approval.
+
+Reason:
+
+- DeltaGrid needs a controlled autonomous step after policy approval.
+- The system should generate paper-only records before any paper execution agent exists.
+- Signals must remain observe-only and must not become live trading signals.
+
+Approved:
+
+- paper-only observe signals
+- handoff to Mission 82 Paper Execution Agent
+
+Not approved:
+
+- live trading
+- capital deployment
+- model training
+- live signal generation
+- exchange execution
+- private key access
+- autonomous live strategy reweighting

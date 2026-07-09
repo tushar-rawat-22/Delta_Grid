@@ -3516,3 +3516,43 @@ Safety:
 - no live signals
 - no autonomous live execution
 - no autonomous strategy reweighting
+
+---
+
+## Mission 81 - Autonomous Paper Signal Engine
+
+Added:
+
+- autonomous paper signal engine
+- paper-only signal records
+- observe-only signal action
+- no-live-signal checks
+- no-execution checks
+- no-capital-deployment checks
+- no-model-training checks
+
+Files:
+
+- offchain/ai_dataset/autonomous_paper_signal_engine.py
+- offchain/tests/test_autonomous_paper_signal_engine.py
+- docs/ADR/ADR-0081-autonomous-paper-signal-engine.md
+
+Tables:
+
+- ai_autonomous_paper_signal_runs
+- ai_autonomous_paper_signals
+- ai_autonomous_paper_signal_checks
+- ai_autonomous_paper_signal_reports
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- no model training
+- no live signals
+- no autonomous live execution

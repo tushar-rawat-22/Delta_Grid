@@ -464,3 +464,30 @@ Important:
 - This mission does not approve capital deployment.
 - This mission does not approve model training.
 - This mission only approves autonomous paper-only progression when rules pass.
+
+---
+
+## Mission 81
+
+Name: Autonomous Paper Signal Engine
+
+Purpose:
+
+- create autonomous paper-only signal records
+- preserve no-live-signal/no-execution/no-capital/no-training boundaries
+- prepare Mission 82 Paper Execution Agent
+
+Tables:
+
+- ai_autonomous_paper_signal_runs
+- ai_autonomous_paper_signals
+- ai_autonomous_paper_signal_checks
+- ai_autonomous_paper_signal_reports
+
+Important:
+
+- This mission does not approve live trading.
+- This mission does not approve capital deployment.
+- This mission does not approve model training.
+- This mission does not approve exchange execution.
+- This mission creates observe-only paper signals.

@@ -484,3 +484,37 @@ research recommendations
   -> paper execution agent
   -> self-learning feedback loop
   -> offline training/evaluation/promotion gates
+
+---
+
+## Autonomous Paper Signal Engine Layer
+
+Mission 81 adds an autonomous paper signal layer above the Autonomous Policy Gate.
+
+Inputs:
+
+- autonomous policy gate run
+- autonomous policy gate rules
+- autonomous policy gate decisions
+- autonomous policy gate checks
+- research recommendation items
+
+Outputs:
+
+- autonomous paper signal run
+- autonomous paper signals
+- autonomous paper signal checks
+- autonomous paper signal report
+
+The layer creates paper-only observe signals.
+
+It does not train, trade, signal live, or execute.
+
+Updated autonomy path:
+
+research recommendations
+  -> autonomous policy gate
+  -> autonomous paper signal engine
+  -> paper execution agent
+  -> self-learning feedback loop
+  -> offline training/evaluation/promotion gates

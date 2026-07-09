@@ -44,3 +44,30 @@ See:
 
 - docs/DELTA_AUTONOMY_ARCHITECTURE.md
 - docs/ADR/ADR-0080-autonomous-policy-gate.md
+
+### Mission 81 Autonomous Paper Signal Engine
+
+Mission 81 adds autonomous paper-only signal records after the Mission 80 Autonomous Policy Gate.
+
+These are not live trading signals.
+
+They are:
+
+- paper-only
+- observe-only
+- no-trade
+- no-order
+- no-capital
+- no-model-training
+- no-live-signal
+
+Mission 81 prepares Mission 82 Paper Execution Agent.
+
+Safety remains unchanged:
+
+- live trading disabled
+- capital deployment blocked
+- no private keys
+- no exchange orders
+- no real capital
+- no model training

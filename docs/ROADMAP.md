@@ -481,3 +481,33 @@ Safety:
 - no live signal generation
 - no autonomous live execution
 - no exchange orders are sent
+
+---
+
+## Mission 81: Autonomous Paper Signal Engine
+
+Mission 81 adds paper-only autonomous signal generation after Mission 80 policy approval.
+
+Mission 81 performs:
+
+- source policy evidence ingestion
+- paper-only signal creation
+- no-live-signal checks
+- no-execution checks
+- no-capital-deployment checks
+- no-model-training checks
+- observe-only signal checks
+- report generation
+
+Approved next step:
+
+- Mission 82 Paper Execution Agent
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training
+- no live signal generation
+- no autonomous live execution
+- no exchange orders are sent
