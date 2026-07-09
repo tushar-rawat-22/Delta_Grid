@@ -907,6 +907,23 @@ def persist_review(db_path: str | Path, summary: dict[str, Any], markdown_report
     ensure_schema(db_path)
 
     with sqlite3.connect(db_path) as conn:
+        conn.execute(
+            "DELETE FROM ai_label_quality_leakage_guard_checks WHERE review_label = ?",
+            (summary["review_label"],),
+        )
+        conn.execute(
+            "DELETE FROM ai_label_quality_leakage_guard_findings WHERE review_label = ?",
+            (summary["review_label"],),
+        )
+        conn.execute(
+            "DELETE FROM ai_label_quality_leakage_guard_reviews WHERE review_label = ?",
+            (summary["review_label"],),
+        )
+        conn.execute(
+            "DELETE FROM ai_label_quality_leakage_guard_reports WHERE review_label = ? OR report_label = ?",
+            (summary["review_label"], summary["report_label"]),
+        )
+
         for check in summary["guard_checks"]:
             stored = dict(check)
             stored["metadata_json"] = json.dumps(stored.pop("metadata"), sort_keys=True)
