@@ -2523,3 +2523,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 53 Decision - Add Calibrated Shadow Observation Planner
+
+Decision:
+
+- Add a planner that converts Mission 52 calibrated positive scenarios into shadow observation plans.
+
+Reason:
+
+- Mission 52 identified BTCUSDT and ETHUSDT as viable only under lower-cost or longer-hold assumptions.
+- The next safe step is not trading; it is planning shadow observation entries.
+- SOLUSDT should remain excluded until average funding turns positive.
+
+Files:
+
+- offchain/backtest/calibrated_shadow_observation_planner.py
+- offchain/tests/test_calibrated_shadow_observation_planner.py
+
+Related code commit:
+
+- 4e821a6 Add calibrated shadow observation planner
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

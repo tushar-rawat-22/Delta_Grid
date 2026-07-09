@@ -2408,3 +2408,47 @@ Verdict:
 - Mission 52 cost calibration GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 53 - Calibrated Shadow Observation Planner
+
+Added:
+
+- calibrated shadow observation planner
+- observation plan table
+- planner report table
+- best positive scenario selection
+- max plan limit
+- minimum net carry threshold
+- excluded symbol reporting
+
+Files:
+
+- offchain/backtest/calibrated_shadow_observation_planner.py
+- offchain/tests/test_calibrated_shadow_observation_planner.py
+
+Tables:
+
+- calibrated_shadow_observation_plans
+- calibrated_shadow_observation_plan_reports
+
+Code commit:
+
+- 4e821a6 Add calibrated shadow observation planner
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 53 calibrated shadow observation planner GO
+- Live trading NO-GO
+- Capital deployment NO-GO
