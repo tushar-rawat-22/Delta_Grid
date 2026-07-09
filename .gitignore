@@ -24,3 +24,6 @@ __pycache__/
 
 # OS files
 .DS_Store
+
+# DeltaGrid runtime mission logs
+reports/mission_logs/
