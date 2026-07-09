@@ -271,3 +271,25 @@ Outputs:
 - AI learning report
 
 This layer does not train a live trading model and does not perform autonomous trading.
+
+---
+
+## AI Feature Quality and Drift Guard Layer
+
+Mission 71 adds an AI feature quality layer above AI paper outcome learning.
+
+Inputs:
+
+- AI paper outcome learning run
+- AI learning features
+- AI learning labels
+- AI learning recommendations
+
+Outputs:
+
+- AI feature quality and drift guard review
+- AI quality checks
+- AI feature drift records
+- AI feature quality report
+
+This layer validates learning artifacts but does not train a live model and does not perform autonomous trading.

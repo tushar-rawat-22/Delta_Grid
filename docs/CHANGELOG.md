@@ -3135,3 +3135,45 @@ Safety:
 - no paid APIs
 - no real capital
 - no autonomous strategy reweighting
+
+---
+
+## Mission 71 - AI Feature Quality and Drift Guard
+
+Added:
+
+- AI feature quality guard
+- required feature group checks
+- normalized feature validation
+- feature weight validation
+- feature drift checks
+- recommendation-only autonomy checks
+- AI feature quality report
+
+Files:
+
+- offchain/ai_quality/__init__.py
+- offchain/ai_quality/feature_quality_drift_guard.py
+- offchain/tests/test_feature_quality_drift_guard.py
+
+Tables:
+
+- ai_feature_quality_drift_guard_reviews
+- ai_feature_quality_drift_guard_checks
+- ai_feature_quality_drift_guard_feature_drifts
+- ai_feature_quality_drift_guard_reports
+
+Code commit:
+
+- 7a7761b Add AI feature quality drift guard
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- no autonomous strategy reweighting

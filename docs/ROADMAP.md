@@ -201,3 +201,40 @@ Safety:
 - capital deployment remains blocked
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 71: AI Feature Quality and Drift Guard
+
+Mission 71 adds a local AI feature quality and drift guard.
+
+It evaluates:
+
+- AI learning run availability
+- deterministic recommendation-only model mode
+- recommendation-only autonomy label
+- feature count
+- label count
+- recommendation count
+- required feature groups
+- normalized feature validity
+- feature weight validity
+- feature weight total
+- learning score
+- recognized data sufficiency label
+- safety breaches
+- feature drift against baseline when available
+
+Purpose:
+
+- prevent AI dataset expansion from bad features
+- detect large feature drift
+- keep AI outputs recommendation-only
+- prepare safe AI dataset expansion
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no autonomous strategy changes
+- no exchange orders are sent

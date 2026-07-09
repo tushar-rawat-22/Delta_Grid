@@ -3069,3 +3069,33 @@ Capital deployment:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 71 Decision - Add AI Feature Quality and Drift Guard
+
+Decision:
+
+- Add a local AI feature quality and drift guard after AI paper outcome learning.
+
+Reason:
+
+- AI datasets must not expand if feature quality is invalid.
+- Feature drift must be visible before later AI learning stages.
+- AI recommendations must remain non-autonomous and paper-only.
+
+Related code commit:
+
+- 7a7761b Add AI feature quality drift guard
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

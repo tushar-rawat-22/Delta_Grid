@@ -267,3 +267,24 @@ Tables:
 - ai_paper_outcome_learning_labels
 - ai_paper_outcome_learning_recommendations
 - ai_paper_outcome_learning_reports
+
+---
+
+## Mission 71
+
+Name: AI Feature Quality and Drift Guard
+
+Purpose:
+
+- validate AI paper-outcome learning features
+- validate labels and recommendations
+- check normalized values and feature weights
+- detect feature drift against prior baseline when available
+- preserve recommendation-only AI safety
+
+Tables:
+
+- ai_feature_quality_drift_guard_reviews
+- ai_feature_quality_drift_guard_checks
+- ai_feature_quality_drift_guard_feature_drifts
+- ai_feature_quality_drift_guard_reports
