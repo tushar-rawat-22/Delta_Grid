@@ -2611,3 +2611,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 55 Decision - Add Shadow Ledger Tracking Updater
+
+Decision:
+
+- Add a tracker that updates formal shadow ledger entries using public market data.
+
+Reason:
+
+- Mission 54 created BTCUSDT and ETHUSDT shadow ledger entries.
+- Those entries require time-based public-data tracking.
+- The system must invalidate observations when funding weakens, spread widens, or expected remaining carry turns unattractive.
+
+Files:
+
+- offchain/backtest/shadow_ledger_tracking_updater.py
+- offchain/tests/test_shadow_ledger_tracking_updater.py
+
+Related code commit:
+
+- 7af57c4 Add shadow ledger tracking updater
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
