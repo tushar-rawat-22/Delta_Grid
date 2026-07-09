@@ -2699,3 +2699,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 57 Decision - Add Shadow Tracking Alert and Invalidation Router
+
+Decision:
+
+- Add an alert and invalidation router based on Mission 56 performance reports.
+
+Reason:
+
+- Mission 56 showed strong BTC/ETH shadow tracking.
+- DeltaGrid needs route decisions before building automation or recurring tracking.
+- The router makes continuation, warning, invalidation, refresh-data, and safety-block decisions explicit.
+
+Files:
+
+- offchain/backtest/shadow_tracking_alert_invalidation_router.py
+- offchain/tests/test_shadow_tracking_alert_invalidation_router.py
+
+Related code commit:
+
+- 37bb975 Add shadow tracking alert invalidation router
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
