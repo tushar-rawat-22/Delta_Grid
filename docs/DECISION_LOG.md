@@ -2215,3 +2215,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 46 Decision - Add Shadow Observation Outcome Analytics Dashboard
+
+Decision:
+
+- Add executive analytics for finalized shadow observation outcomes.
+
+Reason:
+
+- Mission 45 finalizes outcomes.
+- DeltaGrid needs aggregate visibility before adding more strategy logic.
+- Symbol-level outcome summaries improve governance and research prioritization.
+
+Files:
+
+- offchain/backtest/shadow_observation_outcome_analytics_dashboard.py
+- offchain/tests/test_shadow_observation_outcome_analytics_dashboard.py
+
+Related code commit:
+
+- 6371bf1 Add shadow observation outcome analytics dashboard
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
