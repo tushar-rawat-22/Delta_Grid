@@ -61,3 +61,24 @@ Tables:
 - data_quality_regime_symbol_reports
 - data_quality_strategy_candidate_gates
 - data_quality_regime_intelligence_reports
+
+---
+
+## Mission 61
+
+Name: Shadow Portfolio Simulator
+
+Purpose:
+
+- allocate shadow notional across eligible candidates
+- apply symbol, strategy, and candidate caps
+- estimate concentration risk
+- estimate shadow drawdown
+- produce portfolio-level verdict
+- preserve shadow-only safety
+
+Tables:
+
+- shadow_portfolio_simulations
+- shadow_portfolio_allocations
+- shadow_portfolio_risk_reports

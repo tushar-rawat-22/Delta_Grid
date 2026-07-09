@@ -2809,3 +2809,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 61 Decision - Add Shadow Portfolio Simulator
+
+Decision:
+
+- Add a portfolio-level shadow simulator before promotion board review.
+
+Reason:
+
+- Candidate-level alpha scores are not enough.
+- Research must survive portfolio construction.
+- Concentration risk must be measured before any future paper trading or capital review.
+
+Related code commit:
+
+- 545fe15 Add shadow portfolio simulator
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

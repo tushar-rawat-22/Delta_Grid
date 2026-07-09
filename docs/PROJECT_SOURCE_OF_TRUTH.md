@@ -3943,3 +3943,50 @@ Safety:
 Next valid phase:
 
 - Mission 61 Shadow Portfolio Simulator
+
+---
+
+# Mission 61 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 545fe15 Add shadow portfolio simulator
+
+Mission 61 Completion Record
+
+Files:
+
+- offchain/portfolio/__init__.py
+- offchain/portfolio/shadow_portfolio_simulator.py
+- offchain/tests/test_shadow_portfolio_simulator.py
+- docs/ADR/ADR-0061-shadow-portfolio-simulator.md
+
+Tables:
+
+- shadow_portfolio_simulations
+- shadow_portfolio_allocations
+- shadow_portfolio_risk_reports
+
+Purpose:
+
+- Convert regime-gated strategy candidates into a portfolio-level shadow simulation.
+- Apply symbol, strategy, and candidate exposure limits.
+- Estimate concentration risk and shadow drawdown.
+- Preserve shadow-only safety.
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no exchange orders
+- no paid APIs
+
+Next valid phase:
+
+- Mission 62 Research Promotion Board

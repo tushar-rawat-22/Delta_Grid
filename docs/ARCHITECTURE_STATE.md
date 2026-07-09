@@ -68,3 +68,21 @@ Outputs:
 - regime intelligence report
 
 This layer sits between strategy research and promotion review.
+
+---
+
+## Shadow Portfolio Simulation Layer
+
+Mission 61 adds the portfolio simulation layer.
+
+Inputs:
+
+- Mission 60 candidate regime gates
+
+Outputs:
+
+- portfolio simulation report
+- allocation records
+- portfolio risk report
+
+This layer sits between regime-gated strategy research and promotion board review.

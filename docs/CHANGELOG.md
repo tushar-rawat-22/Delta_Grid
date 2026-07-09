@@ -2728,3 +2728,45 @@ Safety:
 - no exchange orders
 - no paid APIs
 - no real capital
+
+---
+
+## Mission 61 - Shadow Portfolio Simulator
+
+Added:
+
+- shadow portfolio allocation engine
+- symbol exposure cap
+- strategy exposure cap
+- candidate exposure cap
+- simulated shadow notional allocation
+- weighted alpha score
+- concentration risk score
+- estimated shadow drawdown
+- portfolio risk verdict
+
+Files:
+
+- offchain/portfolio/__init__.py
+- offchain/portfolio/shadow_portfolio_simulator.py
+- offchain/tests/test_shadow_portfolio_simulator.py
+
+Tables:
+
+- shadow_portfolio_simulations
+- shadow_portfolio_allocations
+- shadow_portfolio_risk_reports
+
+Code commit:
+
+- 545fe15 Add shadow portfolio simulator
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
