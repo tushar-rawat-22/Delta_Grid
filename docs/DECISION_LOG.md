@@ -2083,3 +2083,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 43 Decision - Add Shadow Observation Break-Even Tracker
+
+Decision:
+
+- Add break-even timing estimates for open shadow observations.
+
+Reason:
+
+- Mission 40 showed negative expected net PnL after costs.
+- The bot must know how long funding accrual needs to cover estimated costs.
+- Break-even timing is required before close/continue decisions can become intelligent.
+
+Files:
+
+- offchain/backtest/shadow_observation_break_even_tracker.py
+- offchain/tests/test_shadow_observation_break_even_tracker.py
+
+Related code commit:
+
+- f880dd4 Add shadow observation break-even tracker
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
