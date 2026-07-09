@@ -2567,3 +2567,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 54 Decision - Add Shadow Plan-to-Ledger Bridge
+
+Decision:
+
+- Add a bridge that converts calibrated shadow observation plans into formal shadow ledger entries.
+
+Reason:
+
+- Mission 53 created BTCUSDT and ETHUSDT shadow observation plans.
+- The next safe step is ledger tracking, not trading.
+- Ledger entries allow observation lifecycle tracking without orders or capital.
+
+Files:
+
+- offchain/backtest/shadow_plan_to_ledger_bridge.py
+- offchain/tests/test_shadow_plan_to_ledger_bridge.py
+
+Related code commit:
+
+- dd0590e Add shadow plan to ledger bridge
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
