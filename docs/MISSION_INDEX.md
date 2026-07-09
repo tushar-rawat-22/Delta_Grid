@@ -246,3 +246,24 @@ Tables:
 - paper_multi_cycle_observation_cycles
 - paper_multi_cycle_observation_checks
 - paper_multi_cycle_observation_reports
+
+---
+
+## Mission 70
+
+Name: AI Paper Outcome Learning Engine
+
+Purpose:
+
+- extract AI learning features from paper-only multi-cycle evidence
+- generate paper outcome labels
+- generate recommendation-only AI outputs
+- preserve no-live-trading and no-autonomous-trading safety
+
+Tables:
+
+- ai_paper_outcome_learning_runs
+- ai_paper_outcome_learning_features
+- ai_paper_outcome_learning_labels
+- ai_paper_outcome_learning_recommendations
+- ai_paper_outcome_learning_reports

@@ -166,3 +166,38 @@ Safety:
 - live trading remains blocked
 - capital deployment remains blocked
 - no exchange orders are sent
+
+---
+
+## Mission 70: AI Paper Outcome Learning Engine
+
+Mission 70 adds a local AI paper-outcome learning layer.
+
+It evaluates:
+
+- multi-cycle paper observation readiness
+- cycle count
+- check pass ratio
+- cumulative paper PnL bps
+- average cycle paper PnL bps
+- worst cycle paper PnL bps
+- worst position loss bps
+- average fee drag bps
+- alerts and triggered events
+- safety breaches
+- dataset sufficiency
+- recommendation-only autonomy scope
+
+Purpose:
+
+- convert multi-cycle paper evidence into AI learning features
+- generate paper outcome labels
+- generate recommendation-only next steps
+- prepare for AI feature quality and drift checks
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no autonomous strategy changes
+- no exchange orders are sent

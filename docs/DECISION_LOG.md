@@ -3039,3 +3039,33 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 70 Decision - Add AI Paper Outcome Learning Engine
+
+Decision:
+
+- Add a local deterministic AI paper-outcome learning layer after multi-cycle paper tracking.
+
+Reason:
+
+- Multi-cycle paper evidence should be converted into structured AI-learning features and labels.
+- AI outputs must remain recommendation-only until much stricter future gates exist.
+- The system must keep no-live-trading and no-real-capital safety boundaries.
+
+Related code commit:
+
+- e20c187 Add AI paper outcome learning engine
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED
