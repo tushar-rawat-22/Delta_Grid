@@ -2171,3 +2171,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 45 Decision - Add Shadow Observation Outcome Finalizer
+
+Decision:
+
+- Add final shadow outcome accounting for observation decisions.
+
+Reason:
+
+- Mission 44 decides close/continue/reject.
+- DeltaGrid needs a durable final outcome table and report for downstream analytics.
+- This improves the observation lifecycle without enabling live trading.
+
+Files:
+
+- offchain/backtest/shadow_observation_outcome_finalizer.py
+- offchain/tests/test_shadow_observation_outcome_finalizer.py
+
+Related code commit:
+
+- 8987443 Add shadow observation outcome finalizer
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading
