@@ -427,3 +427,25 @@ Outputs:
 - governance report
 
 This layer is research governance only. It does not train, trade, or execute.
+
+---
+
+## AI Research Recommendation Engine Layer
+
+Mission 79 adds a research-only recommendation layer above the offline evaluation governance board.
+
+Inputs:
+
+- offline evaluation governance review
+- governance evidence
+- board votes
+- governance checks
+
+Outputs:
+
+- research recommendation run
+- research recommendation items
+- recommendation checks
+- recommendation report
+
+This layer is research-only. It does not train, signal, trade, or execute.

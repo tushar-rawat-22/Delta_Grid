@@ -3295,3 +3295,41 @@ Model training:
 Autonomous trading:
 
 - BLOCKED
+
+---
+
+## Mission 79 Decision - Add AI Research Recommendation Engine
+
+Decision:
+
+- Add a research-only recommendation engine after Mission 78 governance approval.
+
+Reason:
+
+- Governance-approved offline evidence must be translated into research-only recommendations.
+- Recommendations must not become trade signals.
+- Human review must remain mandatory.
+
+Related code commit:
+
+- cc49ec5 Add AI research recommendation engine
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Model training:
+
+- BLOCKED
+
+Live signals:
+
+- BLOCKED
+
+Autonomous trading:
+
+- BLOCKED

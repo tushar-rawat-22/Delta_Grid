@@ -3428,3 +3428,45 @@ Safety:
 - no real capital
 - no model training
 - no autonomous strategy reweighting
+
+---
+
+## Mission 79 - AI Research Recommendation Engine
+
+Added:
+
+- research-only recommendation engine
+- recommendation item records
+- no-live-signal checks
+- no-training checks
+- no-capital-deployment checks
+- human-review-required checks
+
+Files:
+
+- offchain/ai_dataset/research_recommendation_engine.py
+- offchain/tests/test_research_recommendation_engine.py
+
+Tables:
+
+- ai_research_recommendation_runs
+- ai_research_recommendation_items
+- ai_research_recommendation_checks
+- ai_research_recommendation_reports
+
+Code commit:
+
+- cc49ec5 Add AI research recommendation engine
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- no model training
+- no live signals
+- no autonomous strategy reweighting

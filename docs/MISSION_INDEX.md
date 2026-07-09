@@ -416,3 +416,23 @@ Tables:
 - ai_offline_evaluation_governance_votes
 - ai_offline_evaluation_governance_checks
 - ai_offline_evaluation_governance_reports
+
+---
+
+## Mission 79
+
+Name: AI Research Recommendation Engine
+
+Purpose:
+
+- generate research-only recommendations
+- preserve no-training/no-signal/no-trading boundaries
+- require human review for every recommendation
+- prepare Mission 80 Human Approval Gate
+
+Tables:
+
+- ai_research_recommendation_runs
+- ai_research_recommendation_items
+- ai_research_recommendation_checks
+- ai_research_recommendation_reports

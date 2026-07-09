@@ -419,3 +419,28 @@ Safety:
 - no live signal generation
 - no autonomous strategy changes
 - no exchange orders are sent
+
+---
+
+## Mission 79: AI Research Recommendation Engine
+
+Mission 79 adds a research-only recommendation engine after offline evaluation governance approval.
+
+It performs:
+
+- governance evidence ingestion
+- research-only recommendation generation
+- no-live-signal checks
+- no-training checks
+- no-execution checks
+- human-review-required checks
+- report generation
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training
+- no live signal generation
+- no autonomous strategy changes
+- no exchange orders are sent
