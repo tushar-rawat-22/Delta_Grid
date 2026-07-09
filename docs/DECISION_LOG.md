@@ -2127,3 +2127,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 44 Decision - Add Shadow Observation Close Eligibility Engine
+
+Decision:
+
+- Add a close eligibility layer for shadow observations.
+
+Reason:
+
+- Mission 43 estimates when observations reach break-even.
+- DeltaGrid needs a formal decision layer to continue, close, reject, or review observations.
+- This improves future outcome analysis without enabling live trading.
+
+Files:
+
+- offchain/backtest/shadow_observation_close_eligibility_engine.py
+- offchain/tests/test_shadow_observation_close_eligibility_engine.py
+
+Related code commit:
+
+- 110723d Add shadow observation close eligibility engine
+
+Status:
+
+- Active
+
+Live trading:
+
+- DISABLED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

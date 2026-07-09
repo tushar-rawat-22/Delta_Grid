@@ -3093,3 +3093,54 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 44 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 110723d Add shadow observation close eligibility engine
+
+Files:
+
+- offchain/backtest/shadow_observation_close_eligibility_engine.py
+- offchain/tests/test_shadow_observation_close_eligibility_engine.py
+- docs/ADR/ADR-0044-shadow-observation-close-eligibility-engine.md
+
+Tables added:
+
+- shadow_observation_close_decisions
+- shadow_observation_close_decision_reports
+
+Purpose:
+
+- Convert break-even tracking into formal close/continue/reject/review decisions.
+- Preserve safety state across close eligibility decisions.
+- Improve shadow observation lifecycle governance.
+
+Mission verdict:
+
+- Shadow observation close eligibility engine GO
+- Close decision infrastructure improved
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Continue shadow research infrastructure.

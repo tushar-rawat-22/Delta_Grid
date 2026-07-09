@@ -1998,3 +1998,48 @@ Verdict:
 - Mission 43 break-even tracking GO
 - Live trading NO-GO
 - Capital deployment NO-GO
+
+---
+
+## Mission 44 - Shadow Observation Close Eligibility Engine
+
+Added:
+
+- shadow observation close eligibility engine
+- close/continue/reject decision table
+- close eligibility report table
+- break-even reached decision
+- near break-even decision
+- uneconomic rejection decision
+- risk review decision
+- safety breach decision
+
+Files:
+
+- offchain/backtest/shadow_observation_close_eligibility_engine.py
+- offchain/tests/test_shadow_observation_close_eligibility_engine.py
+
+Tables:
+
+- shadow_observation_close_decisions
+- shadow_observation_close_decision_reports
+
+Code commit:
+
+- 110723d Add shadow observation close eligibility engine
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 44 close eligibility GO
+- Live trading NO-GO
+- Capital deployment NO-GO
