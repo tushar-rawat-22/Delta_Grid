@@ -2742,3 +2742,55 @@ Still forbidden:
 Next valid phase:
 
 - Continue shadow research infrastructure.
+
+---
+
+# Mission 37 Completion Record
+
+Status:
+
+- Code complete
+- Documentation complete pending final verification
+
+Code commit:
+
+- 9616a4f Add shadow research decision gate
+
+Files:
+
+- offchain/backtest/shadow_research_decision_gate.py
+- offchain/tests/test_shadow_research_decision_gate.py
+- docs/ADR/ADR-0037-shadow-research-decision-gate.md
+
+Tables added:
+
+- shadow_research_decision_gate_reports
+
+Purpose:
+
+- Convert Mission 36 performance reports into formal board-level decisions.
+- Approve only shadow-paper observation when minimum thresholds pass.
+- Reject weak replay sets.
+- Require more samples when sample size is too small.
+- Block live trading and capital deployment.
+
+Mission verdict:
+
+- Shadow research decision gate GO
+- Governance improved
+- Live trading NO-GO
+- Capital deployment NO-GO
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- mainnet deployment
+- real capital
+- live trading
+
+Next valid phase:
+
+- Continue shadow research infrastructure.

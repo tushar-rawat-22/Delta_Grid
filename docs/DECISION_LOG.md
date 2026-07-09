@@ -1806,3 +1806,47 @@ Still forbidden:
 - paid APIs
 - real capital
 - live trading
+
+---
+
+## Mission 37 Decision - Add Shadow Research Decision Gate
+
+Decision:
+
+- Add a strict board-level gate for Mission 36 performance reports.
+
+Reason:
+
+- Mission 36 summarizes replay performance.
+- DeltaGrid needs a formal go/no-go governance layer before future automation.
+- The gate must block live trading and capital deployment regardless of shadow approval.
+
+Files:
+
+- offchain/backtest/shadow_research_decision_gate.py
+- offchain/tests/test_shadow_research_decision_gate.py
+
+Related code commit:
+
+- 9616a4f Add shadow research decision gate
+
+Status:
+
+- Active
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED
+
+Still forbidden:
+
+- private key usage
+- transaction signing
+- exchange order placement
+- paid APIs
+- real capital
+- live trading

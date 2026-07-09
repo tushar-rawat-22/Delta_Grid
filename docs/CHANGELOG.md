@@ -1674,3 +1674,49 @@ Verdict:
 
 - Mission 36 performance reporting GO
 - Live trading NO-GO
+
+---
+
+## Mission 37 - Shadow Research Decision Gate
+
+Added:
+
+- board-level shadow research decision gate
+- strict live-trading block
+- strict capital-deployment block
+- minimum sample thresholds
+- weak replay rejection
+- insufficient sample decision
+- shadow-observation-only approval
+- CEO/CTO/CFO-Quant style board votes
+- markdown gate report
+- SQLite persistence for decision gate reports
+
+Files:
+
+- offchain/backtest/shadow_research_decision_gate.py
+- offchain/tests/test_shadow_research_decision_gate.py
+
+Tables:
+
+- shadow_research_decision_gate_reports
+
+Code commit:
+
+- 9616a4f Add shadow research decision gate
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+
+Verdict:
+
+- Mission 37 decision governance GO
+- Live trading NO-GO
+- Capital deployment NO-GO
