@@ -2859,3 +2859,29 @@ Live trading:
 Capital deployment:
 
 - BLOCKED
+
+---
+
+## Mission 63 Decision - Add Paper Trading Sandbox
+
+Decision:
+
+- Add a local paper-only execution sandbox after research board approval.
+
+Reason:
+
+- Board approval should lead to a simulated execution environment, not live trading.
+- The system needs paper orders, simulated fills, positions, fees, and slippage before any risk-control expansion.
+- Live trading must remain impossible at this stage.
+
+Related code commit:
+
+- c29c9c9 Add paper trading sandbox
+
+Live trading:
+
+- BLOCKED
+
+Capital deployment:
+
+- BLOCKED

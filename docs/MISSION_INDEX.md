@@ -101,3 +101,25 @@ Tables:
 - research_promotion_board_reviews
 - research_promotion_board_evidence_items
 - research_promotion_board_decision_records
+
+---
+
+## Mission 63
+
+Name: Paper Trading Sandbox
+
+Purpose:
+
+- convert board-approved shadow allocations into paper-only orders
+- simulate fills and positions
+- record simulated fees and slippage
+- create a paper sandbox session report
+- preserve strict no-live-trading safety
+
+Tables:
+
+- paper_sandbox_sessions
+- paper_sandbox_orders
+- paper_sandbox_fills
+- paper_sandbox_positions
+- paper_sandbox_reports

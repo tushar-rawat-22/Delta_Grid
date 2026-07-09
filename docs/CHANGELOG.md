@@ -2805,3 +2805,46 @@ Safety:
 - approval does not permit real capital
 - approval does not permit exchange orders
 - approval does not permit private keys
+
+---
+
+## Mission 63 - Paper Trading Sandbox
+
+Added:
+
+- paper sandbox session engine
+- board approval validation
+- paper-only order generation
+- simulated fill generation
+- paper-only position generation
+- simulated fee model
+- simulated slippage model
+- paper sandbox report
+
+Files:
+
+- offchain/paper_sandbox/__init__.py
+- offchain/paper_sandbox/paper_trading_sandbox.py
+- offchain/tests/test_paper_trading_sandbox.py
+
+Tables:
+
+- paper_sandbox_sessions
+- paper_sandbox_orders
+- paper_sandbox_fills
+- paper_sandbox_positions
+- paper_sandbox_reports
+
+Code commit:
+
+- c29c9c9 Add paper trading sandbox
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital

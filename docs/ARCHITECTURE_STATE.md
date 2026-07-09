@@ -104,3 +104,25 @@ Outputs:
 - board decision record
 
 This layer decides whether the portfolio can advance to paper sandbox research only.
+
+---
+
+## Paper Trading Sandbox Layer
+
+Mission 63 adds a paper-only execution simulation layer.
+
+Inputs:
+
+- research promotion board approval
+- shadow portfolio allocations
+- public reference prices
+
+Outputs:
+
+- paper sandbox session
+- paper-only orders
+- simulated fills
+- paper-only positions
+- paper sandbox report
+
+This layer does not connect to exchanges and does not send live orders.
