@@ -3613,3 +3613,45 @@ Safety:
 - no model training
 - no live signals
 - no autonomous live execution
+
+---
+
+## Mission 83 - Self-Learning Feedback Loop
+
+Added:
+
+- self-learning feedback loop
+- feedback records
+- feedback-only learning action
+- no-model-training checks
+- no-strategy-reweighting checks
+- no-live-signal checks
+- no-exchange-order checks
+- no-capital-deployment checks
+
+Files:
+
+- offchain/ai_dataset/self_learning_feedback_loop.py
+- offchain/tests/test_self_learning_feedback_loop.py
+- docs/ADR/ADR-0083-self-learning-feedback-loop.md
+
+Tables:
+
+- ai_self_learning_feedback_runs
+- ai_self_learning_feedback_items
+- ai_self_learning_feedback_checks
+- ai_self_learning_feedback_reports
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- no model training in Mission 83
+- no strategy reweighting
+- no live signals
+- no autonomous live execution

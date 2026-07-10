@@ -483,3 +483,29 @@ Mission 82 prepares:
 - Mission 83 Self-Learning Feedback Loop
 
 This moves DeltaGrid closer to internal autonomous paper trading, but still does not connect to live market execution or real capital.
+
+---
+
+## Mission 83 Self-Learning Feedback Loop
+
+Mission 83 creates the self-learning feedback layer.
+
+It consumes Mission 82 paper execution records and creates feedback records.
+
+Mission 83 does not train models.
+
+Mission 83 records:
+
+- feedback-only learning records
+- paper outcome quality markers
+- no model training actions
+- no strategy reweighting actions
+- no live signal actions
+- no exchange order actions
+- no capital deployment actions
+
+Mission 83 prepares:
+
+- Mission 84 Offline Model Training Harness
+
+This moves DeltaGrid closer to a self-learning paper system, but still does not perform model training or live trading.

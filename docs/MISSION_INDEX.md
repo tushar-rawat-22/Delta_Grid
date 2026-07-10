@@ -548,3 +548,30 @@ Important:
 - This mission does not approve model training.
 - This mission does not approve exchange execution.
 - This mission creates paper execution evidence only.
+
+---
+
+## Mission 83
+
+Name: Self-Learning Feedback Loop
+
+Purpose:
+
+- create feedback records from paper execution evidence
+- preserve no-model-training/no-strategy-reweighting/no-live-signal/no-exchange-order/no-capital boundaries
+- prepare Mission 84 Offline Model Training Harness
+
+Tables:
+
+- ai_self_learning_feedback_runs
+- ai_self_learning_feedback_items
+- ai_self_learning_feedback_checks
+- ai_self_learning_feedback_reports
+
+Important:
+
+- This mission does not approve live trading.
+- This mission does not approve capital deployment.
+- This mission does not approve model training.
+- This mission does not approve exchange execution.
+- This mission creates feedback evidence only.

@@ -583,3 +583,36 @@ research recommendations
   -> paper execution agent
   -> self-learning feedback loop
   -> offline training/evaluation/promotion gates
+
+---
+
+## Self-Learning Feedback Loop Layer
+
+Mission 83 adds a feedback layer above the Paper Execution Agent.
+
+Inputs:
+
+- paper execution agent run
+- paper execution records
+- paper execution checks
+
+Outputs:
+
+- self-learning feedback run
+- feedback items
+- feedback checks
+- feedback report
+
+The layer records feedback-only evidence.
+
+It does not train, reweight strategies, trade live, signal live, or send exchange orders.
+
+Updated autonomy path:
+
+research recommendations
+  -> autonomous policy gate
+  -> autonomous paper signal engine
+  -> paper execution agent
+  -> self-learning feedback loop
+  -> offline model training harness
+  -> model promotion engine

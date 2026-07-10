@@ -3441,3 +3441,32 @@ Not approved:
 - exchange execution
 - private key access
 - autonomous live strategy reweighting
+
+---
+
+## Mission 83 Decision - Add Self-Learning Feedback Loop
+
+Decision:
+
+- Add a self-learning feedback loop after Mission 82 paper execution records.
+
+Reason:
+
+- DeltaGrid needs feedback evidence before offline training can be introduced.
+- Feedback records create a bridge between paper execution and future offline training.
+- The system must not train models or reweight strategies in Mission 83.
+
+Approved:
+
+- feedback record creation
+- handoff to Mission 84 Offline Model Training Harness
+
+Not approved:
+
+- model training
+- strategy reweighting
+- live trading
+- capital deployment
+- live signal generation
+- exchange execution
+- private key access

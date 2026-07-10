@@ -118,3 +118,23 @@ It does not:
 Next phase:
 
 - Mission 83 Self-Learning Feedback Loop
+
+### Mission 83 Self-Learning Feedback Loop
+
+Mission 83 adds feedback records after Mission 82 paper execution records.
+
+The loop records self-learning evidence only.
+
+It does not:
+
+- train models
+- reweight strategies
+- trade live
+- deploy capital
+- use private keys
+- send exchange orders
+- create live trading signals
+
+Next phase:
+
+- Mission 84 Offline Model Training Harness

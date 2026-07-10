@@ -578,3 +578,34 @@ Safety:
 - no model training
 - no live signal generation
 - no exchange orders are sent
+
+---
+
+## Mission 83: Self-Learning Feedback Loop
+
+Mission 83 creates feedback records from Mission 82 paper execution records.
+
+It performs:
+
+- source execution evidence ingestion
+- feedback record creation
+- no-model-training checks
+- no-strategy-reweighting checks
+- no-live-signal checks
+- no-exchange-order checks
+- no-capital-deployment checks
+- no-profitability-claim checks
+- report generation
+
+Approved next step:
+
+- Mission 84 Offline Model Training Harness
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- no model training in Mission 83
+- no strategy reweighting
+- no live signal generation
+- no exchange orders are sent
