@@ -521,3 +521,30 @@ Next missions:
 See the full roadmap:
 
 - docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md
+
+---
+
+## Mission 82
+
+Name: Paper Execution Agent
+
+Purpose:
+
+- create paper execution records from autonomous paper-only signals
+- preserve no-live-signal/no-exchange-order/no-capital/no-training boundaries
+- prepare Mission 83 Self-Learning Feedback Loop
+
+Tables:
+
+- ai_paper_execution_agent_runs
+- ai_paper_execution_records
+- ai_paper_execution_agent_checks
+- ai_paper_execution_agent_reports
+
+Important:
+
+- This mission does not approve live trading.
+- This mission does not approve capital deployment.
+- This mission does not approve model training.
+- This mission does not approve exchange execution.
+- This mission creates paper execution evidence only.

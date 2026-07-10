@@ -551,3 +551,35 @@ Future layers:
 Full roadmap:
 
 - docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md
+
+---
+
+## Paper Execution Agent Layer
+
+Mission 82 adds a paper execution layer above the Autonomous Paper Signal Engine.
+
+Inputs:
+
+- autonomous paper signal run
+- autonomous paper signals
+- autonomous paper signal checks
+
+Outputs:
+
+- paper execution agent run
+- paper execution records
+- paper execution checks
+- paper execution report
+
+The layer records paper-only no-order execution evidence.
+
+It does not train, trade live, signal live, or send exchange orders.
+
+Updated autonomy path:
+
+research recommendations
+  -> autonomous policy gate
+  -> autonomous paper signal engine
+  -> paper execution agent
+  -> self-learning feedback loop
+  -> offline training/evaluation/promotion gates

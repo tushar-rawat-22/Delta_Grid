@@ -3412,3 +3412,32 @@ Reason:
 Roadmap file:
 
 - docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md
+
+---
+
+## Mission 82 Decision - Add Paper Execution Agent
+
+Decision:
+
+- Add a paper execution agent after Mission 81 paper-only signal generation.
+
+Reason:
+
+- DeltaGrid needs controlled execution evidence before it can learn from paper outcomes.
+- Paper execution records create a bridge between paper signals and the self-learning feedback loop.
+- The system must remain no-order and no-capital at this stage.
+
+Approved:
+
+- paper execution records
+- handoff to Mission 83 Self-Learning Feedback Loop
+
+Not approved:
+
+- live trading
+- capital deployment
+- model training
+- live signal generation
+- exchange execution
+- private key access
+- autonomous live strategy reweighting
