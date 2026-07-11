@@ -3701,3 +3701,47 @@ Safety:
 - no strategy reweighting
 - no live signals
 - no autonomous live execution
+
+---
+
+## Mission 84.5 - Institutional Alpha Research Benchmark Lab
+
+Added:
+
+- institutional alpha research benchmark lab
+- strategy family registry
+- asset universe registry
+- cost model registry
+- benchmark plan entries
+- no-backtest-yet checks
+- no-training checks
+- no-model-promotion checks
+
+Files:
+
+- offchain/ai_dataset/institutional_alpha_research_benchmark_lab.py
+- offchain/tests/test_institutional_alpha_research_benchmark_lab.py
+- docs/ADR/ADR-0084-5-institutional-alpha-research-benchmark-lab.md
+
+Tables:
+
+- ai_institutional_alpha_benchmark_runs
+- ai_alpha_strategy_family_registry
+- ai_alpha_asset_universe_registry
+- ai_alpha_cost_model_registry
+- ai_alpha_benchmark_plan_entries
+- ai_alpha_benchmark_checks
+- ai_alpha_benchmark_reports
+
+Safety:
+
+- Mission 85 remains paused
+- no backtests in Mission 84.5
+- no model training
+- no model artifacts
+- no model promotion
+- no strategy reweighting
+- no live trading
+- no capital deployment
+- no exchange orders
+- no live signals

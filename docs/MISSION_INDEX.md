@@ -602,3 +602,35 @@ Important:
 - This mission does not approve deployable model creation.
 - This mission does not approve exchange execution.
 - This mission records locked offline training candidates only.
+
+---
+
+## Mission 84.5
+
+Name: Institutional Alpha Research Benchmark Lab
+
+Purpose:
+
+- register varied strategy families
+- register varied asset universes
+- register conservative cost models
+- create benchmark plan entries before backtesting
+- keep Mission 85 paused until robust alpha candidates exist
+
+Tables:
+
+- ai_institutional_alpha_benchmark_runs
+- ai_alpha_strategy_family_registry
+- ai_alpha_asset_universe_registry
+- ai_alpha_cost_model_registry
+- ai_alpha_benchmark_plan_entries
+- ai_alpha_benchmark_checks
+- ai_alpha_benchmark_reports
+
+Important:
+
+- This mission does not run backtests.
+- This mission does not train models.
+- This mission does not promote models.
+- This mission does not approve live trading.
+- This mission does not approve capital deployment.

@@ -5134,3 +5134,59 @@ Safety:
 Next valid phase:
 
 - Mission 85 Model Promotion Engine
+
+---
+
+# Mission 84.5 Completion Record
+
+Status:
+
+- Code complete
+- Tests complete
+- Documentation complete pending final verification
+
+Name:
+
+- Institutional Alpha Research Benchmark Lab
+
+Files:
+
+- offchain/ai_dataset/institutional_alpha_research_benchmark_lab.py
+- offchain/tests/test_institutional_alpha_research_benchmark_lab.py
+- docs/ADR/ADR-0084-5-institutional-alpha-research-benchmark-lab.md
+
+Tables:
+
+- ai_institutional_alpha_benchmark_runs
+- ai_alpha_strategy_family_registry
+- ai_alpha_asset_universe_registry
+- ai_alpha_cost_model_registry
+- ai_alpha_benchmark_plan_entries
+- ai_alpha_benchmark_checks
+- ai_alpha_benchmark_reports
+
+Purpose:
+
+- Register varied strategy families.
+- Register varied asset universes.
+- Register conservative cost models.
+- Create benchmark plan entries before backtesting.
+- Keep Mission 85 paused until robust alpha candidates exist.
+
+Safety:
+
+- no backtests in Mission 84.5
+- no model training
+- no model artifacts
+- no model promotion
+- no strategy reweighting
+- no live signals
+- no live trading
+- no capital deployment
+- no exchange orders
+- no private keys
+- no paid APIs
+
+Next valid phase:
+
+- Mission 84.6 Multi-Strategy Backtest Pack

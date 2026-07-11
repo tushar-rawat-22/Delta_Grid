@@ -645,3 +645,37 @@ Safety:
 - strategy reweighting is blocked
 - no live signal generation
 - no exchange orders are sent
+
+---
+
+## Mission 84.5: Institutional Alpha Research Benchmark Lab
+
+Mission 84.5 creates the benchmark lab required before Mission 85.
+
+It performs:
+
+- institutional strategy family registration
+- crypto, FX, and ETF/macro asset universe registration
+- conservative cost model registration
+- benchmark plan registration
+- no-backtest-yet checks
+- no-training checks
+- no-model-promotion checks
+- no-live-signal checks
+- no-exchange-order checks
+- no-capital-deployment checks
+
+Approved next step:
+
+- Mission 84.6 Multi-Strategy Backtest Pack
+
+Safety:
+
+- Mission 85 remains paused
+- no backtests in Mission 84.5
+- no model training
+- no model artifacts
+- no model promotion
+- no strategy reweighting
+- no live trading
+- no exchange orders

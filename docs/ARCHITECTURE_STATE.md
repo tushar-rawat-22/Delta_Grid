@@ -650,3 +650,41 @@ research recommendations
   -> offline model training harness
   -> model promotion engine
   -> autonomous risk governor
+
+---
+
+## Institutional Alpha Research Benchmark Lab Layer
+
+Mission 84.5 adds a research benchmark layer before model promotion.
+
+Inputs:
+
+- offline model training harness run
+
+Outputs:
+
+- alpha benchmark run
+- strategy family registry
+- asset universe registry
+- cost model registry
+- benchmark plan entries
+- benchmark checks
+- benchmark report
+
+The layer creates research structure only.
+
+It does not run backtests, train models, promote models, reweight strategies, trade live, signal live, or send exchange orders.
+
+Updated autonomy path:
+
+research recommendations
+  -> autonomous policy gate
+  -> autonomous paper signal engine
+  -> paper execution agent
+  -> self-learning feedback loop
+  -> offline model training harness
+  -> institutional alpha research benchmark lab
+  -> multi-strategy backtest pack
+  -> walk-forward robustness gate
+  -> alpha candidate promotion pack
+  -> model promotion engine

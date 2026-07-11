@@ -3503,3 +3503,37 @@ Not approved:
 - live signal generation
 - exchange execution
 - private key access
+
+---
+
+## Mission 84.5 Decision - Add Institutional Alpha Research Benchmark Lab
+
+Decision:
+
+- Add a formal alpha research benchmark lab before Mission 85.
+
+Reason:
+
+- DeltaGrid had strong safety infrastructure but insufficient alpha research coverage.
+- The system must test varied strategy families across varied data before model promotion.
+- Mission 85 must remain paused until robust alpha candidates exist.
+
+Approved:
+
+- strategy family registry
+- asset universe registry
+- cost model registry
+- benchmark plan entries
+- handoff to Mission 84.6 Multi-Strategy Backtest Pack
+
+Not approved:
+
+- backtests yet
+- model training
+- model artifacts
+- model promotion
+- live trading
+- capital deployment
+- live signal generation
+- exchange execution
+- private key access

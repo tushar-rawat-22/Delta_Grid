@@ -175,3 +175,32 @@ The next active path is:
 - Mission 85 Model Promotion Engine
 
 See `docs/INSTITUTIONAL_ALPHA_RESEARCH_PLAN.md`.
+
+### Mission 84.5 Institutional Alpha Research Benchmark Lab
+
+Mission 84.5 creates the alpha research benchmark lab before Mission 85.
+
+It registers:
+
+- strategy families
+- crypto, FX, and ETF/macro asset universes
+- conservative cost models
+- benchmark plan entries
+- benchmark safety checks
+
+It does not:
+
+- run backtests yet
+- train models
+- create model artifacts
+- promote models
+- reweight strategies
+- trade live
+- deploy capital
+- use private keys
+- send exchange orders
+- create live trading signals
+
+Next phase:
+
+- Mission 84.6 Multi-Strategy Backtest Pack

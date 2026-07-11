@@ -302,3 +302,30 @@ This mission should create:
 - benchmark report schema
 
 Mission 85 remains paused until this plan produces at least one robust alpha candidate.
+
+---
+
+## Mission 84.5 Implementation Record
+
+Mission 84.5 creates the Institutional Alpha Research Benchmark Lab.
+
+It registers:
+
+- strategy family registry
+- asset universe registry
+- cost model registry
+- benchmark plan entries
+- alpha benchmark checks
+- alpha benchmark report
+
+It does not run backtests yet.
+
+It does not train models.
+
+It does not promote models.
+
+It keeps Mission 85 paused until robust alpha candidates exist.
+
+Next:
+
+- Mission 84.6 Multi-Strategy Backtest Pack
