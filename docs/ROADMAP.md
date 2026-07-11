@@ -609,3 +609,39 @@ Safety:
 - no strategy reweighting
 - no live signal generation
 - no exchange orders are sent
+
+---
+
+## Mission 84: Offline Model Training Harness
+
+Mission 84 creates locked training candidate records from Mission 83 feedback records.
+
+It performs:
+
+- source feedback evidence ingestion
+- offline training candidate record creation
+- insufficient-data training lock checks
+- no-model-artifact checks
+- no-model-deployment checks
+- no-live-deployment checks
+- no-strategy-reweighting checks
+- no-live-signal checks
+- no-exchange-order checks
+- no-capital-deployment checks
+- no-profitability-claim checks
+- report generation
+
+Approved next step:
+
+- Mission 85 Model Promotion Engine
+
+Safety:
+
+- live trading remains blocked
+- capital deployment remains blocked
+- actual model training is blocked on insufficient data
+- model artifact creation is blocked
+- model deployment is blocked
+- strategy reweighting is blocked
+- no live signal generation
+- no exchange orders are sent

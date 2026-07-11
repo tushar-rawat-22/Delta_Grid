@@ -575,3 +575,30 @@ Important:
 - This mission does not approve model training.
 - This mission does not approve exchange execution.
 - This mission creates feedback evidence only.
+
+---
+
+## Mission 84
+
+Name: Offline Model Training Harness
+
+Purpose:
+
+- create offline training candidate records from feedback evidence
+- preserve no-model-artifact/no-deployment/no-strategy-reweighting/no-live-signal/no-exchange-order/no-capital boundaries
+- prepare Mission 85 Model Promotion Engine
+
+Tables:
+
+- ai_offline_model_training_harness_runs
+- ai_offline_model_training_candidates
+- ai_offline_model_training_checks
+- ai_offline_model_training_reports
+
+Important:
+
+- This mission does not approve live trading.
+- This mission does not approve capital deployment.
+- This mission does not approve deployable model creation.
+- This mission does not approve exchange execution.
+- This mission records locked offline training candidates only.

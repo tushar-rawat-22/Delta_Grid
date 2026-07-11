@@ -3470,3 +3470,36 @@ Not approved:
 - live signal generation
 - exchange execution
 - private key access
+
+---
+
+## Mission 84 Decision - Add Offline Model Training Harness
+
+Decision:
+
+- Add an offline model training harness after Mission 83 feedback records.
+
+Reason:
+
+- DeltaGrid needs a safe offline-training boundary before any model promotion logic.
+- Current feedback evidence is insufficient for actual model fitting.
+- The harness must record locked training candidates without creating deployable artifacts.
+
+Approved:
+
+- offline training harness records
+- locked training candidate records
+- handoff to Mission 85 Model Promotion Engine review
+
+Not approved:
+
+- actual training on insufficient data
+- model artifact creation
+- model deployment
+- live deployment
+- strategy reweighting
+- live trading
+- capital deployment
+- live signal generation
+- exchange execution
+- private key access

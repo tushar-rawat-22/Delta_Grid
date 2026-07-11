@@ -138,3 +138,26 @@ It does not:
 Next phase:
 
 - Mission 84 Offline Model Training Harness
+
+### Mission 84 Offline Model Training Harness
+
+Mission 84 adds the offline model training harness after Mission 83 feedback records.
+
+The harness records locked training candidate evidence only.
+
+It does not:
+
+- train models on insufficient data
+- create model artifacts
+- deploy models
+- deploy live systems
+- reweight strategies
+- trade live
+- deploy capital
+- use private keys
+- send exchange orders
+- create live trading signals
+
+Next phase:
+
+- Mission 85 Model Promotion Engine

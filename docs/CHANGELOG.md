@@ -3655,3 +3655,49 @@ Safety:
 - no strategy reweighting
 - no live signals
 - no autonomous live execution
+
+---
+
+## Mission 84 - Offline Model Training Harness
+
+Added:
+
+- offline model training harness
+- locked training candidate records
+- insufficient-data training lock checks
+- no-model-artifact checks
+- no-model-deployment checks
+- no-live-deployment checks
+- no-strategy-reweighting checks
+- no-live-signal checks
+- no-exchange-order checks
+- no-capital-deployment checks
+
+Files:
+
+- offchain/ai_dataset/offline_model_training_harness.py
+- offchain/tests/test_offline_model_training_harness.py
+- docs/ADR/ADR-0084-offline-model-training-harness.md
+
+Tables:
+
+- ai_offline_model_training_harness_runs
+- ai_offline_model_training_candidates
+- ai_offline_model_training_checks
+- ai_offline_model_training_reports
+
+Safety:
+
+- live trading remains disabled
+- capital deployment remains blocked
+- no private keys
+- no signing
+- no exchange orders
+- no paid APIs
+- no real capital
+- actual model training is blocked on insufficient data
+- no model artifacts
+- no model deployment
+- no strategy reweighting
+- no live signals
+- no autonomous live execution

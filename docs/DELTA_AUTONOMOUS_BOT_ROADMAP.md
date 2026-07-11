@@ -509,3 +509,31 @@ Mission 83 prepares:
 - Mission 84 Offline Model Training Harness
 
 This moves DeltaGrid closer to a self-learning paper system, but still does not perform model training or live trading.
+
+---
+
+## Mission 84 Offline Model Training Harness
+
+Mission 84 creates the offline model training harness layer.
+
+It consumes Mission 83 feedback records and creates locked training candidate records.
+
+Current feedback evidence is insufficient for actual model training, so Mission 84 does not fit a model.
+
+Mission 84 records:
+
+- offline training candidate records
+- blocked actual training actions
+- no model artifact actions
+- no model deployment actions
+- no live deployment actions
+- no strategy reweighting actions
+- no live signal actions
+- no exchange order actions
+- no capital deployment actions
+
+Mission 84 prepares:
+
+- Mission 85 Model Promotion Engine
+
+This moves DeltaGrid closer to offline learning, but still does not create deployable models or live trading behavior.

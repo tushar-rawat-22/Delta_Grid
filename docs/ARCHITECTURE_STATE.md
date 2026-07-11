@@ -616,3 +616,37 @@ research recommendations
   -> self-learning feedback loop
   -> offline model training harness
   -> model promotion engine
+
+---
+
+## Offline Model Training Harness Layer
+
+Mission 84 adds an offline training harness layer above the Self-Learning Feedback Loop.
+
+Inputs:
+
+- self-learning feedback run
+- feedback items
+- feedback checks
+
+Outputs:
+
+- offline training harness run
+- offline training candidate records
+- training harness checks
+- training harness report
+
+The layer records locked offline training candidates.
+
+It does not train models on insufficient data, create model artifacts, deploy models, reweight strategies, trade live, signal live, or send exchange orders.
+
+Updated autonomy path:
+
+research recommendations
+  -> autonomous policy gate
+  -> autonomous paper signal engine
+  -> paper execution agent
+  -> self-learning feedback loop
+  -> offline model training harness
+  -> model promotion engine
+  -> autonomous risk governor
