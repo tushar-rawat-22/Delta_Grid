@@ -161,3 +161,17 @@ It does not:
 Next phase:
 
 - Mission 85 Model Promotion Engine
+
+### Institutional Alpha Research Pivot
+
+Mission 85 is paused until DeltaGrid tests varied strategy families across varied data.
+
+The next active path is:
+
+- Mission 84.5 Institutional Alpha Research Benchmark Lab
+- Mission 84.6 Multi-Strategy Backtest Pack
+- Mission 84.7 Walk-Forward Robustness Gate
+- Mission 84.8 Alpha Candidate Promotion Pack
+- Mission 85 Model Promotion Engine
+
+See `docs/INSTITUTIONAL_ALPHA_RESEARCH_PLAN.md`.
