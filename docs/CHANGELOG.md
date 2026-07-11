@@ -3751,3 +3751,9 @@ Safety:
 
 Added the Multi-Strategy Backtest Pack with deterministic OHLCV fixtures, reusable strategy backtesting, conservative cost treatment, three baselines, SQLite persistence, safety checks, reporting, and focused tests.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## 2026-07-11 — Mission 84.7
+
+Added the Walk-Forward Robustness Gate with deterministic expanding-window test construction, per-window cost-aware backtesting, cash/buy-and-hold/random comparisons, aggregate robustness thresholds, SQLite persistence, governance reporting, and focused tests.
+<!-- MISSION-84-7:END -->

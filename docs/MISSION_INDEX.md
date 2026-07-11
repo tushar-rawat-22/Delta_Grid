@@ -642,3 +642,11 @@ Important:
 
 Implements actual local/offchain fixture-based research backtests for the 72 Mission 84.5 plan entries. Records datasets, results, baselines, checks, and reports. Preserves all no-live, no-capital, no-training, and no-profitability-claim locks.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## Mission 84.7
+
+**Walk-Forward Robustness Gate**
+
+Evaluates Mission 84.6 synthetic-fixture strategy results across deterministic out-of-sample windows. Stores window results, aggregate robustness classifications, checks, and reports without tuning, training, deployment, live signals, capital, or profitability claims.
+<!-- MISSION-84-7:END -->

@@ -3543,3 +3543,9 @@ Not approved:
 
 Decision: use deterministic local synthetic OHLCV fixtures for Mission 84.6 so the complete multi-strategy backtest contract can be verified without live data dependencies, paid APIs, keys, orders, or capital. Treat all resulting metrics as unvalidated research observations. Mission 85 stays paused.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## 2026-07-11 — Require walk-forward evidence before alpha promotion
+
+Decision: full-period synthetic backtest performance is insufficient for candidate promotion. Every candidate must be evaluated across deterministic later test windows with conservative costs and explicit stability thresholds. Robust fixture classification remains research-only and does not authorize live use or Mission 85.
+<!-- MISSION-84-7:END -->

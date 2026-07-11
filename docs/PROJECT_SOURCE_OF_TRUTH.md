@@ -5204,3 +5204,21 @@ Next valid phase:
 - Next mission: Mission 84.7 Walk-Forward Robustness Gate.
 - Safety: no live trading, capital, orders, keys, paid APIs, live signals, model training, artifacts, promotion, strategy reweighting, or profitability claims.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## Mission 84.7 Source of Truth
+
+- Source run: `mission84-6-final-check`.
+- Expected source backtests: 72.
+- Evaluation: deterministic expanding-window out-of-sample fixture research.
+- Default windows: 120 context bars, 40 test bars, 40-bar step.
+- Minimum windows per candidate: 3.
+- Default positive-window threshold: two-thirds.
+- Default worst-window drawdown ceiling: 25 percent.
+- Default return-dispersion ceiling: 20 percentage points.
+- Tables: `ai_walk_forward_robustness_runs`, `ai_walk_forward_robustness_windows`, `ai_walk_forward_robustness_results`, `ai_walk_forward_robustness_checks`, and `ai_walk_forward_robustness_reports`.
+- Passing status means synthetic-fixture robustness only, not promotion or profitability.
+- Mission 85 remains paused.
+- Next mission: Mission 84.8 Alpha Candidate Promotion Pack.
+- Safety: no live trading, capital, orders, keys, paid APIs, live signals, model training, artifacts, promotion, strategy reweighting, or profitability claims.
+<!-- MISSION-84-7:END -->

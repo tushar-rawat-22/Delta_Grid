@@ -337,3 +337,11 @@ Status: implemented for local fixture-based research validation.
 
 The pack reads Mission 84.5 benchmark plans, creates deterministic OHLCV fixtures across CRYPTO, FX, and ETF_MACRO for 1D, 4H, and 1H, runs all eight strategy families, applies conservative costs, and compares against three baselines. No result is eligible for promotion until Mission 84.7 walk-forward robustness checks pass.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## Mission 84.7 Walk-Forward Robustness Gate
+
+The gate consumes Mission 84.6 datasets and results, evaluates later test windows using only preceding context, preserves fixed strategy logic, includes conservative costs, and compares against cash, buy-and-hold, and deterministic-random baselines.
+
+Candidate robustness requires stable positive out-of-sample fixture observations under explicit thresholds. Failed candidates remain blocked. Passing candidates remain unpromoted and may only proceed to Mission 84.8 research review.
+<!-- MISSION-84-7:END -->

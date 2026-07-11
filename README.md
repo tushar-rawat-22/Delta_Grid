@@ -210,3 +210,9 @@ Next phase:
 
 DeltaGrid now includes deterministic local fixture-based paper backtests for all 72 Mission 84.5 benchmark plan entries. Each result includes conservative transaction-cost assumptions and cash, buy-and-hold, and deterministic-random baselines. Results are synthetic research observations only, not profitability claims. Mission 85 remains paused; the next valid phase is Mission 84.7 Walk-Forward Robustness Gate.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## Mission 84.7 — Walk-Forward Robustness Gate
+
+DeltaGrid now evaluates every Mission 84.6 synthetic-fixture backtest through deterministic expanding-window out-of-sample tests. The gate records per-window performance, baseline comparisons, stability metrics, candidate classifications, governance checks, and reports in SQLite. A robust-fixture classification is not a profitability claim and does not promote a model or strategy. Mission 85 remains paused.
+<!-- MISSION-84-7:END -->

@@ -694,3 +694,9 @@ research recommendations
 
 The alpha research path now has a deterministic local backtest execution layer between benchmark planning and robustness validation. Mission 84.6 consumes Mission 84.5 plans and writes synthetic fixture datasets, strategy results, baselines, governance checks, and reports to SQLite. This layer is research-only and cannot emit live signals or place orders.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## Architecture State After Mission 84.7
+
+The institutional alpha path now contains a deterministic walk-forward robustness layer after multi-strategy backtesting. The layer consumes persisted fixture datasets, evaluates expanding out-of-sample windows, aggregates stability evidence, and blocks insufficient candidates. It cannot tune or promote strategies, train models, emit live signals, place orders, or deploy capital.
+<!-- MISSION-84-7:END -->

@@ -692,3 +692,16 @@ Safety:
 
 Next: Mission 84.7 Walk-Forward Robustness Gate.
 <!-- MISSION-84-6:END -->
+
+<!-- MISSION-84-7:START -->
+## Mission 84.7 — Walk-Forward Robustness Gate
+
+- Consume all Mission 84.6 fixture backtests.
+- Build deterministic expanding-window out-of-sample tests.
+- Record per-window and aggregate robustness metrics.
+- Enforce positive-window, drawdown, dispersion, and baseline-relative thresholds.
+- Persist candidate pass/block reasons and reports.
+- Preserve all safety and Mission 85 pause locks.
+
+Next: Mission 84.8 Alpha Candidate Promotion Pack.
+<!-- MISSION-84-7:END -->
