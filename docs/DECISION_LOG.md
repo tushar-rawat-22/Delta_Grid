@@ -3549,3 +3549,9 @@ Decision: use deterministic local synthetic OHLCV fixtures for Mission 84.6 so t
 
 Decision: full-period synthetic backtest performance is insufficient for candidate promotion. Every candidate must be evaluated across deterministic later test windows with conservative costs and explicit stability thresholds. Robust fixture classification remains research-only and does not authorize live use or Mission 85.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## 2026-07-11 — Do not unpause Mission 85 from synthetic evidence
+
+Decision: Mission 84.7 robust fixture status supports provisional research registration only. Synthetic data cannot establish deployable alpha or profitability. Candidates must proceed to local/free real-data replication.
+<!-- MISSION-84-8:END -->

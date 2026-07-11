@@ -5222,3 +5222,19 @@ Next valid phase:
 - Next mission: Mission 84.8 Alpha Candidate Promotion Pack.
 - Safety: no live trading, capital, orders, keys, paid APIs, live signals, model training, artifacts, promotion, strategy reweighting, or profitability claims.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## Mission 84.8 Source of Truth
+
+- Source run: `mission84-7-final-check`.
+- Expected source candidates: 72.
+- Source robust fixture candidates: 35.
+- Source blocked candidates: 37.
+- Promotion type: provisional fixture-only shadow-research registration.
+- No minimum number of registrations is forced.
+- Tables: `ai_alpha_candidate_promotion_runs`, `ai_alpha_candidate_reviews`, `ai_alpha_candidate_registry`, `ai_alpha_candidate_promotion_checks`, and `ai_alpha_candidate_promotion_reports`.
+- Registry status: `PROVISIONAL_ALPHA_RESEARCH_CANDIDATE_FIXTURE_ONLY_UNVALIDATED`.
+- Mission 85 remains paused.
+- Next mission: Mission 84.9 Real-Data Alpha Replication Pack.
+- Safety: no live trading, capital, orders, keys, paid APIs, live signals, model training, artifacts, model promotion, strategy reweighting, or profitability claims.
+<!-- MISSION-84-8:END -->

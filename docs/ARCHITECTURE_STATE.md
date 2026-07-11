@@ -700,3 +700,9 @@ The alpha research path now has a deterministic local backtest execution layer b
 
 The institutional alpha path now contains a deterministic walk-forward robustness layer after multi-strategy backtesting. The layer consumes persisted fixture datasets, evaluates expanding out-of-sample windows, aggregates stability evidence, and blocks insufficient candidates. It cannot tune or promote strategies, train models, emit live signals, place orders, or deploy capital.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## Architecture State After Mission 84.8
+
+The institutional alpha path now includes deterministic candidate promotion review after walk-forward robustness. It stores complete reviews and a provisional fixture-only registry. Real-data replication remains mandatory before any later promotion discussion.
+<!-- MISSION-84-8:END -->

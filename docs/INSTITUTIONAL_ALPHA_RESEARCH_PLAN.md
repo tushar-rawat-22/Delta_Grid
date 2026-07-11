@@ -345,3 +345,11 @@ The gate consumes Mission 84.6 datasets and results, evaluates later test window
 
 Candidate robustness requires stable positive out-of-sample fixture observations under explicit thresholds. Failed candidates remain blocked. Passing candidates remain unpromoted and may only proceed to Mission 84.8 research review.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## Mission 84.8 Alpha Candidate Promotion Pack
+
+The pack reviews every Mission 84.7 result and preserves its robustness and safety evidence. Only candidates satisfying the full deterministic rule set may enter the provisional fixture-only alpha registry.
+
+Provisional registration does not unpause Mission 85. The next required stage is Mission 84.9 Real-Data Alpha Replication Pack using local/free historical data.
+<!-- MISSION-84-8:END -->

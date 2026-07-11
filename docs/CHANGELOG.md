@@ -3757,3 +3757,9 @@ Added the Multi-Strategy Backtest Pack with deterministic OHLCV fixtures, reusab
 
 Added the Walk-Forward Robustness Gate with deterministic expanding-window test construction, per-window cost-aware backtesting, cash/buy-and-hold/random comparisons, aggregate robustness thresholds, SQLite persistence, governance reporting, and focused tests.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## 2026-07-11 — Mission 84.8
+
+Added the Alpha Candidate Promotion Pack with deterministic review rules, provisional fixture-only registry, inherited safety validation, SQLite persistence, governance reporting, and focused tests.
+<!-- MISSION-84-8:END -->

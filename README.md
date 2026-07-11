@@ -216,3 +216,9 @@ DeltaGrid now includes deterministic local fixture-based paper backtests for all
 
 DeltaGrid now evaluates every Mission 84.6 synthetic-fixture backtest through deterministic expanding-window out-of-sample tests. The gate records per-window performance, baseline comparisons, stability metrics, candidate classifications, governance checks, and reports in SQLite. A robust-fixture classification is not a profitability claim and does not promote a model or strategy. Mission 85 remains paused.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## Mission 84.8 — Alpha Candidate Promotion Pack
+
+DeltaGrid now performs deterministic review of Mission 84.7 walk-forward results. Eligible results may enter a provisional fixture-only local shadow-research registry. This status does not authorize model training, model promotion, live signals, orders, capital, reweighting, or profitability claims. Mission 85 remains paused.
+<!-- MISSION-84-8:END -->

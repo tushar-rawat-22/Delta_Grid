@@ -650,3 +650,11 @@ Implements actual local/offchain fixture-based research backtests for the 72 Mis
 
 Evaluates Mission 84.6 synthetic-fixture strategy results across deterministic out-of-sample windows. Stores window results, aggregate robustness classifications, checks, and reports without tuning, training, deployment, live signals, capital, or profitability claims.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## Mission 84.8
+
+**Alpha Candidate Promotion Pack**
+
+Creates a provisional fixture-only alpha research registry from eligible Mission 84.7 results. Registration cannot train or promote models, emit live signals, place orders, deploy capital, reweight strategies, or make profitability claims.
+<!-- MISSION-84-8:END -->

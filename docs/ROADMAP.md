@@ -705,3 +705,15 @@ Next: Mission 84.7 Walk-Forward Robustness Gate.
 
 Next: Mission 84.8 Alpha Candidate Promotion Pack.
 <!-- MISSION-84-7:END -->
+
+<!-- MISSION-84-8:START -->
+## Mission 84.8 — Alpha Candidate Promotion Pack
+
+- Consume all Mission 84.7 robustness results.
+- Review every candidate with deterministic evidence rules.
+- Prevent blocked candidates from entering the registry.
+- Persist reviews, registry entries, checks, and reports.
+- Preserve all safety locks and keep Mission 85 paused.
+
+Next: Mission 84.9 Real-Data Alpha Replication Pack.
+<!-- MISSION-84-8:END -->
