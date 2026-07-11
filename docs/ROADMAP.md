@@ -679,3 +679,16 @@ Safety:
 - no strategy reweighting
 - no live trading
 - no exchange orders
+
+<!-- MISSION-84-6:START -->
+## Mission 84.6 — Multi-Strategy Backtest Pack
+
+- Implement deterministic local OHLCV fixture datasets.
+- Execute all Mission 84.5 benchmark plan entries.
+- Include transaction costs, slippage, spread, funding, and borrow assumptions.
+- Compare with cash, buy-and-hold, and deterministic-random baselines.
+- Persist results and safety checks in SQLite.
+- Keep Mission 85 paused.
+
+Next: Mission 84.7 Walk-Forward Robustness Gate.
+<!-- MISSION-84-6:END -->

@@ -204,3 +204,9 @@ It does not:
 Next phase:
 
 - Mission 84.6 Multi-Strategy Backtest Pack
+
+<!-- MISSION-84-6:START -->
+## Mission 84.6 — Multi-Strategy Backtest Pack
+
+DeltaGrid now includes deterministic local fixture-based paper backtests for all 72 Mission 84.5 benchmark plan entries. Each result includes conservative transaction-cost assumptions and cash, buy-and-hold, and deterministic-random baselines. Results are synthetic research observations only, not profitability claims. Mission 85 remains paused; the next valid phase is Mission 84.7 Walk-Forward Robustness Gate.
+<!-- MISSION-84-6:END -->

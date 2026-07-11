@@ -5190,3 +5190,17 @@ Safety:
 Next valid phase:
 
 - Mission 84.6 Multi-Strategy Backtest Pack
+
+<!-- MISSION-84-6:START -->
+## Mission 84.6 Source of Truth
+
+- Source benchmark run: Mission 84.5 Institutional Alpha Research Benchmark Lab.
+- Expected source plan entries: 72.
+- Execution mode: deterministic local synthetic-fixture paper backtests.
+- Strategy families: all eight Mission 84.5 families.
+- Baselines: cash, buy-and-hold, deterministic random.
+- Persistence: ai_multi_strategy_backtest_runs, ai_multi_strategy_backtest_datasets, ai_multi_strategy_backtest_results, ai_multi_strategy_backtest_baselines, ai_multi_strategy_backtest_checks, ai_multi_strategy_backtest_reports.
+- Mission 85: paused until robust alpha candidates exist.
+- Next mission: Mission 84.7 Walk-Forward Robustness Gate.
+- Safety: no live trading, capital, orders, keys, paid APIs, live signals, model training, artifacts, promotion, strategy reweighting, or profitability claims.
+<!-- MISSION-84-6:END -->

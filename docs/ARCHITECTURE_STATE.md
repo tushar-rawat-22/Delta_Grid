@@ -688,3 +688,9 @@ research recommendations
   -> walk-forward robustness gate
   -> alpha candidate promotion pack
   -> model promotion engine
+
+<!-- MISSION-84-6:START -->
+## Architecture State After Mission 84.6
+
+The alpha research path now has a deterministic local backtest execution layer between benchmark planning and robustness validation. Mission 84.6 consumes Mission 84.5 plans and writes synthetic fixture datasets, strategy results, baselines, governance checks, and reports to SQLite. This layer is research-only and cannot emit live signals or place orders.
+<!-- MISSION-84-6:END -->

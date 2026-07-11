@@ -329,3 +329,11 @@ It keeps Mission 85 paused until robust alpha candidates exist.
 Next:
 
 - Mission 84.6 Multi-Strategy Backtest Pack
+
+<!-- MISSION-84-6:START -->
+## Mission 84.6 Multi-Strategy Backtest Pack
+
+Status: implemented for local fixture-based research validation.
+
+The pack reads Mission 84.5 benchmark plans, creates deterministic OHLCV fixtures across CRYPTO, FX, and ETF_MACRO for 1D, 4H, and 1H, runs all eight strategy families, applies conservative costs, and compares against three baselines. No result is eligible for promotion until Mission 84.7 walk-forward robustness checks pass.
+<!-- MISSION-84-6:END -->

@@ -3537,3 +3537,9 @@ Not approved:
 - live signal generation
 - exchange execution
 - private key access
+
+<!-- MISSION-84-6:START -->
+## 2026-07-11 — Execute fixture backtests before robustness promotion
+
+Decision: use deterministic local synthetic OHLCV fixtures for Mission 84.6 so the complete multi-strategy backtest contract can be verified without live data dependencies, paid APIs, keys, orders, or capital. Treat all resulting metrics as unvalidated research observations. Mission 85 stays paused.
+<!-- MISSION-84-6:END -->

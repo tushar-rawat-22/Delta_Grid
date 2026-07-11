@@ -3745,3 +3745,9 @@ Safety:
 - no capital deployment
 - no exchange orders
 - no live signals
+
+<!-- MISSION-84-6:START -->
+## 2026-07-11 — Mission 84.6
+
+Added the Multi-Strategy Backtest Pack with deterministic OHLCV fixtures, reusable strategy backtesting, conservative cost treatment, three baselines, SQLite persistence, safety checks, reporting, and focused tests.
+<!-- MISSION-84-6:END -->
