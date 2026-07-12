@@ -27,3 +27,7 @@ __pycache__/
 
 # DeltaGrid runtime mission logs
 reports/mission_logs/
+
+# MISSION-86-RUNTIME:START
+offchain/data/mission86/
+# MISSION-86-RUNTIME:END
