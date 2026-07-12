@@ -889,3 +889,19 @@ Mission 89 is complete.
 Detailed authoritative evidence:
 `docs/MISSION89_BASELINE_FALSIFICATION.md`
 <!-- MISSION-89-BASELINE-FALSIFICATION:END -->
+
+<!-- MISSION-90-DIRECTIONAL-TOURNAMENT:START -->
+## Mission 90 — Directional Strategy Tournament and Charter Lock
+
+Mission 90 is complete with decision `REJECT_ALL_DIRECTIONAL_HYPOTHESES`.
+
+The authoritative evidence and scope are documented in
+`docs/MISSION90_DIRECTIONAL_TOURNAMENT.md`.
+
+- Selected variant: `NONE`
+- Selected family: `NONE`
+- Validation rows read: 0
+- Holdout rows read: 0
+- Mission 91 status: `NOT_AUTHORIZED_ALL_DIRECTIONAL_HYPOTHESES_REJECTED`
+- Next workstream: `NEW_ECONOMIC_HYPOTHESIS_DISCOVERY`
+<!-- MISSION-90-DIRECTIONAL-TOURNAMENT:END -->
