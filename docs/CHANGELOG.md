@@ -3920,3 +3920,19 @@ Next mission:
 
 `Mission 89 Baseline Strategy Falsification`
 <!-- MISSION-88-COST-MODEL:END -->
+
+<!-- MISSION-89-BASELINE-FALSIFICATION:START -->
+## Mission 89 End-to-End Baseline Strategy Falsification
+
+Mission 89 is complete.
+
+- Decision: `REJECT_AND_ARCHIVE_FUNDING_CARRY`
+- Selected candidate: `NONE`
+- Twelve preregistered variants were evaluated across development and validation.
+- Holdout rows read: 0
+- Mission 90 status: `NOT_AUTHORIZED_STRATEGY_REJECTED`
+- Next workstream: `NEW_ECONOMIC_HYPOTHESIS_CHARTER`
+
+Detailed authoritative evidence:
+`docs/MISSION89_BASELINE_FALSIFICATION.md`
+<!-- MISSION-89-BASELINE-FALSIFICATION:END -->
