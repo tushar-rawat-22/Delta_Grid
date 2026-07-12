@@ -1,0 +1,216 @@
+{
+  "contract": {
+    "allowed_decisions": [
+      "ACCEPT_FOR_LIVE_SHADOW_PAPER_EXECUTION",
+      "CONTINUE_COLLECTING_EVIDENCE",
+      "REVISE_CONTRACT_AND_INVALIDATE_EXISTING_HOLDOUT",
+      "REJECT_STRATEGY"
+    ],
+    "change_control": {
+      "asset_addition_after_holdout_invalidates_holdout": true,
+      "cost_reduction_after_holdout_invalidates_holdout": true,
+      "failed_strategy_may_not_be_rescued_with_machine_learning": true,
+      "holdout_reuse_allowed": false,
+      "parameter_change_after_holdout_invalidates_holdout": true,
+      "semantic_change_requires_new_contract_version": true
+    },
+    "contract_id": "mission85-crypto-funding-carry-charter-v1",
+    "contract_status": "LOCKED_BEFORE_REAL_MARKET_DATA_COLLECTION",
+    "contract_version": 1,
+    "data_contract": {
+      "allow_offline_sample": false,
+      "allow_sample_fallback": false,
+      "allow_silent_substitution": false,
+      "allow_synthetic_data": false,
+      "canonical_interval": "1h",
+      "derived_intervals": [
+        "4h",
+        "1d"
+      ],
+      "end_time_exclusive": "2026-07-01T00:00:00+00:00",
+      "preserve_raw_responses": true,
+      "require_response_hashes": true,
+      "require_source_provenance": true,
+      "required_streams": [
+        "spot_ohlcv",
+        "perpetual_ohlcv",
+        "mark_price_ohlcv",
+        "index_price_ohlcv",
+        "funding_rates"
+      ],
+      "start_time": "2024-01-01T00:00:00+00:00",
+      "timezone": "UTC"
+    },
+    "economic_mechanism": {
+      "payer": "Directional perpetual-market participants paying positive funding to maintain leveraged long exposure.",
+      "position": "LONG_SPOT_SHORT_USDT_PERPETUAL",
+      "potential_return_sources": [
+        "positive_perpetual_funding_received",
+        "controlled_basis_convergence"
+      ],
+      "principal_risks": [
+        "funding_rate_reversal",
+        "basis_expansion",
+        "temporary_unhedged_exposure",
+        "fees_and_slippage",
+        "liquidity_deterioration",
+        "venue_outage",
+        "collateral_mismatch",
+        "liquidation_risk"
+      ]
+    },
+    "initial_cost_assumptions": {
+      "cost_reduction_after_results_allowed": false,
+      "perpetual_entry_fee_bps": 5.0,
+      "perpetual_exit_fee_bps": 5.0,
+      "perpetual_slippage_per_side_bps": 2.0,
+      "rebalance_cost_bps": 2.0,
+      "spot_entry_fee_bps": 10.0,
+      "spot_exit_fee_bps": 10.0,
+      "spot_slippage_per_side_bps": 2.0,
+      "status": "CONSERVATIVE_INITIAL_LOCK_PENDING_MISSION88_CALIBRATION",
+      "stress_cost_multiplier": 2.0
+    },
+    "legacy_plan_resolution": {
+      "legacy_plan_name": "Mission 85 Model Promotion Engine",
+      "legacy_plan_status": "RETIRED_UNBUILT_AFTER_MISSION84_CLOSURE",
+      "reason": "Mission 84 closed with zero real-data validated alpha candidates and zero training-eligible candidates."
+    },
+    "mission86_authorization": {
+      "authorized_scope": "PUBLIC_REAL_MARKET_DATA_COLLECTION_AND_CERTIFICATION_ONLY",
+      "backtesting_authorized": false,
+      "capital_deployment_authorized": false,
+      "live_trading_authorized": false,
+      "model_promotion_authorized": false,
+      "model_training_authorized": false
+    },
+    "mission_name": "Mission 85 Crypto Funding-Carry Research Charter",
+    "observable_signal_contract": {
+      "basis_definition": "10000 * (perpetual_mark_price / spot_price - 1)",
+      "entry_decision_timing": "AFTER_A_FUNDING_SETTLEMENT_USING_ONLY_INFORMATION AVAILABLE_AT_OR_BEFORE_THE_DECISION_TIMESTAMP",
+      "funding_lookback_settlements": 3,
+      "funding_signal_source": "TRAILING_SETTLED_FUNDING_RATES_ONLY",
+      "future_funding_rate_use_allowed": false,
+      "lookahead_allowed": false
+    },
+    "parameter_budget": {
+      "evaluate_all_predeclared_variants": true,
+      "maximum_absolute_entry_basis_bps": [
+        25.0,
+        50.0
+      ],
+      "maximum_holding_days": [
+        7,
+        14
+      ],
+      "maximum_total_variants": 12,
+      "minimum_trailing_funding_rate_bps": [
+        0.5,
+        1.0,
+        2.0
+      ],
+      "post_holdout_tuning_allowed": false
+    },
+    "predeclared_rejection_criteria": {
+      "maximum_probability_of_backtest_overfitting": 0.2,
+      "maximum_single_asset_pnl_contribution_pct": 60.0,
+      "maximum_single_quarter_pnl_contribution_pct": 50.0,
+      "maximum_strategy_drawdown_pct": 10.0,
+      "minimum_deflated_sharpe_probability": 0.95,
+      "minimum_positive_asset_count": 2,
+      "minimum_untouched_holdout_closed_positions": 12,
+      "reject_if_aggregate_net_return_after_base_costs_nonpositive": true,
+      "reject_if_aggregate_net_return_after_stress_costs_nonpositive": true,
+      "require_no_single_period_dependency": true,
+      "require_parameter_neighbourhood_stability": true,
+      "require_positive_untouched_holdout_after_stress_costs": true
+    },
+    "research_objective": {
+      "alternative_hypothesis": "Persistent positive funding may produce positive net carry after conservative costs for at least two of BTC, ETH, and SOL without excessive concentration or drawdown.",
+      "null_hypothesis": "A fully collateralized long-spot short-perpetual strategy does not produce positive net risk-adjusted carry after conservative execution costs and basis risk.",
+      "priority": "FALSIFICATION_BEFORE_PROMOTION",
+      "profitability_assumed": false,
+      "profitability_claim_allowed": false
+    },
+    "research_splits": [
+      {
+        "end_exclusive": "2025-07-01T00:00:00+00:00",
+        "maximum_holdout_reads": null,
+        "name": "development",
+        "parameter_tuning_allowed": true,
+        "start": "2024-01-01T00:00:00+00:00"
+      },
+      {
+        "end_exclusive": "2026-01-01T00:00:00+00:00",
+        "maximum_holdout_reads": null,
+        "name": "validation",
+        "parameter_tuning_allowed": false,
+        "start": "2025-07-01T00:00:00+00:00"
+      },
+      {
+        "end_exclusive": "2026-07-01T00:00:00+00:00",
+        "maximum_holdout_reads": 1,
+        "name": "untouched_holdout",
+        "parameter_tuning_allowed": false,
+        "start": "2026-01-01T00:00:00+00:00"
+      }
+    ],
+    "safety": {
+      "capital_deployment": "BLOCKED",
+      "leverage_above_one_allowed": false,
+      "live_order_sent": 0,
+      "live_trading": "DISABLED",
+      "model_promotion_allowed": false,
+      "model_training_allowed": false,
+      "paid_api_allowed": false,
+      "private_keys_allowed": false,
+      "profitability_claim_allowed": false,
+      "real_orders_allowed": false,
+      "signing_allowed": false
+    },
+    "strategy_rules": {
+      "automatic_strategy_reweighting_allowed": false,
+      "emergency_exit_absolute_basis_bps": 150.0,
+      "entry_requires_positive_trailing_funding": true,
+      "exit_after_nonpositive_funding_settlements": 2,
+      "fully_collateralized_research": true,
+      "machine_learning_allowed": false,
+      "perpetual_leverage_cap": 1.0,
+      "position_direction": "LONG_SPOT_SHORT_PERPETUAL",
+      "rebalance_delta_drift_pct": 1.0,
+      "spot_borrowing_allowed": false,
+      "target_delta": 0.0,
+      "target_notional_ratio": 1.0
+    },
+    "universe": {
+      "asset_count": 3,
+      "perpetual_symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "quote_asset": "USDT",
+      "spot_symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ]
+    },
+    "venue": {
+      "perpetual_market": "BINANCE_USDS_M_PUBLIC_REST",
+      "private_api_required": false,
+      "public_market_data_only": true,
+      "single_venue_research": true,
+      "spot_market": "BINANCE_SPOT_PUBLIC_REST",
+      "venue_name": "BINANCE"
+    }
+  },
+  "contract_hash_sha256": "b7aec799a1d63dae5441118159d8fea5cafa0b62e69161d0b43e2e6c1a7e2ebf",
+  "contract_status": "LOCKED_BEFORE_REAL_MARKET_DATA_COLLECTION",
+  "locked_at": "2026-07-12T08:25:14+00:00"
+}
