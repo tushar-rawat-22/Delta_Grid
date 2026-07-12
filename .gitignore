@@ -31,3 +31,7 @@ reports/mission_logs/
 # MISSION-86-RUNTIME:START
 offchain/data/mission86/
 # MISSION-86-RUNTIME:END
+
+# MISSION-87-RUNTIME:START
+offchain/data/mission87/
+# MISSION-87-RUNTIME:END
