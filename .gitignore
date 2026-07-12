@@ -39,3 +39,7 @@ offchain/data/mission87/
 # MISSION-88-RUNTIME:START
 offchain/data/mission88/
 # MISSION-88-RUNTIME:END
+
+# MISSION-89-RUNTIME:START
+offchain/data/mission89/
+# MISSION-89-RUNTIME:END

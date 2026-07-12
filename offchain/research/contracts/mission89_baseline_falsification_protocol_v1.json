@@ -1,0 +1,90 @@
+{
+  "locked_at": "2026-07-12T13:37:11+00:00",
+  "protocol": {
+    "cost_policy": {
+      "conservative_role": "MANDATORY_PROMOTION_GATE",
+      "cost_reduction_after_results_allowed": false,
+      "normal_role": "BASE_CASE_REPORTING",
+      "severe_profitability_required": false,
+      "severe_role": "DIAGNOSTIC_SURVIVABILITY_ONLY"
+    },
+    "decision_policy": {
+      "advance": "ADVANCE_TO_MISSION90_UNTOUCHED_HOLDOUT",
+      "continue": "CONTINUE_COLLECTING_EVIDENCE_NO_HOLDOUT_ACCESS",
+      "failed_strategy_archived": true,
+      "insufficient_evidence_conditions": [
+        "validation_closed_positions_below_minimum",
+        "statistical_sample_too_small_for_deflated_sharpe"
+      ],
+      "reject": "REJECT_AND_ARCHIVE_FUNDING_CARRY"
+    },
+    "evaluation_windows": {
+      "development": "SELECTION_ALLOWED",
+      "untouched_holdout": "SEALED_AND_FORBIDDEN",
+      "validation": "FIXED_CANDIDATE_ONLY"
+    },
+    "mandatory_validation_gates": {
+      "conservative_net_pnl_positive": true,
+      "maximum_probability_of_backtest_overfitting": 0.2,
+      "maximum_realized_and_marked_drawdown_pct": 10.0,
+      "maximum_single_asset_positive_pnl_contribution_pct": 60.0,
+      "maximum_single_quarter_positive_pnl_contribution_pct": 50.0,
+      "maximum_single_regime_positive_pnl_contribution_pct": 80.0,
+      "minimum_active_volatility_regime_count": 2,
+      "minimum_closed_positions": 12,
+      "minimum_deflated_sharpe_probability": 0.95,
+      "minimum_parameter_neighbor_count": 2,
+      "minimum_positive_asset_count": 2,
+      "minimum_positive_neighbor_fraction": 0.5,
+      "normal_net_pnl_positive": true
+    },
+    "mission": "Mission 89 End-to-End Baseline Strategy Falsification Pack",
+    "notional_policy": {
+      "pair_notional_return_secondary": true,
+      "primary_band": "SMALL_RESEARCH_10K",
+      "primary_return_denominator": "TOTAL_FULLY_COLLATERALIZED_CAPITAL",
+      "sensitivity_bands": [
+        "MICRO_RESEARCH_1K",
+        "UPPER_RESEARCH_50K"
+      ]
+    },
+    "protocol_id": "mission89-baseline-falsification-protocol-v1",
+    "protocol_version": 1,
+    "research_boundary": {
+      "capital_deployment_allowed": false,
+      "holdout_rows_allowed": 0,
+      "live_trading_allowed": false,
+      "model_promotion_allowed": false,
+      "model_training_allowed": false,
+      "profitability_claim_allowed": false
+    },
+    "scope": "DEVELOPMENT_AND_VALIDATION_ONLY",
+    "source_lineage": {
+      "certificate_hash": "e4d78b99417c1acb9bd89e7a8ef175cbf0c0e1219c1f71777401be41b8978819",
+      "certification_run_label": "mission87-final-check",
+      "contract_hash": "b7aec799a1d63dae5441118159d8fea5cafa0b62e69161d0b43e2e6c1a7e2ebf",
+      "contract_id": "mission85-crypto-funding-carry-charter-v1",
+      "cost_model_hash": "398cc556614a97767fea36540556442579f195562a9ed16c18cc9561b78fc8a2",
+      "cost_model_run_label": "mission88-final-check"
+    },
+    "strategy_evaluation": {
+      "development_selection_count_maximum": 1,
+      "evaluate_all_preregistered_variants": true,
+      "expected_variant_count": 12,
+      "machine_learning_rescue_allowed": false,
+      "post_validation_tuning_allowed": false,
+      "validation_candidate_replacement_allowed": false
+    },
+    "timing_policy": {
+      "entry_execution": "STRICTLY_NEXT_HOURLY_BAR_OPEN",
+      "exit_execution": "STRICTLY_NEXT_HOURLY_BAR_OPEN",
+      "lookahead_allowed": false,
+      "rebalance_execution": "STRICTLY_NEXT_HOURLY_BAR_OPEN",
+      "same_bar_execution_allowed": false,
+      "signal_information": "SETTLED_FUNDING_AT_OR_BEFORE_DECISION_ONLY",
+      "trigger_funding_collectible": false
+    }
+  },
+  "protocol_hash_sha256": "89a17f61823592f112a5f6d6b61a2015e01646e76e78fb61bd140def72d1738c",
+  "status": "LOCKED_BEFORE_MISSION89_RESULT_EVALUATION"
+}
