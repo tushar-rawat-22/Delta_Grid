@@ -306,3 +306,40 @@ Next mission:
 
 `Mission 87 Dataset Certification and Quality Gate`
 <!-- MISSION-86-DATA-FOUNDATION:END -->
+
+<!-- MISSION-87-CERTIFICATION:START -->
+## Mission 87 Dataset Certification and Quality Gate
+
+Mission 87 is complete.
+
+- Certification run: `mission87-final-check`
+- Source run: `mission86-final-check`
+- Contract hash: `b7aec799a1d63dae5441118159d8fea5cafa0b62e69161d0b43e2e6c1a7e2ebf`
+- Source manifest hash: `a6cb2ecaea2d02cf30a977436004bda74085db608f6b66500f5922292f650a96`
+- Certificate hash: `e4d78b99417c1acb9bd89e7a8ef175cbf0c0e1219c1f71777401be41b8978819`
+- Certification status: `CERTIFIED_FOR_RESEARCH_PENDING_EXECUTION_COST_MODEL`
+- Bar series certified: 12
+- Funding series certified: 3
+- Total series certified: 15
+- Rejected series: 0
+- Raw responses verified: 276
+- Market bars verified: 262656
+- Funding observations verified: 8208
+- Quality checks: 23 passed, 0 failed
+- Safety breaches: 0
+- Mission 88 status: `READY_FOR_EXECUTION_AND_COST_REALITY_MODEL`
+
+Mission 87 verified raw gzip containment, body and response hashes, exact
+raw-to-normalized equivalence, hourly continuity, chronological split
+coverage, OHLC integrity, funding settlement schedules, funding mark
+references, and cross-stream consistency.
+
+The untouched holdout received structural quality checks only. No strategy
+backtest, holdout performance evaluation, model training, signal generation,
+capital deployment, or profitability analysis occurred.
+
+Mission 87 performed no strategy backtest, holdout performance evaluation, parameter selection, model training, model promotion, signal generation, order submission, capital deployment, or profitability analysis.
+
+Next mission:
+
+`Mission 88 Execution and Cost Reality Model`<!-- MISSION-87-CERTIFICATION:END -->
