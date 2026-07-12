@@ -1,0 +1,67 @@
+{
+  "charter": {
+    "charter_id": "mission90-directional-strategy-charter-v1",
+    "decision": "REJECT_ALL_DIRECTIONAL_HYPOTHESES",
+    "forbidden_actions": [
+      "LIVE_TRADING",
+      "ORDER_SUBMISSION",
+      "PRIVATE_KEY_USE",
+      "CAPITAL_DEPLOYMENT",
+      "MACHINE_LEARNING_RESCUE",
+      "POST_SELECTION_PARAMETER_TUNING",
+      "FALLBACK_CANDIDATE_AFTER_VALIDATION_FAILURE",
+      "FUNDING_CARRY_REOPENING"
+    ],
+    "funding_carry_status": "ARCHIVED_AFTER_BASELINE_FALSIFICATION",
+    "locked_cost_model": {
+      "cost_reduction_after_results_allowed": false,
+      "historical_order_book_calibrated": false,
+      "mandatory_scenario": "CONSERVATIVE_DIRECTIONAL",
+      "model": "MISSION90_SINGLE_LEG_DIRECTIONAL_ASSUMPTION_MODEL",
+      "severe_scenario_role": "DIAGNOSTIC_ONLY"
+    },
+    "locked_execution": {
+      "decision_interval_hours": 4,
+      "next_hour_open_only": true,
+      "same_bar_execution_allowed": false,
+      "strict_execution_delay_hours": 1
+    },
+    "locked_portfolio": {
+      "leverage_escalation_allowed": false,
+      "maximum_asset_fraction": 0.3333333333333333,
+      "maximum_gross_exposure_multiple": 1.0,
+      "primary_nav_band": "PRIMARY_30K",
+      "volatility_scaled_entry_sizing": true
+    },
+    "mission91_evaluation": {
+      "candidate_replacement_allowed": false,
+      "holdout_performance_already_read": false,
+      "next_workstream": "NEW_ECONOMIC_HYPOTHESIS_DISCOVERY",
+      "parameter_retuning_allowed": false,
+      "status": "NOT_AUTHORIZED_ALL_DIRECTIONAL_HYPOTHESES_REJECTED",
+      "untouched_holdout_split": {
+        "end_exclusive": "2026-07-01T00:00:00+00:00",
+        "maximum_holdout_reads": 1,
+        "name": "untouched_holdout",
+        "parameter_tuning_allowed": false,
+        "start": "2026-01-01T00:00:00+00:00"
+      },
+      "validation_performance_already_read": false,
+      "validation_split": {
+        "end_exclusive": "2026-01-01T00:00:00+00:00",
+        "maximum_holdout_reads": null,
+        "name": "validation",
+        "parameter_tuning_allowed": false,
+        "start": "2025-07-01T00:00:00+00:00"
+      }
+    },
+    "selected_development_result": null,
+    "selected_variant": null,
+    "source_mission89_decision": "REJECT_AND_ARCHIVE_FUNDING_CARRY",
+    "source_protocol_hash": "05fdb0f7d1e0362cc39acfef42632d86e3deb66d9ddae9d993a7906cfc58f942",
+    "source_protocol_id": "mission90-directional-tournament-protocol-v1"
+  },
+  "charter_hash_sha256": "8e8d270f81732d53f053e9599097ea61f8d78e5380d010ca36ba8325a11d82cf",
+  "locked_at": "2026-07-12T15:29:28+00:00",
+  "status": "LOCKED_NO_MISSION91_CANDIDATE"
+}

@@ -1,0 +1,330 @@
+{
+  "locked_at": "2026-07-12T15:29:28+00:00",
+  "protocol": {
+    "cost_policy": {
+      "assumptions_are_measured_microstructure": false,
+      "conservative_role": "MANDATORY_CANDIDATE_GATE",
+      "cost_reduction_after_results_allowed": false,
+      "mission88_usage": "METHODOLOGY_REFERENCE_NOT_DIRECT_TWO_LEG_REUSE",
+      "model": "MISSION90_SINGLE_LEG_DIRECTIONAL_ASSUMPTION_MODEL",
+      "normal_role": "DESCRIPTIVE_BASE_CASE",
+      "severe_role": "DIAGNOSTIC_ONLY"
+    },
+    "execution_timing": {
+      "funding_known_in_advance_allowed": false,
+      "lookahead_allowed": false,
+      "same_bar_execution_allowed": false,
+      "signal_execution": "STRICTLY_NEXT_HOURLY_OPEN_AFTER_DECISION",
+      "signal_source": "COMPLETED_HOURLY_BARS_SAMPLED_EVERY_4_HOURS"
+    },
+    "funding_carry_archive": {
+      "cost_reduction_allowed": false,
+      "machine_learning_rescue_allowed": false,
+      "retuning_allowed": false,
+      "status": "ARCHIVED_AFTER_BASELINE_FALSIFICATION",
+      "unused_holdout_opening_allowed": false
+    },
+    "mandatory_candidate_gates": {
+      "benchmark_superiority_required": true,
+      "maximum_cost_to_positive_gross_profit_ratio": 0.8,
+      "maximum_drawdown_pct": 35.0,
+      "maximum_single_asset_positive_contribution_pct": 75.0,
+      "maximum_single_quarter_positive_contribution_pct": 65.0,
+      "maximum_turnover_multiple": 60.0,
+      "micro_nav_conservative_return_must_be_positive": true,
+      "minimum_closed_trade_count": 12,
+      "minimum_conservative_net_return_pct": 0.0,
+      "minimum_conservative_sharpe": 0.5,
+      "minimum_neighbor_count": 1,
+      "minimum_positive_asset_count": 2,
+      "minimum_positive_neighbor_fraction": 0.5
+    },
+    "mission": "Mission 90 Directional Strategy Tournament and Charter Lock",
+    "portfolio_policy": {
+      "leverage_escalation_allowed": false,
+      "martingale_allowed": false,
+      "maximum_gross_exposure_multiple": 1.0,
+      "maximum_single_asset_nav_fraction": 0.3333333333333333,
+      "minimum_resize_interval_hours": 24,
+      "nav_bands": [
+        {
+          "nav_band": "MICRO_3K",
+          "per_asset_cap_usd": 1000.0,
+          "portfolio_nav_usd": 3000.0,
+          "rank": 1,
+          "slippage_size_multiplier": 1.0
+        },
+        {
+          "nav_band": "PRIMARY_30K",
+          "per_asset_cap_usd": 10000.0,
+          "portfolio_nav_usd": 30000.0,
+          "rank": 2,
+          "slippage_size_multiplier": 1.5
+        },
+        {
+          "nav_band": "UPPER_150K",
+          "per_asset_cap_usd": 50000.0,
+          "portfolio_nav_usd": 150000.0,
+          "rank": 3,
+          "slippage_size_multiplier": 3.0
+        }
+      ],
+      "primary_nav_band": "PRIMARY_30K",
+      "pyramiding_allowed": false,
+      "resize_threshold_fraction": 0.25,
+      "target_annualized_volatility": 0.6,
+      "volatility_abstention_ceiling": 2.5,
+      "volatility_floor": 0.1,
+      "volatility_scaled_entry_sizing": true
+    },
+    "protocol_id": "mission90-directional-tournament-protocol-v1",
+    "protocol_version": 1,
+    "research_boundary": {
+      "capital_deployment_allowed": false,
+      "holdout_rows_allowed": 0,
+      "live_trading_allowed": false,
+      "model_promotion_allowed": false,
+      "model_training_allowed": false,
+      "profitability_claim_allowed": false,
+      "validation_rows_allowed": 0
+    },
+    "selection_policy": {
+      "eligible_candidates_only": true,
+      "fallback_after_mission91_failure_allowed": false,
+      "ranking_order": [
+        "conservative_net_return_pct",
+        "calmar_ratio",
+        "sharpe_ratio",
+        "lower_drawdown",
+        "lower_turnover",
+        "lower_complexity"
+      ],
+      "tie_simplicity_order": [
+        "SPOT_TREND",
+        "PERPETUAL_TREND",
+        "VOLATILITY_BREAKOUT"
+      ]
+    },
+    "source_lineage": {
+      "mission85_contract_hash": "b7aec799a1d63dae5441118159d8fea5cafa0b62e69161d0b43e2e6c1a7e2ebf",
+      "mission87_certificate_hash": "e4d78b99417c1acb9bd89e7a8ef175cbf0c0e1219c1f71777401be41b8978819",
+      "mission88_cost_model_hash_methodology_reference": "398cc556614a97767fea36540556442579f195562a9ed16c18cc9561b78fc8a2",
+      "mission89_protocol_hash": "89a17f61823592f112a5f6d6b61a2015e01646e76e78fb61bd140def72d1738c",
+      "mission89_report_hash": "eb053bdfbac8d59ae4b79f4575c2b2bd90457889f14d5012b30ab84fa6030f48",
+      "mission89_run_label": "mission89-final-check"
+    },
+    "tournament_scope": {
+      "development_performance_allowed": true,
+      "excluded_families": [
+        "SHORT_HORIZON_MEAN_REVERSION",
+        "SCALPING",
+        "MARKET_MAKING",
+        "ORDER_BOOK_IMBALANCE",
+        "BROAD_CROSS_SECTIONAL_STATISTICAL_ARBITRAGE",
+        "OPTIONS",
+        "MACHINE_LEARNING_PREDICTION"
+      ],
+      "families": [
+        "SPOT_TREND",
+        "PERPETUAL_TREND",
+        "VOLATILITY_BREAKOUT"
+      ],
+      "selection_count_maximum": 1,
+      "untouched_holdout_performance_allowed": false,
+      "validation_performance_allowed": false,
+      "variant_count": 12
+    },
+    "variants": [
+      {
+        "complexity_rank": 1,
+        "cooldown_hours": 12,
+        "family": "SPOT_TREND",
+        "fast_hours": 24,
+        "instrument": "SPOT",
+        "minimum_holding_hours": 24,
+        "neighbor_ids": [
+          "SPOT_MA_72_336",
+          "SPOT_RETURN_168"
+        ],
+        "neutral_buffer_bps": 20.0,
+        "signal_type": "MA_CROSS",
+        "slow_hours": 168,
+        "variant_id": "SPOT_MA_24_168"
+      },
+      {
+        "complexity_rank": 1,
+        "cooldown_hours": 12,
+        "family": "SPOT_TREND",
+        "fast_hours": 72,
+        "instrument": "SPOT",
+        "minimum_holding_hours": 36,
+        "neighbor_ids": [
+          "SPOT_MA_24_168",
+          "SPOT_RETURN_336"
+        ],
+        "neutral_buffer_bps": 25.0,
+        "signal_type": "MA_CROSS",
+        "slow_hours": 336,
+        "variant_id": "SPOT_MA_72_336"
+      },
+      {
+        "complexity_rank": 1,
+        "cooldown_hours": 12,
+        "entry_threshold_bps": 150.0,
+        "exit_threshold_bps": 0.0,
+        "family": "SPOT_TREND",
+        "instrument": "SPOT",
+        "lookback_hours": 168,
+        "minimum_holding_hours": 24,
+        "neighbor_ids": [
+          "SPOT_MA_24_168",
+          "SPOT_RETURN_336"
+        ],
+        "signal_type": "RETURN_TREND",
+        "variant_id": "SPOT_RETURN_168"
+      },
+      {
+        "complexity_rank": 1,
+        "cooldown_hours": 12,
+        "entry_threshold_bps": 250.0,
+        "exit_threshold_bps": 0.0,
+        "family": "SPOT_TREND",
+        "instrument": "SPOT",
+        "lookback_hours": 336,
+        "minimum_holding_hours": 36,
+        "neighbor_ids": [
+          "SPOT_MA_72_336",
+          "SPOT_RETURN_168"
+        ],
+        "signal_type": "RETURN_TREND",
+        "variant_id": "SPOT_RETURN_336"
+      },
+      {
+        "complexity_rank": 2,
+        "cooldown_hours": 12,
+        "family": "PERPETUAL_TREND",
+        "fast_hours": 24,
+        "instrument": "PERPETUAL",
+        "minimum_holding_hours": 24,
+        "neighbor_ids": [
+          "PERP_MA_72_336",
+          "PERP_RETURN_168"
+        ],
+        "neutral_buffer_bps": 25.0,
+        "signal_type": "MA_CROSS",
+        "slow_hours": 168,
+        "variant_id": "PERP_MA_24_168"
+      },
+      {
+        "complexity_rank": 2,
+        "cooldown_hours": 12,
+        "family": "PERPETUAL_TREND",
+        "fast_hours": 72,
+        "instrument": "PERPETUAL",
+        "minimum_holding_hours": 36,
+        "neighbor_ids": [
+          "PERP_MA_24_168",
+          "PERP_RETURN_336"
+        ],
+        "neutral_buffer_bps": 35.0,
+        "signal_type": "MA_CROSS",
+        "slow_hours": 336,
+        "variant_id": "PERP_MA_72_336"
+      },
+      {
+        "complexity_rank": 2,
+        "cooldown_hours": 12,
+        "entry_threshold_bps": 150.0,
+        "exit_threshold_bps": 75.0,
+        "family": "PERPETUAL_TREND",
+        "instrument": "PERPETUAL",
+        "lookback_hours": 168,
+        "minimum_holding_hours": 24,
+        "neighbor_ids": [
+          "PERP_MA_24_168",
+          "PERP_RETURN_336"
+        ],
+        "signal_type": "RETURN_TREND",
+        "variant_id": "PERP_RETURN_168"
+      },
+      {
+        "complexity_rank": 2,
+        "cooldown_hours": 12,
+        "entry_threshold_bps": 250.0,
+        "exit_threshold_bps": 100.0,
+        "family": "PERPETUAL_TREND",
+        "instrument": "PERPETUAL",
+        "lookback_hours": 336,
+        "minimum_holding_hours": 36,
+        "neighbor_ids": [
+          "PERP_MA_72_336",
+          "PERP_RETURN_168"
+        ],
+        "signal_type": "RETURN_TREND",
+        "variant_id": "PERP_RETURN_336"
+      },
+      {
+        "complexity_rank": 3,
+        "cooldown_hours": 12,
+        "entry_window_hours": 168,
+        "exit_window_hours": 72,
+        "family": "VOLATILITY_BREAKOUT",
+        "instrument": "SPOT",
+        "minimum_holding_hours": 24,
+        "neighbor_ids": [
+          "SPOT_BREAKOUT_336_168",
+          "PERP_BREAKOUT_168_72"
+        ],
+        "signal_type": "CHANNEL_BREAKOUT",
+        "variant_id": "SPOT_BREAKOUT_168_72"
+      },
+      {
+        "complexity_rank": 3,
+        "cooldown_hours": 12,
+        "entry_window_hours": 336,
+        "exit_window_hours": 168,
+        "family": "VOLATILITY_BREAKOUT",
+        "instrument": "SPOT",
+        "minimum_holding_hours": 36,
+        "neighbor_ids": [
+          "SPOT_BREAKOUT_168_72",
+          "PERP_BREAKOUT_336_168"
+        ],
+        "signal_type": "CHANNEL_BREAKOUT",
+        "variant_id": "SPOT_BREAKOUT_336_168"
+      },
+      {
+        "complexity_rank": 3,
+        "cooldown_hours": 12,
+        "entry_window_hours": 168,
+        "exit_window_hours": 72,
+        "family": "VOLATILITY_BREAKOUT",
+        "instrument": "PERPETUAL",
+        "minimum_holding_hours": 24,
+        "neighbor_ids": [
+          "PERP_BREAKOUT_336_168",
+          "SPOT_BREAKOUT_168_72"
+        ],
+        "signal_type": "CHANNEL_BREAKOUT",
+        "variant_id": "PERP_BREAKOUT_168_72"
+      },
+      {
+        "complexity_rank": 3,
+        "cooldown_hours": 12,
+        "entry_window_hours": 336,
+        "exit_window_hours": 168,
+        "family": "VOLATILITY_BREAKOUT",
+        "instrument": "PERPETUAL",
+        "minimum_holding_hours": 36,
+        "neighbor_ids": [
+          "PERP_BREAKOUT_168_72",
+          "SPOT_BREAKOUT_336_168"
+        ],
+        "signal_type": "CHANNEL_BREAKOUT",
+        "variant_id": "PERP_BREAKOUT_336_168"
+      }
+    ]
+  },
+  "protocol_hash_sha256": "05fdb0f7d1e0362cc39acfef42632d86e3deb66d9ddae9d993a7906cfc58f942",
+  "status": "LOCKED_BEFORE_MISSION90_DEVELOPMENT_RESULT_EVALUATION"
+}
