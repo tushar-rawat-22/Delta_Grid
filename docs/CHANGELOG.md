@@ -3780,3 +3780,32 @@ Added:
 
 Mission 84 is closed with zero real-data validated alpha candidates. Mission 85 remains paused.
 <!-- MISSION-84-CLOSURE:END -->
+
+<!-- MISSION-85-CHARTER:START -->
+## Mission 85 Crypto Funding-Carry Research Charter
+
+Mission 85 is the falsification-first research-contract lock for a
+fully collateralized, delta-neutral, long-spot short-perpetual funding and
+basis carry hypothesis.
+
+The earlier planned Mission 85 Model Promotion Engine was never implemented
+and is now `RETIRED_UNBUILT_AFTER_MISSION84_CLOSURE`.
+
+Mission 85 locks:
+
+- Binance public market data only;
+- BTCUSDT, ETHUSDT, and SOLUSDT only;
+- one-hour canonical data with deterministic 4H and 1D derivation;
+- spot, perpetual, mark, index, and settled funding streams;
+- no synthetic data, sample fallback, or silent substitution;
+- twelve predeclared deterministic parameter variants;
+- chronological development, validation, and single-use untouched holdout;
+- conservative initial transaction costs;
+- strict rejection and anti-overfitting rules;
+- no ML, model promotion, live trading, orders, or capital.
+
+Mission 85 does not prove profitability.
+
+Next mission: `Mission 86 Real-Market Data Foundation`.
+Mission 86 is authorized for public data collection and certification only.
+<!-- MISSION-85-CHARTER:END -->
