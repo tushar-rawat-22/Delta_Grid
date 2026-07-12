@@ -400,3 +400,37 @@ Mission 85 does not prove profitability.
 Next mission: `Mission 86 Real-Market Data Foundation`.
 Mission 86 is authorized for public data collection and certification only.
 <!-- MISSION-85-CHARTER:END -->
+
+<!-- MISSION-86-DATA-FOUNDATION:START -->
+## Mission 86 Real-Market Data Foundation
+
+Mission 86 implements the public real-market data layer authorized by the
+locked Mission 85 funding-carry charter.
+
+Scope:
+
+- BTCUSDT, ETHUSDT, and SOLUSDT;
+- Binance public spot and USD-M futures market-data endpoints;
+- one-hour spot OHLCV;
+- one-hour perpetual OHLCV;
+- one-hour mark-price OHLC;
+- one-hour index-price OHLC;
+- settled funding-rate history;
+- raw gzip response preservation;
+- request, source, and SHA-256 provenance;
+- resumable pagination;
+- normalized mission-specific database tables;
+- deterministic dataset manifest and coverage reporting.
+
+Mission 86 performs no backtesting, holdout evaluation, machine learning,
+model promotion, signal generation, order submission, capital deployment, or
+profitability analysis.
+
+All Mission 86 data remain:
+
+`UNCERTIFIED_PENDING_MISSION87`
+
+Next mission:
+
+`Mission 87 Dataset Certification and Quality Gate`
+<!-- MISSION-86-DATA-FOUNDATION:END -->
