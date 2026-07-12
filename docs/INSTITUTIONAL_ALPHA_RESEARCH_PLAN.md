@@ -351,5 +351,23 @@ Candidate robustness requires stable positive out-of-sample fixture observations
 
 The pack reviews every Mission 84.7 result and preserves its robustness and safety evidence. Only candidates satisfying the full deterministic rule set may enter the provisional fixture-only alpha registry.
 
-Provisional registration does not unpause Mission 85. The next required stage is Mission 84.9 Real-Data Alpha Replication Pack using local/free historical data.
+Provisional registration does not unpause Mission 85. Mission 84 is closed. Any future research resumes as the separate crypto-first Real-Market Research Foundation.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## Mission 84 Closure Decision
+
+The synthetic institutional benchmark pipeline is complete as software and research-process infrastructure, but it has not established real-market alpha.
+
+The 35 fixture-screening records are retained and superseded with effective status `FIXTURE_SCREENING_RECORD_ONLY_NOT_REAL_DATA_VALIDATED`.
+
+Recorded limitations include:
+
+- representative-pair sampling instead of full-universe testing;
+- invalid funding/basis combinations outside crypto derivatives;
+- insufficient legitimate multi-asset historical coverage;
+- regime filters requiring overlay treatment;
+- hybrid strategies requiring validated standalone components.
+
+Mission 84 is closed. Mission 85 remains paused. Future research begins as the separate crypto-first Real-Market Research Foundation.
+<!-- MISSION-84-CLOSURE:END -->

@@ -658,3 +658,22 @@ Evaluates Mission 84.6 synthetic-fixture strategy results across deterministic o
 
 Creates a provisional fixture-only alpha research registry from eligible Mission 84.7 results. Registration cannot train or promote models, emit live signals, place orders, deploy capital, reweight strategies, or make profitability claims.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## Mission 84 Closure and Evidence Correction
+
+Status: complete after final verification.
+
+Purpose:
+
+- preserve Mission 84.5–84.8 historical records;
+- append machine-readable supersession evidence;
+- mark all 35 fixture candidates as not real-data validated;
+- keep every training, promotion, signal, order, and capital path locked;
+- close the Mission 84 sequence;
+- keep Mission 85 paused.
+
+Next workstream: `REAL_MARKET_RESEARCH_FOUNDATION_CRYPTO_FIRST`.
+
+There is no Mission 84.9.
+<!-- MISSION-84-CLOSURE:END -->

@@ -222,3 +222,24 @@ DeltaGrid now evaluates every Mission 84.6 synthetic-fixture backtest through de
 
 DeltaGrid now performs deterministic review of Mission 84.7 walk-forward results. Eligible results may enter a provisional fixture-only local shadow-research registry. This status does not authorize model training, model promotion, live signals, orders, capital, reweighting, or profitability claims. Mission 85 remains paused.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## Mission 84 Closure and Evidence Correction
+
+Mission 84 is closed.
+
+Missions 84.5 through 84.8 remain preserved as deterministic synthetic-fixture research-pipeline evidence. The 35 provisional records are now authoritatively superseded as `FIXTURE_SCREENING_RECORD_ONLY_NOT_REAL_DATA_VALIDATED`.
+
+Current counts:
+
+- fixture-screening candidates: 35
+- real-data validated candidates: 0
+- model-training eligible candidates: 0
+- model promotions: 0
+- live signals: 0
+- exchange orders: 0
+- capital deployments: 0
+- profitability claims: 0
+
+Mission 85 remains paused. There is no Mission 84.9. The next separate workstream is `REAL_MARKET_RESEARCH_FOUNDATION_CRYPTO_FIRST`.
+<!-- MISSION-84-CLOSURE:END -->

@@ -5235,6 +5235,30 @@ Next valid phase:
 - Tables: `ai_alpha_candidate_promotion_runs`, `ai_alpha_candidate_reviews`, `ai_alpha_candidate_registry`, `ai_alpha_candidate_promotion_checks`, and `ai_alpha_candidate_promotion_reports`.
 - Registry status: `PROVISIONAL_ALPHA_RESEARCH_CANDIDATE_FIXTURE_ONLY_UNVALIDATED`.
 - Mission 85 remains paused.
-- Next mission: Mission 84.9 Real-Data Alpha Replication Pack.
+- Mission 84 is closed. Next workstream: Real-Market Research Foundation, crypto-first.
 - Safety: no live trading, capital, orders, keys, paid APIs, live signals, model training, artifacts, model promotion, strategy reweighting, or profitability claims.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+# Mission 84 Closure — Authoritative Source of Truth
+
+- Closure status: `CLOSED`
+- Closure outcome: `SYNTHETIC_RESEARCH_PIPELINE_COMPLETE_NO_VALIDATED_ALPHA`
+- Source promotion run: `mission84-8-final-check`
+- Original fixture-screening candidate count: 35
+- Effective candidate status: `FIXTURE_SCREENING_RECORD_ONLY_NOT_REAL_DATA_VALIDATED`
+- Real-data validated candidate count: 0
+- Model-training eligible count: 0
+- Model promotion count: 0
+- Strategy reweighting count: 0
+- Live signal count: 0
+- Exchange order count: 0
+- Capital deployment count: 0
+- Profitability claim count: 0
+- Mission 85: `PAUSED_UNTIL_ROBUST_ALPHA_CANDIDATES_EXIST`
+- Next workstream: `REAL_MARKET_RESEARCH_FOUNDATION_CRYPTO_FIRST`
+- There is no Mission 84.9.
+- Original Mission 84.5 through Mission 84.8 rows remain preserved.
+- The effective registry view is `ai_alpha_candidate_registry_effective`.
+- Future research code must not treat the base fixture registry as real-data qualified.
+<!-- MISSION-84-CLOSURE:END -->

@@ -3555,3 +3555,23 @@ Decision: full-period synthetic backtest performance is insufficient for candida
 
 Decision: Mission 84.7 robust fixture status supports provisional research registration only. Synthetic data cannot establish deployable alpha or profitability. Candidates must proceed to local/free real-data replication.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## 2026-07-12 — Close Mission 84 without claiming validated alpha
+
+Decision:
+
+- preserve all Mission 84.5–84.8 evidence;
+- do not delete or rewrite historical registry rows;
+- append authoritative supersession records;
+- treat all 35 provisional entries as fixture-screening records only;
+- record zero real-data validated candidates;
+- close Mission 84;
+- remove Mission 84.9 from the active roadmap;
+- keep Mission 85 paused;
+- begin future work as a separate crypto-first real-market research foundation.
+
+Reason:
+
+Synthetic fixtures prove deterministic software behavior, not market profitability or deployable alpha.
+<!-- MISSION-84-CLOSURE:END -->

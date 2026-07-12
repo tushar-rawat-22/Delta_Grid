@@ -3763,3 +3763,20 @@ Added the Walk-Forward Robustness Gate with deterministic expanding-window test 
 
 Added the Alpha Candidate Promotion Pack with deterministic review rules, provisional fixture-only registry, inherited safety validation, SQLite persistence, governance reporting, and focused tests.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## 2026-07-12 — Mission 84 Closure and Evidence Correction
+
+Added:
+
+- append-only Mission 84 closure runs;
+- per-candidate supersession records;
+- authoritative effective candidate registry view;
+- fail-closed real-data and training eligibility;
+- research-limitation classifications;
+- closure checks and reports;
+- focused closure tests;
+- roadmap and source-of-truth reconciliation.
+
+Mission 84 is closed with zero real-data validated alpha candidates. Mission 85 remains paused.
+<!-- MISSION-84-CLOSURE:END -->

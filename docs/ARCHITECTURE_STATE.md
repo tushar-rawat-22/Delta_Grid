@@ -706,3 +706,23 @@ The institutional alpha path now contains a deterministic walk-forward robustnes
 
 The institutional alpha path now includes deterministic candidate promotion review after walk-forward robustness. It stores complete reviews and a provisional fixture-only registry. Real-data replication remains mandatory before any later promotion discussion.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## Architecture State After Mission 84 Closure
+
+DeltaGrid now contains an append-only Mission 84 closure layer above the original alpha candidate registry.
+
+The original registry remains historical evidence. The authoritative effective view is `ai_alpha_candidate_registry_effective`, which applies the latest supersession status and defaults eligibility fields to zero.
+
+No Mission 84 candidate is:
+
+- real-data validated;
+- model-training eligible;
+- model-promotion eligible;
+- live-signal eligible;
+- exchange-order eligible;
+- capital-deployment eligible;
+- profitability-claim eligible.
+
+Mission 85 remains paused. Future work begins outside Mission 84 with a crypto-first real-market research foundation.
+<!-- MISSION-84-CLOSURE:END -->

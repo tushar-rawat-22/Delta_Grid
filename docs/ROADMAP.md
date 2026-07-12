@@ -715,5 +715,21 @@ Next: Mission 84.8 Alpha Candidate Promotion Pack.
 - Persist reviews, registry entries, checks, and reports.
 - Preserve all safety locks and keep Mission 85 paused.
 
-Next: Mission 84.9 Real-Data Alpha Replication Pack.
+Mission 84 is closed. Next workstream: Real-Market Research Foundation, crypto-first.
 <!-- MISSION-84-8:END -->
+
+<!-- MISSION-84-CLOSURE:START -->
+## Mission 84 Closure
+
+Mission 84 is complete and closed.
+
+The Mission 84.5–84.8 sequence is retained as historical synthetic-fixture research infrastructure. Its 35 provisional records are not real-data validated and cannot authorize model training or promotion.
+
+There is no further Mission 84 point sequence.
+
+Next separate workstream:
+
+`REAL_MARKET_RESEARCH_FOUNDATION_CRYPTO_FIRST`
+
+Mission 85 remains paused.
+<!-- MISSION-84-CLOSURE:END -->

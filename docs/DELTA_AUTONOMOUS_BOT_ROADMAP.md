@@ -354,28 +354,16 @@ Live trading is not approved.
 
 ## Current Next Mission
 
-Next mission:
+Mission 84 is closed.
 
-- Mission 82: Paper Execution Agent
+There is no Mission 84.9.
 
-Mission 82 purpose:
+The next workstream is the crypto-first Real-Market Research Foundation. It
+must establish legitimate public historical-data coverage and repaired
+strategy contracts before any real-market candidate validation.
 
-- consume Mission 81 paper-only observe signals
-- create paper execution records
-- simulate paper fills
-- keep every execution as paper-only
-- keep live trading disabled
-- keep capital blocked
-- keep model training disabled
-- prepare Mission 83 Self-Learning Feedback Loop
-
-Mission 82 does not:
-
-- send exchange orders
-- use real capital
-- use private keys
-- generate live trading signals
-- perform live execution
+Mission 85 remains paused. No model promotion, live signal, exchange order, or
+capital deployment is authorized.
 
 ## Milestone Timeline
 
@@ -537,3 +525,30 @@ Mission 84 prepares:
 - Mission 85 Model Promotion Engine
 
 This moves DeltaGrid closer to offline learning, but still does not create deployable models or live trading behavior.
+
+<!-- MISSION-84-CLOSURE:START -->
+## Authoritative Current Position After Mission 84 Closure
+
+Mission 84 is closed.
+
+The completed synthetic-fixture pipeline remains useful as local software, governance, and research-process infrastructure, but it produced zero real-data validated alpha candidates.
+
+The earlier mission-specific “next” statements in this roadmap are historical implementation records and are not current instructions.
+
+Current status:
+
+- fixture-screening records: 35
+- real-data validated candidates: 0
+- model-training eligible candidates: 0
+- model promotions: 0
+- live trading: disabled
+- exchange orders: blocked
+- capital deployment: blocked
+- Mission 85: paused
+
+Current next workstream:
+
+`REAL_MARKET_RESEARCH_FOUNDATION_CRYPTO_FIRST`
+
+There is no Mission 84.9.
+<!-- MISSION-84-CLOSURE:END -->
