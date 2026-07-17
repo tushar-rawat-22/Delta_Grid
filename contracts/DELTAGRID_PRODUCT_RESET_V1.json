@@ -1,0 +1,145 @@
+{
+  "contract_id": "deltagrid-product-reset-v1",
+  "status": "ACTIVE",
+  "program_identity": "MONEY_FIRST_ALPHA_VALIDATION_PROGRAM",
+  "mission_numbering": "RETIRED",
+  "primary_objective": "Find one robust implementable after-cost trading edge or stop alpha discovery.",
+  "non_objectives": [
+    "Increase repository size",
+    "Increase mission count",
+    "Build infrastructure without a qualified strategy",
+    "Generate impressive backtests",
+    "Force profitability through leverage",
+    "Optimize around failed evidence"
+  ],
+  "current_state": {
+    "research_platform": "SUBSTANTIAL_AND_OPERATIONAL",
+    "freqtrade_external_engine": "PINNED_AND_PARITY_VERIFIED",
+    "validated_profitable_strategy": false,
+    "live_trading_authorized": false,
+    "capital_deployment_authorized": false,
+    "rejected_real_data_families": [
+      "FUNDING_AND_BASIS_CARRY",
+      "CONVENTIONAL_DIRECTIONAL_STRATEGIES",
+      "STATIC_INTRADAY_SESSION_EXPOSURE"
+    ]
+  },
+  "infrastructure_freeze": {
+    "new_dashboards": false,
+    "new_agent_frameworks": false,
+    "new_execution_engines": false,
+    "new_evidence_subsystems": false,
+    "new_ui_work": false,
+    "new_live_trading_features": false,
+    "allowed_changes": [
+      "Critical correctness fixes",
+      "Required dependency pins",
+      "Data provenance and certification required by an approved research program",
+      "Strategy translation required by a qualified candidate",
+      "Risk controls required before forward testing"
+    ]
+  },
+  "final_research_budget": {
+    "maximum_new_economic_families": 2,
+    "maximum_variants_per_family": 4,
+    "maximum_selected_candidates_per_family": 1,
+    "rescue_cycles_after_rejection": 0,
+    "parameter_changes_after_market_results": false,
+    "threshold_relaxation_after_failure": false,
+    "reopening_rejected_families": false,
+    "programs": [
+      {
+        "program_id": "ALPHA_SEARCH_A_MACRO_RISK_REGIME",
+        "priority": 1,
+        "status": "AUTHORIZED_NEXT",
+        "economic_question": "Can lagged macro risk conditions improve low-turnover BTC spot long-or-cash outcomes after realistic costs?",
+        "information_sources": [
+          "SP500",
+          "VIXCLS",
+          "DTWEXBGS",
+          "DGS10"
+        ],
+        "decision_frequency": "WEEKLY_OR_MULTI_DAY",
+        "maximum_round_trips_per_week": 1,
+        "maximum_variants": 4,
+        "minimum_information_delay_hours": 24,
+        "raw_external_data_committed_to_public_repository": false
+      },
+      {
+        "program_id": "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE",
+        "priority": 2,
+        "status": "CONDITIONAL_ONLY_IF_PROGRAM_A_FAILS",
+        "economic_question": "Can a materially new public liquidity or order-flow information source support a low-turnover spot edge after costs?",
+        "data_foundation_required_before_hypothesis_testing": true,
+        "paid_data_allowed": false,
+        "maximum_variants": 4,
+        "high_frequency_churning_allowed": false
+      }
+    ]
+  },
+  "research_protocol": {
+    "economic_mechanism_required_before_code": true,
+    "parameters_frozen_before_market_returns": true,
+    "development_selection_only": true,
+    "validation_reselection_allowed": false,
+    "holdout_reselection_allowed": false,
+    "holdout_access_limit": 1,
+    "normal_cost_required": true,
+    "conservative_cost_required": true,
+    "severe_cost_diagnostic_required": true,
+    "multiple_testing_diagnostic_required": true,
+    "negative_result_is_valid_completion": true
+  },
+  "candidate_promotion_gates": {
+    "positive_after_conservative_costs_on_development": true,
+    "positive_after_conservative_costs_on_validation": true,
+    "positive_after_conservative_costs_on_holdout": true,
+    "minimum_profit_factor": 1.15,
+    "maximum_drawdown_pct": 10.0,
+    "minimum_positive_calendar_quarter_fraction": 0.6,
+    "maximum_single_quarter_profit_concentration": 0.35,
+    "minimum_positive_replication_assets": 1,
+    "exact_freqtrade_ledger_parity_required": true,
+    "lookahead_bias_allowed": false,
+    "recursive_instability_allowed": false
+  },
+  "forward_testing_gate": {
+    "required": true,
+    "minimum_calendar_days": 90,
+    "minimum_closed_trades": 12,
+    "both_calendar_and_trade_requirements_must_pass": true,
+    "adverse_market_period_required": true,
+    "restart_recovery_test_required": true,
+    "backtest_dry_run_signal_parity_required": true,
+    "material_performance_divergence_allowed": false
+  },
+  "capital_policy": {
+    "proof_capital_is_not_income_capital": true,
+    "live_pilot_capital_usd_maximum": 100,
+    "leverage": 1,
+    "trading_mode": "SPOT_ONLY",
+    "maximum_open_positions": 1,
+    "averaging_down_allowed": false,
+    "martingale_allowed": false,
+    "risk_per_trade_pct_maximum": 0.5,
+    "weekly_drawdown_stop_pct": 3.0,
+    "capital_scaling_automatic": false,
+    "capital_scaling_requires_separate_authorization": true
+  },
+  "hard_stop_conditions": [
+    "Both final research programs are rejected",
+    "A surviving candidate fails holdout",
+    "A surviving candidate contains lookahead bias",
+    "A surviving candidate is materially unstable under recursive analysis",
+    "A surviving candidate fails the forward-testing gate",
+    "Performance disappears under conservative execution costs",
+    "Meaningful performance depends on leverage or excessive turnover"
+  ],
+  "commercial_truth": {
+    "profit_guaranteed": false,
+    "small_account_can_generate_meaningful_income_without_scaling": false,
+    "first_financial_goal": "Prove an edge while preserving capital.",
+    "second_financial_goal": "Scale only after forward evidence and separate authorization."
+  },
+  "next_action": "ALPHA_SEARCH_A_DATA_FOUNDATION_AND_PROTOCOL_LOCK"
+}
