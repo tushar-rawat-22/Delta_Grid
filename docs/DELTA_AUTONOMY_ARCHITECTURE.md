@@ -1,5 +1,15 @@
 # DeltaGrid Autonomy Architecture
 
+<!-- deltagrid-document-status: DESIGN_ONLY -->
+
+> **Design-only document**
+>
+> This file describes a possible future architecture. It is not a description of
+> currently authorized operation and does not authorize ML, paper trading, live
+> trading, capital deployment, or autonomous execution. See the
+> [documentation home](README.md) and
+> [final freeze](DELTAGRID_FINAL_FREEZE.md) for current status.
+
 DeltaGrid is being built as a research-first autonomous AI trading system.
 
 The long-term goal is:

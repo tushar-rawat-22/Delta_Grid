@@ -1,5 +1,15 @@
 # ADR-0010: Strategy Metrics and Regime Analysis
 
+<!-- deltagrid-document-status: HISTORICAL -->
+
+> **Historical architecture decision**
+>
+> This ADR records a decision accepted for the DeltaGrid phase in which it was
+> written. “Accepted” does not grant current research, paper trading, live
+> trading, capital, ML, or autonomous authority. See the
+> [documentation home](../README.md) and
+> [final freeze](../DELTAGRID_FINAL_FREEZE.md) for current status.
+
 ## Status
 
 Accepted

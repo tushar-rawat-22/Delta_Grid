@@ -1,5 +1,14 @@
 # DeltaGrid Mission Index
 
+<!-- deltagrid-document-status: HISTORICAL -->
+
+> **Historical document**
+>
+> This file is a cumulative record of earlier DeltaGrid phases. Its body is
+> preserved for traceability and does not define or authorize current work. See
+> the [documentation home](README.md) and
+> [final freeze](DELTAGRID_FINAL_FREEZE.md) for the current project state.
+
 ## Mission 58
 
 Name: Shadow Research Control Plane and Documentation Registry

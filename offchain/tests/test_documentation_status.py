@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path, PurePosixPath
@@ -126,6 +127,25 @@ EXPECTED_CLASSIFICATION_COUNTS = {
     "EVIDENCE_IMMUTABLE": 10,
     "MACHINE_REFERENCE": 34,
 }
+
+SUPERSEDED_BANNER_PATHS = {
+    "docs/CHARTER.md",
+    "docs/DELTAGRID_PRODUCT_RESET.md",
+    "docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md",
+    "docs/DOCUMENTATION_REGISTRY.md",
+    "docs/INSTITUTIONAL_ALPHA_RESEARCH_PLAN.md",
+    "docs/PROJECT_SOURCE_OF_TRUTH.md",
+    "docs/ROADMAP.md",
+    "docs/STRATEGY_RESEARCH_ROADMAP.md",
+}
+HISTORICAL_TOP_LEVEL_BANNER_PATHS = {
+    "docs/ARCHITECTURE_STATE.md",
+    "docs/MISSION_INDEX.md",
+}
+DESIGN_ONLY_BANNER_PATHS = {"docs/DELTA_AUTONOMY_ARCHITECTURE.md"}
+EXPECTED_NON_TARGET_REGISTRY_SHA256 = (
+    "baed760c8a63b740fa5f2aa8a15197407251267eb7d0bbe9ffc583059bdeda91"
+)
 
 
 def load_registry() -> dict:
@@ -318,34 +338,55 @@ def test_ml_adapter_is_design_only() -> None:
     assert item["classification"] == "DESIGN_ONLY"
 
 
-def test_historical_registry_notes_point_to_current_authority() -> None:
+def test_banner_target_registry_entries_record_completed_treatment() -> None:
     registered = documents_by_path()
-    expected_notes = {
-        "docs/ARCHITECTURE_STATE.md": (
-            "Human-readable historical architecture record. Preserve the "
-            "historical body and add a banner directing readers to "
-            "docs/README.md and docs/DELTAGRID_FINAL_FREEZE.md for current "
-            "project authority."
+    adr_paths = {
+        repository_relative(path)
+        for path in (ROOT / "docs" / "ADR").glob("*.md")
+    }
+    expected_by_classification = {
+        "HISTORICAL": (
+            "Batch 3 added a historical banner; the historical body remains "
+            "preserved."
         ),
-        "docs/MISSION_INDEX.md": (
-            "Human-readable historical mission index. Preserve the historical "
-            "body and add a banner directing readers to docs/README.md and "
-            "docs/DELTAGRID_FINAL_FREEZE.md for current project authority."
+        "SUPERSEDED": (
+            "Batch 3 added a superseded banner; the historical body remains "
+            "preserved."
+        ),
+        "DESIGN_ONLY": (
+            "Batch 3 added a design-only banner; the design body remains preserved."
         ),
     }
+    target_paths = (
+        SUPERSEDED_BANNER_PATHS
+        | HISTORICAL_TOP_LEVEL_BANNER_PATHS
+        | DESIGN_ONLY_BANNER_PATHS
+        | adr_paths
+    )
 
-    for path, expected_note in expected_notes.items():
+    assert len(adr_paths) == 95
+    assert len(target_paths) == 106
+    for path in target_paths:
         item = registered[path]
-        note = item["notes"]
-        assert item["classification"] == "HISTORICAL"
-        assert item["recommended_treatment"] == "ADD_HISTORICAL_BANNER"
-        assert note == expected_note
-        assert "machine-oriented" not in note.lower()
-        assert "machine-readable" not in note.lower()
-        assert note.startswith("Human-readable historical ")
-        assert "docs/README.md" in note
-        assert "docs/DELTAGRID_FINAL_FREEZE.md" in note
-        assert note.endswith("for current project authority.")
+        assert item["recommended_treatment"] == "LEAVE_UNCHANGED"
+        assert item["conflicts_with_current_state"] is False
+        assert item["notes"] == expected_by_classification[item["classification"]]
+
+    non_target_entries = [
+        item
+        for item in load_registry()["documents"]
+        if item["path"] not in target_paths
+    ]
+    canonical = json.dumps(
+        non_target_entries,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    ).encode("utf-8")
+    assert len(non_target_entries) == 53
+    assert hashlib.sha256(canonical).hexdigest() == (
+        EXPECTED_NON_TARGET_REGISTRY_SHA256
+    )
 
 
 def test_every_adr_is_registered_and_historical() -> None:

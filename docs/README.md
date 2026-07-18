@@ -53,6 +53,13 @@ each audited document:
 A status label describes how to read a file. It does not erase the file's
 history or alter the result it records.
 
+The major superseded documents listed below now carry visible status banners.
+`ARCHITECTURE_STATE.md` and `MISSION_INDEX.md` are visibly marked historical,
+all ADRs are visibly marked as historical decisions, and
+`DELTA_AUTONOMY_ARCHITECTURE.md` is visibly marked design-only. These banners
+clarify present authority without changing the preserved historical or design
+bodies.
+
 ## Understand the current system
 
 Begin with the [project overview](../README.md), then read the

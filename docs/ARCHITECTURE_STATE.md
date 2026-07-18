@@ -1,5 +1,14 @@
 # DeltaGrid Architecture State
 
+<!-- deltagrid-document-status: HISTORICAL -->
+
+> **Historical document**
+>
+> This file is a cumulative record of earlier DeltaGrid phases. Its body is
+> preserved for traceability and does not define or authorize current work. See
+> the [documentation home](README.md) and
+> [final freeze](DELTAGRID_FINAL_FREEZE.md) for the current project state.
+
 ## Shadow Research Control Plane
 
 Mission 58 adds the Shadow Research Control Plane.

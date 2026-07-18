@@ -170,14 +170,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0002-git-commit-discipline.md",
@@ -185,14 +185,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0003-local-profit-simulator-risk-engine.md",
@@ -200,14 +200,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0004-market-data-schema-opportunity-store.md",
@@ -215,14 +215,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0005-chain-monitor-market-schema-integration.md",
@@ -230,14 +230,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0006-token-pool-seed-registry.md",
@@ -245,14 +245,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0007-pool-price-snapshot-simulator.md",
@@ -260,14 +260,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0008-local-route-builder.md",
@@ -275,14 +275,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0009-historical-data-backtest-framework.md",
@@ -290,14 +290,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0010-strategy-regime-analysis.md",
@@ -305,14 +305,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0011-optimized-opportunity-detector.md",
@@ -320,14 +320,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0012-closed-loop-route-builder.md",
@@ -335,14 +335,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0013-real-historical-market-data-ingestion.md",
@@ -350,14 +350,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0014-strategy-validation-engine.md",
@@ -365,14 +365,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0015-strategy-candidate-lab.md",
@@ -380,14 +380,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0016-drawdown-control-lab.md",
@@ -395,14 +395,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0017-walk-forward-candidate-lab.md",
@@ -410,14 +410,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0018-strategy-diagnostics.md",
@@ -425,14 +425,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0019-stability-rework-lab.md",
@@ -440,14 +440,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0020-regime-kernel-compression-breakout.md",
@@ -455,14 +455,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0021-volatility-targeted-tsmom.md",
@@ -470,14 +470,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0022-funding-basis-data-model.md",
@@ -485,14 +485,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0023-funding-basis-ingestion.md",
@@ -500,14 +500,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0024-delta-neutral-funding-strategy-lab.md",
@@ -515,14 +515,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0025-delta-neutral-funding-backtest-engine.md",
@@ -530,14 +530,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0026-funding-walk-forward-validation.md",
@@ -545,14 +545,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0027-liquidation-leverage-risk-model.md",
@@ -560,14 +560,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0028-execution-cost-slippage-simulator.md",
@@ -575,14 +575,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0029-multi-symbol-funding-scanner.md",
@@ -590,14 +590,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0030-candidate-ranking-engine.md",
@@ -605,14 +605,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0031-5-ai-learning-dataset-registry.md",
@@ -620,14 +620,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0031-paper-trading-engine.md",
@@ -635,14 +635,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0032-research-dashboard-alerts.md",
@@ -650,14 +650,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0033-unified-free-shadow-research-runner.md",
@@ -665,14 +665,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0034-shadow-research-run-history-inspector.md",
@@ -680,14 +680,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0035-shadow-candidate-replay-harness.md",
@@ -695,14 +695,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0036-shadow-replay-performance-reporter.md",
@@ -710,14 +710,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0037-shadow-research-decision-gate.md",
@@ -725,14 +725,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0038-shadow-paper-observation-ledger.md",
@@ -740,14 +740,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0039-shadow-observation-lifecycle-manager.md",
@@ -755,14 +755,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0040-shadow-observation-pnl-attribution-engine.md",
@@ -770,14 +770,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0041-local-mission-automation-harness.md",
@@ -785,14 +785,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0042-one-command-mission-pack-runner.md",
@@ -800,14 +800,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0043-shadow-observation-break-even-tracker.md",
@@ -815,14 +815,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0044-shadow-observation-close-eligibility-engine.md",
@@ -830,14 +830,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0045-shadow-observation-outcome-finalizer.md",
@@ -845,14 +845,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0046-shadow-observation-outcome-analytics-dashboard.md",
@@ -860,14 +860,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0047-shadow-research-executive-daily-report.md",
@@ -875,14 +875,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0048-shadow-research-promotion-readiness-gate.md",
@@ -890,14 +890,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0049-real-market-public-data-ingestion.md",
@@ -905,14 +905,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0050-historical-public-funding-basis-dataset-builder.md",
@@ -920,14 +920,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0051-funding-basis-alpha-scanner.md",
@@ -935,14 +935,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0052-cost-calibration-break-even-sensitivity-engine.md",
@@ -950,14 +950,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0053-calibrated-shadow-observation-planner.md",
@@ -965,14 +965,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0054-shadow-plan-to-ledger-bridge.md",
@@ -980,14 +980,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0055-shadow-ledger-tracking-updater.md",
@@ -995,14 +995,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0056-shadow-tracking-performance-reporter.md",
@@ -1010,14 +1010,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0057-shadow-tracking-alert-invalidation-router.md",
@@ -1025,14 +1025,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0058-shadow-research-control-plane.md",
@@ -1040,14 +1040,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0059-multi-strategy-research-factory.md",
@@ -1055,14 +1055,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0060-data-quality-regime-intelligence-engine.md",
@@ -1070,14 +1070,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0061-shadow-portfolio-simulator.md",
@@ -1085,14 +1085,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0062-research-promotion-board.md",
@@ -1100,14 +1100,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0063-paper-trading-sandbox.md",
@@ -1115,14 +1115,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0064-institutional-risk-control-layer.md",
@@ -1130,14 +1130,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0065-capital-readiness-review.md",
@@ -1145,14 +1145,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0066-paper-observation-performance-monitor.md",
@@ -1160,14 +1160,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0067-paper-drawdown-kill-switch.md",
@@ -1175,14 +1175,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0068-paper-recovery-stability-monitor.md",
@@ -1190,14 +1190,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0069-multi-cycle-paper-observation-tracker.md",
@@ -1205,14 +1205,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0070-ai-paper-outcome-learning-engine.md",
@@ -1220,14 +1220,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0071-ai-feature-quality-drift-guard.md",
@@ -1235,14 +1235,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0072-ai-paper-dataset-expansion-scheduler.md",
@@ -1250,14 +1250,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0073-ai-outcome-dataset-builder-pack.md",
@@ -1265,14 +1265,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0074-ai-feature-store-training-dataset-registry.md",
@@ -1280,14 +1280,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0075-ai-paper-outcome-collection-label-finalizer.md",
@@ -1295,14 +1295,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0076-ai-label-quality-leakage-guard.md",
@@ -1310,14 +1310,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0078-ai-offline-evaluation-governance-board.md",
@@ -1325,14 +1325,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0079-ai-research-recommendation-engine.md",
@@ -1340,14 +1340,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0080-autonomous-policy-gate.md",
@@ -1355,14 +1355,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0081-autonomous-paper-signal-engine.md",
@@ -1370,14 +1370,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0082-paper-execution-agent.md",
@@ -1385,14 +1385,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0083-self-learning-feedback-loop.md",
@@ -1400,14 +1400,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 4,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0084-5-institutional-alpha-research-benchmark-lab.md",
@@ -1415,14 +1415,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0084-6-multi-strategy-backtest-pack.md",
@@ -1430,14 +1430,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0084-7-walk-forward-robustness-gate.md",
@@ -1445,14 +1445,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0084-8-alpha-candidate-promotion-pack.md",
@@ -1460,14 +1460,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0084-closure-evidence-correction.md",
@@ -1475,14 +1475,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0084-offline-model-training-harness.md",
@@ -1490,14 +1490,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0085-funding-carry-research-charter.md",
@@ -1505,14 +1505,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0086-real-market-data-foundation.md",
@@ -1520,14 +1520,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0087-dataset-certification-quality-gate.md",
@@ -1535,14 +1535,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0088-execution-cost-reality-model.md",
@@ -1550,14 +1550,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0089-baseline-strategy-falsification.md",
@@ -1565,14 +1565,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ADR/ADR-0090-directional-strategy-tournament.md",
@@ -1580,14 +1580,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Chronological architecture decision record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Accepted at its historical phase; not current authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/ALPHA_SEARCH_A_REJECTION.md",
@@ -1625,14 +1625,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Cumulative historical project record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": true,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 5,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Human-readable historical architecture record. Preserve the historical body and add a banner directing readers to docs/README.md and docs/DELTAGRID_FINAL_FREEZE.md for current project authority."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/CHANGELOG.md",
@@ -1655,14 +1655,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/DECISION_LOG.md",
@@ -1730,14 +1730,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md",
@@ -1745,14 +1745,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": true,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 5,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/DELTA_AUTONOMY_ARCHITECTURE.md",
@@ -1760,14 +1760,14 @@
       "audience": "Architects and future research reviewers",
       "purpose": "Possible future design without current authorization",
       "authority_level": "DESIGN_ONLY_NO_AUTHORIZATION",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_CURRENT_STATUS_BANNER",
-      "notes": "Description does not prove implementation or grant authorization."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a design-only banner; the design body remains preserved."
     },
     {
       "path": "docs/DOCUMENTATION_REGISTRY.md",
@@ -1775,14 +1775,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/DOCUMENTATION_STYLE.md",
@@ -1820,14 +1820,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": true,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 5,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/MISSION89_BASELINE_FALSIFICATION.md",
@@ -1895,14 +1895,14 @@
       "audience": "Engineers, researchers, and historical reviewers",
       "purpose": "Cumulative historical project record",
       "authority_level": "HISTORICAL_ONLY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": true,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 5,
-      "recommended_treatment": "ADD_HISTORICAL_BANNER",
-      "notes": "Human-readable historical mission index. Preserve the historical body and add a banner directing readers to docs/README.md and docs/DELTAGRID_FINAL_FREEZE.md for current project authority."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
       "path": "docs/PROJECT_SOURCE_OF_TRUTH.md",
@@ -1910,14 +1910,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": true,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 5,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/README.md",
@@ -1970,14 +1970,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": true,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 5,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/SAFETY_INVARIANTS.md",
@@ -2000,14 +2000,14 @@
       "audience": "Historical reviewers and maintainers",
       "purpose": "Preserved document replaced by later authority",
       "authority_level": "SUPERSEDED_BY_LATER_AUTHORITY",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 3,
-      "recommended_treatment": "ADD_SUPERSEDED_BANNER",
-      "notes": "Retain for history and point readers to the final freeze."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
       "path": "docs/documentation-status.json",

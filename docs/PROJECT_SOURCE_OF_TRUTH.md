@@ -1,5 +1,17 @@
 # DeltaGrid Project Source of Truth
 
+<!-- deltagrid-document-status: SUPERSEDED -->
+
+> **Superseded document**
+>
+> This file describes an earlier DeltaGrid plan or operating model. Its body is
+> preserved for traceability but no longer controls current work. References to
+> “Active,” “Current,” or “Next” belong to its original phase and do not
+> authorize present research or operation. See the
+> [documentation home](README.md) and
+> [final freeze](DELTAGRID_FINAL_FREEZE.md) for the current project state and
+> authorization boundaries.
+
 ## 1. Purpose
 
 This file is the main memory document for DeltaGrid.
