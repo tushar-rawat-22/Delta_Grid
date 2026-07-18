@@ -47,3 +47,6 @@ offchain/data/mission89/
 # MISSION-90-RUNTIME:START
 offchain/data/mission90/
 # MISSION-90-RUNTIME:END
+
+# Alpha Search B raw, processed, ledger, and placebo artifacts
+/offchain/data/alpha_search_b/

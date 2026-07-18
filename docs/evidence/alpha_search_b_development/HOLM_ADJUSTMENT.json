@@ -1,0 +1,9 @@
+{
+  "adjusted_p_values": {
+    "BTC_FLOW_LEADS_ETH_60M": 0.8782243551289743,
+    "BTC_FLOW_LEADS_SOL_60M": 0.1943611277744451,
+    "BTC_SELF_FLOW_PERSISTENCE_120M": 1.0,
+    "BTC_SELF_FLOW_PERSISTENCE_60M": 1.0
+  },
+  "family_size": 4
+}

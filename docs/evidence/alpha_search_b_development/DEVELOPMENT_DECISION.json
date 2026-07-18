@@ -1,0 +1,13 @@
+{
+  "capital_deployment": false,
+  "decision": "ALPHA_SEARCH_B_REJECTED_DEVELOPMENT",
+  "development_only": true,
+  "dry_run": false,
+  "freqtrade_translation": false,
+  "holdout_performance_accessed": false,
+  "live_trading": false,
+  "next_action": "FREEZE_DELTAGRID_AS_COMPLETED_RESEARCH_PLATFORM",
+  "protocol_hash": "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469",
+  "selected_candidate": null,
+  "validation_performance_accessed": false
+}

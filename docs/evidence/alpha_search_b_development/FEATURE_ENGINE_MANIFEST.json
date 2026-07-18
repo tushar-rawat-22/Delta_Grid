@@ -1,0 +1,13 @@
+{
+  "causal_current_excluded": true,
+  "implementation_hashes": {
+    "offchain/research/alpha_search_b/__init__.py": "467e8fd1330ec76aef8a7cad2b2613d6a95345033d0f5b2439c8a7554ed667bb",
+    "offchain/research/alpha_search_b/engine.py": "f1a6c941caabc6c4082b82c01b94022cd763e8bc4803d000cff54ce806b18937",
+    "offchain/research/alpha_search_b/foundation.py": "6a9df61121fa18a3fe8c2cf237ef5dc832de76abb7142f278eca0d706ffcd2c3",
+    "offchain/research/alpha_search_b/pipeline.py": "1c8aac0671be4f891fcb9a42ca7ae57e749082b5b54ddd8ff8650008856d860e"
+  },
+  "minimum_observations": 38880,
+  "protocol_hash": "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469",
+  "quantile": "NEAREST_RANK_EMPIRICAL",
+  "window": 43200
+}

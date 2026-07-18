@@ -1,0 +1,46 @@
+{
+  "BTC_FLOW_LEADS_ETH_60M": {
+    "construction_attempts": 8832,
+    "construction_failures": 0,
+    "null_mean": -0.003910274302133068,
+    "null_std": 0.0019931609392111315,
+    "observed_statistic": -0.002865881167611872,
+    "placebo_sha256": "32ec838f3c965bf0aaa9b006d918c2707ba3759fe4e5c658807af7ec72e05c74",
+    "raw_p_value": 0.2927414517096581,
+    "repetitions": 5000,
+    "seed": 9109486944927767718
+  },
+  "BTC_FLOW_LEADS_SOL_60M": {
+    "construction_attempts": 8908,
+    "construction_failures": 0,
+    "null_mean": -0.005059661002500626,
+    "null_std": 0.0028524388152113412,
+    "observed_statistic": -0.00026026029141934423,
+    "placebo_sha256": "43ee0d4e372ef9969303301bcb25b69d6078cb7eb4f8aa053255280a2950d0d8",
+    "raw_p_value": 0.04859028194361128,
+    "repetitions": 5000,
+    "seed": 11328349288296130266
+  },
+  "BTC_SELF_FLOW_PERSISTENCE_120M": {
+    "construction_attempts": 500000,
+    "construction_failures": 5000,
+    "null_mean": null,
+    "null_std": null,
+    "observed_statistic": -0.0041617929123037856,
+    "placebo_sha256": "b2a9b7e6a393ff92987047033d38d43dd4f2ad83e408130b2dd7dc2b6f8509b6",
+    "raw_p_value": 1.0,
+    "repetitions": 5000,
+    "seed": 2309872680883579238
+  },
+  "BTC_SELF_FLOW_PERSISTENCE_60M": {
+    "construction_attempts": 500000,
+    "construction_failures": 5000,
+    "null_mean": null,
+    "null_std": null,
+    "observed_statistic": -0.0038955920341519905,
+    "placebo_sha256": "b2a9b7e6a393ff92987047033d38d43dd4f2ad83e408130b2dd7dc2b6f8509b6",
+    "raw_p_value": 1.0,
+    "repetitions": 5000,
+    "seed": 15772981974708257581
+  }
+}

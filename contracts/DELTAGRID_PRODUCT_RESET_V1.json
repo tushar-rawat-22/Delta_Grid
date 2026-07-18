@@ -16,12 +16,14 @@
     "research_platform": "SUBSTANTIAL_AND_OPERATIONAL",
     "freqtrade_external_engine": "PINNED_AND_PARITY_VERIFIED",
     "validated_profitable_strategy": false,
+    "alpha_discovery": "STOPPED_ALL_AUTHORIZED_FAMILIES_REJECTED",
     "live_trading_authorized": false,
     "capital_deployment_authorized": false,
     "rejected_real_data_families": [
       "FUNDING_AND_BASIS_CARRY",
       "CONVENTIONAL_DIRECTIONAL_STRATEGIES",
-      "STATIC_INTRADAY_SESSION_EXPOSURE"
+      "STATIC_INTRADAY_SESSION_EXPOSURE",
+      "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE"
     ]
   },
   "infrastructure_freeze": {
@@ -41,7 +43,7 @@
   },
   "final_research_budget": {
     "maximum_new_economic_families": 2,
-    "remaining_new_economic_families": 1,
+    "remaining_new_economic_families": 0,
     "maximum_variants_per_family": 4,
     "maximum_selected_candidates_per_family": 1,
     "rescue_cycles_after_rejection": 0,
@@ -72,7 +74,13 @@
       {
         "program_id": "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE",
         "priority": 2,
-        "status": "PROTOCOL_LOCKED_DATA_NOT_ACCESSED",
+        "status": "REJECTED_DEVELOPMENT",
+        "selected_candidate": null,
+        "development_decision": "ALPHA_SEARCH_B_REJECTED_DEVELOPMENT",
+        "development_decision_evidence": "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.json",
+        "development_decision_sha256": "3aa332f04287e55d8ceefeb7d19b2265363f70a703bda2cc98efab85f1f2984a",
+        "rescue_cycles_used": 0,
+        "further_rescue_authorized": false,
         "economic_question": "Can public, causally available spot aggregated-trade-flow information produce a robust long-or-cash edge after realistic costs, latency, and multiple-testing controls?",
         "data_foundation_required_before_hypothesis_testing": true,
         "paid_data_allowed": false,
@@ -147,5 +155,5 @@
     "first_financial_goal": "Prove an edge while preserving capital.",
     "second_financial_goal": "Scale only after forward evidence and separate authorization."
   },
-  "next_action": "ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION"
+  "next_action": "FREEZE_DELTAGRID_AS_COMPLETED_RESEARCH_PLATFORM"
 }

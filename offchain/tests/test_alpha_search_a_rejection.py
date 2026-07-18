@@ -112,9 +112,9 @@ def test_alpha_search_b_is_only_authorized_remaining_family() -> None:
     assert load(REJECTION_CONTRACT)["next_program"] == remaining[0]["program_id"]
 
 
-def test_remaining_family_count_is_one() -> None:
+def test_remaining_family_count_is_zero_after_alpha_search_b_rejection() -> None:
     reset = load(RESET_CONTRACT)
-    assert reset["final_research_budget"]["remaining_new_economic_families"] == 1
+    assert reset["final_research_budget"]["remaining_new_economic_families"] == 0
 
 
 def test_reset_invariants_remain_active() -> None:

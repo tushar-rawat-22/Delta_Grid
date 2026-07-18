@@ -1,0 +1,22 @@
+{
+  "environment": {
+    "interpreter": "/Users/tusharrawat/deltagrid/offchain/.venv/bin/python",
+    "pythondontwritebytecode": "1",
+    "pythonpath_unset": true,
+    "pytest_cacheprovider_disabled": true
+  },
+  "focused": {
+    "command": "python -m pytest -p no:cacheprovider offchain/tests/test_alpha_search_b_protocol.py offchain/tests/test_alpha_search_b_foundation.py offchain/tests/test_alpha_search_b_engine.py offchain/tests/test_deltagrid_product_reset.py -q",
+    "passed": 37,
+    "failed": 0,
+    "status": "PASS"
+  },
+  "full_regression": {
+    "command": "python -m pytest -p no:cacheprovider offchain/tests -q",
+    "passed": 715,
+    "failed": 0,
+    "warnings": 1,
+    "warning_summary": "Third-party websockets.legacy deprecation warning",
+    "status": "PASS"
+  }
+}

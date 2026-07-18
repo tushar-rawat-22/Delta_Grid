@@ -1,0 +1,135 @@
+{
+  "contract": {
+    "arithmetic": "DECIMAL",
+    "components_bps": {
+      "BTCUSDT": {
+        "conservative": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "14",
+          "total": "34"
+        },
+        "normal": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "6",
+          "total": "26"
+        },
+        "severe": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "42",
+          "total": "62"
+        }
+      },
+      "ETHUSDT": {
+        "conservative": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "16",
+          "total": "36"
+        },
+        "normal": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "7",
+          "total": "27"
+        },
+        "severe": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "47",
+          "total": "67"
+        }
+      },
+      "SOLUSDT": {
+        "conservative": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "22",
+          "total": "42"
+        },
+        "normal": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "10",
+          "total": "30"
+        },
+        "severe": {
+          "entry_fee": "10",
+          "exit_fee": "10",
+          "spread_slippage_impact": "62",
+          "total": "82"
+        }
+      }
+    },
+    "contract_id": "alpha-search-b-cost-attribution-v1",
+    "latency_displacement": {
+      "deducted_as_cost_component": false,
+      "definition": "normal_timing_gross_pnl_minus_scenario_timing_gross_pnl",
+      "reason": "Scenario entry delay already changes the executed market price and must not be deducted twice."
+    },
+    "method": "Authoritative Mission 85 and Mission 88 evidence fixes each spot fee side at 10 bps. Mission 92 fixes the later spot-only single-leg total. Residual spread/slippage/impact is total minus the two fixed fee sides.",
+    "program_id": "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE",
+    "protocol_hash_sha256": "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469",
+    "provenance": [
+      {
+        "claim": "Locked spot entry and exit fee floors are exactly 10 bps per side.",
+        "function_or_pointer": "/initial_cost_assumptions/spot_entry_fee_bps and /initial_cost_assumptions/spot_exit_fee_bps",
+        "lines": "62-72",
+        "source_file": "offchain/research/contracts/mission85_funding_carry_charter_v1.json",
+        "symbols": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      },
+      {
+        "claim": "Mission 88 parses the locked fee fields with Decimal and carries the exact spot fee sides into every profile.",
+        "function_or_pointer": "extract_charter_costs and build_cost_profiles",
+        "lines": "453-502,568-573,709-714",
+        "source_file": "offchain/backtest/mission88_execution_cost_model.py",
+        "symbols": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      },
+      {
+        "claim": "Authoritative Mission 88 report persists 10.000000 bps on each spot fee side.",
+        "function_or_pointer": "/model/charter_cost_floors/spot_entry_fee_bps and /model/charter_cost_floors/spot_exit_fee_bps",
+        "lines": "JSON artifact; /model/charter_cost_floors and /model/profiles/*/assumptions",
+        "source_file": "/Users/tusharrawat/deltagrid/offchain/data/mission88/cost_model.json",
+        "symbols": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      },
+      {
+        "claim": "Authoritative single-leg normal, conservative, and severe totals are fixed and combined spot-perpetual costs are prohibited.",
+        "function_or_pointer": "Pair-specific spot costs table",
+        "lines": "33-44",
+        "source_file": "docs/MISSION_92_SESSION_PREMIUM_FALSIFICATION.md",
+        "symbols": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      },
+      {
+        "claim": "Mission 92 enforces spot-only pair totals and monotonic scenario ordering.",
+        "function_or_pointer": "load_pair_costs",
+        "lines": "179-235",
+        "source_file": "offchain/backtest/mission92_session_premium_falsification.py",
+        "symbols": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      }
+    ],
+    "status": "LOCKED_BEFORE_MARKET_DATA_ACCESS"
+  },
+  "contract_sha256": "e102f6aa21f83dfdc05090411c790f1d2ed2803d02f310fb3289e67c2790165c"
+}

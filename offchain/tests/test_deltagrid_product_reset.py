@@ -28,7 +28,7 @@ def test_product_reset_is_money_first_and_finite() -> None:
     budget = contract["final_research_budget"]
 
     assert budget["maximum_new_economic_families"] == 2
-    assert budget["remaining_new_economic_families"] == 1
+    assert budget["remaining_new_economic_families"] == 0
     assert budget["maximum_variants_per_family"] == 4
     assert budget["rescue_cycles_after_rejection"] == 0
     assert budget["parameter_changes_after_market_results"] is False
@@ -93,11 +93,11 @@ def test_forward_test_and_capital_limits_are_strict() -> None:
     assert capital["capital_scaling_automatic"] is False
 
 
-def test_next_action_is_alpha_search_b_data_foundation() -> None:
+def test_next_action_freezes_completed_research_platform() -> None:
     contract = load_contract()
 
     assert contract["next_action"] == (
-        "ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION"
+        "FREEZE_DELTAGRID_AS_COMPLETED_RESEARCH_PLATFORM"
     )
 
     programs = contract[
@@ -118,7 +118,9 @@ def test_next_action_is_alpha_search_b_data_foundation() -> None:
         "under the frozen protocol"
     )
 
-    assert programs[1]["status"] == "PROTOCOL_LOCKED_DATA_NOT_ACCESSED"
+    assert programs[1]["status"] == "REJECTED_DEVELOPMENT"
+    assert programs[1]["selected_candidate"] is None
+    assert programs[1]["further_rescue_authorized"] is False
     assert programs[1]["protocol_hash_sha256"] == (
         "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469"
     )

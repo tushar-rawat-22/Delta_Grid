@@ -28,6 +28,8 @@ The following real-data families have been rejected:
 - Alpha Search A macro risk regime, before strategy construction, because
   required causal first-availability evidence was unavailable under its frozen
   protocol
+- Alpha Search B microstructure liquidity state, because all four frozen
+  development candidates failed required promotion gates after costs
 
 These decisions remain frozen.
 
@@ -45,7 +47,8 @@ Infrastructure may change only when required for:
 
 ## Final research budget
 
-One of the two budgeted new economic information families remains.
+No budgeted new economic information family remains. Alpha discovery is
+`STOPPED_ALL_AUTHORIZED_FAMILIES_REJECTED`.
 
 ### Alpha Search A — Macro risk regime
 
@@ -77,19 +80,20 @@ Rules:
 
 ### Alpha Search B — Microstructure liquidity state
 
-Status: `PROTOCOL_LOCKED_DATA_NOT_ACCESSED`
+Status: `REJECTED_DEVELOPMENT`
 
-This is the only remaining authorized economic family. Its four flow-only
-candidates, causal statistics, execution, costs, capital sizing, replication,
-null control and qualification gates are frozen in
-`contracts/ALPHA_SEARCH_B_PROTOCOL_V1.json`.
+All four flow-only candidates were evaluated independently on certified
+development data under the frozen causal statistics, execution, costs, capital
+sizing, replication, null control and qualification gates in
+`contracts/ALPHA_SEARCH_B_PROTOCOL_V1.json`. None passed. No candidate was
+selected and no validation or holdout data was accessed.
 
 The candidates use aggregated spot trade-flow proxies. No entry signal uses a
 price-return threshold, and no maker-fill or order-book claim is made.
 
-High-frequency churning is prohibited by one-position authority and a 24-hour
-post-exit cooldown. No data, returns or strategy results were accessed by the
-protocol lock.
+High-frequency churning remained prohibited by one-position authority and a
+24-hour post-exit cooldown. No rescue cycle, Freqtrade translation, dry-run,
+live trading or capital deployment is authorized.
 
 ## Promotion sequence
 
@@ -138,4 +142,4 @@ will not be represented as a profitable trading system.
 
 ## Next action
 
-`ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION`
+`FREEZE_DELTAGRID_AS_COMPLETED_RESEARCH_PLATFORM`

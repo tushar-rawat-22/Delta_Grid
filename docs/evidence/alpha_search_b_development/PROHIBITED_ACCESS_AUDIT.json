@@ -1,0 +1,15 @@
+{
+  "account_requests": 0,
+  "credential_requests": 0,
+  "holdout_url_requests": 0,
+  "non_allowlisted_host_requests": 0,
+  "order_requests": 0,
+  "private_endpoint_requests": 0,
+  "public_archive_gets": 75,
+  "public_checksum_gets": 75,
+  "public_exchange_info_gets": 1,
+  "public_reference_price_gets": 1,
+  "redirects_followed": 0,
+  "unapproved_symbol_requests": 0,
+  "validation_url_requests": 0
+}

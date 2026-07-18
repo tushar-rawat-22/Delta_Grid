@@ -282,9 +282,12 @@ def test_accounting_edge_cases_and_marked_drawdown() -> None:
 def test_reset_and_research_safety_remain_authoritative() -> None:
     reset = load(RESET_PATH)
     program = reset["final_research_budget"]["programs"][1]
-    assert program["status"] == "PROTOCOL_LOCKED_DATA_NOT_ACCESSED"
+    assert program["status"] == "REJECTED_DEVELOPMENT"
     assert program["protocol_hash_sha256"] == EXPECTED_HASH
-    assert reset["final_research_budget"]["remaining_new_economic_families"] == 1
+    assert reset["final_research_budget"]["remaining_new_economic_families"] == 0
+    assert reset["current_state"]["alpha_discovery"] == (
+        "STOPPED_ALL_AUTHORIZED_FAMILIES_REJECTED"
+    )
     assert reset["final_research_budget"]["programs"][0]["status"] == (
         "REJECTED_BEFORE_STRATEGY_BUILD"
     )

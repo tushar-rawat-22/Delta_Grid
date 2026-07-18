@@ -1,0 +1,5 @@
+"""Development-only Alpha Search B research implementation."""
+
+PROTOCOL_HASH = "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469"
+AUTHORIZED_SYMBOLS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
+LATEST_AUTHORIZED_MONTH = "2024-06"
