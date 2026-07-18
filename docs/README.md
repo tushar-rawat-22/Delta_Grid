@@ -163,11 +163,17 @@ These documents describe possible future designs rather than current authority:
 These classifications do not delete or invalidate historical content. They tell
 readers which material must not be interpreted as the current plan.
 
-## Running and verifying DeltaGrid
+## Current operator guidance
 
 Use the [root README test instructions](../README.md#running-the-tests) for an
 already configured checkout. The repository does not currently claim a verified
 fresh-clone bootstrap for the complete test environment.
+
+The [operator guide](OPERATOR_GUIDE.md) documents the two supported current local
+development and verification commands. It explains safe dry-run use, local logs,
+repository actions, and failure handling. The public docstrings for those
+supported operator modules are also current. The guide does not authorize
+research or trading.
 
 The current local verification CLIs and the plain-text command logs they produce
 have been reviewed for clear human-facing language. Their command syntax,

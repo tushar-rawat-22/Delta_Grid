@@ -147,7 +147,7 @@ VISIBLE_HEADINGS = {
 }
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 4,
+    "CURRENT_INTERNAL": 5,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
@@ -436,8 +436,8 @@ def test_registry_inventory_and_classifications_are_unchanged() -> None:
     registry = load_registry()
     items = registry["documents"]
     counts = Counter(item["classification"] for item in items)
-    assert len(items) == 165
-    assert len({item["path"] for item in items}) == 165
+    assert len(items) == 166
+    assert len({item["path"] for item in items}) == 166
     assert counts == EXPECTED_CLASSIFICATION_COUNTS
     assert registry_by_path()["docs/DELTAGRID_ML_RESEARCH_ADAPTER.md"][
         "classification"

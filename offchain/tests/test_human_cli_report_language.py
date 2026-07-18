@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+from collections import Counter
 import importlib
 import json
 import os
@@ -17,6 +18,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE_COMMIT = "172691b773949cd6516da65a498989ce81e767a0"
+BATCH_6_BASE_COMMIT = "38367d3ab06ce107bbd5d82902ffb201cdf9eed6"
 PYTHON = sys.executable
 
 ELIGIBLE_CLI_PATHS = {
@@ -41,11 +43,39 @@ RECORDED_SURFACE_TESTS = {
     },
 }
 EXPECTED_CHANGED_PATHS = {
+    "docs/OPERATOR_GUIDE.md",
     "docs/README.md",
+    "docs/documentation-status.json",
+    "offchain/tests/test_current_policy_docs.py",
+    "offchain/tests/test_document_status_banners.py",
+    "offchain/tests/test_documentation_status.py",
     "offchain/tests/test_human_cli_report_language.py",
+    "offchain/tests/test_public_docstrings_operator_guidance.py",
     "offchain/tests/test_research_evidence_summaries.py",
     "scripts/mission_control.py",
     "scripts/mission_pack_runner.py",
+}
+EXPECTED_OPERATOR_GUIDE_ENTRY = {
+    "path": "docs/OPERATOR_GUIDE.md",
+    "classification": "CURRENT_INTERNAL",
+    "audience": "Project owner, operators, maintainers, and technical reviewers",
+    "purpose": (
+        "Current safe local operator guidance for supported DeltaGrid "
+        "development and verification commands"
+    ),
+    "authority_level": "CURRENT_SUPPORTING",
+    "conflicts_with_current_state": False,
+    "test_dependent": True,
+    "checksum_dependent": False,
+    "referenced_by_other_records": True,
+    "ai_tone_severity": 1,
+    "readability_severity": 1,
+    "recommended_treatment": "LEAVE_UNCHANGED",
+    "notes": (
+        "Current operator guidance only. It is subordinate to the final freeze "
+        "and current policies and does not authorize research, trading, capital, "
+        "ML, or autonomous execution."
+    ),
 }
 
 
@@ -61,6 +91,10 @@ def git(*args: str) -> subprocess.CompletedProcess[str]:
 
 def base_text(path: str) -> str:
     return git("show", f"{BASE_COMMIT}:{path}").stdout
+
+
+def batch_6_base_text(path: str) -> str:
+    return git("show", f"{BATCH_6_BASE_COMMIT}:{path}").stdout
 
 
 def current_text(path: str) -> str:
@@ -125,12 +159,26 @@ def parser_contract_calls(text: str) -> list[str]:
     return contracts
 
 
-def top_level_function_dumps(text: str) -> dict[str, str]:
-    return {
-        node.name: ast.dump(node, include_attributes=False)
-        for node in ast.parse(text).body
-        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-    }
+def strip_genuine_docstrings(tree: ast.AST) -> ast.AST:
+    for node in ast.walk(tree):
+        if not isinstance(
+            node,
+            (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef),
+        ):
+            continue
+        if (
+            node.body
+            and isinstance(node.body[0], ast.Expr)
+            and isinstance(node.body[0].value, ast.Constant)
+            and isinstance(node.body[0].value.value, str)
+        ):
+            del node.body[0]
+    return ast.fix_missing_locations(tree)
+
+
+def normalized_executable_ast(text: str) -> str:
+    tree = strip_genuine_docstrings(ast.parse(text))
+    return ast.dump(tree, include_attributes=False)
 
 
 def changed_paths() -> set[str]:
@@ -465,7 +513,7 @@ def test_protected_files_and_output_formats_are_unchanged():
 
     protected = git("ls-tree", "-r", "--name-only", BASE_COMMIT, "--", "contracts", "docs", "README.md").stdout.splitlines()
     for path in protected:
-        if path == "docs/README.md":
+        if path in {"docs/README.md", "docs/documentation-status.json"}:
             continue
         assert (ROOT / path).read_bytes() == subprocess.run(
             ["git", "show", f"{BASE_COMMIT}:{path}"],
@@ -474,48 +522,88 @@ def test_protected_files_and_output_formats_are_unchanged():
             check=True,
         ).stdout
 
-    assert current_text("docs/documentation-status.json") == base_text("docs/documentation-status.json")
+    base_registry = json.loads(batch_6_base_text("docs/documentation-status.json"))
+    current_registry = json.loads(current_text("docs/documentation-status.json"))
+    base_by_path = {item["path"]: item for item in base_registry["documents"]}
+    current_by_path = {item["path"]: item for item in current_registry["documents"]}
+    assert len(base_by_path) == 165
+    assert len(current_by_path) == 166
+    assert current_by_path.keys() - base_by_path.keys() == {"docs/OPERATOR_GUIDE.md"}
+    assert all(current_by_path[path] == item for path, item in base_by_path.items())
+    assert current_by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_OPERATOR_GUIDE_ENTRY
+    base_counts = Counter(item["classification"] for item in base_by_path.values())
+    current_counts = Counter(item["classification"] for item in current_by_path.values())
+    assert current_counts["CURRENT_INTERNAL"] == base_counts["CURRENT_INTERNAL"] + 1 == 5
+    assert all(
+        current_counts[label] == count
+        for label, count in base_counts.items()
+        if label != "CURRENT_INTERNAL"
+    )
+
+    tracked_json = {
+        path
+        for path in git("ls-tree", "-r", "--name-only", BATCH_6_BASE_COMMIT).stdout.splitlines()
+        if path.endswith(".json")
+    }
+    for path in tracked_json - {"docs/documentation-status.json"}:
+        assert (ROOT / path).read_bytes() == subprocess.run(
+            ["git", "show", f"{BATCH_6_BASE_COMMIT}:{path}"],
+            cwd=ROOT,
+            capture_output=True,
+            check=True,
+        ).stdout
     assert current_text("offchain/requirements.txt") == base_text("offchain/requirements.txt")
-    assert not any(path.endswith((".json", ".csv", ".tsv", ".log")) for path in changed_paths())
+    changed_structured = {
+        path
+        for path in changed_paths()
+        if path.endswith((".json", ".csv", ".tsv", ".log"))
+    }
+    assert changed_structured == {"docs/documentation-status.json"}
 
 
 def test_only_presentation_functions_changed_from_base():
-    control_before = top_level_function_dumps(base_text("scripts/mission_control.py"))
-    control_after = top_level_function_dumps(current_text("scripts/mission_control.py"))
-    pack_before = top_level_function_dumps(base_text("scripts/mission_pack_runner.py"))
-    pack_after = top_level_function_dumps(current_text("scripts/mission_pack_runner.py"))
-
-    assert set(control_before) == set(control_after)
-    assert set(pack_before) == set(pack_after)
-    assert {
-        name for name in control_before if control_before[name] != control_after[name]
-    } == {"run_command", "main"}
-    assert {
-        name for name in pack_before if pack_before[name] != pack_after[name]
-    } == {"main"}
-
     for path in ELIGIBLE_CLI_PATHS:
-        before = ast.parse(base_text(path))
-        after = ast.parse(current_text(path))
-        before_runs = [
-            ast.dump(node, include_attributes=False)
-            for node in ast.walk(before)
-            if isinstance(node, ast.Call)
-            and isinstance(node.func, ast.Attribute)
-            and node.func.attr == "run"
-            and isinstance(node.func.value, ast.Name)
-            and node.func.value.id == "subprocess"
-        ]
-        after_runs = [
-            ast.dump(node, include_attributes=False)
-            for node in ast.walk(after)
-            if isinstance(node, ast.Call)
-            and isinstance(node.func, ast.Attribute)
-            and node.func.attr == "run"
-            and isinstance(node.func.value, ast.Name)
-            and node.func.value.id == "subprocess"
-        ]
-        assert after_runs == before_runs
+        assert normalized_executable_ast(current_text(path)) == normalized_executable_ast(
+            batch_6_base_text(path)
+        )
+
+    docstring_fixture = '''"""Module before."""
+class Example:
+    """Class before."""
+    @property
+    def value(self):
+        """Property before."""
+        return 1
+def sample():
+    """Function before."""
+    return "value"
+'''
+    docstring_only_change = docstring_fixture.replace("before", "after")
+    assert normalized_executable_ast(docstring_fixture) == normalized_executable_ast(
+        docstring_only_change
+    )
+
+    executable_fixture = '''import subprocess
+DEFAULT_PATH = "reports/original"
+def marker(function):
+    return function
+@marker
+def sample(flag=True, path=DEFAULT_PATH):
+    if flag:
+        subprocess.run(["git", "status"], check=False)
+    return path
+'''
+    executable_changes = (
+        executable_fixture.replace("return path", "return None"),
+        executable_fixture.replace('"status"', '"diff"'),
+        executable_fixture.replace("flag=True", "flag=False"),
+        executable_fixture.replace("if flag:", "if not flag:"),
+        executable_fixture.replace("reports/original", "reports/changed"),
+        executable_fixture.replace("path=DEFAULT_PATH", "path=DEFAULT_PATH, extra=None"),
+        executable_fixture.replace("@marker", "@classmethod"),
+    )
+    baseline = normalized_executable_ast(executable_fixture)
+    assert all(normalized_executable_ast(changed) != baseline for changed in executable_changes)
 
 
 def test_language_guard_negative_controls_reject_unsafe_claims():

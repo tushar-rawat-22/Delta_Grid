@@ -327,7 +327,7 @@ def test_history_and_negative_evidence_cannot_override_current_contracts() -> No
 
 def test_registry_and_docs_home_record_completed_alignment() -> None:
     registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
-    assert len(registry["documents"]) == 165
+    assert len(registry["documents"]) == 166
     by_path = {item["path"]: item for item in registry["documents"]}
     for path in (
         "docs/RESEARCH_POLICY.md",

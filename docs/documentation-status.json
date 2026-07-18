@@ -1905,6 +1905,21 @@
       "notes": "Batch 3 added a historical banner; the historical body remains preserved."
     },
     {
+      "path": "docs/OPERATOR_GUIDE.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Project owner, operators, maintainers, and technical reviewers",
+      "purpose": "Current safe local operator guidance for supported DeltaGrid development and verification commands",
+      "authority_level": "CURRENT_SUPPORTING",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Current operator guidance only. It is subordinate to the final freeze and current policies and does not authorize research, trading, capital, ML, or autonomous execution."
+    },
+    {
       "path": "docs/PROJECT_SOURCE_OF_TRUTH.md",
       "classification": "SUPERSEDED",
       "audience": "Historical reviewers and maintainers",

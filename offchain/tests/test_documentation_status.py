@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = ROOT / "docs" / "documentation-status.json"
 DOCS_HOME = ROOT / "docs" / "README.md"
 STYLE_GUIDE = ROOT / "docs" / "DOCUMENTATION_STYLE.md"
+OPERATOR_GUIDE = ROOT / "docs" / "OPERATOR_GUIDE.md"
 APPROVED_BASE_COMMIT = "d25ca877373e384b3d0b7b8780db8e743c9b589b"
 BATCH_4_BASE_COMMIT = "8d8e0d469a52e8a93382fa92b8117a2b09a10df6"
 
@@ -121,12 +122,35 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 4,
+    "CURRENT_INTERNAL": 5,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
     "MACHINE_REFERENCE": 34,
+}
+
+EXPECTED_OPERATOR_GUIDE_ENTRY = {
+    "path": "docs/OPERATOR_GUIDE.md",
+    "classification": "CURRENT_INTERNAL",
+    "audience": "Project owner, operators, maintainers, and technical reviewers",
+    "purpose": (
+        "Current safe local operator guidance for supported DeltaGrid "
+        "development and verification commands"
+    ),
+    "authority_level": "CURRENT_SUPPORTING",
+    "conflicts_with_current_state": False,
+    "test_dependent": True,
+    "checksum_dependent": False,
+    "referenced_by_other_records": True,
+    "ai_tone_severity": 1,
+    "readability_severity": 1,
+    "recommended_treatment": "LEAVE_UNCHANGED",
+    "notes": (
+        "Current operator guidance only. It is subordinate to the final freeze "
+        "and current policies and does not authorize research, trading, capital, "
+        "ML, or autonomous execution."
+    ),
 }
 
 SUMMARY_PATHS = {
@@ -190,6 +214,7 @@ HISTORICAL_TOP_LEVEL_BANNER_PATHS = {
     "docs/MISSION_INDEX.md",
 }
 DESIGN_ONLY_BANNER_PATHS = {"docs/DELTA_AUTONOMY_ARCHITECTURE.md"}
+BATCH_6_DOCUMENTS = {"docs/OPERATOR_GUIDE.md"}
 def load_registry() -> dict:
     return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
@@ -214,7 +239,7 @@ def repository_relative(path: Path) -> str:
 
 
 def approved_inventory() -> set[str]:
-    """Return the explicit 162-file inventory approved through Batch 4."""
+    """Return the explicit 163-file inventory approved through Batch 6."""
     paths = {
         ".gitignore",
         "README.md",
@@ -402,6 +427,10 @@ def test_readme_is_current_public() -> None:
     registered = documents_by_path()
     assert registered["README.md"]["classification"] == "CURRENT_PUBLIC"
     assert registered["docs/README.md"]["classification"] == "CURRENT_PUBLIC"
+    assert registered["docs/OPERATOR_GUIDE.md"] == EXPECTED_OPERATOR_GUIDE_ENTRY
+    docs_home = DOCS_HOME.read_text(encoding="utf-8")
+    assert "[operator guide](OPERATOR_GUIDE.md)" in docs_home
+    assert "does not authorize research" in normalize_whitespace(docs_home)
     for path in SUMMARY_PATHS:
         item = registered[path]
         assert item["classification"] == "CURRENT_PUBLIC"
@@ -466,7 +495,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
     non_target_entries = [
         item
         for item in load_registry()["documents"]
-        if item["path"] not in target_paths | batch_4_paths
+        if item["path"] not in target_paths | batch_4_paths | BATCH_6_DOCUMENTS
     ]
     base_non_target_entries = [
         item
@@ -575,7 +604,7 @@ def test_style_guide_protects_history_and_authorization() -> None:
 
 
 def test_relative_markdown_links_resolve() -> None:
-    for source in (DOCS_HOME, STYLE_GUIDE):
+    for source in (DOCS_HOME, STYLE_GUIDE, OPERATOR_GUIDE):
         for link in markdown_links(source):
             target_text, separator, fragment = link.partition("#")
             if "://" in target_text or target_text.startswith("mailto:"):
@@ -596,10 +625,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 162
+    assert len(approved) == 163
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 165
+    assert len(registered) == 166
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()

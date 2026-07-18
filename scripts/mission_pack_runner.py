@@ -1,26 +1,12 @@
-"""
-Mission 42: One-Command Mission Pack Runner.
+"""Validate and apply reviewed local mission-pack JSON files.
 
-This module applies generated local mission packs.
-
-A mission pack can:
-- write source files
-- write test files
-- append documentation blocks once
-- run compile/tests/full-suite/mission command
-- optionally commit code
-- optionally commit docs
-- optionally push
-
-It is development automation only, not trading automation.
-
-It never:
-- reads private keys
-- signs transactions
-- sends exchange orders
-- enables live trading
-- uses paid APIs
-- uses real capital
+The supported ``run`` command may write declared repository files, execute the
+declared local verification plan, and commit or push only when explicitly
+requested. Dry-run validates and summarizes the pack without applying declared
+file actions or executing verification commands, while still writing a local
+summary. This is development automation, not research or trading automation;
+success does not establish profitable alpha or create research, paper-trading,
+live-trading, capital, ML, or autonomous authority.
 """
 
 from __future__ import annotations
@@ -86,6 +72,8 @@ FORBIDDEN_CONTENT_PATTERNS = {
 
 @dataclass(frozen=True)
 class FileActionResult:
+    """Record the outcome of one declared repository file action."""
+
     path: str
     action: str
     changed: bool
@@ -95,6 +83,8 @@ class FileActionResult:
 
 @dataclass(frozen=True)
 class GitActionResult:
+    """Record the captured outcome of one local Git command."""
+
     name: str
     command: list[str]
     returncode: int
@@ -103,15 +93,31 @@ class GitActionResult:
 
     @property
     def passed(self) -> bool:
+        """Return whether the Git command completed with exit code zero."""
+
         return self.returncode == 0
 
 
 def utc_now() -> str:
+    """Return the current UTC time as a seconds-precision ISO 8601 string."""
+
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
 
 @contextmanager
 def pushd(path: str | Path):
+    """Temporarily change the process working directory.
+
+    Args:
+        path: Directory used for the duration of the context.
+
+    Yields:
+        Control while the process is in the requested directory.
+
+    Raises:
+        OSError: If either directory change fails.
+    """
+
     previous = Path.cwd()
     os.chdir(path)
     try:
@@ -121,14 +127,48 @@ def pushd(path: str | Path):
 
 
 def read_json(path: str | Path) -> dict[str, Any]:
+    """Read and parse a UTF-8 JSON object from a local file.
+
+    Args:
+        path: JSON file to read.
+
+    Returns:
+        The parsed object expected by mission-pack validation.
+
+    Raises:
+        OSError: If the file cannot be read.
+        json.JSONDecodeError: If the file is not valid JSON.
+    """
+
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
 def write_json(path: str | Path, payload: dict[str, Any]) -> None:
+    """Write a mapping as stable, indented UTF-8 JSON.
+
+    Args:
+        path: Local file to create or replace.
+        payload: JSON-serializable mapping to write.
+
+    Raises:
+        OSError: If the destination cannot be written.
+        TypeError: If the payload contains a non-serializable value.
+    """
+
     write_text(path, json.dumps(payload, indent=2, sort_keys=True))
 
 
 def is_safe_relative_path(path_text: str) -> bool:
+    """Check whether a path is an allowed repository-relative path.
+
+    Args:
+        path_text: Path text to check without touching the filesystem.
+
+    Returns:
+        ``True`` only for a non-empty relative path with no traversal or
+        forbidden path component.
+    """
+
     path = Path(path_text)
 
     if path.is_absolute():
@@ -149,6 +189,19 @@ def is_safe_relative_path(path_text: str) -> bool:
 
 
 def resolve_pack_path(repo_root: str | Path, relative_path: str) -> Path:
+    """Resolve an approved relative path beneath a repository root.
+
+    Args:
+        repo_root: Repository directory that must contain the result.
+        relative_path: Declared path from a validated mission pack.
+
+    Returns:
+        The resolved local target path.
+
+    Raises:
+        ValueError: If the path is unsafe or resolves outside the repository.
+    """
+
     if not is_safe_relative_path(relative_path):
         raise ValueError(f"unsafe path rejected: {relative_path}")
 
@@ -162,6 +215,15 @@ def resolve_pack_path(repo_root: str | Path, relative_path: str) -> Path:
 
 
 def scan_content_forbidden_patterns(content: str) -> list[str]:
+    """Find forbidden credential, live-operation, or signing patterns in text.
+
+    Args:
+        content: Proposed file content to scan.
+
+    Returns:
+        Matching forbidden patterns in deterministic sorted order.
+    """
+
     return [
         pattern
         for pattern in sorted(FORBIDDEN_CONTENT_PATTERNS)
@@ -170,6 +232,15 @@ def scan_content_forbidden_patterns(content: str) -> list[str]:
 
 
 def validate_file_action(action: dict[str, Any]) -> None:
+    """Validate one declared overwrite or append-once file action.
+
+    Args:
+        action: Mission-pack file action to validate.
+
+    Raises:
+        ValueError: If its mode, path, marker, or content is unsafe or invalid.
+    """
+
     path = str(action.get("path", ""))
     content = str(action.get("content", ""))
     mode = str(action.get("mode", "overwrite"))
@@ -190,6 +261,16 @@ def validate_file_action(action: dict[str, Any]) -> None:
 
 
 def validate_pack(pack: dict[str, Any]) -> None:
+    """Validate mission identity, file actions, and declared repository paths.
+
+    Args:
+        pack: Parsed mission-pack object.
+
+    Raises:
+        ValueError: If the pack shape, required mission, file actions, commit
+            paths, or verification paths are invalid.
+    """
+
     if not isinstance(pack, dict):
         raise ValueError("mission pack must be a JSON object")
 
@@ -214,6 +295,16 @@ def validate_pack(pack: dict[str, Any]) -> None:
 
 
 def render_template(text: str, context: dict[str, Any]) -> str:
+    """Replace brace-delimited context keys in text.
+
+    Args:
+        text: Template text to render.
+        context: Keys and values substituted by literal string replacement.
+
+    Returns:
+        Rendered text; unknown placeholders remain unchanged.
+    """
+
     rendered = text
 
     for key, value in context.items():
@@ -228,6 +319,22 @@ def apply_file_action(
     context: dict[str, Any],
     dry_run: bool = False,
 ) -> FileActionResult:
+    """Preview or apply one validated repository file action.
+
+    Args:
+        repo_root: Repository directory that must contain the target.
+        action: Declared overwrite or append-once action.
+        context: Values available to the action's text template.
+        dry_run: Whether to summarize the action without writing its target.
+
+    Returns:
+        The declared path, mode, change state, byte count, and reason.
+
+    Raises:
+        ValueError: If the action or resolved path is unsafe or invalid.
+        OSError: If a required local file or directory operation fails.
+    """
+
     validate_file_action(action)
 
     relative_path = str(action["path"])
@@ -284,6 +391,18 @@ def apply_file_action(
 
 
 def git_status_short(repo_root: str | Path) -> str:
+    """Return stripped ``git status --short`` output for a repository.
+
+    Args:
+        repo_root: Repository in which to inspect status.
+
+    Returns:
+        Short status text, or an empty string for a clean tree.
+
+    Raises:
+        RuntimeError: If the Git status command fails.
+    """
+
     completed = subprocess.run(
         ["git", "status", "--short"],
         cwd=str(repo_root),
@@ -299,6 +418,16 @@ def git_status_short(repo_root: str | Path) -> str:
 
 
 def relative_to_repo(repo_root: str | Path, target: str | Path) -> str | None:
+    """Express a target as a repository-relative POSIX path when possible.
+
+    Args:
+        repo_root: Repository directory used as the boundary.
+        target: Local path to classify.
+
+    Returns:
+        A relative POSIX path, or ``None`` when the target is outside the root.
+    """
+
     root = Path(repo_root).resolve()
     resolved = Path(target).resolve()
 
@@ -313,6 +442,18 @@ def untracked_directory_contains_only_allowed_files(
     status_path: str,
     allowed_paths: set[str],
 ) -> bool:
+    """Check whether an untracked directory contains only allowed files.
+
+    Args:
+        repo_root: Repository containing the untracked status path.
+        status_path: Directory path reported by short Git status.
+        allowed_paths: Exact repository-relative files allowed for this check.
+
+    Returns:
+        ``True`` when the directory exists, contains files, and every file is
+        explicitly allowed.
+    """
+
     root = Path(repo_root).resolve()
     directory = (root / status_path).resolve()
 
@@ -332,6 +473,19 @@ def git_status_short_ignoring_allowed_untracked_paths(
     repo_root: str | Path,
     allowed_paths: set[str],
 ) -> str:
+    """Filter explicitly allowed untracked files from short Git status.
+
+    Args:
+        repo_root: Repository whose status is inspected.
+        allowed_paths: Exact untracked files that may be ignored.
+
+    Returns:
+        Remaining blocking status lines, or an empty string.
+
+    Raises:
+        RuntimeError: If the underlying Git status command fails.
+    """
+
     status = git_status_short(repo_root)
 
     if not status:
@@ -362,6 +516,16 @@ def git_status_short_ignoring_allowed_untracked_paths(
 
 
 def git_action(repo_root: str | Path, command: list[str]) -> GitActionResult:
+    """Run a supplied local Git command and capture its result.
+
+    Args:
+        repo_root: Repository used as the subprocess working directory.
+        command: Complete Git argument vector selected by the caller.
+
+    Returns:
+        Captured command, exit status, standard output, and standard error.
+    """
+
     completed = subprocess.run(
         command,
         cwd=str(repo_root),
@@ -384,6 +548,20 @@ def git_commit(
     paths: list[str],
     message: str,
 ) -> GitActionResult:
+    """Stage declared paths and create one local commit when changes exist.
+
+    This operation may run ``git add`` and ``git commit`` in the repository.
+
+    Args:
+        repo_root: Repository in which to stage and commit.
+        paths: Exact paths declared by the reviewed mission pack.
+        message: Commit message passed to Git.
+
+    Returns:
+        The failed stage result, commit result, or a successful skipped/no-change
+        result.
+    """
+
     if not paths:
         return GitActionResult(
             name="git-commit-skipped",
@@ -415,6 +593,16 @@ def git_commit(
 
 
 def git_latest_short_commit(repo_root: str | Path) -> str:
+    """Return the latest short commit description for a repository.
+
+    Args:
+        repo_root: Repository in which to run the read-only Git log command.
+
+    Returns:
+        The latest ``<short-hash> <subject>`` text, or ``UNKNOWN_COMMIT`` when
+        Git cannot provide it.
+    """
+
     completed = subprocess.run(
         ["git", "log", "--format=%h %s", "-1"],
         cwd=str(repo_root),
@@ -435,6 +623,22 @@ def run_pack_verification(
     verification: dict[str, Any],
     log_dir: str | Path,
 ) -> dict[str, Any]:
+    """Run a mission pack's local verification plan until completion or failure.
+
+    Args:
+        repo_root: Repository used by commands and Git status checks.
+        mission: Label used for per-command log filenames.
+        verification: Pack fields used to build the verification plan.
+        log_dir: Directory that receives per-command logs.
+
+    Returns:
+        A JSON-serializable result count, verdict, and structured command list.
+
+    Raises:
+        OSError: If a subprocess cannot start or a command log cannot be written.
+        ValueError: If an optional mission command cannot be parsed.
+    """
+
     plan = build_verification_plan(
         module_file=verification.get("module_file"),
         test_file=verification.get("test_file"),
@@ -478,6 +682,28 @@ def run_mission_pack(
     push: bool = False,
     require_clean_start: bool = True,
 ) -> dict[str, Any]:
+    """Validate, preview, or apply a reviewed local mission pack.
+
+    Args:
+        pack_path: JSON mission pack to read and validate.
+        repo_root: Repository whose declared files and logs may be updated.
+        dry_run: Whether to avoid declared file actions and verification commands
+            while still writing a local summary.
+        commit: Whether to commit only paths declared by the pack after successful
+            verification.
+        push: Whether to run ``git push origin main`` after preceding stages.
+        require_clean_start: Whether unrelated working-tree changes stop the pack
+            before declared actions.
+
+    Returns:
+        The JSON-serializable pack summary also written to ``summary.json``.
+
+    Raises:
+        ValueError: If the pack or a declared path or action is invalid.
+        OSError: If local files, logs, or subprocesses cannot be accessed.
+        json.JSONDecodeError: If the pack is not valid JSON.
+    """
+
     repo = Path(repo_root).resolve()
     pack = read_json(pack_path)
     validate_pack(pack)
@@ -661,6 +887,14 @@ def run_mission_pack(
 
 
 def main() -> None:
+    """Run the ``run`` CLI and print its machine-readable JSON summary.
+
+    A normal invocation may apply declared repository file actions and execute
+    local verification. Commit and push occur only when their explicit flags
+    are present. Argparse exits with its standard status for help or invalid
+    input; pack outcomes remain encoded in the printed summary.
+    """
+
     parser = argparse.ArgumentParser(
         description=(
             "Apply a local DeltaGrid mission-pack JSON file and run its software-verification "

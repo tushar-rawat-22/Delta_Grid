@@ -1,17 +1,11 @@
-"""
-Mission 41: Local Mission Automation Harness.
+"""Build and run local software-verification plans.
 
-This module automates local mission verification.
-
-It is a development automation layer, not a trading automation layer.
-
-It never:
-- reads private keys
-- signs transactions
-- sends exchange orders
-- enables live trading
-- uses paid APIs
-- uses real capital
+The supported ``verify`` command can compile selected files, run focused tests
+or an operator-supplied local command, inspect Git status, and write local
+command logs plus a machine-readable JSON summary. It is a development
+verification interface, not a research-evaluation or trading-execution
+interface. Passing checks do not establish profitable alpha or create research,
+paper-trading, live-trading, capital, ML, or autonomous authority.
 """
 
 from __future__ import annotations
@@ -39,6 +33,8 @@ MISSION_CONTROL_DRY_RUN = "MISSION_CONTROL_DRY_RUN"
 
 @dataclass(frozen=True)
 class CommandResult:
+    """Record the captured outcome and log location for one local command."""
+
     name: str
     command: list[str]
     returncode: int
@@ -49,14 +45,27 @@ class CommandResult:
 
     @property
     def passed(self) -> bool:
+        """Return whether the command completed with exit code zero."""
+
         return self.returncode == 0
 
 
 def utc_now() -> str:
+    """Return the current UTC time as a seconds-precision ISO 8601 string."""
+
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
 
 def safe_label(value: str) -> str:
+    """Convert a label to a filesystem-friendly value.
+
+    Args:
+        value: Label to sanitize for use in local log filenames.
+
+    Returns:
+        The sanitized label, or ``mission`` when no allowed characters remain.
+    """
+
     allowed = []
     for char in value:
         if char.isalnum() or char in {"-", "_", "."}:
@@ -67,17 +76,48 @@ def safe_label(value: str) -> str:
 
 
 def ensure_log_dir(log_dir: str | Path = DEFAULT_LOG_DIR) -> Path:
+    """Create a local log directory when needed and return its path.
+
+    Args:
+        log_dir: Directory to create, including any missing parents.
+
+    Returns:
+        The resulting path without resolving it.
+
+    Raises:
+        OSError: If the directory cannot be created.
+    """
+
     path = Path(log_dir)
     path.mkdir(parents=True, exist_ok=True)
     return path
 
 
 def write_text(path: str | Path, text: str) -> None:
+    """Write UTF-8 text after creating the destination's parent directory.
+
+    Args:
+        path: Local file to create or replace.
+        text: Complete text to write.
+
+    Raises:
+        OSError: If a directory or file cannot be written.
+    """
+
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(text, encoding="utf-8")
 
 
 def command_to_text(command: Iterable[str]) -> str:
+    """Render command arguments as shell-quoted display text.
+
+    Args:
+        command: Arguments to format without executing them.
+
+    Returns:
+        A human-readable command string suitable for logs.
+    """
+
     return " ".join(shlex.quote(str(part)) for part in command)
 
 
@@ -88,6 +128,22 @@ def run_command(
     log_dir: str | Path = DEFAULT_LOG_DIR,
     log_prefix: str = "mission",
 ) -> CommandResult:
+    """Run one local command and write its human-readable command log.
+
+    Args:
+        name: Stable name used to identify the verification step.
+        command: Argument vector passed directly to ``subprocess.run``.
+        cwd: Working directory for the subprocess.
+        log_dir: Directory that receives the command log.
+        log_prefix: Prefix used in the log filename.
+
+    Returns:
+        Captured process output, timing, exit status, and written log path.
+
+    Raises:
+        OSError: If the subprocess cannot start or its log cannot be written.
+    """
+
     started = datetime.now(timezone.utc)
 
     completed = subprocess.run(
@@ -168,6 +224,24 @@ def build_verification_plan(
     mission_command: str | None,
     skip_full_suite: bool,
 ) -> list[tuple[str, list[str]]]:
+    """Build the ordered local commands for a verification run.
+
+    Args:
+        module_file: Optional Python module to compile.
+        test_file: Optional Python test file to compile.
+        mission_test: Optional pytest path for the focused test step.
+        mission_command: Optional local command parsed into arguments without a
+            shell.
+        skip_full_suite: Whether to omit the complete offchain test suite.
+
+    Returns:
+        Ordered pairs of verification-step names and argument vectors. Read-only
+        Git status checks are always appended.
+
+    Raises:
+        ValueError: If ``mission_command`` contains invalid shell-like quoting.
+    """
+
     plan: list[tuple[str, list[str]]] = []
 
     if module_file:
@@ -192,6 +266,15 @@ def build_verification_plan(
 
 
 def assert_git_clean_before_start(cwd: str | Path = ".") -> tuple[bool, str]:
+    """Check whether a local Git working tree is clean before verification.
+
+    Args:
+        cwd: Repository directory in which to run ``git status --short``.
+
+    Returns:
+        A clean-state flag and either a success message or diagnostic detail.
+    """
+
     completed = subprocess.run(
         ["git", "status", "--short"],
         cwd=str(cwd),
@@ -216,6 +299,20 @@ def summarize_results(
     results: list[CommandResult],
     dry_run: bool = False,
 ) -> dict:
+    """Build the machine-readable summary for verification results.
+
+    Args:
+        mission: Operator-provided verification label.
+        created_at: Timestamp recorded for the run.
+        log_dir: Run directory reported in the summary.
+        results: Command outcomes in execution order.
+        dry_run: Whether the results represent a planned command preview.
+
+    Returns:
+        A JSON-serializable summary with counts, verdict, safety fields, and
+        structured command results.
+    """
+
     failed = [item for item in results if not item.passed]
 
     if dry_run:
@@ -256,6 +353,29 @@ def run_verification(
     require_clean_start: bool = False,
     dry_run: bool = False,
 ) -> dict:
+    """Create a run directory, execute or preview a plan, and write its summary.
+
+    Args:
+        mission: Label used for the run directory and command logs.
+        module_file: Optional Python module to compile.
+        test_file: Optional Python test file to compile.
+        mission_test: Optional focused pytest path.
+        mission_command: Optional approved local command parsed without a shell.
+        log_dir: Parent directory for run artifacts.
+        skip_full_suite: Whether to omit the complete offchain test suite.
+        require_clean_start: Whether a dirty Git tree stops the run before plan
+            execution.
+        dry_run: Whether to record planned commands without executing them.
+
+    Returns:
+        The JSON-serializable summary also written to ``summary.json``.
+
+    Raises:
+        OSError: If local directories, logs, or the summary cannot be written, or
+            if a subprocess cannot start.
+        ValueError: If the optional mission command cannot be parsed.
+    """
+
     created_at = utc_now()
     mission_label = safe_label(mission)
     run_id = uuid.uuid4().hex[:8]
@@ -345,6 +465,14 @@ def run_verification(
 
 
 def main() -> None:
+    """Run the ``verify`` CLI and print its machine-readable JSON summary.
+
+    The selected non-dry-run plan may compile files, run tests or an approved
+    local command, and inspect Git status. Argparse exits with its standard
+    status for help or invalid input; verification outcomes remain encoded in
+    the printed summary.
+    """
+
     parser = argparse.ArgumentParser(
         description=(
             "Run a local DeltaGrid software-verification plan and write command logs. "

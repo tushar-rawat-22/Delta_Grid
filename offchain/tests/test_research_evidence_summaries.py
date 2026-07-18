@@ -80,8 +80,14 @@ CHECKSUM_MANIFESTS = {
 }
 
 EXPECTED_CHANGED_PATHS = {
+    "docs/OPERATOR_GUIDE.md",
     "docs/README.md",
+    "docs/documentation-status.json",
+    "offchain/tests/test_current_policy_docs.py",
+    "offchain/tests/test_document_status_banners.py",
+    "offchain/tests/test_documentation_status.py",
     "offchain/tests/test_human_cli_report_language.py",
+    "offchain/tests/test_public_docstrings_operator_guidance.py",
     "offchain/tests/test_research_evidence_summaries.py",
     "scripts/mission_control.py",
     "scripts/mission_pack_runner.py",
@@ -404,11 +410,11 @@ def test_registry_final_state_and_treatment_transition() -> None:
     current = registry_by_path()
     base = registry_by_path(current=False)
     registry = load_json(REGISTRY_PATH)
-    assert len(registry["documents"]) == 165
+    assert len(registry["documents"]) == 166
     counts = Counter(item["classification"] for item in registry["documents"])
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 4,
+        "CURRENT_INTERNAL": 5,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
@@ -514,17 +520,20 @@ def test_compatibility_updates_are_exact_and_keep_test_counts() -> None:
     banner_path = "offchain/tests/test_document_status_banners.py"
     expected_policy = base_text(current_policy_path).replace(
         'assert len(registry["documents"]) == 159',
-        'assert len(registry["documents"]) == 165',
+        'assert len(registry["documents"]) == 166',
     )
     expected_banner = base_text(banner_path).replace(
         '"CURRENT_PUBLIC": 4,',
         '"CURRENT_PUBLIC": 10,',
     ).replace(
         "assert len(items) == 159",
-        "assert len(items) == 165",
+        "assert len(items) == 166",
     ).replace(
         'assert len({item["path"] for item in items}) == 159',
-        'assert len({item["path"] for item in items}) == 165',
+        'assert len({item["path"] for item in items}) == 166',
+    ).replace(
+        '"CURRENT_INTERNAL": 4,',
+        '"CURRENT_INTERNAL": 5,',
     )
     assert (ROOT / current_policy_path).read_text(encoding="utf-8") == expected_policy
     assert (ROOT / banner_path).read_text(encoding="utf-8") == expected_banner
