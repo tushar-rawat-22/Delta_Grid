@@ -1940,14 +1940,14 @@
       "audience": "Engineers, researchers, operators, and risk reviewers",
       "purpose": "Current internal policy",
       "authority_level": "CURRENT_SUPPORTING",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
-      "ai_tone_severity": 2,
-      "readability_severity": 2,
-      "recommended_treatment": "REWRITE",
-      "notes": "Later wording alignment must preserve or strengthen the final-freeze boundary."
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Aligned with the final freeze during Batch 2; preserves current research and authorization boundaries."
     },
     {
       "path": "docs/RISK_POLICY.md",
@@ -1959,10 +1959,10 @@
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
-      "ai_tone_severity": 2,
-      "readability_severity": 2,
-      "recommended_treatment": "REWRITE",
-      "notes": "Later wording alignment must preserve or strengthen the final-freeze boundary."
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Aligned with the final freeze during Batch 2; preserves current risk and authorization boundaries."
     },
     {
       "path": "docs/ROADMAP.md",
@@ -1985,14 +1985,14 @@
       "audience": "Engineers, researchers, operators, and risk reviewers",
       "purpose": "Current internal policy",
       "authority_level": "CURRENT_SUPPORTING",
-      "conflicts_with_current_state": true,
+      "conflicts_with_current_state": false,
       "test_dependent": false,
       "checksum_dependent": false,
       "referenced_by_other_records": true,
-      "ai_tone_severity": 2,
-      "readability_severity": 2,
-      "recommended_treatment": "REWRITE",
-      "notes": "Later wording alignment must preserve or strengthen the final-freeze boundary."
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Aligned with the final freeze during Batch 2; preserves current safety and authorization boundaries."
     },
     {
       "path": "docs/STRATEGY_RESEARCH_ROADMAP.md",

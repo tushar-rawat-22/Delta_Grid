@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path, PurePosixPath
+from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -180,6 +181,33 @@ def approved_inventory() -> set[str]:
 def markdown_links(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
     return re.findall(r"\[[^\]]+\]\(([^)]+)\)", text)
+
+
+def normalize_whitespace(text: str) -> str:
+    return " ".join(text.split())
+
+
+def markdown_heading_slugs(path: Path) -> set[str]:
+    """Return GitHub-style slugs sufficient for the repository's headings."""
+    slugs: set[str] = set()
+    occurrences: dict[str, int] = {}
+
+    for heading in re.findall(
+        r"^#{1,6}\s+(.+?)\s*#*\s*$",
+        path.read_text(encoding="utf-8"),
+        re.MULTILINE,
+    ):
+        plain = re.sub(r"[`*_~]", "", heading).lower()
+        base = re.sub(r"[^\w\- ]", "", plain)
+        base = re.sub(r"\s+", "-", base.strip())
+        if not base:
+            continue
+        duplicate_index = occurrences.get(base, 0)
+        slug = base if duplicate_index == 0 else f"{base}-{duplicate_index}"
+        occurrences[base] = duplicate_index + 1
+        slugs.add(slug)
+
+    return slugs
 
 
 def test_registry_parses_as_json() -> None:
@@ -398,16 +426,16 @@ def test_docs_home_explains_every_status_label() -> None:
 
 
 def test_docs_home_states_final_freeze_conflict_rule() -> None:
-    text = DOCS_HOME.read_text(encoding="utf-8")
-    assert (
+    text = normalize_whitespace(DOCS_HOME.read_text(encoding="utf-8"))
+    assert normalize_whitespace(
         "When historical documents conflict with the final freeze, "
-        "the final freeze\ncontrols."
+        "the final freeze controls."
     ) in text
 
 
 def test_style_guide_protects_history_and_authorization() -> None:
-    text = STYLE_GUIDE.read_text(encoding="utf-8")
-    assert "protects historical and\nresearch integrity" in text
+    text = normalize_whitespace(STYLE_GUIDE.read_text(encoding="utf-8"))
+    assert "protects historical and research integrity" in text
     assert "must never imply" in text
     assert "Never alter evidence merely to improve style" in text
     assert "Preserve the body text of historical records" in text
@@ -420,11 +448,15 @@ def test_style_guide_protects_history_and_authorization() -> None:
 def test_relative_markdown_links_resolve() -> None:
     for source in (DOCS_HOME, STYLE_GUIDE):
         for link in markdown_links(source):
-            target_text = link.split("#", 1)[0]
-            if not target_text or "://" in target_text or target_text.startswith("mailto:"):
+            target_text, separator, fragment = link.partition("#")
+            if "://" in target_text or target_text.startswith("mailto:"):
                 continue
-            target = source.parent / target_text
+            target = source if not target_text else source.parent / target_text
             assert target.exists(), f"Broken link in {source}: {link}"
+            if separator and fragment and target.suffix.lower() == ".md":
+                assert unquote(fragment).lower() in markdown_heading_slugs(target), (
+                    f"Broken fragment in {source}: {link}"
+                )
 
 
 def test_registry_documents_have_exact_required_fields() -> None:

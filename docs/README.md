@@ -75,9 +75,9 @@ should be read alongside the current status in the root README and final freeze.
 - [Safety invariants](SAFETY_INVARIANTS.md)
 - [Future strategy intake policy](FUTURE_STRATEGY_INTAKE_POLICY.md)
 
-The first three are short current internal policies whose wording needs later
-alignment with the final freeze. This navigation batch does not change their
-content or expand any authorization. The future strategy intake policy is the
+The first three are current internal policies aligned with the final freeze.
+They explain the research, risk, and authorization controls that apply today
+without expanding any authorization. The future strategy intake policy is the
 current gate for considering genuinely new work.
 
 ## Research history
