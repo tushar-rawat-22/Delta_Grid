@@ -661,16 +661,67 @@ def run_mission_pack(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="DeltaGrid one-command mission pack runner.")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Apply a local DeltaGrid mission-pack JSON file and run its software-verification "
+            "plan. The command can write repository files and local logs; it does not create "
+            "research or trading authorization."
+        ),
+        epilog=(
+            "A successful pack run verifies only the requested software steps. It does not "
+            "establish profitable alpha. Paper trading is not currently authorized; live "
+            "trading, ML operation, and autonomous execution are not authorized; capital "
+            "deployment is blocked."
+        ),
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    run = subparsers.add_parser("run", help="Run a local mission pack.")
-    run.add_argument("--pack", required=True)
-    run.add_argument("--repo-root", default=".")
-    run.add_argument("--dry-run", action="store_true")
-    run.add_argument("--commit", action="store_true")
-    run.add_argument("--push", action="store_true")
-    run.add_argument("--no-clean-start", action="store_true")
+    run = subparsers.add_parser(
+        "run",
+        help="Apply a local mission pack and run its verification plan.",
+        description=(
+            "Validate the pack, apply its code and documentation file actions, run local "
+            "verification, and perform only the explicitly requested Git actions."
+        ),
+        epilog=(
+            "A successful run does not establish profitable alpha or change the current "
+            "boundary: paper trading is not currently authorized; live trading, ML operation, "
+            "and autonomous execution are not authorized; capital deployment is blocked."
+        ),
+    )
+    run.add_argument(
+        "--pack",
+        required=True,
+        help="Path to the mission-pack JSON file to read and validate.",
+    )
+    run.add_argument(
+        "--repo-root",
+        default=".",
+        help="Repository whose files and local logs the pack may update (default: current directory).",
+    )
+    run.add_argument(
+        "--dry-run",
+        action="store_true",
+        help=(
+            "Validate and summarize the pack without applying its file actions or running its "
+            "commands; summary.json is still written under reports/mission_logs."
+        ),
+    )
+    run.add_argument(
+        "--commit",
+        action="store_true",
+        help="Commit only the code and documentation paths declared by the pack after verification.",
+    )
+    run.add_argument(
+        "--push",
+        action="store_true",
+        help="Run 'git push origin main' after the pack and requested commits succeed.",
+    )
+    run.add_argument(
+        "--no-clean-start",
+        action="store_true",
+        help="Allow the pack to start without the default clean working tree requirement.",
+    )
 
     args = parser.parse_args()
 

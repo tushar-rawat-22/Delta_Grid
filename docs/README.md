@@ -169,6 +169,13 @@ Use the [root README test instructions](../README.md#running-the-tests) for an
 already configured checkout. The repository does not currently claim a verified
 fresh-clone bootstrap for the complete test environment.
 
+The current local verification CLIs and the plain-text command logs they produce
+have been reviewed for clear human-facing language. Their command syntax,
+machine-readable JSON, contracts, and evidence remain unchanged. A successful
+command or generated report verifies only its stated software checks: it does
+not establish profitable alpha or authorize paper trading, live trading, capital
+deployment, ML operation, or autonomous execution.
+
 ## Documentation registry
 
 [documentation-status.json](documentation-status.json) is the complete

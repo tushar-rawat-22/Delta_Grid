@@ -103,8 +103,35 @@ def run_command(
 
     log_path = ensure_log_dir(log_dir) / f"{safe_label(log_prefix)}-{safe_label(name)}.log"
 
+    if completed.returncode == 0:
+        outcome = "PASS — the command completed with exit code 0."
+        next_safe_action = (
+            "Review the recorded output and continue only with authorized local verification."
+        )
+    else:
+        outcome = f"FAIL — the command completed with exit code {completed.returncode}."
+        next_safe_action = (
+            "Review STDOUT and STDERR, correct the reported software or input problem, "
+            "and rerun this check."
+        )
+
     log_body = "\n".join(
         [
+            "DeltaGrid local verification command log",
+            f"Outcome: {outcome}",
+            f"Checked: {name}",
+            (
+                "Interpretation: This is a software verification result, not a research "
+                "hypothesis decision or evidence of profitable alpha."
+            ),
+            (
+                "Safety and authorization: Paper trading is not currently authorized; "
+                "live trading, ML operation, and autonomous execution are not authorized; "
+                "capital deployment is blocked."
+            ),
+            f"Next safe action: {next_safe_action}",
+            "",
+            "Machine-stable command details:",
             f"name: {name}",
             f"command: {command_to_text(command)}",
             f"returncode: {completed.returncode}",
@@ -318,19 +345,83 @@ def run_verification(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="DeltaGrid local mission automation harness.")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Run a local DeltaGrid software-verification plan and write command logs. "
+            "This command checks code and repository state; it does not run strategy research."
+        ),
+        epilog=(
+            "Passing verification does not establish profitable alpha or create authorization. "
+            "Paper trading is not currently authorized; live trading, ML operation, and "
+            "autonomous execution are not authorized; capital deployment is blocked."
+        ),
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    verify = subparsers.add_parser("verify", help="Run local mission verification.")
-    verify.add_argument("--mission", required=True)
-    verify.add_argument("--module-file", default=None)
-    verify.add_argument("--test-file", default=None)
-    verify.add_argument("--mission-test", default=None)
-    verify.add_argument("--mission-command", default=None)
-    verify.add_argument("--log-dir", default=str(DEFAULT_LOG_DIR))
-    verify.add_argument("--skip-full-suite", action="store_true")
-    verify.add_argument("--require-clean-start", action="store_true")
-    verify.add_argument("--dry-run", action="store_true")
+    verify = subparsers.add_parser(
+        "verify",
+        help="Run local software verification and write command logs.",
+        description=(
+            "Compile selected files, run selected tests or a local command, check Git status, "
+            "and write a JSON summary plus per-command logs."
+        ),
+        epilog=(
+            "Passing these checks does not establish profitable alpha or change the current "
+            "boundary: paper trading is not currently authorized; live trading, ML operation, "
+            "and autonomous execution are not authorized; capital deployment is blocked."
+        ),
+    )
+    verify.add_argument(
+        "--mission",
+        required=True,
+        help="Label used to identify this verification run and its log directory.",
+    )
+    verify.add_argument(
+        "--module-file",
+        default=None,
+        help="Python module to compile before tests; omit to skip this check.",
+    )
+    verify.add_argument(
+        "--test-file",
+        default=None,
+        help="Python test file to compile before running tests; omit to skip this check.",
+    )
+    verify.add_argument(
+        "--mission-test",
+        default=None,
+        help="Pytest path to run as the focused verification step; omit to skip it.",
+    )
+    verify.add_argument(
+        "--mission-command",
+        default=None,
+        help=(
+            "Local command to run after tests; it is parsed as arguments and is not run "
+            "through a shell."
+        ),
+    )
+    verify.add_argument(
+        "--log-dir",
+        default=str(DEFAULT_LOG_DIR),
+        help=(
+            "Parent directory where the JSON summary and command logs are written "
+            "(default: reports/mission_logs)."
+        ),
+    )
+    verify.add_argument(
+        "--skip-full-suite",
+        action="store_true",
+        help="Do not run offchain/tests; selected checks and Git status checks still run.",
+    )
+    verify.add_argument(
+        "--require-clean-start",
+        action="store_true",
+        help="Stop before verification commands if the Git working tree is not clean.",
+    )
+    verify.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Write the planned commands to the JSON summary without executing them.",
+    )
 
     args = parser.parse_args()
 

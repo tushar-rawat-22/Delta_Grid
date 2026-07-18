@@ -81,17 +81,10 @@ CHECKSUM_MANIFESTS = {
 
 EXPECTED_CHANGED_PATHS = {
     "docs/README.md",
-    "docs/documentation-status.json",
-    "offchain/tests/test_documentation_status.py",
-    "offchain/tests/test_current_policy_docs.py",
-    "offchain/tests/test_document_status_banners.py",
-    "docs/research-summaries/README.md",
-    "docs/research-summaries/PROJECT_AUDIT_TRAIL.md",
-    "docs/research-summaries/ALPHA_SEARCH_A.md",
-    "docs/research-summaries/ALPHA_SEARCH_B.md",
-    "docs/research-summaries/MISSIONS_89_TO_92.md",
-    "docs/research-summaries/FINAL_FREEZE.md",
+    "offchain/tests/test_human_cli_report_language.py",
     "offchain/tests/test_research_evidence_summaries.py",
+    "scripts/mission_control.py",
+    "scripts/mission_pack_runner.py",
 }
 
 REQUIRED_SECTIONS = (
