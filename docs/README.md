@@ -125,6 +125,8 @@ the present project plan.
 
 ## Raw contracts and evidence
 
+- [Research and evidence summaries](research-summaries/README.md) provide
+  plain-English companions to the preserved research records below.
 - [Contracts](../contracts/) contain deterministic research, safety, and freeze
   records.
 - [Evidence](evidence/) contains committed research and verification records.
@@ -135,8 +137,10 @@ the present project plan.
 
 Contracts and evidence intentionally use formal machine status codes, exact
 hashes, counters, identities, and deterministic formatting. They should not be
-conversationally rewritten. A human summary may explain them, but it must never
-replace or silently reinterpret the raw record.
+conversationally rewritten. The companion summaries explain them without
+replacing or silently reinterpreting the raw records. They do not reopen
+research or change any authorization; exact historical facts remain controlled
+by the linked contracts and evidence.
 
 ## Superseded and design-only material
 

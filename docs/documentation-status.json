@@ -71,8 +71,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_A.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "contracts/ALPHA_SEARCH_B_COST_ATTRIBUTION_V1.json",
@@ -86,8 +86,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "contracts/ALPHA_SEARCH_B_PROTOCOL_V1.json",
@@ -101,8 +101,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "contracts/DELTAGRID_FINAL_FREEZE_V1.json",
@@ -116,8 +116,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/FINAL_FREEZE.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "contracts/DELTAGRID_PRODUCT_RESET_V1.json",
@@ -131,8 +131,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "contracts/foundry.toml",
@@ -1601,8 +1601,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_A.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/ALPHA_SEARCH_B_PROTOCOL.md",
@@ -1616,8 +1616,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/ARCHITECTURE_STATE.md",
@@ -1646,8 +1646,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 5,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/PROJECT_AUDIT_TRAIL.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/CHARTER.md",
@@ -1676,8 +1676,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 5,
       "readability_severity": 5,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/PROJECT_AUDIT_TRAIL.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/DELTAGRID_FINAL_FREEZE.md",
@@ -1706,8 +1706,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 4,
       "readability_severity": 4,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/FINAL_FREEZE.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/DELTAGRID_ML_RESEARCH_ADAPTER.md",
@@ -1841,8 +1841,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/MISSION90_DIRECTIONAL_TOURNAMENT.md",
@@ -1856,8 +1856,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/MISSION_91_NEW_ECONOMIC_HYPOTHESIS_DISCOVERY.md",
@@ -1871,8 +1871,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/MISSION_92_SESSION_PREMIUM_FALSIFICATION.md",
@@ -1886,8 +1886,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 3,
       "readability_severity": 2,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/MISSION_INDEX.md",
@@ -2036,8 +2036,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_A.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/CANDIDATE_DEVELOPMENT_RESULTS.json",
@@ -2051,8 +2051,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/COST_ATTRIBUTION.json",
@@ -2066,8 +2066,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/DATA_ACQUISITION_MANIFEST.json",
@@ -2081,8 +2081,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/DATA_CERTIFICATION.json",
@@ -2096,8 +2096,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.json",
@@ -2111,8 +2111,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.md",
@@ -2127,7 +2127,7 @@
       "ai_tone_severity": 3,
       "readability_severity": 2,
       "recommended_treatment": "LEAVE_UNCHANGED",
-      "notes": "Preserve historical wording; explain through a companion summary."
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/FEATURE_ENGINE_MANIFEST.json",
@@ -2141,8 +2141,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/HOLM_ADJUSTMENT.json",
@@ -2156,8 +2156,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/NULL_CONTROL_RESULTS.json",
@@ -2171,8 +2171,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/PNL_ATTRIBUTION.json",
@@ -2186,8 +2186,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/PROHIBITED_ACCESS_AUDIT.json",
@@ -2201,8 +2201,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/REPLICATION_RESULTS.json",
@@ -2216,8 +2216,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/SHA256SUMS.txt",
@@ -2246,8 +2246,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/alpha_search_b_development/TEST_RESULTS.json",
@@ -2261,8 +2261,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json",
@@ -2276,8 +2276,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; a human summary must not replace this record."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/FINAL_FREEZE.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "docs/evidence/deltagrid_final_freeze/SHA256SUMS.txt",
@@ -2293,6 +2293,96 @@
       "readability_severity": 0,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Do not rewrite or reorder outside an explicit evidence publication."
+    },
+    {
+      "path": "docs/research-summaries/ALPHA_SEARCH_A.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, technical reviewers, researchers, and future maintainers",
+      "purpose": "Human companion explanation of immutable research and evidence",
+      "authority_level": "EXPLANATORY_ONLY",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explanatory companion only; it does not replace its preserved source records."
+    },
+    {
+      "path": "docs/research-summaries/ALPHA_SEARCH_B.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, technical reviewers, researchers, and future maintainers",
+      "purpose": "Human companion explanation of immutable research and evidence",
+      "authority_level": "EXPLANATORY_ONLY",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explanatory companion only; it does not replace its preserved source records."
+    },
+    {
+      "path": "docs/research-summaries/FINAL_FREEZE.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, technical reviewers, researchers, and future maintainers",
+      "purpose": "Human companion explanation of immutable research and evidence",
+      "authority_level": "EXPLANATORY_ONLY",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explanatory companion only; it does not replace its preserved source records."
+    },
+    {
+      "path": "docs/research-summaries/MISSIONS_89_TO_92.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, technical reviewers, researchers, and future maintainers",
+      "purpose": "Human companion explanation of immutable research and evidence",
+      "authority_level": "EXPLANATORY_ONLY",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explanatory companion only; it does not replace its preserved source records."
+    },
+    {
+      "path": "docs/research-summaries/PROJECT_AUDIT_TRAIL.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, technical reviewers, researchers, and future maintainers",
+      "purpose": "Human companion explanation of immutable research and evidence",
+      "authority_level": "EXPLANATORY_ONLY",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explanatory companion only; it does not replace its preserved source records."
+    },
+    {
+      "path": "docs/research-summaries/README.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, technical reviewers, researchers, and future maintainers",
+      "purpose": "Human companion explanation of immutable research and evidence",
+      "authority_level": "EXPLANATORY_ONLY",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explanatory companion only; it does not replace its preserved source records."
     },
     {
       "path": "offchain/config/.env.example",
@@ -2366,8 +2456,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "offchain/research/contracts/mission89_baseline_falsification_protocol_v1.json",
@@ -2381,8 +2471,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "offchain/research/contracts/mission90_directional_strategy_charter_v1.json",
@@ -2396,8 +2486,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
       "path": "offchain/research/contracts/mission90_directional_tournament_protocol_v1.json",
@@ -2411,8 +2501,8 @@
       "referenced_by_other_records": true,
       "ai_tone_severity": 0,
       "readability_severity": 1,
-      "recommended_treatment": "CREATE_HUMAN_SUMMARY",
-      "notes": "Keep deterministic; do not conversationally rewrite."
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     }
   ]
 }

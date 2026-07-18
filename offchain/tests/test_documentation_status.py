@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path, PurePosixPath
 from urllib.parse import unquote
 
@@ -12,6 +12,7 @@ REGISTRY_PATH = ROOT / "docs" / "documentation-status.json"
 DOCS_HOME = ROOT / "docs" / "README.md"
 STYLE_GUIDE = ROOT / "docs" / "DOCUMENTATION_STYLE.md"
 APPROVED_BASE_COMMIT = "d25ca877373e384b3d0b7b8780db8e743c9b589b"
+BATCH_4_BASE_COMMIT = "8d8e0d469a52e8a93382fa92b8117a2b09a10df6"
 
 ALLOWED_CLASSIFICATIONS = {
     "CURRENT_PUBLIC",
@@ -119,13 +120,59 @@ FOUNDATION_DOCUMENTS = {
 }
 
 EXPECTED_CLASSIFICATION_COUNTS = {
-    "CURRENT_PUBLIC": 4,
+    "CURRENT_PUBLIC": 10,
     "CURRENT_INTERNAL": 4,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
     "MACHINE_REFERENCE": 34,
+}
+
+SUMMARY_PATHS = {
+    "docs/research-summaries/README.md",
+    "docs/research-summaries/PROJECT_AUDIT_TRAIL.md",
+    "docs/research-summaries/ALPHA_SEARCH_A.md",
+    "docs/research-summaries/ALPHA_SEARCH_B.md",
+    "docs/research-summaries/MISSIONS_89_TO_92.md",
+    "docs/research-summaries/FINAL_FREEZE.md",
+}
+
+CANONICAL_SOURCE_SUMMARIES = {
+    "docs/CHANGELOG.md": "research-summaries/PROJECT_AUDIT_TRAIL.md",
+    "docs/DECISION_LOG.md": "research-summaries/PROJECT_AUDIT_TRAIL.md",
+    "docs/ALPHA_SEARCH_A_REJECTION.md": "research-summaries/ALPHA_SEARCH_A.md",
+    "contracts/ALPHA_SEARCH_A_REJECTION_V1.json": "research-summaries/ALPHA_SEARCH_A.md",
+    "docs/evidence/alpha_search_a_feasibility/FEASIBILITY_REJECTION.json": "research-summaries/ALPHA_SEARCH_A.md",
+    "docs/ALPHA_SEARCH_B_PROTOCOL.md": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.md": "research-summaries/ALPHA_SEARCH_B.md",
+    "contracts/ALPHA_SEARCH_B_PROTOCOL_V1.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "contracts/ALPHA_SEARCH_B_COST_ATTRIBUTION_V1.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/CANDIDATE_DEVELOPMENT_RESULTS.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/COST_ATTRIBUTION.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/DATA_ACQUISITION_MANIFEST.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/DATA_CERTIFICATION.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/FEATURE_ENGINE_MANIFEST.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/HOLM_ADJUSTMENT.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/NULL_CONTROL_RESULTS.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/PNL_ATTRIBUTION.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/PROHIBITED_ACCESS_AUDIT.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/REPLICATION_RESULTS.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/SIMULATOR_MANIFEST.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/evidence/alpha_search_b_development/TEST_RESULTS.json": "research-summaries/ALPHA_SEARCH_B.md",
+    "docs/MISSION89_BASELINE_FALSIFICATION.md": "research-summaries/MISSIONS_89_TO_92.md",
+    "docs/MISSION90_DIRECTIONAL_TOURNAMENT.md": "research-summaries/MISSIONS_89_TO_92.md",
+    "docs/MISSION_91_NEW_ECONOMIC_HYPOTHESIS_DISCOVERY.md": "research-summaries/MISSIONS_89_TO_92.md",
+    "docs/MISSION_92_SESSION_PREMIUM_FALSIFICATION.md": "research-summaries/MISSIONS_89_TO_92.md",
+    "contracts/DELTAGRID_PRODUCT_RESET_V1.json": "research-summaries/MISSIONS_89_TO_92.md",
+    "offchain/research/contracts/mission85_funding_carry_charter_v1.json": "research-summaries/MISSIONS_89_TO_92.md",
+    "offchain/research/contracts/mission89_baseline_falsification_protocol_v1.json": "research-summaries/MISSIONS_89_TO_92.md",
+    "offchain/research/contracts/mission90_directional_strategy_charter_v1.json": "research-summaries/MISSIONS_89_TO_92.md",
+    "offchain/research/contracts/mission90_directional_tournament_protocol_v1.json": "research-summaries/MISSIONS_89_TO_92.md",
+    "docs/DELTAGRID_FINAL_PROJECT_REPORT.md": "research-summaries/FINAL_FREEZE.md",
+    "contracts/DELTAGRID_FINAL_FREEZE_V1.json": "research-summaries/FINAL_FREEZE.md",
+    "docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json": "research-summaries/FINAL_FREEZE.md",
 }
 
 SUPERSEDED_BANNER_PATHS = {
@@ -143,13 +190,19 @@ HISTORICAL_TOP_LEVEL_BANNER_PATHS = {
     "docs/MISSION_INDEX.md",
 }
 DESIGN_ONLY_BANNER_PATHS = {"docs/DELTA_AUTONOMY_ARCHITECTURE.md"}
-EXPECTED_NON_TARGET_REGISTRY_SHA256 = (
-    "baed760c8a63b740fa5f2aa8a15197407251267eb7d0bbe9ffc583059bdeda91"
-)
-
-
 def load_registry() -> dict:
     return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+
+
+def load_batch_4_base_registry() -> dict:
+    result = subprocess.run(
+        ["git", "show", f"{BATCH_4_BASE_COMMIT}:docs/documentation-status.json"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return json.loads(result.stdout)
 
 
 def documents_by_path() -> dict[str, dict]:
@@ -161,7 +214,7 @@ def repository_relative(path: Path) -> str:
 
 
 def approved_inventory() -> set[str]:
-    """Return the explicit 156-file inventory approved by the audit."""
+    """Return the explicit 162-file inventory approved through Batch 4."""
     paths = {
         ".gitignore",
         "README.md",
@@ -195,6 +248,7 @@ def approved_inventory() -> set[str]:
         repository_relative(path)
         for path in (ROOT / "offchain" / "research" / "contracts").glob("*.json")
     )
+    paths.update(SUMMARY_PATHS)
     return paths
 
 
@@ -296,6 +350,33 @@ def test_every_treatment_is_allowed() -> None:
         item["recommended_treatment"] in ALLOWED_TREATMENTS
         for item in registry["documents"]
     )
+    registered = documents_by_path()
+    assert len(CANONICAL_SOURCE_SUMMARIES) == 34
+    assert all(
+        registered[path]["recommended_treatment"] == "LEAVE_UNCHANGED"
+        for path in CANONICAL_SOURCE_SUMMARIES
+    )
+
+    base = {item["path"]: item for item in load_batch_4_base_registry()["documents"]}
+    queued = {
+        path
+        for path in CANONICAL_SOURCE_SUMMARIES
+        if base[path]["recommended_treatment"] == "CREATE_HUMAN_SUMMARY"
+    }
+    exception = "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.md"
+    assert len(queued) == 33
+    assert CANONICAL_SOURCE_SUMMARIES.keys() - queued == {exception}
+    assert base[exception]["recommended_treatment"] == "LEAVE_UNCHANGED"
+    assert "preserve" in base[exception]["notes"].lower()
+    assert "companion summary" in base[exception]["notes"].lower()
+
+    for path, summary in CANONICAL_SOURCE_SUMMARIES.items():
+        assert registered[path]["classification"] == base[path]["classification"]
+        assert registered[path]["conflicts_with_current_state"] == (
+            base[path]["conflicts_with_current_state"]
+        )
+        assert summary in registered[path]["notes"]
+        assert "controlling for exact historical facts" in registered[path]["notes"]
 
 
 def test_severity_values_are_integers_from_zero_to_five() -> None:
@@ -321,6 +402,15 @@ def test_readme_is_current_public() -> None:
     registered = documents_by_path()
     assert registered["README.md"]["classification"] == "CURRENT_PUBLIC"
     assert registered["docs/README.md"]["classification"] == "CURRENT_PUBLIC"
+    for path in SUMMARY_PATHS:
+        item = registered[path]
+        assert item["classification"] == "CURRENT_PUBLIC"
+        assert item["authority_level"] == "EXPLANATORY_ONLY"
+        assert item["recommended_treatment"] == "LEAVE_UNCHANGED"
+        assert item["conflicts_with_current_state"] is False
+        assert item["test_dependent"] is True
+        assert item["checksum_dependent"] is False
+        assert "does not replace" in item["notes"]
 
 
 def test_final_freeze_explanation_is_current_public() -> None:
@@ -372,21 +462,19 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
         assert item["conflicts_with_current_state"] is False
         assert item["notes"] == expected_by_classification[item["classification"]]
 
+    batch_4_paths = set(CANONICAL_SOURCE_SUMMARIES) | SUMMARY_PATHS
     non_target_entries = [
         item
         for item in load_registry()["documents"]
-        if item["path"] not in target_paths
+        if item["path"] not in target_paths | batch_4_paths
     ]
-    canonical = json.dumps(
-        non_target_entries,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=True,
-    ).encode("utf-8")
-    assert len(non_target_entries) == 53
-    assert hashlib.sha256(canonical).hexdigest() == (
-        EXPECTED_NON_TARGET_REGISTRY_SHA256
-    )
+    base_non_target_entries = [
+        item
+        for item in load_batch_4_base_registry()["documents"]
+        if item["path"] not in target_paths | batch_4_paths
+    ]
+    assert len(non_target_entries) == 19
+    assert non_target_entries == base_non_target_entries
 
 
 def test_every_adr_is_registered_and_historical() -> None:
@@ -508,10 +596,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 156
+    assert len(approved) == 162
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 159
+    assert len(registered) == 165
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()
