@@ -72,12 +72,14 @@
       {
         "program_id": "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE",
         "priority": 2,
-        "status": "AUTHORIZED_NEXT",
-        "economic_question": "Can a materially new public liquidity or order-flow information source support a low-turnover spot edge after costs?",
+        "status": "PROTOCOL_LOCKED_DATA_NOT_ACCESSED",
+        "economic_question": "Can public, causally available spot aggregated-trade-flow information produce a robust long-or-cash edge after realistic costs, latency, and multiple-testing controls?",
         "data_foundation_required_before_hypothesis_testing": true,
         "paid_data_allowed": false,
         "maximum_variants": 4,
-        "high_frequency_churning_allowed": false
+        "high_frequency_churning_allowed": false,
+        "protocol_contract": "contracts/ALPHA_SEARCH_B_PROTOCOL_V1.json",
+        "protocol_hash_sha256": "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469"
       }
     ]
   },
@@ -145,5 +147,5 @@
     "first_financial_goal": "Prove an edge while preserving capital.",
     "second_financial_goal": "Scale only after forward evidence and separate authorization."
   },
-  "next_action": "ALPHA_SEARCH_B_PREIMPLEMENTATION_RED_TEAM_AND_PROTOCOL_LOCK"
+  "next_action": "ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION"
 }

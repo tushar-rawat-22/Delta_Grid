@@ -77,16 +77,19 @@ Rules:
 
 ### Alpha Search B — Microstructure liquidity state
 
-Status: `AUTHORIZED_NEXT`
+Status: `PROTOCOL_LOCKED_DATA_NOT_ACCESSED`
 
-This is the only remaining authorized economic family. Its strategy logic,
-provider, variants, indicators and thresholds are not defined by this closure.
+This is the only remaining authorized economic family. Its four flow-only
+candidates, causal statistics, execution, costs, capital sizing, replication,
+null control and qualification gates are frozen in
+`contracts/ALPHA_SEARCH_B_PROTOCOL_V1.json`.
 
-It must use a materially new, free, certifiable information source.
-It may not repackage funding carry, price momentum, breakout,
-mean-reversion or static calendar exposure.
+The candidates use aggregated spot trade-flow proxies. No entry signal uses a
+price-return threshold, and no maker-fill or order-book claim is made.
 
-High-frequency churning is prohibited.
+High-frequency churning is prohibited by one-position authority and a 24-hour
+post-exit cooldown. No data, returns or strategy results were accessed by the
+protocol lock.
 
 ## Promotion sequence
 
@@ -135,4 +138,4 @@ will not be represented as a profitable trading system.
 
 ## Next action
 
-`ALPHA_SEARCH_B_PREIMPLEMENTATION_RED_TEAM_AND_PROTOCOL_LOCK`
+`ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION`

@@ -101,11 +101,15 @@ def test_no_profitability_conclusion_is_claimed() -> None:
 
 
 def test_alpha_search_b_is_only_authorized_remaining_family() -> None:
-    authorized = [item for item in programs() if item["status"] == "AUTHORIZED_NEXT"]
-    assert [item["program_id"] for item in authorized] == [
+    remaining = [
+        item
+        for item in programs()
+        if item["program_id"] != "ALPHA_SEARCH_A_MACRO_RISK_REGIME"
+    ]
+    assert [item["program_id"] for item in remaining] == [
         "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE"
     ]
-    assert load(REJECTION_CONTRACT)["next_program"] == authorized[0]["program_id"]
+    assert load(REJECTION_CONTRACT)["next_program"] == remaining[0]["program_id"]
 
 
 def test_remaining_family_count_is_one() -> None:

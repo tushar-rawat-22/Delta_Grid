@@ -1,0 +1,265 @@
+{
+  "contract_id": "alpha-search-b-protocol-v1",
+  "program_id": "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE",
+  "status": "PROTOCOL_LOCKED_DATA_NOT_ACCESSED",
+  "economic_family_count": 1,
+  "primary_question": "Can public, causally available spot aggregated-trade-flow information produce a robust long-or-cash edge after realistic costs, latency, and multiple-testing controls?",
+  "change_control": {
+    "parameters_frozen_before_market_returns": true,
+    "candidate_count": 4,
+    "selected_candidate_limit": 1,
+    "rescue_cycles": 0,
+    "threshold_relaxation_after_data_access": false,
+    "holdout_access_limit": 1
+  },
+  "data_contract": {
+    "source": "OFFICIAL_BINANCE_PUBLIC_MONTHLY_SPOT_ONE_MINUTE_KLINE_ARCHIVES",
+    "official_checksums_required": true,
+    "pairs": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+    "authorized_fields": [
+      "open_time", "open", "high", "low", "close", "volume",
+      "close_time", "quote_asset_volume", "number_of_trades",
+      "taker_buy_base_asset_volume", "taker_buy_quote_asset_volume"
+    ],
+    "timestamp_units": ["MILLISECOND", "POST_2025_MICROSECOND"],
+    "timezone": "UTC",
+    "reject_duplicates": true,
+    "reject_gaps": true,
+    "synchronized_common_minutes_required": true,
+    "raw_archives_location": "OUTSIDE_GIT",
+    "tracked_artifacts": "METADATA_AND_HASHES_ONLY",
+    "interpretation": "AGGREGATED_TRADE_FLOW_PROXY",
+    "not_order_book_imbalance": true,
+    "not_queue_imbalance": true,
+    "not_complete_order_flow": true,
+    "not_maker_fill_evidence": true
+  },
+  "splits": {
+    "warmup": {"start": "2022-06-01T00:00:00Z", "end": "2022-06-30T23:59:59Z", "months": 1},
+    "development": {"start": "2022-07-01T00:00:00Z", "end": "2024-06-30T23:59:59Z", "months": 24, "quarters": 8},
+    "validation": {"start": "2024-07-01T00:00:00Z", "end": "2025-06-30T23:59:59Z", "months": 12, "quarters": 4},
+    "sealed_holdout": {"start": "2025-07-01T00:00:00Z", "end": "2026-06-30T23:59:59Z", "months": 12, "quarters": 4}
+  },
+  "causal_statistics": {
+    "signal_candle": "FULLY_CLOSED_MINUTE_T",
+    "window_expected_minutes": 43200,
+    "window_excludes_current_minute": true,
+    "minimum_complete_observations": 38880,
+    "minimum_coverage_fraction": 0.9,
+    "quantile_method": "NEAREST_RANK_EMPIRICAL",
+    "quantile_rank": "ceil(p*n)",
+    "quantile_value": "sorted_values[rank-1]",
+    "strict_threshold_comparisons": true,
+    "backfill_allowed": false,
+    "interpolation_allowed": false,
+    "taker_buy_ratio": "taker_buy_quote_asset_volume_t / quote_asset_volume_t",
+    "zero_quote_volume_minute_eligible": false,
+    "quantiles": {
+      "taker_buy_ratio": [0.5, 0.95],
+      "quote_asset_volume": [0.95],
+      "number_of_trades": [0.95],
+      "positive_btc_minus_target_taker_buy_ratio_gap": [0.95]
+    },
+    "minimum_positive_gap_observations": 1000
+  },
+  "candidates": [
+    {
+      "candidate_id": "BTC_SELF_FLOW_PERSISTENCE_60M",
+      "target_pair": "BTCUSDT",
+      "signal": ["BTC_taker_buy_ratio_gt_q95", "BTC_quote_asset_volume_gt_q95", "BTC_number_of_trades_gt_q95"],
+      "holding_minutes": 60,
+      "replication_pairs": ["ETHUSDT", "SOLUSDT"],
+      "replication_logic": "SAME_TARGET_SELF_FLOW_SIGNAL"
+    },
+    {
+      "candidate_id": "BTC_SELF_FLOW_PERSISTENCE_120M",
+      "target_pair": "BTCUSDT",
+      "signal": ["BTC_taker_buy_ratio_gt_q95", "BTC_quote_asset_volume_gt_q95", "BTC_number_of_trades_gt_q95"],
+      "holding_minutes": 120,
+      "replication_pairs": ["ETHUSDT", "SOLUSDT"],
+      "replication_logic": "SAME_TARGET_SELF_FLOW_SIGNAL"
+    },
+    {
+      "candidate_id": "BTC_FLOW_LEADS_ETH_60M",
+      "target_pair": "ETHUSDT",
+      "signal": ["BTC_self_flow_conditions_true", "ETH_taker_buy_ratio_lte_causal_median", "BTC_minus_ETH_flow_gap_gt_positive_gap_q95"],
+      "holding_minutes": 60,
+      "replication_pairs": ["SOLUSDT"],
+      "replication_logic": "UNCHANGED_BTC_TO_TARGET_FLOW_GAP"
+    },
+    {
+      "candidate_id": "BTC_FLOW_LEADS_SOL_60M",
+      "target_pair": "SOLUSDT",
+      "signal": ["BTC_self_flow_conditions_true", "SOL_taker_buy_ratio_lte_causal_median", "BTC_minus_SOL_flow_gap_gt_positive_gap_q95"],
+      "holding_minutes": 60,
+      "replication_pairs": ["ETHUSDT"],
+      "replication_logic": "UNCHANGED_BTC_TO_TARGET_FLOW_GAP"
+    }
+  ],
+  "candidate_exclusions": {
+    "price_return_entry_threshold": false,
+    "reversal": false,
+    "breakout": false,
+    "momentum_tail": false,
+    "mean_reversion": false,
+    "rsi": false,
+    "macd": false,
+    "machine_learning": false,
+    "market_making": false,
+    "maker_fill_assumption": false,
+    "additional_holding_period": false
+  },
+  "turnover_and_collisions": {
+    "maximum_global_open_positions": 1,
+    "candidate_evaluations_independent": true,
+    "cross_candidate_signals_interact": false,
+    "cooldown_after_exit_minutes": 1440,
+    "next_eligible_signal_at_or_after_exit_plus_cooldown": true,
+    "signals_during_position_or_cooldown": "REJECT_AND_COUNT",
+    "eligible_signal_choice": "FIRST_CHRONOLOGICALLY_ELIGIBLE",
+    "signal_ranking_from_results": false,
+    "monthly_trade_target": null,
+    "averaging_down": false,
+    "stacking": false
+  },
+  "execution": {
+    "normal": {"entry_minute_offset": 1, "round_trip_cost_role": "NORMAL"},
+    "conservative": {"entry_minute_offset": 2, "round_trip_cost_role": "QUALIFICATION"},
+    "severe": {"entry_minute_offset": 3, "round_trip_cost_role": "DIAGNOSTIC"},
+    "holding_duration_starts_at_actual_entry": true,
+    "scheduled_exit": "OPEN_AT_ENTRY_MINUTE_PLUS_HOLDING_MINUTES",
+    "entry_convention": "ENTER_AT_OPEN_OF_MINUTE_E",
+    "protective_stop_rate": "0.015",
+    "stop_candles": "ENTRY_MINUTE_AND_EACH_LATER_CANDLE_BEFORE_SCHEDULED_EXIT",
+    "stop_monitoring_starts": "MINUTE_E_NO_STOP_FREE_ENTRY_MINUTE",
+    "stop_trigger": "candle_low_lte_entry_price_times_0.985",
+    "stop_exit": "FOLLOWING_MINUTE_OPEN",
+    "stop_fill": "min(next_minute_open, stop_barrier)",
+    "stop_precedes_scheduled_exit": true,
+    "stop_due_at_scheduled_exit_open_precedence": "STOP_EXIT",
+    "missing_next_minute_invalidates_trade_and_dataset_gate": true
+  },
+  "costs": {
+    "round_trip_bps": {
+      "BTCUSDT": {"normal": 26, "conservative": 34, "severe": 62},
+      "ETHUSDT": {"normal": 27, "conservative": 36, "severe": 67},
+      "SOLUSDT": {"normal": 30, "conservative": 42, "severe": 82}
+    },
+    "entry_allocation_fraction": 0.5,
+    "exit_allocation_fraction": 0.5,
+    "component_attribution_status": "COMPONENT_LEVEL_COST_ATTRIBUTION_REQUIRES_SEPARATE_EXTRACTION",
+    "component_attribution_prerequisite_for_development_evaluator": true,
+    "mission88_observation": "Tracked Mission 88 exposes components for its two-leg carry profiles but does not deterministically decompose the authoritative Mission 92 single-leg totals.",
+    "latency_displacement": "normal_timing_gross_pnl_minus_scenario_timing_gross_pnl"
+  },
+  "capital": {
+    "wallet_usd": "100.00",
+    "planned_risk_budget_usd": "0.50",
+    "absolute_deployed_capital_ceiling_usd": "80.00",
+    "minimum_cash_reserve_usd": "20.00",
+    "leverage": 1,
+    "trading_mode": "SPOT_LONG_OR_CASH",
+    "planned_loss_rate": "0.015 + pair_severe_round_trip_cost_bps / 10000",
+    "maximum_stake": "min(80.00, 0.50 / planned_loss_rate)",
+    "arithmetic": "DECIMAL",
+    "reference_stake_ceiling_usd": {
+      "BTCUSDT": {"exact": "5000/212", "approximate": "23.584905660377"},
+      "ETHUSDT": {"exact": "5000/217", "approximate": "23.041474654378"},
+      "SOLUSDT": {"exact": "625/29", "approximate": "21.551724137931"}
+    },
+    "exchange_stake_and_quantity_rounding": "DOWN",
+    "two_position_selection_authorized": false,
+    "two_position_diagnostic": {
+      "authorized_only_after_holdout_qualification": true,
+      "combined_planned_risk_budget_usd": "0.50",
+      "minimum_cash_reserve_usd": "20.00",
+      "maximum_total_deployed_capital_usd": "80.00",
+      "candidate_selection_or_rescue_allowed": false
+    }
+  },
+  "replication": {
+    "selects_candidate": false,
+    "rescues_candidate": false,
+    "parameters_may_differ": false,
+    "primary_failure_is_final": true,
+    "minimum_positive_replication_assets": 1,
+    "required_scenario": "CONSERVATIVE",
+    "required_stages": ["DEVELOPMENT", "VALIDATION", "HOLDOUT"],
+    "minimum_completed_trades": {"development": 120, "validation": 60, "holdout": 60},
+    "sample_floor_failure_rejects_replication_gate": true
+  },
+  "sample_and_calendar_gates": {
+    "development": {"minimum_trades": 240, "minimum_months_with_five_trades": 18, "total_months": 24, "maximum_month_trade_fraction": 0.2, "minimum_positive_quarters": 5, "total_quarters": 8, "maximum_positive_quarter_concentration": 0.35, "maximum_drawdown_pct": 10},
+    "validation": {"minimum_trades": 120, "minimum_months_with_five_trades": 9, "total_months": 12, "minimum_positive_quarters": 3, "total_quarters": 4, "maximum_positive_quarter_concentration": 0.35, "maximum_drawdown_pct": 10},
+    "holdout": {"minimum_trades": 120, "minimum_months_with_five_trades": 9, "total_months": 12, "minimum_positive_quarters": 3, "total_quarters": 4, "maximum_positive_quarter_concentration": 0.35, "maximum_drawdown_pct": 10}
+  },
+  "null_control": {
+    "mandatory": true,
+    "deployable": false,
+    "repetitions": 5000,
+    "seed": "unsigned_integer(first_16_hex(SHA256(contract_hash + ':' + candidate_id)))",
+    "eligibility_universe": ["target_pair_data_completeness", "required_synchronized_source_pair_completeness", "warmup_completion", "causal_feature_availability", "nonzero_required_denominators", "relevant_trailing_history_minimums"],
+    "observed_candidate_position_or_cooldown_path_affects_base_universe": false,
+    "signal_truth_required_for_placebo": false,
+    "strata": ["target_pair", "calendar_month", "utc_hour_of_day"],
+    "sampling": "ONE_PLACEBO_WITHOUT_REPLACEMENT_PER_OBSERVED_TRADE_IN_SAME_STRATUM",
+    "placebo_path_rules_applied_after_sampling": true,
+    "unchanged_trade_rules": ["holding_interval", "stop", "scenario_timing", "costs", "one_position", "cooldown"],
+    "collision_policy": "DISCARD_ENTIRE_REPETITION_AND_RESAMPLE",
+    "maximum_resampling_attempts_per_repetition": 100,
+    "construction_failure_rejects_candidate": true,
+    "test_statistic": "MEAN_CONSERVATIVE_NET_RETURN_PER_COMPLETED_TRADE",
+    "finite_sample_p_value": "(1 + count(null_statistic >= observed_statistic)) / 5001",
+    "holm_family_size": 4,
+    "adjusted_one_sided_p_value_max_exclusive": 0.05
+  },
+  "accounting": {
+    "promotion_metric_basis": "SCENARIO_NET_TRADE_AND_ACCOUNT_PNL_AFTER_SCENARIO_COSTS",
+    "net_based_metrics": ["profit_factor", "expectancy", "winner_concentration", "quarter_concentration", "best_month_removal", "largest_winner_removal", "drawdown"],
+    "gross_pnl_role": "SEPARATELY_REPORTED_ATTRIBUTION_ONLY_EXCEPT_EXPLICIT_GROSS_TO_NET_RETENTION_DENOMINATOR",
+    "profit_factor": "positive_scenario_net_trade_pnl / abs(negative_scenario_net_trade_pnl)",
+    "positive_profit_zero_loss": "POSITIVE_INFINITY_UNBOUNDED",
+    "zero_profit_zero_loss": "ZERO_AND_FAIL",
+    "round_before_gates": false,
+    "gross_to_net_retention": "scenario_net_profit / scenario_gross_profit_when_scenario_gross_profit_gt_zero",
+    "gross_to_net_retention_nonpositive_gross_profit": "FAIL",
+    "top_one_percent_winner_count": "max(1, ceil(0.01 * winning_trade_count))",
+    "winner_sort": "POSITIVE_NET_PNL_DESCENDING",
+    "quarter_concentration": "largest_positive_quarter_pnl / sum(all_positive_quarter_pnl)",
+    "no_positive_quarter": "FAIL",
+    "equity_frequency": "ONE_MINUTE",
+    "marked_to_market_equity": ["cash", "open_position_market_value", "entry_costs_paid", "exit_costs_when_paid"]
+  },
+  "promotion_gates": {
+    "development": ["all_sample_and_calendar_gates", "normal_net_pnl_positive", "conservative_net_pnl_positive", "conservative_profit_factor_gte_1.25", "positive_after_removing_best_month", "positive_after_removing_five_largest_winners", "top_one_percent_winner_concentration_lt_0.25", "gross_to_net_retention_gte_0.25", "holm_adjusted_null_p_value_lt_0.05", "positive_conservative_replication_asset"],
+    "tie_break": ["higher_conservative_profit_factor", "lower_conservative_maximum_drawdown", "higher_conservative_mean_net_expectancy", "lexicographically_smaller_candidate_id"],
+    "validation": ["all_sample_and_calendar_gates", "conservative_net_pnl_positive", "conservative_profit_factor_gte_1.15", "positive_after_removing_largest_winner", "positive_conservative_replication_asset"],
+    "holdout": ["all_sample_and_calendar_gates", "conservative_net_pnl_positive", "conservative_profit_factor_gte_1.15", "top_one_percent_winner_concentration_lt_0.25", "positive_conservative_replication_asset"]
+  },
+  "win_rate_and_tail": {
+    "win_rate_optimized": false,
+    "win_rate_promotion_gate": false,
+    "tail_audit_trigger_win_rate_gt": 0.8,
+    "tail_audit": ["largest_loss_divided_by_median_winner", "median_winners_erased_by_largest_loss", "pnl_after_worst_three_trades", "hidden_averaging_or_wide_loss_evidence"]
+  },
+  "research_boundary": {
+    "deltagrid_authoritative": true,
+    "freqtrade_implementation_authorized_now": false,
+    "freqtrade_allowed_only_after_research_gates": true,
+    "live_trading_authorized": false,
+    "capital_deployment_authorized": false,
+    "futures_authorized": false,
+    "shorting_authorized": false
+  },
+  "evidence_access": {
+    "market_data_accessed": false,
+    "market_return_fields_accessed": 0,
+    "strategy_results_evaluated": 0,
+    "pnl_metrics_evaluated": 0,
+    "validation_performance_accessed": false,
+    "holdout_performance_accessed": false,
+    "result_metrics_embedded": false
+  },
+  "next_action": "ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION",
+  "contract_hash_sha256": "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469"
+}

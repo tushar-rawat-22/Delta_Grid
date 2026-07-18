@@ -93,11 +93,11 @@ def test_forward_test_and_capital_limits_are_strict() -> None:
     assert capital["capital_scaling_automatic"] is False
 
 
-def test_next_action_is_alpha_search_b_preimplementation_review() -> None:
+def test_next_action_is_alpha_search_b_data_foundation() -> None:
     contract = load_contract()
 
     assert contract["next_action"] == (
-        "ALPHA_SEARCH_B_PREIMPLEMENTATION_RED_TEAM_AND_PROTOCOL_LOCK"
+        "ALPHA_SEARCH_B_DATA_FOUNDATION_AND_DEVELOPMENT_FALSIFICATION"
     )
 
     programs = contract[
@@ -118,4 +118,7 @@ def test_next_action_is_alpha_search_b_preimplementation_review() -> None:
         "under the frozen protocol"
     )
 
-    assert programs[1]["status"] == "AUTHORIZED_NEXT"
+    assert programs[1]["status"] == "PROTOCOL_LOCKED_DATA_NOT_ACCESSED"
+    assert programs[1]["protocol_hash_sha256"] == (
+        "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469"
+    )
