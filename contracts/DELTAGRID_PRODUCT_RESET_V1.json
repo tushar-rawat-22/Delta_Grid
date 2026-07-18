@@ -41,6 +41,7 @@
   },
   "final_research_budget": {
     "maximum_new_economic_families": 2,
+    "remaining_new_economic_families": 1,
     "maximum_variants_per_family": 4,
     "maximum_selected_candidates_per_family": 1,
     "rescue_cycles_after_rejection": 0,
@@ -51,7 +52,10 @@
       {
         "program_id": "ALPHA_SEARCH_A_MACRO_RISK_REGIME",
         "priority": 1,
-        "status": "AUTHORIZED_NEXT",
+        "status": "REJECTED_BEFORE_STRATEGY_BUILD",
+        "rescue_cycles_used": 0,
+        "further_rescue_authorized": false,
+        "rejection_reason": "required causal first-availability evidence unavailable under the frozen protocol",
         "economic_question": "Can lagged macro risk conditions improve low-turnover BTC spot long-or-cash outcomes after realistic costs?",
         "information_sources": [
           "SP500",
@@ -68,7 +72,7 @@
       {
         "program_id": "ALPHA_SEARCH_B_MICROSTRUCTURE_LIQUIDITY_STATE",
         "priority": 2,
-        "status": "CONDITIONAL_ONLY_IF_PROGRAM_A_FAILS",
+        "status": "AUTHORIZED_NEXT",
         "economic_question": "Can a materially new public liquidity or order-flow information source support a low-turnover spot edge after costs?",
         "data_foundation_required_before_hypothesis_testing": true,
         "paid_data_allowed": false,
@@ -141,5 +145,5 @@
     "first_financial_goal": "Prove an edge while preserving capital.",
     "second_financial_goal": "Scale only after forward evidence and separate authorization."
   },
-  "next_action": "ALPHA_SEARCH_A_DATA_FOUNDATION_AND_PROTOCOL_LOCK"
+  "next_action": "ALPHA_SEARCH_B_PREIMPLEMENTATION_RED_TEAM_AND_PROTOCOL_LOCK"
 }

@@ -28,6 +28,7 @@ def test_product_reset_is_money_first_and_finite() -> None:
     budget = contract["final_research_budget"]
 
     assert budget["maximum_new_economic_families"] == 2
+    assert budget["remaining_new_economic_families"] == 1
     assert budget["maximum_variants_per_family"] == 4
     assert budget["rescue_cycles_after_rejection"] == 0
     assert budget["parameter_changes_after_market_results"] is False
@@ -92,11 +93,11 @@ def test_forward_test_and_capital_limits_are_strict() -> None:
     assert capital["capital_scaling_automatic"] is False
 
 
-def test_next_action_is_macro_data_foundation() -> None:
+def test_next_action_is_alpha_search_b_preimplementation_review() -> None:
     contract = load_contract()
 
     assert contract["next_action"] == (
-        "ALPHA_SEARCH_A_DATA_FOUNDATION_AND_PROTOCOL_LOCK"
+        "ALPHA_SEARCH_B_PREIMPLEMENTATION_RED_TEAM_AND_PROTOCOL_LOCK"
     )
 
     programs = contract[
@@ -107,8 +108,14 @@ def test_next_action_is_macro_data_foundation() -> None:
         "ALPHA_SEARCH_A_MACRO_RISK_REGIME"
     )
 
-    assert programs[0]["status"] == "AUTHORIZED_NEXT"
-
-    assert programs[1]["status"] == (
-        "CONDITIONAL_ONLY_IF_PROGRAM_A_FAILS"
+    assert programs[0]["status"] == (
+        "REJECTED_BEFORE_STRATEGY_BUILD"
     )
+    assert programs[0]["rescue_cycles_used"] == 0
+    assert programs[0]["further_rescue_authorized"] is False
+    assert programs[0]["rejection_reason"] == (
+        "required causal first-availability evidence unavailable "
+        "under the frozen protocol"
+    )
+
+    assert programs[1]["status"] == "AUTHORIZED_NEXT"

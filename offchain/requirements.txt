@@ -23,6 +23,7 @@ multidict==6.7.1
 numpy==2.5.1
 pandas==3.0.3
 parsimonious==0.10.0
+pyarrow==25.0.0
 propcache==0.5.2
 pycryptodome==3.23.0
 pydantic==2.13.4

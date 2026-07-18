@@ -25,6 +25,9 @@ The following real-data families have been rejected:
 - Funding and basis carry
 - Conventional directional strategies
 - Static intraday session exposure
+- Alpha Search A macro risk regime, before strategy construction, because
+  required causal first-availability evidence was unavailable under its frozen
+  protocol
 
 These decisions remain frozen.
 
@@ -42,9 +45,16 @@ Infrastructure may change only when required for:
 
 ## Final research budget
 
-Exactly two new economic information families are permitted.
+One of the two budgeted new economic information families remains.
 
 ### Alpha Search A — Macro risk regime
+
+Status: `REJECTED_BEFORE_STRATEGY_BUILD`
+
+The frozen feasibility protocol could not establish required causal
+first-availability evidence for every required series. No BTC archives, BTC
+price fields, returns, signals, P&L, validation performance or holdout
+performance were accessed. No rescue or substitution is authorized.
 
 Research whether lagged macro conditions support a low-turnover BTC
 spot long-or-cash strategy.
@@ -67,7 +77,10 @@ Rules:
 
 ### Alpha Search B — Microstructure liquidity state
 
-This program is conditional on Alpha Search A failing.
+Status: `AUTHORIZED_NEXT`
+
+This is the only remaining authorized economic family. Its strategy logic,
+provider, variants, indicators and thresholds are not defined by this closure.
 
 It must use a materially new, free, certifiable information source.
 It may not repackage funding carry, price momentum, breakout,
@@ -122,4 +135,4 @@ will not be represented as a profitable trading system.
 
 ## Next action
 
-`ALPHA_SEARCH_A_DATA_FOUNDATION_AND_PROTOCOL_LOCK`
+`ALPHA_SEARCH_B_PREIMPLEMENTATION_RED_TEAM_AND_PROTOCOL_LOCK`
