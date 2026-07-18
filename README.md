@@ -1,417 +1,164 @@
 # DeltaGrid
 
-Research-first DeFi execution and risk platform.
+## Current project status
 
-Core rule:
-No real capital until the system passes local tests, fork tests, testnet simulations, paper/demo validation, and manual promotion gates.
+DeltaGrid is a completed research-first quantitative research platform. It has no validated profitable strategy and does not authorize live trading or capital deployment.
 
-Current phase:
-Local + testnet research only.
+The final state is `COMPLETED_RESEARCH_PLATFORM_NO_VALIDATED_ALPHA`. Alpha discovery is stopped because every authorized family was rejected. Passing tests establishes software behavior and evidence integrity; it does not establish profitability. Infrastructure maturity does not establish alpha.
 
-## DeltaGrid Autonomy Architecture
+## Project purpose
 
-DeltaGrid is being built toward a fully AI-integrated autonomous trading system with self-learning capabilities.
+DeltaGrid was built to ask whether trading hypotheses survive causal data rules, realistic costs, chronological evaluation, falsification controls, and explicit promotion gates. Its durable output is the research process and negative evidence, not a trading promise.
 
-Current status:
+## What DeltaGrid is
 
-- research-first
-- shadow and paper-only
-- local SQLite evidence trail
-- no live trading
-- no real capital
-- no private keys
-- no exchange orders
-- no model training yet
+DeltaGrid is a local-first collection of data-foundation, simulation, execution-cost, risk, statistical, evidence, and governance components. Contracts freeze hypotheses and decision rules; implementations produce deterministic research artifacts; tests protect safety and historical identities.
 
-Mission 80 intentionally replaces the earlier Human Approval Gate direction with an Autonomous Policy Gate.
+## What DeltaGrid is not
 
-The system should not require human approval before every future action. Instead, it should progress through machine-checkable autonomous policy gates.
+DeltaGrid is not a profitable bot, a production trading service, an autonomous live trader, or proof of future returns. It has no selected Alpha Search B candidate, current paper-trading authority, live-order authority, or capital authority.
 
-Current autonomy path:
+## Architecture
 
-research recommendations
-  -> autonomous policy gate
-  -> autonomous paper signal engine
-  -> paper execution agent
-  -> self-learning feedback loop
-  -> offline training/evaluation/promotion gates
-  -> autonomous risk governor
-  -> live readiness firewall
+The repository separates:
 
-Mission 80 approves only autonomous paper-only progression. It does not approve live trading, capital deployment, model training, or exchange execution.
+1. versioned research and closure contracts;
+2. off-chain data, simulation, cost, risk, and statistical engines;
+3. tracked metadata and evidence, with ignored raw market data outside Git;
+4. deterministic tests and safety gates;
+5. reports, architecture decisions, and governance documentation;
+6. historical on-chain executor, registry, and risk-guard contracts.
 
-See:
+The final-freeze contract is additive. It does not rewrite the earlier mission, reset, Alpha Search A, or Alpha Search B records.
 
-- docs/DELTA_AUTONOMY_ARCHITECTURE.md
-- docs/ADR/ADR-0080-autonomous-policy-gate.md
+## Major research timeline
 
-### Mission 81 Autonomous Paper Signal Engine
+| Phase | Repository-supported outcome |
+|---|---|
+| Early platform work | Local monitoring, market schemas, simulators, research governance, paper-only controls, and evidence infrastructure were developed. |
+| Mission 84 | Synthetic-fixture pipeline closed with 35 fixture-screening records and zero real-data validated candidates. |
+| Mission 85 | A falsification-first funding-carry charter locked the economic question and experiment boundary. |
+| Mission 86 | Public real-market data acquisition and provenance infrastructure was created; data remained uncertified pending Mission 87. |
+| Mission 87 | Fifteen series were certified for research with structural checks, not performance evaluation. |
+| Mission 88 | An assumption-bounded execution and cost model was approved for baseline falsification with uncertainty. |
+| Mission 89 | Funding and basis carry was rejected and archived before holdout access. |
+| Mission 90 | Twelve directional variants were rejected in development; validation and holdout were not read. |
+| Product reset | Open-ended mission numbering was retired and two final alpha-family slots were locked. |
+| Alpha Search A | Rejected before strategy construction because required causal first-availability evidence was unavailable. |
+| Alpha Search B | All four frozen development candidates were rejected; no candidate was selected. |
+| Final freeze | Project closed as a completed research platform with no validated alpha. |
 
-Mission 81 adds autonomous paper-only signal records after the Mission 80 Autonomous Policy Gate.
+## Strategy-family outcomes
 
-These are not live trading signals.
+| Family | Outcome | Boundary |
+|---|---|---|
+| Mission 84 synthetic benchmark families | Fixture screening only; no real-data validated alpha | No model training, promotion, trading, or capital |
+| Funding and basis carry | `REJECT_AND_ARCHIVE_FUNDING_CARRY` | Holdout rows read: 0 |
+| Conventional directional strategies | `REJECT_ALL_DIRECTIONAL_HYPOTHESES` | Validation rows: 0; holdout rows: 0 |
+| Static intraday session exposure | Rejected in the controlling product-reset record | Frozen; no indirect reopening |
+| Alpha Search A macro risk regime | `REJECTED_BEFORE_STRATEGY_BUILD` | No strategy, P&L, validation, or holdout evaluation |
+| Alpha Search B microstructure liquidity state | `ALPHA_SEARCH_B_REJECTED_DEVELOPMENT` | Four candidates rejected; selected candidate `null`; scoped validation and holdout access both 0 |
 
-They are:
+## Data acquisition, certification, and provenance
 
-- paper-only
-- observe-only
-- no-trade
-- no-order
-- no-capital
-- no-model-training
-- no-live-signal
+Mission 86 introduced resumable public-data acquisition, raw-response preservation, normalized tables, request provenance, and SHA-256 identities for BTCUSDT, ETHUSDT, and SOLUSDT spot and derivatives streams. Mission 87 certified 12 bar series and three funding series using continuity, OHLC, settlement, split-coverage, raw-to-normalized, and cross-stream checks.
 
-Mission 81 prepares Mission 82 Paper Execution Agent.
+Alpha Search B used official Binance monthly one-minute spot-kline archives and official checksums for BTCUSDT, ETHUSDT, and SOLUSDT. Tracked evidence contains metadata and hashes. Ignored raw and processed data remain outside Git; no raw Alpha Search B data is tracked.
 
-Safety remains unchanged:
+## Execution-cost and risk modelling
 
-- live trading disabled
-- capital deployment blocked
-- no private keys
-- no exchange orders
-- no real capital
-- no model training
+Mission 88 produced an assumption-bounded two-leg carry cost model across three symbols, three scenarios, and three notional bands. It explicitly lacks historical order-book depth, queue-position, fill-latency, and measured-impact precision.
 
-## DeltaGrid Autonomous Bot Roadmap
+Alpha Search B separately froze single-leg normal, conservative, and severe round-trip costs, latency offsets, a 1.5% protective stop, one-position authority, a 24-hour cooldown, Decimal stake sizing, no leverage, and cash-reserve limits. Cost attribution separates fee, spread/slippage, and latency displacement. These controls constrain research; they do not make a rejected strategy profitable.
 
-DeltaGrid now has a dedicated full roadmap document:
+## Statistical and falsification controls
 
-- docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md
+Controls include immutable protocols, causal feature windows, chronological development/validation/holdout splits, one sealed holdout, deterministic null controls, Holm adjustment across four Alpha Search B candidates, replication assets, minimum-sample gates, drawdown limits, positive-quarter requirements, concentration tests, winner-removal diagnostics, and net-after-cost qualification.
 
-Current verified stage:
+Every Alpha Search B candidate failed required development gates. Validation and holdout therefore remained closed.
 
-- Mission 81 complete
-- Autonomous Paper Signal Engine complete
-- next mission is Mission 82 Paper Execution Agent
+## Evidence and reproducibility
 
-Current honest completion estimate:
+Committed controlling evidence consists of versioned contracts, tracked evidence JSON, reports, tests, manifests, and Git identities. Current final-freeze verification is a separate deterministic pre-publication candidate record. Operator-reported terminal metadata is not treated as committed controlling evidence.
 
-- full autonomous AI trading bot: 25 to 30 percent complete
-- safe autonomous internal paper-trading system: 40 to 45 percent complete
-- live-market paper-trading bot: 25 to 30 percent complete
-- real-money autonomous live bot: less than 10 percent complete
+The Alpha Search B publication commit is `a31f4da4fc8b52ca2fa6aaad697350d6e9180736`. It is the research-closure base, not a permanent assertion about every future repository HEAD. The final-freeze publication commit does not yet exist.
 
-Next milestone:
+## Safety boundaries
 
-- Mission 82 Paper Execution Agent
-- Mission 83 Self-Learning Feedback Loop
+- No profitability claim.
+- No candidate rescue or replacement family.
+- No validation or holdout access for Alpha Search B.
+- No current Freqtrade translation.
+- No dry-run or paper-trading authorization.
+- No live trading, orders, or capital deployment.
+- No automatic strategy, model, or capital promotion.
+- No market-data download or refresh under the final-freeze task.
 
-Live-market paper trading is planned later, after paper execution, feedback, offline learning, risk governance, and live readiness firewall work.
+## Historical Freqtrade boundary
 
-Real-money live trading is not approved.
+The product-reset record describes a historical pinned and parity-verified Freqtrade runtime and requires exact ledger parity as a future candidate gate. That is infrastructure history, not current strategy authorization. No Alpha Search B candidate was authorized for Freqtrade translation, and no current Freqtrade dry-run, live execution, or capital deployment is authorized.
 
-### Mission 82 Paper Execution Agent
+## Current limitations
 
-Mission 82 adds paper execution records after Mission 81 paper-only observe signals.
+The platform has no validated profitable strategy. Historical cost models include explicit assumptions and incomplete microstructure observability. Backtests, synthetic fixtures, statistical significance, model accuracy, passing tests, and infrastructure completeness cannot prove future profitability. Venue, regime, liquidity, impact, and operational behavior can change.
 
-The agent records paper execution evidence only.
+## Future-strategy intake
 
-It does not:
+Future strategy work requires genuinely new information, an overlap audit against rejected families, and an explicit new versioned reopening contract before data-driven research begins. The intake policy requires a frozen experiment budget, causal data proof, chronological stages, realistic cost and stress models, multiple-testing control, parity checks, paper-only evaluation, and separate proof-capital and live-trading authorizations. See [Future Strategy Intake Policy](docs/FUTURE_STRATEGY_INTAKE_POLICY.md).
 
-- trade live
-- deploy capital
-- use private keys
-- send exchange orders
-- train models
-- create live trading signals
+## Possible future ML research
 
-Next phase:
+The documented `DELTAGRID_ML_RESEARCH_ADAPTER` is design policy only and is `DOCUMENTED_NOT_AUTHORIZED`. A future contract could allow small, fixed supervised tabular model families under chronological, purged evaluation. ML may generate forecasts or candidate evidence; it may not promote itself, authorize trading, or authorize capital. See [ML Research Adapter](docs/DELTAGRID_ML_RESEARCH_ADAPTER.md).
 
-- Mission 83 Self-Learning Feedback Loop
+## Test baseline and closure tests
 
-### Mission 83 Self-Learning Feedback Loop
+Committed pre-freeze evidence records 37 passing Alpha Search B/reset focused tests, 715 passing complete off-chain tests, and one third-party `websockets.legacy` deprecation warning. These are pre-freeze baselines, not the post-change totals. Final closure tests add deterministic checks for the freeze contract, historical identities, public claims, policy boundaries, checksums, and raw-data tracking. Test success verifies those properties only; it does not establish alpha.
 
-Mission 83 adds feedback records after Mission 82 paper execution records.
+## Repository navigation
 
-The loop records self-learning evidence only.
+- [Final Project Report](docs/DELTAGRID_FINAL_PROJECT_REPORT.md)
+- [Final Freeze Explanation](docs/DELTAGRID_FINAL_FREEZE.md)
+- [Final Freeze Contract](contracts/DELTAGRID_FINAL_FREEZE_V1.json)
+- [Future Strategy Intake Policy](docs/FUTURE_STRATEGY_INTAKE_POLICY.md)
+- [ML Research Adapter](docs/DELTAGRID_ML_RESEARCH_ADAPTER.md)
+- [Product Reset](docs/DELTAGRID_PRODUCT_RESET.md)
+- [Alpha Search A Rejection](docs/ALPHA_SEARCH_A_REJECTION.md)
+- [Alpha Search B Protocol](docs/ALPHA_SEARCH_B_PROTOCOL.md)
+- [Final Freeze Evidence](docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json)
+- `offchain/` — implementations and tests
+- `contracts/` — on-chain and research contracts
+- `docs/evidence/` — tracked evidence and checksum manifests
 
-It does not:
+## Historical authoritative-document markers
 
-- train models
-- reweight strategies
-- trade live
-- deploy capital
-- use private keys
-- send exchange orders
-- create live trading signals
-
-Next phase:
-
-- Mission 84 Offline Model Training Harness
-
-### Mission 84 Offline Model Training Harness
-
-Mission 84 adds the offline model training harness after Mission 83 feedback records.
-
-The harness records locked training candidate evidence only.
-
-It does not:
-
-- train models on insufficient data
-- create model artifacts
-- deploy models
-- deploy live systems
-- reweight strategies
-- trade live
-- deploy capital
-- use private keys
-- send exchange orders
-- create live trading signals
-
-Next phase:
-
-- Mission 85 Model Promotion Engine
-
-### Institutional Alpha Research Pivot
-
-Mission 85 is paused until DeltaGrid tests varied strategy families across varied data.
-
-The next active path is:
-
-- Mission 84.5 Institutional Alpha Research Benchmark Lab
-- Mission 84.6 Multi-Strategy Backtest Pack
-- Mission 84.7 Walk-Forward Robustness Gate
-- Mission 84.8 Alpha Candidate Promotion Pack
-- Mission 85 Model Promotion Engine
-
-See `docs/INSTITUTIONAL_ALPHA_RESEARCH_PLAN.md`.
-
-### Mission 84.5 Institutional Alpha Research Benchmark Lab
-
-Mission 84.5 creates the alpha research benchmark lab before Mission 85.
-
-It registers:
-
-- strategy families
-- crypto, FX, and ETF/macro asset universes
-- conservative cost models
-- benchmark plan entries
-- benchmark safety checks
-
-It does not:
-
-- run backtests yet
-- train models
-- create model artifacts
-- promote models
-- reweight strategies
-- trade live
-- deploy capital
-- use private keys
-- send exchange orders
-- create live trading signals
-
-Next phase:
-
-- Mission 84.6 Multi-Strategy Backtest Pack
-
-<!-- MISSION-84-6:START -->
-## Mission 84.6 — Multi-Strategy Backtest Pack
-
-DeltaGrid now includes deterministic local fixture-based paper backtests for all 72 Mission 84.5 benchmark plan entries. Each result includes conservative transaction-cost assumptions and cash, buy-and-hold, and deterministic-random baselines. Results are synthetic research observations only, not profitability claims. Mission 85 remains paused; the next valid phase is Mission 84.7 Walk-Forward Robustness Gate.
-<!-- MISSION-84-6:END -->
-
-<!-- MISSION-84-7:START -->
-## Mission 84.7 — Walk-Forward Robustness Gate
-
-DeltaGrid now evaluates every Mission 84.6 synthetic-fixture backtest through deterministic expanding-window out-of-sample tests. The gate records per-window performance, baseline comparisons, stability metrics, candidate classifications, governance checks, and reports in SQLite. A robust-fixture classification is not a profitability claim and does not promote a model or strategy. Mission 85 remains paused.
-<!-- MISSION-84-7:END -->
-
-<!-- MISSION-84-8:START -->
-## Mission 84.8 — Alpha Candidate Promotion Pack
-
-DeltaGrid now performs deterministic review of Mission 84.7 walk-forward results. Eligible results may enter a provisional fixture-only local shadow-research registry. This status does not authorize model training, model promotion, live signals, orders, capital, reweighting, or profitability claims. Mission 85 remains paused.
-<!-- MISSION-84-8:END -->
+The following bounded markers preserve compatibility with the repository's historical documentation-verification tests. Their contents are historical evidence classes and do not override the current final-freeze status above.
 
 <!-- MISSION-84-CLOSURE:START -->
-## Mission 84 Closure and Evidence Correction
+### Mission 84 Closure
 
-Mission 84 is closed.
-
-Missions 84.5 through 84.8 remain preserved as deterministic synthetic-fixture research-pipeline evidence. The 35 provisional records are now authoritatively superseded as `FIXTURE_SCREENING_RECORD_ONLY_NOT_REAL_DATA_VALIDATED`.
-
-Current counts:
-
-- fixture-screening candidates: 35
-- real-data validated candidates: 0
-- model-training eligible candidates: 0
-- model promotions: 0
-- live signals: 0
-- exchange orders: 0
-- capital deployments: 0
-- profitability claims: 0
-
-Mission 85 remains paused. There is no Mission 84.9. The next separate workstream is `REAL_MARKET_RESEARCH_FOUNDATION_CRYPTO_FIRST`.
+Mission 84 closed its deterministic synthetic-fixture pipeline with zero real-data validated alpha candidates. The historical fixture-screening records remain preserved but authorize no model training, strategy promotion, live signal, order, capital, or profitability claim. There is no Mission 84.9.
 <!-- MISSION-84-CLOSURE:END -->
 
 <!-- MISSION-85-CHARTER:START -->
-## Mission 85 Crypto Funding-Carry Research Charter
+### Mission 85 Crypto Funding-Carry Research Charter
 
-Mission 85 is the falsification-first research-contract lock for a
-fully collateralized, delta-neutral, long-spot short-perpetual funding and
-basis carry hypothesis.
-
-The earlier planned Mission 85 Model Promotion Engine was never implemented
-and is now `RETIRED_UNBUILT_AFTER_MISSION84_CLOSURE`.
-
-Mission 85 locks:
-
-- Binance public market data only;
-- BTCUSDT, ETHUSDT, and SOLUSDT only;
-- one-hour canonical data with deterministic 4H and 1D derivation;
-- spot, perpetual, mark, index, and settled funding streams;
-- no synthetic data, sample fallback, or silent substitution;
-- twelve predeclared deterministic parameter variants;
-- chronological development, validation, and single-use untouched holdout;
-- conservative initial transaction costs;
-- strict rejection and anti-overfitting rules;
-- no ML, model promotion, live trading, orders, or capital.
-
-Mission 85 does not prove profitability.
-
-Next mission: `Mission 86 Real-Market Data Foundation`.
-Mission 86 is authorized for public data collection and certification only.
+Mission 85 locked a falsification-first funding-carry charter before real-market collection. It did not prove profitability and prohibited ML rescue, live trading, orders, and capital. Its next authorized data-only phase was Mission 86 Real-Market Data Foundation.
 <!-- MISSION-85-CHARTER:END -->
 
 <!-- MISSION-86-DATA-FOUNDATION:START -->
-## Mission 86 Real-Market Data Foundation
+### Mission 86 Real-Market Data Foundation
 
-Mission 86 implements the public real-market data layer authorized by the
-locked Mission 85 funding-carry charter.
-
-Scope:
-
-- BTCUSDT, ETHUSDT, and SOLUSDT;
-- Binance public spot and USD-M futures market-data endpoints;
-- one-hour spot OHLCV;
-- one-hour perpetual OHLCV;
-- one-hour mark-price OHLC;
-- one-hour index-price OHLC;
-- settled funding-rate history;
-- raw gzip response preservation;
-- request, source, and SHA-256 provenance;
-- resumable pagination;
-- normalized mission-specific database tables;
-- deterministic dataset manifest and coverage reporting.
-
-Mission 86 performs no backtesting, holdout evaluation, machine learning,
-model promotion, signal generation, order submission, capital deployment, or
-profitability analysis.
-
-All Mission 86 data remain:
-
-`UNCERTIFIED_PENDING_MISSION87`
-
-Next mission:
-
-`Mission 87 Dataset Certification and Quality Gate`
+Mission 86 implemented public-data acquisition, normalization, provenance, and deterministic manifests. It performed no strategy backtest or profitability analysis. Its output remained `UNCERTIFIED_PENDING_MISSION87` until Mission 87 Dataset Certification and Quality Gate.
 <!-- MISSION-86-DATA-FOUNDATION:END -->
 
 <!-- MISSION-87-CERTIFICATION:START -->
-## Mission 87 Dataset Certification and Quality Gate
+### Mission 87 Dataset Certification and Quality Gate
 
-Mission 87 is complete.
-
-- Certification run: `mission87-final-check`
-- Source run: `mission86-final-check`
-- Contract hash: `b7aec799a1d63dae5441118159d8fea5cafa0b62e69161d0b43e2e6c1a7e2ebf`
-- Source manifest hash: `a6cb2ecaea2d02cf30a977436004bda74085db608f6b66500f5922292f650a96`
-- Certificate hash: `e4d78b99417c1acb9bd89e7a8ef175cbf0c0e1219c1f71777401be41b8978819`
-- Certification status: `CERTIFIED_FOR_RESEARCH_PENDING_EXECUTION_COST_MODEL`
-- Bar series certified: 12
-- Funding series certified: 3
-- Total series certified: 15
-- Rejected series: 0
-- Raw responses verified: 276
-- Market bars verified: 262656
-- Funding observations verified: 8208
-- Quality checks: 23 passed, 0 failed
-- Safety breaches: 0
-- Mission 88 status: `READY_FOR_EXECUTION_AND_COST_REALITY_MODEL`
-
-Mission 87 verified raw gzip containment, body and response hashes, exact
-raw-to-normalized equivalence, hourly continuity, chronological split
-coverage, OHLC integrity, funding settlement schedules, funding mark
-references, and cross-stream consistency.
-
-The untouched holdout received structural quality checks only. No strategy
-backtest, holdout performance evaluation, model training, signal generation,
-capital deployment, or profitability analysis occurred.
-
-Mission 87 performed no strategy backtest, holdout performance evaluation, parameter selection, model training, model promotion, signal generation, order submission, capital deployment, or profitability analysis.
-
-Next mission:
-
-`Mission 88 Execution and Cost Reality Model`<!-- MISSION-87-CERTIFICATION:END -->
+Mission 87 certified structural data quality and lineage. It performed no strategy backtest or holdout performance evaluation. The next historical phase was Mission 88 Execution and Cost Reality Model.
+<!-- MISSION-87-CERTIFICATION:END -->
 
 <!-- MISSION-88-COST-MODEL:START -->
-## Mission 88 Execution and Cost Reality Model
+### Mission 88 Execution and Cost Reality Model
 
-Mission 88 is complete.
-
-- Run: `mission88-final-check`
-- Model ID: `mission88-assumption-bounded-execution-cost-v1`
-- Model hash: `398cc556614a97767fea36540556442579f195562a9ed16c18cc9561b78fc8a2`
-- Model status: `APPROVED_FOR_BASELINE_FALSIFICATION_WITH_UNCERTAINTY`
-- Symbols: 3
-- Scenarios: 3
-- Notional bands: 3
-- Cost profiles: 27
-- Minimum modeled cost: 50.000000 bps on pair notional
-- Maximum modeled cost: 775.000000 bps on pair notional
-- Checks: 24 passed, 0 failed
-- Safety breaches: 0
-- Market-data rows read: 0
-- Holdout performance evaluated: 0
-- Backtesting performed: 0
-- Profitability analyzed: 0
-- Mission 89 status: `READY_FOR_BASELINE_STRATEGY_FALSIFICATION`
-- Mission 89 scope: `DEVELOPMENT_AND_VALIDATION_BASELINE_FALSIFICATION_ONLY`
-
-The model is assumption-bounded. Historical order-book depth, queue position,
-true fill latency, and measured market impact are unavailable.
-
-Mission 88 makes no order-book precision claim.
-
-Mission 88 performed no strategy backtest, holdout evaluation, return
-calculation, parameter selection, model training, model promotion, signal
-generation, order submission, capital deployment, or profitability analysis.
-
-The untouched holdout remains sealed for Mission 90.
-
-Next mission:
-
-`Mission 89 Baseline Strategy Falsification`
+Mission 88 completed an assumption-bounded cost model with no strategy backtest and no order-book precision claim. Its next historical phase was Mission 89 Baseline Strategy Falsification.
 <!-- MISSION-88-COST-MODEL:END -->
-
-<!-- MISSION-89-BASELINE-FALSIFICATION:START -->
-## Mission 89 End-to-End Baseline Strategy Falsification
-
-Mission 89 is complete.
-
-- Decision: `REJECT_AND_ARCHIVE_FUNDING_CARRY`
-- Selected candidate: `NONE`
-- Twelve preregistered variants were evaluated across development and validation.
-- Holdout rows read: 0
-- Mission 90 status: `NOT_AUTHORIZED_STRATEGY_REJECTED`
-- Next workstream: `NEW_ECONOMIC_HYPOTHESIS_CHARTER`
-
-Detailed authoritative evidence:
-`docs/MISSION89_BASELINE_FALSIFICATION.md`
-<!-- MISSION-89-BASELINE-FALSIFICATION:END -->
-
-<!-- MISSION-90-DIRECTIONAL-TOURNAMENT:START -->
-## Mission 90 — Directional Strategy Tournament and Charter Lock
-
-Mission 90 is complete with decision `REJECT_ALL_DIRECTIONAL_HYPOTHESES`.
-
-The authoritative evidence and scope are documented in
-`docs/MISSION90_DIRECTIONAL_TOURNAMENT.md`.
-
-- Selected variant: `NONE`
-- Selected family: `NONE`
-- Validation rows read: 0
-- Holdout rows read: 0
-- Mission 91 status: `NOT_AUTHORIZED_ALL_DIRECTIONAL_HYPOTHESES_REJECTED`
-- Next workstream: `NEW_ECONOMIC_HYPOTHESIS_DISCOVERY`
-<!-- MISSION-90-DIRECTIONAL-TOURNAMENT:END -->

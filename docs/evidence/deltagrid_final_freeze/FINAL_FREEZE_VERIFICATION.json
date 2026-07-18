@@ -1,0 +1,90 @@
+{
+  "verification_schema_version": 1,
+  "verification_scope": "PRE_PUBLICATION_FINAL_FREEZE_CANDIDATE",
+  "evidence_class": "CURRENT_FINAL_FREEZE_VERIFICATION",
+  "research_closure_base_commit": "a31f4da4fc8b52ca2fa6aaad697350d6e9180736",
+  "verified_origin_identity": "https://github.com/tushar-rawat-22/Delta_Grid.git",
+  "historical_identity_results": {
+    "alpha_search_b_protocol_canonical_identity": "PASS",
+    "alpha_search_b_cost_attribution_file_sha256": "PASS",
+    "alpha_search_b_development_decision_file_sha256": "PASS",
+    "alpha_search_b_prohibited_access_audit_file_sha256": "PASS"
+  },
+  "authorized_changed_paths": [
+    "README.md",
+    "contracts/DELTAGRID_FINAL_FREEZE_V1.json",
+    "docs/DELTAGRID_FINAL_FREEZE.md",
+    "docs/DELTAGRID_FINAL_PROJECT_REPORT.md",
+    "docs/DELTAGRID_ML_RESEARCH_ADAPTER.md",
+    "docs/FUTURE_STRATEGY_INTAKE_POLICY.md",
+    "docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json",
+    "docs/evidence/deltagrid_final_freeze/SHA256SUMS.txt",
+    "offchain/tests/test_deltagrid_final_freeze.py"
+  ],
+  "authorized_changed_path_count": 9,
+  "pre_freeze_alpha_search_b_reset_focused_pass_count": 37,
+  "pre_freeze_complete_suite_pass_count": 715,
+  "pre_freeze_warning_count": 1,
+  "candidate_focused_test_result": {
+    "status": "PASS",
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "xpassed": 0,
+    "warnings": 0
+  },
+  "candidate_full_suite_result": {
+    "status": "FAIL_README_HISTORICAL_MARKERS_RESTORED_BEFORE_FINAL_RUN",
+    "passed": 726,
+    "failed": 5,
+    "skipped": 0,
+    "xfailed": 0,
+    "xpassed": 0,
+    "warnings": 1
+  },
+  "final_focused_test_result": {
+    "status": "PASS",
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "xpassed": 0,
+    "warnings": 0
+  },
+  "final_full_suite_result": {
+    "status": "PASS",
+    "passed": 731,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "xpassed": 0,
+    "warnings": 1
+  },
+  "final_actual_pass_count": 731,
+  "final_warning_count": 1,
+  "final_warning_category": "Third-party websockets.legacy deprecation warning",
+  "checksum_manifest_result": "PASS",
+  "git_diff_check_result": "PASS",
+  "complete_changed_scope_result": "PASS",
+  "no_prohibited_path_in_changed_scope": true,
+  "deleted_path_count": 0,
+  "raw_alpha_search_b_data_tracking_result": "PASS_NO_TRACKED_PATHS",
+  "credential_pattern_scan_result": "PASS",
+  "historical_file_immutability_result": "PASS_NO_HISTORICAL_DIFF",
+  "network_access_policy": "PROHIBITED",
+  "network_dependent_command_used": false,
+  "market_data_access_required": false,
+  "validation_access_performed_by_this_task": false,
+  "holdout_access_performed_by_this_task": false,
+  "model_training_performed": false,
+  "freqtrade_implementation_created": false,
+  "freqai_implementation_created": false,
+  "publication_actions_during_verification": {
+    "commit_performed": false,
+    "push_performed": false,
+    "pull_request_created": false,
+    "merge_performed": false
+  },
+  "candidate_verdict": "PASS_FINAL_FREEZE_CANDIDATE_READY_FOR_EXTERNAL_REVIEW"
+}
