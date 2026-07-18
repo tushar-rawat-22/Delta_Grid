@@ -1,120 +1,124 @@
 # DeltaGrid
 
-## Current project status
+DeltaGrid is a Python-based quantitative research platform I built to test cryptocurrency trading strategies before allowing them anywhere near real capital. It combines market-data validation, event-driven backtesting, realistic execution-cost assumptions, risk controls, statistical testing, and reproducible evidence.
 
-DeltaGrid is a completed research-first quantitative research platform. It has no validated profitable strategy and does not authorize live trading or capital deployment.
+## Current status
 
-The final state is `COMPLETED_RESEARCH_PLATFORM_NO_VALIDATED_ALPHA`. Alpha discovery is stopped because every authorized family was rejected. Passing tests establishes software behavior and evidence integrity; it does not establish profitability. Infrastructure maturity does not establish alpha.
+The research infrastructure is complete, but there is **no validated profitable strategy**. This repository **does not authorize live trading or capital deployment**. Infrastructure maturity does not establish alpha.
 
-## Project purpose
+The final project freeze was published in commit `ce82c5b887a08185b7acceb35480783d02eb0b5d`. None of the tested strategies met the promotion standard, so live trading, paper trading, and capital deployment remain disabled.
 
-DeltaGrid was built to ask whether trading hypotheses survive causal data rules, realistic costs, chronological evaluation, falsification controls, and explicit promotion gates. Its durable output is the research process and negative evidence, not a trading promise.
+That negative strategy result is not a profitability success. The engineering success is that DeltaGrid rejected weak hypotheses instead of overfitting or deploying them.
 
-## What DeltaGrid is
+## Why I built it
 
-DeltaGrid is a local-first collection of data-foundation, simulation, execution-cost, risk, statistical, evidence, and governance components. Contracts freeze hypotheses and decision rules; implementations produce deterministic research artifacts; tests protect safety and historical identities.
+Most trading projects begin with indicators and end with a profitable-looking backtest. I wanted to build the process in the opposite order: define the hypothesis, freeze the rules, verify the data, account for costs, test chronologically, and reject the strategy when the evidence is weak.
 
-## What DeltaGrid is not
+## How DeltaGrid works
 
-DeltaGrid is not a profitable bot, a production trading service, an autonomous live trader, or proof of future returns. It has no selected Alpha Search B candidate, current paper-trading authority, live-order authority, or capital authority.
+```text
+Public market data
+        ↓
+Acquisition and certification
+        ↓
+Features and strategy rules
+        ↓
+Event-driven simulation
+        ↓
+Costs and risk
+        ↓
+Statistical evaluation
+        ↓
+Evidence and decision
+```
 
-## Architecture
+- **Data acquisition and certification:** Collects public market data with provenance, coverage checks, normalized records, and deterministic identities.
+- **Research contracts:** Freezes the hypothesis, data boundaries, candidate count, costs, and decision gates before results can influence the rules.
+- **Features and strategy implementation:** Builds causally timed features and fixed strategy logic without looking ahead.
+- **Event-driven backtesting:** Simulates signals, entries, exits, stops, cooldowns, and position state in timestamp order.
+- **Execution costs:** Applies normal, conservative, and severe assumptions for fees, spread, slippage, and latency.
+- **Risk controls:** Measures drawdown and concentration while enforcing position, leverage, reserve, stop, and capital boundaries.
+- **Statistical evaluation:** Uses chronological stages, null controls, multiple-testing correction, replication, and robustness checks.
+- **Evidence and decision gates:** Writes versioned evidence and promotes nothing unless every frozen requirement passes.
 
-The repository separates:
+## What it includes
 
-1. versioned research and closure contracts;
-2. off-chain data, simulation, cost, risk, and statistical engines;
-3. tracked metadata and evidence, with ignored raw market data outside Git;
-4. deterministic tests and safety gates;
-5. reports, architecture decisions, and governance documentation;
-6. historical on-chain executor, registry, and risk-guard contracts.
+- Public crypto-data acquisition with provenance records
+- Deterministic dataset certification for BTC, ETH, and SOL research data
+- Event-driven strategy simulation
+- Normal, conservative, and severe execution-cost assumptions
+- Drawdown and concentration analysis
+- Chronological development, validation, and sealed holdout boundaries
+- Null controls and Holm multiple-testing correction
+- Versioned contracts, evidence files, and SHA-256 identities
+- Historical Freqtrade parity infrastructure, without current strategy or trading authorization
+- Automated regression tests
 
-The final-freeze contract is additive. It does not rewrite the earlier mission, reset, Alpha Search A, or Alpha Search B records.
+## Research completed
 
-## Major research timeline
-
-| Phase | Repository-supported outcome |
+| Research area | Outcome |
 |---|---|
-| Early platform work | Local monitoring, market schemas, simulators, research governance, paper-only controls, and evidence infrastructure were developed. |
-| Mission 84 | Synthetic-fixture pipeline closed with 35 fixture-screening records and zero real-data validated candidates. |
-| Mission 85 | A falsification-first funding-carry charter locked the economic question and experiment boundary. |
-| Mission 86 | Public real-market data acquisition and provenance infrastructure was created; data remained uncertified pending Mission 87. |
-| Mission 87 | Fifteen series were certified for research with structural checks, not performance evaluation. |
-| Mission 88 | An assumption-bounded execution and cost model was approved for baseline falsification with uncertainty. |
-| Mission 89 | Funding and basis carry was rejected and archived before holdout access. |
-| Mission 90 | Twelve directional variants were rejected in development; validation and holdout were not read. |
-| Product reset | Open-ended mission numbering was retired and two final alpha-family slots were locked. |
-| Alpha Search A | Rejected before strategy construction because required causal first-availability evidence was unavailable. |
-| Alpha Search B | All four frozen development candidates were rejected; no candidate was selected. |
-| Final freeze | Project closed as a completed research platform with no validated alpha. |
+| Synthetic benchmark pipeline | Infrastructure completed; no real-market validated alpha |
+| Funding and basis carry | Rejected |
+| Directional strategies | Rejected |
+| Macro-regime hypothesis | Rejected before strategy construction |
+| Trade-flow and lead-lag hypotheses | Rejected in development |
 
-## Strategy-family outcomes
+Alpha Search B was rejected on development data without opening validation or holdout; its committed publication evidence records zero scoped validation access and zero scoped holdout access.
 
-| Family | Outcome | Boundary |
-|---|---|---|
-| Mission 84 synthetic benchmark families | Fixture screening only; no real-data validated alpha | No model training, promotion, trading, or capital |
-| Funding and basis carry | `REJECT_AND_ARCHIVE_FUNDING_CARRY` | Holdout rows read: 0 |
-| Conventional directional strategies | `REJECT_ALL_DIRECTIONAL_HYPOTHESES` | Validation rows: 0; holdout rows: 0 |
-| Static intraday session exposure | Rejected in the controlling product-reset record | Frozen; no indirect reopening |
-| Alpha Search A macro risk regime | `REJECTED_BEFORE_STRATEGY_BUILD` | No strategy, P&L, validation, or holdout evaluation |
-| Alpha Search B microstructure liquidity state | `ALPHA_SEARCH_B_REJECTED_DEVELOPMENT` | Four candidates rejected; selected candidate `null`; scoped validation and holdout access both 0 |
+The detailed timeline, candidate results, statistical controls, and decision evidence are in the [Final Project Report](docs/DELTAGRID_FINAL_PROJECT_REPORT.md).
 
-## Data acquisition, certification, and provenance
+## Engineering highlights
 
-Mission 86 introduced resumable public-data acquisition, raw-response preservation, normalized tables, request provenance, and SHA-256 identities for BTCUSDT, ETHUSDT, and SOLUSDT spot and derivatives streams. Mission 87 certified 12 bar series and three funding series using continuity, OHLC, settlement, split-coverage, raw-to-normalized, and cross-stream checks.
+- Python-based research engine
+- Deterministic, versioned research contracts
+- Causal feature timing and chronological evaluation
+- Event-driven execution semantics
+- Explicit fees, spread, slippage, latency, and cost stress
+- Sealed validation and holdout boundaries
+- Historical Freqtrade parity infrastructure; lookahead, recursive, and other bias analyses remain future gates
+- 731 passing automated tests in the full suite at the published final freeze
+- Reproducible evidence and checksum manifests
 
-Alpha Search B used official Binance monthly one-minute spot-kline archives and official checksums for BTCUSDT, ETHUSDT, and SOLUSDT. Tracked evidence contains metadata and hashes. Ignored raw and processed data remain outside Git; no raw Alpha Search B data is tracked.
+Passing tests verify the implementation and repository invariants; they are not evidence that a strategy is profitable.
 
-## Execution-cost and risk modelling
+## Repository structure
 
-Mission 88 produced an assumption-bounded two-leg carry cost model across three symbols, three scenarios, and three notional bands. It explicitly lacks historical order-book depth, queue-position, fill-latency, and measured-impact precision.
+```text
+contracts/       Research, safety, and freeze contracts
+offchain/        Data, simulation, research, and test code
+docs/            Architecture, decisions, policies, and reports
+docs/evidence/   Tracked research evidence and checksum manifests
+scripts/         Verification and operational utilities
+```
 
-Alpha Search B separately froze single-leg normal, conservative, and severe round-trip costs, latency offsets, a 1.5% protective stop, one-position authority, a 24-hour cooldown, Decimal stake sizing, no leverage, and cash-reserve limits. Cost attribution separates fee, spread/slippage, and latency displacement. These controls constrain research; they do not make a rejected strategy profitable.
+## Running the tests
 
-## Statistical and falsification controls
+The repository does not currently document a verified fresh-clone bootstrap for the complete test environment. For an already configured checkout with the ignored local virtual environment at `offchain/.venv`, run:
 
-Controls include immutable protocols, causal feature windows, chronological development/validation/holdout splits, one sealed holdout, deterministic null controls, Holm adjustment across four Alpha Search B candidates, replication assets, minimum-sample gates, drawdown limits, positive-quarter requirements, concentration tests, winner-removal diagnostics, and net-after-cost qualification.
+```bash
+env -u PYTHONPATH \
+PYTHONDONTWRITEBYTECODE=1 \
+offchain/.venv/bin/python -m pytest \
+  -p no:cacheprovider \
+  offchain/tests \
+  -q
+```
 
-Every Alpha Search B candidate failed required development gates. Validation and holdout therefore remained closed.
+The virtual environment is local and ignored; it is not included in a fresh clone.
 
-## Evidence and reproducibility
+## Limitations and safety
 
-Committed controlling evidence consists of versioned contracts, tracked evidence JSON, reports, tests, manifests, and Git identities. Current final-freeze verification is a separate deterministic pre-publication candidate record. Operator-reported terminal metadata is not treated as committed controlling evidence.
+- There is no validated profitable strategy, no live orders, no current paper-trading authorization, and no capital deployment.
+- Cost, slippage, latency, and market-impact models contain assumptions and cannot reproduce every live-market condition.
+- Backtests and statistical tests do not guarantee future results.
+- Future research requires a new versioned reopening contract before any data-driven strategy work begins.
+- Test success verifies those properties only; it does not establish alpha.
+- No Alpha Search B candidate was authorized for Freqtrade translation.
 
-The Alpha Search B publication commit is `a31f4da4fc8b52ca2fa6aaad697350d6e9180736`. It is the research-closure base, not a permanent assertion about every future repository HEAD. The final-freeze publication commit does not yet exist.
+The Alpha Search B rejection was published in commit `a31f4da4fc8b52ca2fa6aaad697350d6e9180736`. That commit is the historical research base, **not a permanent assertion about every future repository HEAD**. The later commit `ce82c5b887a08185b7acceb35480783d02eb0b5d` published the final project freeze.
 
-## Safety boundaries
-
-- No profitability claim.
-- No candidate rescue or replacement family.
-- No validation or holdout access for Alpha Search B.
-- No current Freqtrade translation.
-- No dry-run or paper-trading authorization.
-- No live trading, orders, or capital deployment.
-- No automatic strategy, model, or capital promotion.
-- No market-data download or refresh under the final-freeze task.
-
-## Historical Freqtrade boundary
-
-The product-reset record describes a historical pinned and parity-verified Freqtrade runtime and requires exact ledger parity as a future candidate gate. That is infrastructure history, not current strategy authorization. No Alpha Search B candidate was authorized for Freqtrade translation, and no current Freqtrade dry-run, live execution, or capital deployment is authorized.
-
-## Current limitations
-
-The platform has no validated profitable strategy. Historical cost models include explicit assumptions and incomplete microstructure observability. Backtests, synthetic fixtures, statistical significance, model accuracy, passing tests, and infrastructure completeness cannot prove future profitability. Venue, regime, liquidity, impact, and operational behavior can change.
-
-## Future-strategy intake
-
-Future strategy work requires genuinely new information, an overlap audit against rejected families, and an explicit new versioned reopening contract before data-driven research begins. The intake policy requires a frozen experiment budget, causal data proof, chronological stages, realistic cost and stress models, multiple-testing control, parity checks, paper-only evaluation, and separate proof-capital and live-trading authorizations. See [Future Strategy Intake Policy](docs/FUTURE_STRATEGY_INTAKE_POLICY.md).
-
-## Possible future ML research
-
-The documented `DELTAGRID_ML_RESEARCH_ADAPTER` is design policy only and is `DOCUMENTED_NOT_AUTHORIZED`. A future contract could allow small, fixed supervised tabular model families under chronological, purged evaluation. ML may generate forecasts or candidate evidence; it may not promote itself, authorize trading, or authorize capital. See [ML Research Adapter](docs/DELTAGRID_ML_RESEARCH_ADAPTER.md).
-
-## Test baseline and closure tests
-
-Committed pre-freeze evidence records 37 passing Alpha Search B/reset focused tests, 715 passing complete off-chain tests, and one third-party `websockets.legacy` deprecation warning. These are pre-freeze baselines, not the post-change totals. Final closure tests add deterministic checks for the freeze contract, historical identities, public claims, policy boundaries, checksums, and raw-data tracking. Test success verifies those properties only; it does not establish alpha.
-
-## Repository navigation
+## Documentation
 
 - [Final Project Report](docs/DELTAGRID_FINAL_PROJECT_REPORT.md)
 - [Final Freeze Explanation](docs/DELTAGRID_FINAL_FREEZE.md)
@@ -125,13 +129,17 @@ Committed pre-freeze evidence records 37 passing Alpha Search B/reset focused te
 - [Alpha Search A Rejection](docs/ALPHA_SEARCH_A_REJECTION.md)
 - [Alpha Search B Protocol](docs/ALPHA_SEARCH_B_PROTOCOL.md)
 - [Final Freeze Evidence](docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json)
-- `offchain/` — implementations and tests
-- `contracts/` — on-chain and research contracts
-- `docs/evidence/` — tracked evidence and checksum manifests
 
-## Historical authoritative-document markers
+## Author
 
-The following bounded markers preserve compatibility with the repository's historical documentation-verification tests. Their contents are historical evidence classes and do not override the current final-freeze status above.
+Built by Tushar Rawat as an independent quantitative research and software-engineering project.
+
+<details>
+<summary>Historical compatibility notes</summary>
+
+These markers are retained for historical documentation verification. They describe earlier repository phases and do not override the current project status above.
+
+Committed pre-freeze evidence records 37 passing Alpha Search B/reset focused tests and 715 passing complete off-chain tests, with one third-party `websockets.legacy` deprecation warning. These are historical pre-freeze baselines, not the full-suite total at the published final freeze.
 
 <!-- MISSION-84-CLOSURE:START -->
 ### Mission 84 Closure
@@ -162,3 +170,5 @@ Mission 87 certified structural data quality and lineage. It performed no strate
 
 Mission 88 completed an assumption-bounded cost model with no strategy backtest and no order-book precision claim. Its next historical phase was Mission 89 Baseline Strategy Falsification.
 <!-- MISSION-88-COST-MODEL:END -->
+
+</details>
