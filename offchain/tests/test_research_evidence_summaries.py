@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SUMMARY_DIR = ROOT / "docs" / "research-summaries"
 REGISTRY_PATH = ROOT / "docs" / "documentation-status.json"
 BASE_COMMIT = "8d8e0d469a52e8a93382fa92b8117a2b09a10df6"
+MISSION_93_BASE_COMMIT = "9605c4b294d15f4e1ec4929c9706f1ff9f938072"
 EXCEPTION = "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.md"
 
 SUMMARY_PATHS = {
@@ -80,7 +81,8 @@ CHECKSUM_MANIFESTS = {
 }
 
 EXPECTED_CHANGED_PATHS = {
-    "docs/OPERATOR_GUIDE.md",
+    "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+    "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
     "docs/README.md",
     "docs/documentation-status.json",
     "offchain/tests/test_current_policy_docs.py",
@@ -88,9 +90,8 @@ EXPECTED_CHANGED_PATHS = {
     "offchain/tests/test_documentation_status.py",
     "offchain/tests/test_human_cli_report_language.py",
     "offchain/tests/test_public_docstrings_operator_guidance.py",
+    "offchain/tests/test_research_cockpit_v0_charter.py",
     "offchain/tests/test_research_evidence_summaries.py",
-    "scripts/mission_control.py",
-    "scripts/mission_pack_runner.py",
 }
 
 REQUIRED_SECTIONS = (
@@ -123,6 +124,16 @@ def base_bytes(path: str) -> bytes:
 
 def base_text(path: str) -> str:
     return base_bytes(path).decode("utf-8")
+
+
+def mission93_base_text(path: str) -> str:
+    return subprocess.run(
+        ["git", "show", f"{MISSION_93_BASE_COMMIT}:{path}"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
 
 
 def registry_by_path(current: bool = True) -> dict[str, dict]:
@@ -410,16 +421,16 @@ def test_registry_final_state_and_treatment_transition() -> None:
     current = registry_by_path()
     base = registry_by_path(current=False)
     registry = load_json(REGISTRY_PATH)
-    assert len(registry["documents"]) == 166
+    assert len(registry["documents"]) == 168
     counts = Counter(item["classification"] for item in registry["documents"])
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 5,
+        "CURRENT_INTERNAL": 6,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
         "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 34,
+        "MACHINE_REFERENCE": 35,
     }
     transitioned = {
         path
@@ -518,28 +529,28 @@ def test_summary_prose_contains_no_positive_operational_authorization() -> None:
 def test_compatibility_updates_are_exact_and_keep_test_counts() -> None:
     current_policy_path = "offchain/tests/test_current_policy_docs.py"
     banner_path = "offchain/tests/test_document_status_banners.py"
-    expected_policy = base_text(current_policy_path).replace(
-        'assert len(registry["documents"]) == 159',
+    expected_policy = mission93_base_text(current_policy_path).replace(
         'assert len(registry["documents"]) == 166',
+        'assert len(registry["documents"]) == 168',
     )
-    expected_banner = base_text(banner_path).replace(
-        '"CURRENT_PUBLIC": 4,',
-        '"CURRENT_PUBLIC": 10,',
-    ).replace(
-        "assert len(items) == 159",
-        "assert len(items) == 166",
-    ).replace(
-        'assert len({item["path"] for item in items}) == 159',
-        'assert len({item["path"] for item in items}) == 166',
-    ).replace(
-        '"CURRENT_INTERNAL": 4,',
+    expected_banner = mission93_base_text(banner_path).replace(
         '"CURRENT_INTERNAL": 5,',
+        '"CURRENT_INTERNAL": 6,',
+    ).replace(
+        '"MACHINE_REFERENCE": 34,',
+        '"MACHINE_REFERENCE": 35,',
+    ).replace(
+        "assert len(items) == 166",
+        "assert len(items) == 168",
+    ).replace(
+        'assert len({item["path"] for item in items}) == 166',
+        'assert len({item["path"] for item in items}) == 168',
     )
     assert (ROOT / current_policy_path).read_text(encoding="utf-8") == expected_policy
     assert (ROOT / banner_path).read_text(encoding="utf-8") == expected_banner
 
     for relative in (current_policy_path, banner_path):
-        old_tree = ast.parse(base_text(relative))
+        old_tree = ast.parse(mission93_base_text(relative))
         new_tree = ast.parse((ROOT / relative).read_text(encoding="utf-8"))
         old_tests = [node.name for node in ast.walk(old_tree) if isinstance(node, ast.FunctionDef) and node.name.startswith("test_")]
         new_tests = [node.name for node in ast.walk(new_tree) if isinstance(node, ast.FunctionDef) and node.name.startswith("test_")]

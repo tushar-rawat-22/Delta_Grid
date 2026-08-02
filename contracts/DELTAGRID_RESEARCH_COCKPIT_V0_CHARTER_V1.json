@@ -1,0 +1,394 @@
+{
+  "contract_id": "deltagrid-research-cockpit-v0-charter-v1",
+  "contract_version": 1,
+  "contract_purpose": "Versioned Research Cockpit v0 boundary and read-only repository-interface audit. This contract does not authorize dashboard implementation because minimal engine interfaces are missing.",
+  "base_commit": "9605c4b294d15f4e1ec4929c9706f1ff9f938072",
+  "final_freeze_contract": {
+    "path": "contracts/DELTAGRID_FINAL_FREEZE_V1.json",
+    "contract_id": "deltagrid-final-freeze-v1",
+    "contract_version": 1,
+    "canonical_contract_hash_sha256": "16cdf1244f270b6484af8d778b3a2359cab9ec401784d443d64c86c019497338",
+    "file_sha256_at_base_commit": "219c6d1bb5743fca994412c76fa406214a543ce0a38f5b8cbb0c20fa1ed03aa9",
+    "remains_authoritative": true,
+    "authority_statement": "The final-freeze contract remains authoritative for every research, protected-data, ML, paper-trading, live-trading, exchange, autonomous, and capital authority not expressly changed by a later valid contract. This charter changes none of those authorities."
+  },
+  "current_authority": {
+    "validated_profitable_strategy_exists": false,
+    "selected_candidate": null,
+    "research_status": "FROZEN",
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "capital_deployment_authorized": false,
+    "model_training_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_execution_authorized": false,
+    "future_capability_work_requires_explicit_versioned_contract": true
+  },
+  "interface_audit": {
+    "audit_manifest_path": "/tmp/deltagrid-mission93-interface-manifest.json",
+    "audit_manifest_sha256": "e165ad38328399c5e39e4a656779a64697ba060049968ea69a249ce5ae0a398e",
+    "audited_interface_count": 27,
+    "current_reusable_interface_count": 3,
+    "historical_only_interface_count": 20,
+    "machine_only_interface_count": 4,
+    "historical_or_machine_only_interface_count": 24,
+    "interface_gap_count": 5,
+    "result": "STOP_REPOSITORY_INTERFACE_GAPS_FOUND",
+    "audited_interface_paths": [
+      "contracts/DELTAGRID_FINAL_FREEZE_V1.json",
+      "docs/documentation-status.json",
+      "offchain/backtest/mission86_real_market_data_foundation.py",
+      "offchain/backtest/mission87_dataset_certification.py",
+      "offchain/backtest/mission88_execution_cost_model.py",
+      "offchain/backtest/mission89_baseline_strategy_falsification.py",
+      "offchain/backtest/mission90_directional_strategy_tournament.py",
+      "offchain/research/alpha_search_b/engine.py",
+      "offchain/research/alpha_search_b/pipeline.py",
+      "scripts/mission_control.py",
+      "scripts/mission_pack_runner.py"
+    ],
+    "reusable_interfaces": [
+      {
+        "path": "offchain/backtest/mission86_real_market_data_foundation.py",
+        "function": "canonical_json",
+        "authorized_use": "contract and persisted-artifact verification only"
+      },
+      {
+        "path": "scripts/mission_control.py",
+        "function": "run_verification",
+        "authorized_use": "current local software verification only, not research execution"
+      },
+      {
+        "path": "scripts/mission_pack_runner.py",
+        "function": "run_mission_pack",
+        "authorized_use": "current explicit mission-pack operator tooling only, not cockpit or research authority"
+      }
+    ],
+    "historical_and_machine_only_boundary": "Mission-specific data, simulation, cost, risk, statistical, decision, and evidence implementations are preserved historical or machine-only interfaces. Existence does not make them current cockpit execution authority. Historical Freqtrade code is not present execution authority.",
+    "exact_interface_gaps": [
+      {
+        "gap_id": "GAP-01",
+        "minimal_missing_interface": "A current versioned deterministic engine application-service interface accepting a validated experiment manifest and returning a result bundle without embedding UI logic.",
+        "reason": "Existing run functions are mission-specific, combine orchestration with research logic and persistence, and are not current cockpit authority."
+      },
+      {
+        "gap_id": "GAP-02",
+        "minimal_missing_interface": "A read-only artifact and dataset registry adapter that resolves dataset identity, hashes, split identity, artifact paths, and protected-access authorization without opening protected data.",
+        "reason": "Mission-specific SQLite schemas and paths exist, but no unified current fail-closed resolver exists for cockpit use."
+      },
+      {
+        "gap_id": "GAP-03",
+        "minimal_missing_interface": "A persistent append-only logical trial-ledger and atomic budget-reservation interface covering completed, failed, stopped, rejected, manual, and superseded attempts.",
+        "reason": "Historical result tables and counters do not provide a repository-wide immutable trial history or prevent resets, relabeling, and hidden failures."
+      },
+      {
+        "gap_id": "GAP-04",
+        "minimal_missing_interface": "A current exact control registry and dispatcher for the four frozen non-alpha controls, with an explicit seed required for the seeded-random control.",
+        "reason": "Related historical controls exist, but not the exact four-control contract or a current common dispatcher."
+      },
+      {
+        "gap_id": "GAP-05",
+        "minimal_missing_interface": "A canonical result-bundle verifier and read-only loader with one stable schema for identities, costs, risks, timing diagnostics, protected-access counts, artifacts, warnings, verification, and canonical hash.",
+        "reason": "Historical reports are deterministic but heterogeneous; a cockpit would otherwise normalize or recalculate domain results itself."
+      }
+    ]
+  },
+  "final_decision": "STOP_REPOSITORY_INTERFACE_GAPS_FOUND",
+  "cockpit_implementation_authorized": false,
+  "cockpit_research_authorized": false,
+  "real_market_backtest_authorized": false,
+  "validation_access_authorized": false,
+  "holdout_access_authorized": false,
+  "paper_trading_authorized": false,
+  "live_trading_authorized": false,
+  "capital_deployment_authorized": false,
+  "model_training_authorized": false,
+  "autonomous_research_authorized": false,
+  "autonomous_promotion_authorized": false,
+  "exchange_access_authorized": false,
+  "cockpit_v0_boundary": {
+    "local": true,
+    "single_user": true,
+    "offline_by_default": true,
+    "read_only_by_default": true,
+    "development_and_verification_tooling": true,
+    "evidence_controlled": true,
+    "reconstructable_from_persisted_artifacts": true,
+    "backtesting_engine": false,
+    "strategy_optimizer": false,
+    "autonomous_agent": false,
+    "model_trainer": false,
+    "trading_interface": false,
+    "ui_session_state_is_research_authority": false,
+    "default_result_order": "CHRONOLOGICAL_NOT_PERFORMANCE_RANKED",
+    "future_modules": [
+      "PROJECT_AUTHORITY_AND_REPOSITORY_STATE",
+      "DATASET_AND_EVIDENCE_REGISTRY",
+      "DETERMINISTIC_EXPERIMENT_MANIFEST_CREATION",
+      "CHRONOLOGICAL_RUN_LEDGER",
+      "RESULT_INSPECTION_WITH_COSTS_AND_DRAWDOWN_BESIDE_RETURNS",
+      "HASH_VERIFICATION_AND_READ_ONLY_ARTIFACT_EXPORT"
+    ]
+  },
+  "adapter_architecture": {
+    "sequence": [
+      "LOCAL_COCKPIT_UI",
+      "DETERMINISTIC_EXPERIMENT_MANIFEST",
+      "THIN_COCKPIT_APPLICATION_SERVICE",
+      "EXISTING_AUTHORITATIVE_DELTAGRID_ENGINE",
+      "EXISTING_SIMULATOR_COSTS_RISK_AND_EVALUATION",
+      "DETERMINISTIC_RESULT_BUNDLE",
+      "READ_ONLY_COCKPIT_VIEWS"
+    ],
+    "status": "PROPOSED_BUT_BLOCKED_BY_FIVE_INTERFACE_GAPS",
+    "ui_may_persist_authority": false,
+    "ui_may_recalculate_domain_results": false
+  },
+  "non_alpha_controls": [
+    {
+      "control_identifier": "NO_TRADE_CONTROL",
+      "non_alpha": true,
+      "execution_authorized": false,
+      "purpose": "Verify zero-position accounting, reporting, and deterministic empty results."
+    },
+    {
+      "control_identifier": "BUY_AND_HOLD_CONTROL",
+      "non_alpha": true,
+      "execution_authorized": false,
+      "purpose": "Verify benchmark accounting and reporting."
+    },
+    {
+      "control_identifier": "SEEDED_RANDOM_CONTROL",
+      "non_alpha": true,
+      "execution_authorized": false,
+      "explicit_seed_required": true,
+      "purpose": "Verify deterministic timing, accounting, costs, and null reporting."
+    },
+    {
+      "control_identifier": "SIMULATOR_STATE_MACHINE_CONTROL",
+      "non_alpha": true,
+      "execution_authorized": false,
+      "purpose": "Verify position transitions, fills, stops, cooldowns, and reporting."
+    }
+  ],
+  "control_execution_authorized": false,
+  "future_experiment_manifest_contract": {
+    "schema_status": "CHARTERED_NOT_IMPLEMENTED",
+    "required_fields": [
+      "schema_version",
+      "experiment_id",
+      "experiment_type",
+      "controlling_contract_id",
+      "controlling_contract_hash_sha256",
+      "repository_commit",
+      "repository_clean",
+      "dataset_ids",
+      "dataset_hashes",
+      "split_identity",
+      "protected_data_permissions",
+      "control_identifier",
+      "allowed_parameters",
+      "deterministic_seed",
+      "cost_model_identity",
+      "execution_model_identity",
+      "risk_model_identity",
+      "declared_trial_number",
+      "total_trial_budget",
+      "output_directory",
+      "requested_artifacts",
+      "authorization_stage",
+      "operator",
+      "creation_timestamp",
+      "canonical_hash_sha256"
+    ],
+    "exact_allowed_parameter_policy": "UNKNOWN_PARAMETERS_REJECTED",
+    "seed_policy": "SEEDED_RANDOM_CONTROL_REQUIRES_EXPLICIT_SEED; OTHER CONTROLS MUST DECLARE THE CONTRACTED SEED POLICY",
+    "fail_closed_conditions": [
+      "DIRTY_REPOSITORY",
+      "CONTRACT_HASH_MISMATCH",
+      "UNKNOWN_DATASET",
+      "DATASET_HASH_MISMATCH",
+      "UNKNOWN_CONTROL",
+      "UNKNOWN_PARAMETER",
+      "MISSING_REQUIRED_SEED",
+      "TRIAL_BUDGET_EXHAUSTED",
+      "UNAUTHORIZED_SPLIT",
+      "VALIDATION_REQUEST_FORBIDDEN",
+      "HOLDOUT_REQUEST_FORBIDDEN",
+      "CONTRACT_IMPLEMENTATION_MISMATCH",
+      "OUTPUT_PATH_OUTSIDE_AUTHORIZED_ROOT"
+    ]
+  },
+  "future_result_bundle_contract": {
+    "schema_status": "CHARTERED_NOT_IMPLEMENTED",
+    "required_fields": [
+      "schema_version",
+      "result_bundle_id",
+      "manifest_id",
+      "manifest_hash_sha256",
+      "code_identity",
+      "repository_commit",
+      "dataset_ids",
+      "dataset_hashes",
+      "simulator_identity",
+      "cost_model_identity",
+      "execution_model_identity",
+      "risk_model_identity",
+      "start_timestamp",
+      "end_timestamp",
+      "status_token",
+      "reason_token",
+      "failure_stop_or_rejection_reason",
+      "human_explanation",
+      "gross_result",
+      "net_result",
+      "benchmark",
+      "costs_by_component",
+      "maximum_drawdown",
+      "exposure",
+      "turnover",
+      "trade_count",
+      "concentration",
+      "timing_diagnostics",
+      "protected_access_counts",
+      "artifact_paths",
+      "warnings",
+      "verification_results",
+      "canonical_result_hash_sha256"
+    ],
+    "machine_tokens_separate_from_human_explanations": true,
+    "software_pass_implies_profitable_strategy": false,
+    "default_display_order": "CHRONOLOGICAL"
+  },
+  "trial_ledger": {
+    "schema_status": "REQUIRED_INTERFACE_MISSING",
+    "persistent": true,
+    "append_only_logical_history": true,
+    "atomic_trial_budget_reservation_required": true,
+    "counted_outcomes": [
+      "COMPLETED",
+      "FAILED",
+      "STOPPED",
+      "REJECTED",
+      "MANUALLY_INITIATED",
+      "LATER_SUPERSEDED"
+    ],
+    "prohibitions": [
+      "HIDDEN_FAILED_TRIALS",
+      "TRIAL_COUNT_RESETS",
+      "PROVIDER_CHANGES_AFTER_FAILURE",
+      "SPLIT_CHANGES_AFTER_FAILURE",
+      "FAMILY_RELABELLING",
+      "UNLIMITED_FEATURE_OR_PARAMETER_SEARCH",
+      "SELECTION_FROM_VISIBLE_WINNERS_ONLY"
+    ],
+    "ui_session_state_may_be_ledger_authority": false
+  },
+  "anti_overfitting_support": {
+    "raw_sharpe": "PRESENT_HISTORICAL_FAMILY_SPECIFIC",
+    "probabilistic_sharpe_ratio": "NOT_IDENTIFIED_INTERFACE_GAP",
+    "deflated_sharpe_ratio_or_probability": "PRESENT_HISTORICAL_MISSION89_AND_MISSION90",
+    "probability_of_backtest_overfitting": "PRESENT_HISTORICAL_MISSION89_AND_MISSION90",
+    "multiple_testing_correction": "PRESENT_HISTORICAL_ALPHA_SEARCH_B_AND_MISSION92_HOLM",
+    "seeded_null_controls": "PRESENT_HISTORICAL_SEEDED_ALPHA_SEARCH_B_AND_SYNTHETIC_FIXTURE_BENCHMARKS",
+    "new_statistical_calculation_implemented_by_this_mission": false
+  },
+  "duplicate_logic_prohibitions": [
+    "SIGNALS",
+    "FILLS",
+    "POSITION_STATE",
+    "ENTRY_PROCESSING",
+    "EXIT_PROCESSING",
+    "STOPS",
+    "COOLDOWNS",
+    "PORTFOLIO_ACCOUNTING",
+    "PNL",
+    "FEES",
+    "SPREAD",
+    "SLIPPAGE",
+    "LATENCY",
+    "FUNDING",
+    "MARKET_IMPACT",
+    "DRAWDOWN",
+    "EXPOSURE",
+    "CONCENTRATION",
+    "TURNOVER",
+    "STATISTICAL_DECISIONS",
+    "PROMOTION_DECISIONS"
+  ],
+  "dependency_decision": {
+    "status": "CONTINGENT_ON_CLOSING_INTERFACE_GAPS; NO INSTALLATION AUTHORIZED_NOW",
+    "existing_capabilities": [
+      "PYTHON_STANDARD_LIBRARY_SQLITE3",
+      "PANDAS_3_0_3",
+      "NUMPY_2_5_1",
+      "PYARROW_25_0_0"
+    ],
+    "later_authorized_new_runtime_dependencies": [
+      "streamlit"
+    ],
+    "later_authorized_new_runtime_dependency_count": 1,
+    "optional_not_authorized_by_default": [
+      "plotly"
+    ],
+    "not_required": [
+      "duckdb"
+    ],
+    "maximum_new_runtime_dependencies": 3,
+    "prohibited": [
+      "external database servers",
+      "React",
+      "Node.js",
+      "Kubernetes",
+      "Redis",
+      "Celery",
+      "microservices"
+    ]
+  },
+  "implementation_path_budget": {
+    "mission93_maximum_changed_paths": 13,
+    "mission93_locked_changed_path_count": 11,
+    "mission93_locked_changed_paths": [
+      "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+      "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+      "docs/README.md",
+      "docs/documentation-status.json",
+      "offchain/tests/test_current_policy_docs.py",
+      "offchain/tests/test_document_status_banners.py",
+      "offchain/tests/test_documentation_status.py",
+      "offchain/tests/test_human_cli_report_language.py",
+      "offchain/tests/test_public_docstrings_operator_guidance.py",
+      "offchain/tests/test_research_cockpit_v0_charter.py",
+      "offchain/tests/test_research_evidence_summaries.py"
+    ],
+    "later_implementation_budget_status": "MUST_BE_DEFINED_BY_A_NEW_INTERFACE_GAP_CLOSURE_OR_IMPLEMENTATION CONTRACT"
+  },
+  "implementation_acceptance_criteria": [
+    "ALL_FIVE_INTERFACE_GAPS_CLOSED_BY_VERSIONED_TESTED_ENGINE_INTERFACES_BEFORE_COCKPIT_IMPLEMENTATION",
+    "COCKPIT_CONTAINS_NO_SIGNAL_FILL_PNL_COST_RISK_OR_STATISTICAL_DECISION_LOGIC",
+    "UI_SESSION_STATE_NEVER_BECOMES_RESEARCH_AUTHORITY",
+    "DEFAULT_RESULTS_ARE_CHRONOLOGICAL_NOT_PERFORMANCE_RANKED",
+    "EXACT_FOUR_NON_ALPHA_CONTROLS_ONLY",
+    "SEEDED_RANDOM_CONTROL_FAILS_CLOSED_WITHOUT_EXPLICIT_SEED",
+    "EXPERIMENT_MANIFEST_AND_RESULT_BUNDLE_CANONICAL_HASHES_VERIFY",
+    "PERSISTENT_APPEND_ONLY_TRIAL_LEDGER_COUNTS_EVERY_OUTCOME_BEARING_ATTEMPT",
+    "PROTECTED_SPLITS_AND UNKNOWN DATASETS FAIL_CLOSED_WITHOUT OPENING DATA",
+    "SOFTWARE_PASS_LANGUAGE_NEVER_IMPLIES PROFITABILITY",
+    "OFFLINE_READ_ONLY_DEFAULTS",
+    "NO_SOURCE_IMPLEMENTATION_OR_DEPENDENCY CHANGE WITHOUT SEPARATE AUTHORITY"
+  ],
+  "stop_conditions": [
+    "ANY_REQUIRED_ENGINE_INTERFACE_REMAINS_MISSION_SPECIFIC_OR HISTORICAL_ONLY",
+    "ANY COCKPIT PATH WOULD DUPLICATE DOMAIN LOGIC",
+    "TRIAL_LEDGER CANNOT ATOMICALLY RESERVE AND COUNT A TRIAL",
+    "PROTECTED DATA CAN BE RESOLVED OR OPENED WITHOUT EXPLICIT AUTHORITY",
+    "UNKNOWN MANIFEST FIELD OR CONTROL DOES NOT FAIL CLOSED",
+    "UI STATE CAN ALTER AUTHORITY OR RESULTS",
+    "IMPLEMENTATION REQUIRES MORE THAN THREE NEW RUNTIME DEPENDENCIES",
+    "RESEARCH OR TRADING AUTHORITY WOULD CHANGE"
+  ],
+  "next_authorized_action": "STOP_REPOSITORY_INTERFACE_GAPS_FOUND",
+  "contract_hash_sha256": "b4064f4651730618bf6497e631e913ebde7d6c9db926943d46aa11b3bc223bc1"
+}

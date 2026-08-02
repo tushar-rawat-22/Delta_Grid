@@ -135,6 +135,21 @@
       "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
+      "path": "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, software verification, and architecture reviewers",
+      "purpose": "Current machine-readable Research Cockpit v0 boundary and interface-audit decision",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "The final freeze continues to control all research and trading authority not expressly changed. This STOP contract changes none of that authority and does not authorize cockpit implementation."
+    },
+    {
       "path": "contracts/foundry.toml",
       "classification": "MACHINE_REFERENCE",
       "audience": "Software, tests, verification tools, and technical reviewers",
@@ -1738,6 +1753,21 @@
       "readability_severity": 3,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
+    },
+    {
+      "path": "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, architects, research-integrity reviewers, and test engineers",
+      "purpose": "Current human explanation of the Research Cockpit v0 boundary and read-only interface audit",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "The final freeze continues to control all research and trading authority not expressly changed. This explanation records a STOP decision and does not authorize cockpit implementation."
     },
     {
       "path": "docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md",

@@ -43,6 +43,8 @@ RECORDED_SURFACE_TESTS = {
     },
 }
 EXPECTED_CHANGED_PATHS = {
+    "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+    "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
     "docs/OPERATOR_GUIDE.md",
     "docs/README.md",
     "docs/documentation-status.json",
@@ -51,6 +53,7 @@ EXPECTED_CHANGED_PATHS = {
     "offchain/tests/test_documentation_status.py",
     "offchain/tests/test_human_cli_report_language.py",
     "offchain/tests/test_public_docstrings_operator_guidance.py",
+    "offchain/tests/test_research_cockpit_v0_charter.py",
     "offchain/tests/test_research_evidence_summaries.py",
     "scripts/mission_control.py",
     "scripts/mission_pack_runner.py",
@@ -527,17 +530,26 @@ def test_protected_files_and_output_formats_are_unchanged():
     base_by_path = {item["path"]: item for item in base_registry["documents"]}
     current_by_path = {item["path"]: item for item in current_registry["documents"]}
     assert len(base_by_path) == 165
-    assert len(current_by_path) == 166
-    assert current_by_path.keys() - base_by_path.keys() == {"docs/OPERATOR_GUIDE.md"}
+    assert len(current_by_path) == 168
+    assert current_by_path.keys() - base_by_path.keys() == {
+        "docs/OPERATOR_GUIDE.md",
+        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+        "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+    }
     assert all(current_by_path[path] == item for path, item in base_by_path.items())
     assert current_by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_OPERATOR_GUIDE_ENTRY
     base_counts = Counter(item["classification"] for item in base_by_path.values())
     current_counts = Counter(item["classification"] for item in current_by_path.values())
-    assert current_counts["CURRENT_INTERNAL"] == base_counts["CURRENT_INTERNAL"] + 1 == 5
+    assert current_counts["CURRENT_INTERNAL"] == base_counts["CURRENT_INTERNAL"] + 2 == 6
+    assert (
+        current_counts["MACHINE_REFERENCE"]
+        == base_counts["MACHINE_REFERENCE"] + 1
+        == 35
+    )
     assert all(
         current_counts[label] == count
         for label, count in base_counts.items()
-        if label != "CURRENT_INTERNAL"
+        if label not in {"CURRENT_INTERNAL", "MACHINE_REFERENCE"}
     )
 
     tracked_json = {
@@ -558,7 +570,10 @@ def test_protected_files_and_output_formats_are_unchanged():
         for path in changed_paths()
         if path.endswith((".json", ".csv", ".tsv", ".log"))
     }
-    assert changed_structured == {"docs/documentation-status.json"}
+    assert changed_structured == {
+        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+        "docs/documentation-status.json",
+    }
 
 
 def test_only_presentation_functions_changed_from_base():

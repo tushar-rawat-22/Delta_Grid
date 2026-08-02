@@ -122,12 +122,12 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 5,
+    "CURRENT_INTERNAL": 6,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
-    "MACHINE_REFERENCE": 34,
+    "MACHINE_REFERENCE": 35,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -215,6 +215,10 @@ HISTORICAL_TOP_LEVEL_BANNER_PATHS = {
 }
 DESIGN_ONLY_BANNER_PATHS = {"docs/DELTA_AUTONOMY_ARCHITECTURE.md"}
 BATCH_6_DOCUMENTS = {"docs/OPERATOR_GUIDE.md"}
+MISSION_93_DOCUMENTS = {
+    "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+    "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+}
 def load_registry() -> dict:
     return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
@@ -495,7 +499,13 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
     non_target_entries = [
         item
         for item in load_registry()["documents"]
-        if item["path"] not in target_paths | batch_4_paths | BATCH_6_DOCUMENTS
+        if item["path"]
+        not in (
+            target_paths
+            | batch_4_paths
+            | BATCH_6_DOCUMENTS
+            | MISSION_93_DOCUMENTS
+        )
     ]
     base_non_target_entries = [
         item
@@ -625,10 +635,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 163
+    assert len(approved) == 165
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 166
+    assert len(registered) == 168
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()

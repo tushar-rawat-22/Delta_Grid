@@ -18,6 +18,10 @@ authorized now.
   gate a genuinely new proposal must pass before new research can begin.
 - [ML research adapter](DELTAGRID_ML_RESEARCH_ADAPTER.md) records a possible
   future design policy. It does not authorize implementation or model training.
+- [Research Cockpit v0 charter](DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md)
+  records the read-only interface audit and its
+  `STOP_REPOSITORY_INTERFACE_GAPS_FOUND` decision. It does not authorize a
+  dashboard, research, protected-data access, or trading.
 
 These four documents answer different questions. The root README is the public
 overview; the final freeze controls current project status; the intake policy

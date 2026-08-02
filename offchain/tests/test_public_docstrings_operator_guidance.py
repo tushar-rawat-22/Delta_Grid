@@ -102,6 +102,8 @@ EXPECTED_REGISTRY_ENTRY = {
     ),
 }
 EXPECTED_CHANGED_PATHS = {
+    "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+    "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
     "docs/OPERATOR_GUIDE.md",
     "docs/README.md",
     "docs/documentation-status.json",
@@ -110,6 +112,7 @@ EXPECTED_CHANGED_PATHS = {
     "offchain/tests/test_documentation_status.py",
     "offchain/tests/test_human_cli_report_language.py",
     "offchain/tests/test_public_docstrings_operator_guidance.py",
+    "offchain/tests/test_research_cockpit_v0_charter.py",
     "offchain/tests/test_research_evidence_summaries.py",
     "scripts/mission_control.py",
     "scripts/mission_pack_runner.py",
@@ -672,15 +675,15 @@ def test_registry_has_exact_operator_entry_count_and_classifications() -> None:
     registry = json.loads(current_text("docs/documentation-status.json"))
     by_path = {item["path"]: item for item in registry["documents"]}
     counts = Counter(item["classification"] for item in registry["documents"])
-    assert len(by_path) == 166
+    assert len(by_path) == 168
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 5,
+        "CURRENT_INTERNAL": 6,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
         "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 34,
+        "MACHINE_REFERENCE": 35,
     }
     assert by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_REGISTRY_ENTRY
     assert "does not authorize" in normalized(by_path["docs/OPERATOR_GUIDE.md"]["notes"])
@@ -691,8 +694,12 @@ def test_registry_diff_is_exactly_one_parsed_value_entry() -> None:
     current = json.loads(current_text("docs/documentation-status.json"))
     base_by_path = {item["path"]: item for item in base["documents"]}
     current_by_path = {item["path"]: item for item in current["documents"]}
-    assert len(base_by_path) == 165 and len(current_by_path) == 166
-    assert current_by_path.keys() - base_by_path.keys() == {"docs/OPERATOR_GUIDE.md"}
+    assert len(base_by_path) == 165 and len(current_by_path) == 168
+    assert current_by_path.keys() - base_by_path.keys() == {
+        "docs/OPERATOR_GUIDE.md",
+        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+        "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+    }
     assert all(current_by_path[path] == item for path, item in base_by_path.items())
     assert {key: value for key, value in current.items() if key != "documents"} == {
         key: value for key, value in base.items() if key != "documents"
@@ -714,7 +721,10 @@ def test_protected_files_dependencies_and_other_json_are_unchanged() -> None:
             check=True,
         ).stdout
     changed_json = {path for path in changed if path.endswith(".json")}
-    assert changed_json == {"docs/documentation-status.json"}
+    assert changed_json == {
+        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+        "docs/documentation-status.json",
+    }
     assert current_text("offchain/requirements.txt") == base_text("offchain/requirements.txt")
 
 
