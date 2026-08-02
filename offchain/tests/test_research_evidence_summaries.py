@@ -81,10 +81,17 @@ CHECKSUM_MANIFESTS = {
 }
 
 EXPECTED_CHANGED_PATHS = {
-    "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
-    "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+    "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+    "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     "docs/README.md",
     "docs/documentation-status.json",
+    "offchain/research/admission/__init__.py",
+    "offchain/research/admission/models.py",
+    "offchain/research/admission/dataset_resolver.py",
+    "offchain/research/admission/trial_ledger.py",
+    "offchain/research/admission/control_registry.py",
+    "offchain/research/admission/service.py",
+    "offchain/tests/test_research_admission_core.py",
     "offchain/tests/test_current_policy_docs.py",
     "offchain/tests/test_document_status_banners.py",
     "offchain/tests/test_documentation_status.py",
@@ -421,16 +428,16 @@ def test_registry_final_state_and_treatment_transition() -> None:
     current = registry_by_path()
     base = registry_by_path(current=False)
     registry = load_json(REGISTRY_PATH)
-    assert len(registry["documents"]) == 168
+    assert len(registry["documents"]) == 170
     counts = Counter(item["classification"] for item in registry["documents"])
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 6,
+        "CURRENT_INTERNAL": 7,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
         "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 35,
+        "MACHINE_REFERENCE": 36,
     }
     transitioned = {
         path
@@ -531,20 +538,20 @@ def test_compatibility_updates_are_exact_and_keep_test_counts() -> None:
     banner_path = "offchain/tests/test_document_status_banners.py"
     expected_policy = mission93_base_text(current_policy_path).replace(
         'assert len(registry["documents"]) == 166',
-        'assert len(registry["documents"]) == 168',
+        'assert len(registry["documents"]) == 170',
     )
     expected_banner = mission93_base_text(banner_path).replace(
         '"CURRENT_INTERNAL": 5,',
-        '"CURRENT_INTERNAL": 6,',
+        '"CURRENT_INTERNAL": 7,',
     ).replace(
         '"MACHINE_REFERENCE": 34,',
-        '"MACHINE_REFERENCE": 35,',
+        '"MACHINE_REFERENCE": 36,',
     ).replace(
         "assert len(items) == 166",
-        "assert len(items) == 168",
+        "assert len(items) == 170",
     ).replace(
         'assert len({item["path"] for item in items}) == 166',
-        'assert len({item["path"] for item in items}) == 168',
+        'assert len({item["path"] for item in items}) == 170',
     )
     assert (ROOT / current_policy_path).read_text(encoding="utf-8") == expected_policy
     assert (ROOT / banner_path).read_text(encoding="utf-8") == expected_banner

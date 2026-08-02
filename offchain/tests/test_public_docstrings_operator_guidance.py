@@ -17,6 +17,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE_COMMIT = "38367d3ab06ce107bbd5d82902ffb201cdf9eed6"
+MISSION_94_BASE_COMMIT = "7b1d7e035d006d5ec839486105b94e4a6b7d15bc"
 PYTHON = sys.executable
 SUPPORTED_MODULES = {
     "scripts/mission_control.py",
@@ -102,11 +103,17 @@ EXPECTED_REGISTRY_ENTRY = {
     ),
 }
 EXPECTED_CHANGED_PATHS = {
-    "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
-    "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
-    "docs/OPERATOR_GUIDE.md",
+    "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+    "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     "docs/README.md",
     "docs/documentation-status.json",
+    "offchain/research/admission/__init__.py",
+    "offchain/research/admission/models.py",
+    "offchain/research/admission/dataset_resolver.py",
+    "offchain/research/admission/trial_ledger.py",
+    "offchain/research/admission/control_registry.py",
+    "offchain/research/admission/service.py",
+    "offchain/tests/test_research_admission_core.py",
     "offchain/tests/test_current_policy_docs.py",
     "offchain/tests/test_document_status_banners.py",
     "offchain/tests/test_documentation_status.py",
@@ -114,8 +121,6 @@ EXPECTED_CHANGED_PATHS = {
     "offchain/tests/test_public_docstrings_operator_guidance.py",
     "offchain/tests/test_research_cockpit_v0_charter.py",
     "offchain/tests/test_research_evidence_summaries.py",
-    "scripts/mission_control.py",
-    "scripts/mission_pack_runner.py",
 }
 
 
@@ -675,15 +680,15 @@ def test_registry_has_exact_operator_entry_count_and_classifications() -> None:
     registry = json.loads(current_text("docs/documentation-status.json"))
     by_path = {item["path"]: item for item in registry["documents"]}
     counts = Counter(item["classification"] for item in registry["documents"])
-    assert len(by_path) == 168
+    assert len(by_path) == 170
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 6,
+        "CURRENT_INTERNAL": 7,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
         "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 35,
+        "MACHINE_REFERENCE": 36,
     }
     assert by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_REGISTRY_ENTRY
     assert "does not authorize" in normalized(by_path["docs/OPERATOR_GUIDE.md"]["notes"])
@@ -694,11 +699,13 @@ def test_registry_diff_is_exactly_one_parsed_value_entry() -> None:
     current = json.loads(current_text("docs/documentation-status.json"))
     base_by_path = {item["path"]: item for item in base["documents"]}
     current_by_path = {item["path"]: item for item in current["documents"]}
-    assert len(base_by_path) == 165 and len(current_by_path) == 168
+    assert len(base_by_path) == 165 and len(current_by_path) == 170
     assert current_by_path.keys() - base_by_path.keys() == {
         "docs/OPERATOR_GUIDE.md",
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
         "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+        "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     }
     assert all(current_by_path[path] == item for path, item in base_by_path.items())
     assert {key: value for key, value in current.items() if key != "documents"} == {
@@ -707,25 +714,31 @@ def test_registry_diff_is_exactly_one_parsed_value_entry() -> None:
 
 
 def test_protected_files_dependencies_and_other_json_are_unchanged() -> None:
-    changed = set(git("diff", "--name-only", BASE_COMMIT, "--").stdout.splitlines())
+    changed = set(
+        git("diff", "--name-only", MISSION_94_BASE_COMMIT, "--").stdout.splitlines()
+    )
     changed.update(git("ls-files", "--others", "--exclude-standard").stdout.splitlines())
     assert changed == EXPECTED_CHANGED_PATHS
-    tracked = git("ls-tree", "-r", "--name-only", BASE_COMMIT).stdout.splitlines()
+    tracked = git(
+        "ls-tree", "-r", "--name-only", MISSION_94_BASE_COMMIT
+    ).stdout.splitlines()
     for path in tracked:
         if path in EXPECTED_CHANGED_PATHS:
             continue
         assert (ROOT / path).read_bytes() == subprocess.run(
-            ["git", "show", f"{BASE_COMMIT}:{path}"],
+            ["git", "show", f"{MISSION_94_BASE_COMMIT}:{path}"],
             cwd=ROOT,
             capture_output=True,
             check=True,
         ).stdout
     changed_json = {path for path in changed if path.endswith(".json")}
     assert changed_json == {
-        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
         "docs/documentation-status.json",
     }
-    assert current_text("offchain/requirements.txt") == base_text("offchain/requirements.txt")
+    assert current_text("offchain/requirements.txt") == git(
+        "show", f"{MISSION_94_BASE_COMMIT}:offchain/requirements.txt"
+    ).stdout
 
 
 def test_no_new_cli_entry_point_or_absolute_test_dependency_exists() -> None:

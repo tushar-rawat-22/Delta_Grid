@@ -1,0 +1,407 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-research-admission-core-v1",
+  "contract_version": 1,
+  "base_commit": "7b1d7e035d006d5ec839486105b94e4a6b7d15bc",
+  "preceding_contract": "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+  "contract_hash_sha256": "e4070b52a0f2dbc8ce34ea00d0a732c2aed25c9c21e5acfccc3f9d791dba6193",
+  "implementation_authorization": {
+    "research_admission_core_implementation_authorized": true,
+    "synthetic_fixture_validation_authorized": true
+  },
+  "authorization_state": {
+    "research_reopened": false,
+    "market_data_access_authorized": false,
+    "real_market_backtest_authorized": false,
+    "development_market_evaluation_authorized": false,
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "control_execution_authorized": false,
+    "strategy_execution_authorized": false,
+    "model_training_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "exchange_access_authorized": false,
+    "capital_deployment_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_promotion_authorized": false
+  },
+  "controlling_state": {
+    "validated_profitable_strategy": false,
+    "selected_candidate": false,
+    "research_frozen": true,
+    "market_backtest_authorization": false,
+    "model_training_authorization": false,
+    "paper_or_live_authorization": false,
+    "exchange_or_capital_authorization": false,
+    "autonomous_research_or_promotion_authorization": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "package": {
+    "path": "offchain/research/admission",
+    "production_files": [
+      "offchain/research/admission/__init__.py",
+      "offchain/research/admission/models.py",
+      "offchain/research/admission/dataset_resolver.py",
+      "offchain/research/admission/trial_ledger.py",
+      "offchain/research/admission/control_registry.py",
+      "offchain/research/admission/service.py"
+    ],
+    "standard_library_only": true,
+    "terminal_output": "ADMISSION_DECISION",
+    "execution_capability": false
+  },
+  "dataset_resolver": {
+    "mode": "METADATA_ONLY_FAIL_CLOSED",
+    "catalog_input": "EXPLICITLY_LOADED_DETERMINISTIC_CATALOG",
+    "catalog_identity_required": true,
+    "catalog_record_fields": [
+      "schema_version",
+      "dataset_id",
+      "artifact_id",
+      "content_sha256",
+      "metadata_sha256",
+      "data_class",
+      "split_identity",
+      "artifact_path",
+      "allowed_authorization_stages",
+      "protected",
+      "provenance_reference"
+    ],
+    "only_admissible_data_class": "SYNTHETIC_FIXTURE",
+    "only_admissible_split_identity": "SYNTHETIC_DEVELOPMENT",
+    "artifact_bytes_may_be_opened": false,
+    "permissions_may_be_inferred_from_filenames": false,
+    "required_guards": [
+      "CATALOG_CANONICAL_IDENTITY",
+      "DUPLICATE_DATASET_ID_REJECTION",
+      "UNKNOWN_DATASET_REJECTION",
+      "REQUESTED_HASH_MATCH",
+      "KNOWN_DATA_CLASS",
+      "ARTIFACT_PATH_WITHIN_CONFIGURED_ROOT",
+      "VALIDATION_REJECTION",
+      "HOLDOUT_REJECTION",
+      "PROTECTED_RECORD_REJECTION",
+      "AUTHORIZATION_STAGE_MATCH"
+    ],
+    "resolution_fields": [
+      "schema_version",
+      "dataset_id",
+      "artifact_id",
+      "content_sha256",
+      "metadata_sha256",
+      "data_class",
+      "split_identity",
+      "artifact_path",
+      "authorization_stage",
+      "provenance_reference",
+      "reason_token",
+      "canonical_resolution_hash"
+    ]
+  },
+  "control_registry": {
+    "immutable": true,
+    "runtime_registration_exposed": false,
+    "dynamic_imports_permitted": false,
+    "controls": [
+      {
+        "control_identifier": "NO_TRADE_CONTROL",
+        "non_alpha": true,
+        "execution_authorized": false,
+        "parameters": {}
+      },
+      {
+        "control_identifier": "BUY_AND_HOLD_CONTROL",
+        "non_alpha": true,
+        "execution_authorized": false,
+        "parameters": {}
+      },
+      {
+        "control_identifier": "SEEDED_RANDOM_CONTROL",
+        "non_alpha": true,
+        "execution_authorized": false,
+        "parameters": {
+          "seed": {
+            "type": "INTEGER_NOT_BOOL",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "required": true
+          }
+        }
+      },
+      {
+        "control_identifier": "SIMULATOR_STATE_MACHINE_CONTROL",
+        "non_alpha": true,
+        "execution_authorized": false,
+        "parameters": {
+          "scenario_id": {
+            "type": "STRING",
+            "allowed_values": [
+              "ROUND_TRIP",
+              "STOP_AND_COOLDOWN",
+              "PARTIAL_FILL_SEQUENCE"
+            ],
+            "required": true
+          }
+        }
+      }
+    ],
+    "validated_specification_fields": [
+      "schema_version",
+      "control_identifier",
+      "control_parameters",
+      "non_alpha",
+      "execution_authorized",
+      "canonical_control_hash"
+    ]
+  },
+  "trial_ledger": {
+    "storage": "CALLER_SUPPLIED_LOCAL_SQLITE",
+    "foreign_keys_enabled": true,
+    "reservation_transaction": "BEGIN IMMEDIATE",
+    "all_reservations_count_against_budget": true,
+    "reset_api_exposed": false,
+    "erase_failed_attempt_api_exposed": false,
+    "tables": {
+      "trial_budgets": {
+        "columns": [
+          "budget_id",
+          "controlling_contract_id",
+          "controlling_contract_hash",
+          "experiment_family",
+          "total_trial_budget",
+          "created_at",
+          "canonical_budget_hash"
+        ],
+        "immutable": true,
+        "unique": [
+          "budget_id",
+          "canonical_budget_hash"
+        ]
+      },
+      "trial_reservations": {
+        "columns": [
+          "trial_id",
+          "budget_id",
+          "declared_trial_number",
+          "request_hash",
+          "initiated_by",
+          "reserved_at"
+        ],
+        "immutable": true,
+        "unique": [
+          "trial_id",
+          "request_hash",
+          "budget_id+declared_trial_number"
+        ]
+      },
+      "trial_events": {
+        "columns": [
+          "event_id",
+          "trial_id",
+          "sequence_number",
+          "status_token",
+          "reason_token",
+          "event_timestamp",
+          "canonical_event_hash"
+        ],
+        "append_only": true,
+        "unique": [
+          "event_id",
+          "trial_id+sequence_number",
+          "canonical_event_hash"
+        ]
+      }
+    },
+    "statuses": [
+      "RESERVED",
+      "ADMITTED",
+      "STOPPED",
+      "FAILED",
+      "REJECTED",
+      "COMPLETED",
+      "SUPERSEDED"
+    ],
+    "terminal_statuses": [
+      "STOPPED",
+      "FAILED",
+      "REJECTED",
+      "COMPLETED",
+      "SUPERSEDED"
+    ],
+    "origins": [
+      "OPERATOR",
+      "MANUAL_RECONSTRUCTION",
+      "FUTURE_AUTOMATION"
+    ],
+    "future_automation_authorizes_autonomy": false,
+    "transition_policy": {
+      "RESERVED": [
+        "ADMITTED",
+        "STOPPED",
+        "FAILED",
+        "REJECTED",
+        "SUPERSEDED"
+      ],
+      "ADMITTED": [
+        "FAILED",
+        "COMPLETED",
+        "SUPERSEDED"
+      ],
+      "STOPPED": [],
+      "FAILED": [],
+      "REJECTED": [],
+      "COMPLETED": [],
+      "SUPERSEDED": []
+    },
+    "database_guards": [
+      "NO_UPDATE_TRIAL_BUDGETS",
+      "NO_DELETE_TRIAL_BUDGETS",
+      "NO_UPDATE_TRIAL_RESERVATIONS",
+      "NO_DELETE_TRIAL_RESERVATIONS",
+      "NO_UPDATE_TRIAL_EVENTS",
+      "NO_DELETE_TRIAL_EVENTS",
+      "NO_RESERVATION_BEYOND_FIXED_BUDGET"
+    ]
+  },
+  "admission_request": {
+    "required_fields": [
+      "schema_version",
+      "request_id",
+      "controlling_contract_id",
+      "controlling_contract_hash",
+      "repository_commit",
+      "repository_clean",
+      "budget_id",
+      "declared_trial_number",
+      "dataset_id",
+      "dataset_hash",
+      "data_class",
+      "split_identity",
+      "authorization_stage",
+      "control_identifier",
+      "control_parameters",
+      "initiated_by",
+      "created_at",
+      "canonical_request_hash"
+    ]
+  },
+  "admission_decision": {
+    "required_fields": [
+      "schema_version",
+      "decision_id",
+      "request_id",
+      "trial_id",
+      "decision_token",
+      "reason_token",
+      "dataset_resolution_hash",
+      "validated_control_hash",
+      "budget_id",
+      "declared_trial_number",
+      "created_at",
+      "canonical_decision_hash"
+    ],
+    "decision_tokens": [
+      "PRECHECK_PASS",
+      "PRECHECK_STOP",
+      "ADMITTED",
+      "STOPPED"
+    ]
+  },
+  "service_semantics": {
+    "preflight": {
+      "validations": [
+        "STRUCTURAL",
+        "CONTRACT",
+        "REPOSITORY",
+        "BUDGET",
+        "DATASET",
+        "SPLIT",
+        "CONTROL"
+      ],
+      "ledger_write": false,
+      "trial_reservation": false,
+      "execution": false
+    },
+    "admit": {
+      "minimum_envelope_validation_before_reservation": true,
+      "atomic_reservation_before_substantive_gates": true,
+      "post_reservation_failure_status": "STOPPED",
+      "post_reservation_failure_consumes_trial": true,
+      "execution": false
+    }
+  },
+  "reason_tokens": [
+    "ADMISSION_GATES_PASSED",
+    "PRECHECK_GATES_PASSED",
+    "REQUEST_SCHEMA_INVALID",
+    "REQUEST_HASH_MISMATCH",
+    "REPOSITORY_COMMIT_MISMATCH",
+    "DIRTY_REPOSITORY",
+    "CONTRACT_ID_MISMATCH",
+    "CONTRACT_HASH_MISMATCH",
+    "BUDGET_UNKNOWN",
+    "BUDGET_DEFINITION_MISMATCH",
+    "TRIAL_BUDGET_EXHAUSTED",
+    "DECLARED_TRIAL_ALREADY_USED",
+    "REQUEST_ALREADY_RESERVED",
+    "DATASET_UNKNOWN",
+    "DATASET_HASH_MISMATCH",
+    "DATASET_CLASS_UNAUTHORIZED",
+    "DATASET_PATH_UNSAFE",
+    "AUTHORIZATION_STAGE_MISMATCH",
+    "PROTECTED_DATA_FORBIDDEN",
+    "VALIDATION_FORBIDDEN",
+    "HOLDOUT_FORBIDDEN",
+    "CONTROL_UNKNOWN",
+    "CONTROL_PARAMETER_MISSING",
+    "CONTROL_PARAMETER_EXTRA",
+    "CONTROL_PARAMETER_TYPE_INVALID",
+    "CONTROL_PARAMETER_VALUE_INVALID",
+    "INITIATED_BY_INVALID",
+    "DECLARED_TRIAL_NUMBER_INVALID",
+    "INTERNAL_INTEGRITY_FAILURE"
+  ],
+  "no_execution_boundary": {
+    "may_load_market_or_protected_data": false,
+    "may_load_candles_trades_or_order_books": false,
+    "may_generate_signals": false,
+    "may_calculate_returns_pnl_fees_costs_or_risk": false,
+    "may_place_or_simulate_orders": false,
+    "may_select_or_rank_candidates": false,
+    "may_import_simulators_strategies_backtests_or_engines": false,
+    "may_import_exchange_network_or_training_libraries": false,
+    "may_execute_controls": false
+  },
+  "implementation_acceptance_criteria": [
+    "CONTRACT_IDENTITY_AND_CANONICAL_HASH_VERIFIED",
+    "ALL_RESEARCH_AND_TRADING_AUTHORITIES_REMAIN_FALSE",
+    "EXACT_SIX_FILE_PRODUCTION_PACKAGE",
+    "METADATA_ONLY_SYNTHETIC_FIXTURE_RESOLUTION",
+    "EXACT_IMMUTABLE_FOUR_CONTROL_REGISTRY",
+    "APPEND_ONLY_ATOMIC_SQLITE_TRIAL_LEDGER",
+    "PREFLIGHT_PERFORMS_NO_LEDGER_WRITE",
+    "ADMIT_RESERVES_BEFORE_SUBSTANTIVE_GATES",
+    "POST_RESERVATION_STOP_CONSUMES_TRIAL",
+    "DETERMINISTIC_HASHED_DECISIONS",
+    "NO_EXECUTION_OR_SECOND_RESEARCH_ENGINE",
+    "FOCUSED_TESTS_AND_GIT_DIFF_CHECK_PASS",
+    "NO_DEPENDENCY_CHANGE",
+    "NOTHING_STAGED_COMMITTED_OR_PUSHED"
+  ],
+  "next_authorized_action": "AUTHORIZE_RESULT_BUNDLE_AND_ENGINE_SERVICE_CONTRACT",
+  "next_action_authorization": false
+}

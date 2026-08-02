@@ -37,6 +37,26 @@ LOCKED_CHANGED_PATHS = {
     "offchain/tests/test_research_cockpit_v0_charter.py",
     "offchain/tests/test_research_evidence_summaries.py",
 }
+MISSION_94_CHANGED_PATHS = {
+    "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+    "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
+    "docs/README.md",
+    "docs/documentation-status.json",
+    "offchain/research/admission/__init__.py",
+    "offchain/research/admission/models.py",
+    "offchain/research/admission/dataset_resolver.py",
+    "offchain/research/admission/trial_ledger.py",
+    "offchain/research/admission/control_registry.py",
+    "offchain/research/admission/service.py",
+    "offchain/tests/test_research_admission_core.py",
+    "offchain/tests/test_current_policy_docs.py",
+    "offchain/tests/test_document_status_banners.py",
+    "offchain/tests/test_documentation_status.py",
+    "offchain/tests/test_human_cli_report_language.py",
+    "offchain/tests/test_public_docstrings_operator_guidance.py",
+    "offchain/tests/test_research_cockpit_v0_charter.py",
+    "offchain/tests/test_research_evidence_summaries.py",
+}
 
 FALSE_AUTHORIZATIONS = {
     "cockpit_implementation_authorized",
@@ -192,7 +212,7 @@ def test_exact_locked_changed_path_manifest_and_git_scope() -> None:
     assert set(recorded["mission93_locked_changed_paths"]) == LOCKED_CHANGED_PATHS
     assert recorded["mission93_locked_changed_path_count"] == 11
     assert recorded["mission93_maximum_changed_paths"] == 13
-    assert changed_paths() == LOCKED_CHANGED_PATHS
+    assert changed_paths() == MISSION_94_CHANGED_PATHS
     assert git("diff", "--cached", "--name-only").stdout == ""
     assert all(PurePosixPath(path).as_posix() == path for path in LOCKED_CHANGED_PATHS)
 
@@ -442,15 +462,15 @@ def test_registry_has_exact_two_additions_and_required_totals() -> None:
     registry = load(REGISTRY_PATH)
     by_path = {item["path"]: item for item in registry["documents"]}
     counts = Counter(item["classification"] for item in registry["documents"])
-    assert len(by_path) == 168
+    assert len(by_path) == 170
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 6,
+        "CURRENT_INTERNAL": 7,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
         "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 35,
+        "MACHINE_REFERENCE": 36,
     }
     machine = by_path[
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json"
@@ -473,10 +493,12 @@ def test_all_166_base_registry_entries_are_parsed_value_identical() -> None:
     base_by_path = {item["path"]: item for item in base["documents"]}
     current_by_path = {item["path"]: item for item in current["documents"]}
     assert len(base_by_path) == 166
-    assert len(current_by_path) == 168
+    assert len(current_by_path) == 170
     assert set(current_by_path) - set(base_by_path) == {
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
         "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+        "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     }
     assert all(current_by_path[path] == item for path, item in base_by_path.items())
     assert {key: value for key, value in current.items() if key != "documents"} == {
@@ -496,9 +518,12 @@ def test_exactly_one_contract_added_and_all_base_contracts_are_identical() -> No
         path.relative_to(ROOT).as_posix()
         for path in (ROOT / "contracts").glob("*.json")
     }
-    new_contract = "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json"
-    assert current_contracts == base_contracts | {new_contract}
-    assert current_contracts - base_contracts == {new_contract}
+    new_contracts = {
+        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+    }
+    assert current_contracts == base_contracts | new_contracts
+    assert current_contracts - base_contracts == new_contracts
     for path in base_contracts:
         assert (ROOT / path).read_bytes() == base_bytes(path)
     contract = load(CONTRACT_PATH)
@@ -512,7 +537,8 @@ def test_protected_implementation_dependency_evidence_and_history_are_unchanged(
         path.startswith(
             (
                 "offchain/backtest/",
-                "offchain/research/",
+                "offchain/research/alpha_search_b/",
+                "offchain/research/contracts/",
                 "offchain/risk/",
                 "offchain/simulator/",
                 "offchain/portfolio/",
@@ -530,7 +556,8 @@ def test_protected_implementation_dependency_evidence_and_history_are_unchanged(
     assert not any("SHA256SUMS" in path for path in changed)
     assert not any(path.endswith((".html", ".css", ".js", ".ts", ".tsx")) for path in changed)
     assert not any(
-        path.endswith(".py") and not path.startswith("offchain/tests/")
+        path.endswith(".py")
+        and not path.startswith(("offchain/tests/", "offchain/research/admission/"))
         for path in changed
     )
 

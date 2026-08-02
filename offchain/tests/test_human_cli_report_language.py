@@ -43,11 +43,20 @@ RECORDED_SURFACE_TESTS = {
     },
 }
 EXPECTED_CHANGED_PATHS = {
+    "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
     "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+    "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
     "docs/OPERATOR_GUIDE.md",
     "docs/README.md",
     "docs/documentation-status.json",
+    "offchain/research/admission/__init__.py",
+    "offchain/research/admission/models.py",
+    "offchain/research/admission/dataset_resolver.py",
+    "offchain/research/admission/trial_ledger.py",
+    "offchain/research/admission/control_registry.py",
+    "offchain/research/admission/service.py",
+    "offchain/tests/test_research_admission_core.py",
     "offchain/tests/test_current_policy_docs.py",
     "offchain/tests/test_document_status_banners.py",
     "offchain/tests/test_documentation_status.py",
@@ -530,21 +539,23 @@ def test_protected_files_and_output_formats_are_unchanged():
     base_by_path = {item["path"]: item for item in base_registry["documents"]}
     current_by_path = {item["path"]: item for item in current_registry["documents"]}
     assert len(base_by_path) == 165
-    assert len(current_by_path) == 168
+    assert len(current_by_path) == 170
     assert current_by_path.keys() - base_by_path.keys() == {
         "docs/OPERATOR_GUIDE.md",
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
         "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
+        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+        "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     }
     assert all(current_by_path[path] == item for path, item in base_by_path.items())
     assert current_by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_OPERATOR_GUIDE_ENTRY
     base_counts = Counter(item["classification"] for item in base_by_path.values())
     current_counts = Counter(item["classification"] for item in current_by_path.values())
-    assert current_counts["CURRENT_INTERNAL"] == base_counts["CURRENT_INTERNAL"] + 2 == 6
+    assert current_counts["CURRENT_INTERNAL"] == base_counts["CURRENT_INTERNAL"] + 3 == 7
     assert (
         current_counts["MACHINE_REFERENCE"]
-        == base_counts["MACHINE_REFERENCE"] + 1
-        == 35
+        == base_counts["MACHINE_REFERENCE"] + 2
+        == 36
     )
     assert all(
         current_counts[label] == count
@@ -571,6 +582,7 @@ def test_protected_files_and_output_formats_are_unchanged():
         if path.endswith((".json", ".csv", ".tsv", ".log"))
     }
     assert changed_structured == {
+        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
         "docs/documentation-status.json",
     }

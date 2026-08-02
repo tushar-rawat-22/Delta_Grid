@@ -22,8 +22,10 @@ authorized now.
   records the read-only interface audit and its
   `STOP_REPOSITORY_INTERFACE_GAPS_FOUND` decision. It does not authorize a
   dashboard, research, protected-data access, or trading.
+- [Research Admission Core](DELTAGRID_RESEARCH_ADMISSION_CORE.md) documents the
+  synthetic-only, no-execution gate authorized by the Mission 94 contract.
 
-These four documents answer different questions. The root README is the public
+These documents answer different questions. The root README is the public
 overview; the final freeze controls current project status; the intake policy
 governs possible future proposals; and the ML adapter is design-only.
 
