@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-from collections import Counter
 import importlib
 import inspect
 import json
@@ -684,20 +683,13 @@ def test_docs_home_links_current_operator_guidance_without_authorization() -> No
 
 def test_registry_has_exact_operator_entry_count_and_classifications() -> None:
     registry = json.loads(current_text("docs/documentation-status.json"))
-    by_path = {item["path"]: item for item in registry["documents"]}
-    counts = Counter(item["classification"] for item in registry["documents"])
-    assert len(by_path) == 172
-    assert counts == {
-        "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 8,
-        "HISTORICAL": 97,
-        "SUPERSEDED": 8,
-        "DESIGN_ONLY": 2,
-        "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 37,
-    }
-    assert by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_REGISTRY_ENTRY
-    assert "does not authorize" in normalized(by_path["docs/OPERATOR_GUIDE.md"]["notes"])
+    items = registry["documents"]
+    operator_entries = [
+        item for item in items if item["path"] == "docs/OPERATOR_GUIDE.md"
+    ]
+    # Exact current inventory totals are owned by test_documentation_status.py.
+    assert operator_entries == [EXPECTED_REGISTRY_ENTRY]
+    assert "does not authorize" in normalized(operator_entries[0]["notes"])
 
 
 def test_registry_diff_is_exactly_one_parsed_value_entry() -> None:

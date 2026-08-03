@@ -180,6 +180,21 @@
       "notes": "The final freeze continues to control all research and trading authority not expressly changed. This STOP contract changes none of that authority and does not authorize cockpit implementation."
     },
     {
+      "path": "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, software verification, operators, and research-integrity reviewers",
+      "purpose": "Current machine-readable read-only research control-plane implementation and authority boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only Mission 96A local read-only ledger inspection, verified linked-result loading, deterministic projections, and integrity incidents. It grants no UI, research, market, protected-data, model, exchange, trading, autonomous, or capital authority."
+    },
+    {
       "path": "contracts/foundry.toml",
       "classification": "MACHINE_REFERENCE",
       "audience": "Software, tests, verification tools, and technical reviewers",
@@ -1828,6 +1843,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "The final freeze continues to control all research and trading authority not expressly changed. This explanation records a STOP decision and does not authorize cockpit implementation."
+    },
+    {
+      "path": "docs/DELTAGRID_RESEARCH_CONTROL_PLANE.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, research-integrity reviewers, operators, and test engineers",
+      "purpose": "Current human explanation of the read-only Research Control Plane v1",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 96A read-only ledger and verified-result projections without authorizing UI, research, market or protected-data access, models, trading, exchanges, autonomy, or capital."
     },
     {
       "path": "docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md",

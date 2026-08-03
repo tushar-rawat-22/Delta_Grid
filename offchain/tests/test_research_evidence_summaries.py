@@ -422,18 +422,7 @@ def test_project_audit_does_not_promote_historical_next_actions() -> None:
 def test_registry_final_state_and_treatment_transition() -> None:
     current = registry_by_path()
     base = registry_by_path(current=False)
-    registry = load_json(REGISTRY_PATH)
-    assert len(registry["documents"]) == 172
-    counts = Counter(item["classification"] for item in registry["documents"])
-    assert counts == {
-        "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 8,
-        "HISTORICAL": 97,
-        "SUPERSEDED": 8,
-        "DESIGN_ONLY": 2,
-        "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 37,
-    }
+    # Exact current inventory totals are owned by test_documentation_status.py.
     transitioned = {
         path
         for path in CANONICAL_SOURCES

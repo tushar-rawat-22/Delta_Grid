@@ -1,0 +1,236 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-research-control-plane-v1",
+  "contract_version": 1,
+  "base_commit": "574e07d9d57cbddf53defc5e48510c96ed6fc58a",
+  "preceding_contract": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
+  "preceding_contract_hash_sha256": "d8fcd1169e638b648f8b5fccb389dfd090b016beb80e9e13d7f0a0af3210aa6a",
+  "authorization_stage": "MISSION_96A_READ_ONLY_CONTROL_PLANE",
+  "contract_hash_sha256": "c1e0c8c55db90fe8a81d3afe2d243537c703dbee6a945596f4b37c5ee13e70a9",
+  "scope_explanation": "Mission 96A authorizes only a local, offline, read-only query and deterministic projection boundary over the existing Mission 94 trial ledger and Mission 95 canonical linked results. It does not authorize Mission 96B cockpit UI implementation or any research, market, protected-data, model, exchange, trading, autonomous, or capital capability.",
+  "implementation_authorization": {
+    "read_only_ledger_access_authorized": true,
+    "budget_reservation_event_and_result_link_inspection_authorized": true,
+    "linked_result_loading_authorized": true,
+    "deterministic_projection_authorized": true,
+    "integrity_incident_detection_authorized": true,
+    "local_offline_json_compatible_snapshot_authorized": true,
+    "repository_governance_contract_verification_authorized": true,
+    "backend_control_plane_package_and_tests_authorized": true
+  },
+  "authorization_state": {
+    "ledger_write_authorized": false,
+    "schema_creation_or_migration_authorized": false,
+    "trial_reservation_authorized": false,
+    "trial_admission_authorized": false,
+    "event_append_authorized": false,
+    "result_finalization_authorized": false,
+    "fixture_loading_authorized": false,
+    "control_execution_authorized": false,
+    "strategy_research_authorized": false,
+    "research_reopened": false,
+    "market_data_access_authorized": false,
+    "development_evaluation_authorized": false,
+    "development_market_evaluation_authorized": false,
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "protected_data_access_authorized": false,
+    "model_training_authorized": false,
+    "machine_learning_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "exchange_access_authorized": false,
+    "credentials_access_authorized": false,
+    "capital_deployment_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_promotion_authorized": false,
+    "autonomous_execution_authorized": false,
+    "remote_services_authorized": false,
+    "analytics_authorized": false,
+    "cockpit_ui_authorized": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "package": {
+    "path": "offchain/research/control_plane",
+    "production_files": [
+      "offchain/research/control_plane/__init__.py",
+      "offchain/research/control_plane/models.py",
+      "offchain/research/control_plane/readonly_ledger.py",
+      "offchain/research/control_plane/service.py"
+    ],
+    "standard_library_and_existing_deltagrid_packages_only": true,
+    "public_api": [
+      "ReadOnlyTrialLedger",
+      "ResearchControlPlaneService",
+      "ControlPlaneError",
+      "ControlPlaneSnapshot",
+      "SystemProjection",
+      "TrialProjection",
+      "ResultProjection",
+      "IncidentProjection",
+      "MISSION_CONTRACT_ID",
+      "MISSION_CONTRACT_HASH",
+      "MISSION_BASE_COMMIT",
+      "MISSION_AUTHORIZATION_STAGE"
+    ]
+  },
+  "read_only_ledger": {
+    "independent_from_write_capable_trial_ledger_constructor": true,
+    "sqlite_uri_template": "file:<percent-encoded-absolute-path>?mode=ro",
+    "sqlite_connect_options": {
+      "uri": true,
+      "isolation_level": null
+    },
+    "pragmas": [
+      "PRAGMA query_only = ON",
+      "PRAGMA foreign_keys = ON"
+    ],
+    "immutable_uri_option_used": false,
+    "missing_file_creation_permitted": false,
+    "symlink_database_path_permitted": false,
+    "symlink_parent_component_permitted": false,
+    "schema_creation_or_migration_permitted": false,
+    "public_write_api_present": false,
+    "consistent_multi_query_snapshot_transaction": true,
+    "single_captured_ledger_state_per_snapshot": true,
+    "mission_95_loader_uses_snapshot_backed_ledger_view": true,
+    "ledger_reopened_during_result_projection": false
+  },
+  "repository_contract_verification": {
+    "repository_root_symlinks_permitted": false,
+    "strict_utf8_json_required": true,
+    "utf8_bom_permitted": false,
+    "duplicate_object_names_permitted": false,
+    "nonfinite_numbers_permitted": false,
+    "canonical_hash_reverification_required": true,
+    "predecessor_chain_reverification_required": true,
+    "verified_contracts": [
+      "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
+      "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+      "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
+      "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json"
+    ],
+    "failure_reason_token": "REPOSITORY_CONTRACT_INTEGRITY_FAILURE"
+  },
+  "supported_api_immutability": {
+    "ledger_public_identity_properties_read_only": true,
+    "service_public_identity_properties_read_only": true,
+    "verified_contract_identity_mapping_deeply_immutable": true,
+    "trial_incident_ids_stored_as_tuple": true,
+    "snapshot_projection_collections_stored_as_tuples": true,
+    "serialized_mappings_deeply_detached": true,
+    "cryptographic_object_isolation_claimed": false
+  },
+  "required_ledger_schema": {
+    "trial_budgets": [
+      "budget_id",
+      "controlling_contract_id",
+      "controlling_contract_hash",
+      "experiment_family",
+      "total_trial_budget",
+      "created_at",
+      "canonical_budget_hash"
+    ],
+    "trial_reservations": [
+      "trial_id",
+      "budget_id",
+      "declared_trial_number",
+      "request_hash",
+      "initiated_by",
+      "reserved_at"
+    ],
+    "trial_events": [
+      "event_id",
+      "trial_id",
+      "sequence_number",
+      "status_token",
+      "reason_token",
+      "event_timestamp",
+      "canonical_event_hash"
+    ],
+    "trial_result_links": [
+      "trial_id",
+      "result_bundle_id",
+      "result_bundle_hash",
+      "result_bundle_path",
+      "linked_at",
+      "canonical_result_link_hash"
+    ],
+    "primary_keys_required": true,
+    "not_null_declarations_required": true,
+    "canonical_unique_identities_required": true,
+    "foreign_key_relationships_required": true,
+    "immutable_triggers_required": true,
+    "reservation_budget_guard_required": true,
+    "foreign_key_check_during_capture": true
+  },
+  "snapshot": {
+    "schema_version": "1.0",
+    "snapshot_version": 1,
+    "top_level_fields": [
+      "schema_version",
+      "snapshot_id",
+      "snapshot_version",
+      "system",
+      "trials",
+      "results",
+      "incidents",
+      "canonical_snapshot_hash"
+    ],
+    "explicit_normalized_utc_as_of_required": true,
+    "wall_clock_source_permitted": false,
+    "random_identity_permitted": false,
+    "performance_ranking_permitted": false,
+    "metric_recalculation_permitted": false,
+    "mission_95_loader_is_result_authority_boundary": true,
+    "completed_replay_requires_fixture": false,
+    "detached_json_compatible_serialization": true,
+    "system_additional_fields": [
+      "repository_root_path_identity",
+      "contract_verification"
+    ],
+    "normalized_utc_timestamp_validation": true,
+    "timestamp_fractional_digits_minimum": 1,
+    "timestamp_fractional_digits_maximum": 6,
+    "timestamp_ordering_uses_parsed_utc": true,
+    "result_order_follows_trial_projection_order": true
+  },
+  "health_tokens": [
+    "HEALTHY",
+    "DEGRADED",
+    "INTEGRITY_FAILURE",
+    "UNAVAILABLE"
+  ],
+  "incident_severities": [
+    "INFO",
+    "WARNING",
+    "ERROR",
+    "CRITICAL"
+  ],
+  "incident_categories": [
+    "LEDGER_UNAVAILABLE",
+    "LEDGER_SCHEMA_INCOMPATIBLE",
+    "LEDGER_ROW_INTEGRITY_FAILURE",
+    "INVALID_LIFECYCLE",
+    "COMPLETED_WITHOUT_RESULT_LINK",
+    "RESULT_LINK_WITHOUT_COMPLETED_EVENT",
+    "RESULT_ARTIFACT_MISSING",
+    "RESULT_ARTIFACT_TAMPERED",
+    "RESULT_SCHEMA_UNSUPPORTED",
+    "RESULT_VERIFICATION_FAILED",
+    "DUPLICATE_OR_CONFLICTING_IDENTITY"
+  ]
+}

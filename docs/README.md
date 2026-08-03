@@ -27,6 +27,9 @@ authorized now.
 - [Canonical Result Engine Service](DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md)
   documents Mission 95's deterministic execution and canonical result boundary
   for exactly admitted synthetic non-alpha controls.
+- [Research Control Plane v1](DELTAGRID_RESEARCH_CONTROL_PLANE.md) documents
+  Mission 96A's read-only ledger, verified-result projection, and integrity
+  incident boundary. It does not authorize the cockpit UI or research.
 
 These documents answer different questions. The root README is the public
 overview; the final freeze controls current project status; the intake policy

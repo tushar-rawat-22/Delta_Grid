@@ -122,12 +122,12 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 8,
+    "CURRENT_INTERNAL": 9,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
-    "MACHINE_REFERENCE": 37,
+    "MACHINE_REFERENCE": 38,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -226,6 +226,64 @@ MISSION_94_DOCUMENTS = {
 MISSION_95_DOCUMENTS = {
     "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
     "docs/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md",
+}
+MISSION_96A_DOCUMENTS = {
+    "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
+    "docs/DELTAGRID_RESEARCH_CONTROL_PLANE.md",
+}
+EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
+    "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json": {
+        "path": "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
+        "classification": "MACHINE_REFERENCE",
+        "audience": (
+            "Maintainers, software verification, operators, and "
+            "research-integrity reviewers"
+        ),
+        "purpose": (
+            "Current machine-readable read-only research control-plane "
+            "implementation and authority boundary"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 0,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Authorizes only Mission 96A local read-only ledger inspection, "
+            "verified linked-result loading, deterministic projections, and "
+            "integrity incidents. It grants no UI, research, market, "
+            "protected-data, model, exchange, trading, autonomous, or capital "
+            "authority."
+        ),
+    },
+    "docs/DELTAGRID_RESEARCH_CONTROL_PLANE.md": {
+        "path": "docs/DELTAGRID_RESEARCH_CONTROL_PLANE.md",
+        "classification": "CURRENT_INTERNAL",
+        "audience": (
+            "Maintainers, research-integrity reviewers, operators, and test "
+            "engineers"
+        ),
+        "purpose": (
+            "Current human explanation of the read-only Research Control Plane v1"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 1,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Explains Mission 96A read-only ledger and verified-result "
+            "projections without authorizing UI, research, market or "
+            "protected-data access, models, trading, exchanges, autonomy, or "
+            "capital."
+        ),
+    },
 }
 
 
@@ -517,6 +575,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_93_DOCUMENTS
             | MISSION_94_DOCUMENTS
             | MISSION_95_DOCUMENTS
+            | MISSION_96A_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -647,10 +706,14 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 169
+    assert len(approved) == 171
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 172
+    assert len(registered) == 174
+    assert {
+        path: registered[path]
+        for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES
+    } == EXPECTED_MISSION_96A_REGISTRY_ENTRIES
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()
