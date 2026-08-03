@@ -122,12 +122,12 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 7,
+    "CURRENT_INTERNAL": 8,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
-    "MACHINE_REFERENCE": 36,
+    "MACHINE_REFERENCE": 37,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -223,6 +223,12 @@ MISSION_94_DOCUMENTS = {
     "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
     "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
 }
+MISSION_95_DOCUMENTS = {
+    "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
+    "docs/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md",
+}
+
+
 def load_registry() -> dict:
     return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
@@ -510,6 +516,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | BATCH_6_DOCUMENTS
             | MISSION_93_DOCUMENTS
             | MISSION_94_DOCUMENTS
+            | MISSION_95_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -640,10 +647,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 167
+    assert len(approved) == 169
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 170
+    assert len(registered) == 172
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()

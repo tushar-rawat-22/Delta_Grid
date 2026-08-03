@@ -24,6 +24,9 @@ authorized now.
   dashboard, research, protected-data access, or trading.
 - [Research Admission Core](DELTAGRID_RESEARCH_ADMISSION_CORE.md) documents the
   synthetic-only, no-execution gate authorized by the Mission 94 contract.
+- [Canonical Result Engine Service](DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md)
+  documents Mission 95's deterministic execution and canonical result boundary
+  for exactly admitted synthetic non-alpha controls.
 
 These documents answer different questions. The root README is the public
 overview; the final freeze controls current project status; the intake policy

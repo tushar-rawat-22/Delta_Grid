@@ -126,6 +126,12 @@ class DatasetResolver:
     def catalog_hash(self) -> str:
         return self._catalog_hash
 
+    @property
+    def artifact_root(self) -> Path:
+        """Return the configured artifact root without opening artifact bytes."""
+
+        return self._artifact_root
+
     def resolve(
         self,
         *,

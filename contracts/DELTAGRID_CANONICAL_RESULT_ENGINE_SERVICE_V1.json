@@ -1,0 +1,565 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-canonical-result-engine-service-v1",
+  "contract_version": 1,
+  "base_commit": "ac2440952d2b330344cbaef299c4378a7afd45af",
+  "preceding_contract": "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
+  "preceding_contract_hash_sha256": "e4070b52a0f2dbc8ce34ea00d0a732c2aed25c9c21e5acfccc3f9d791dba6193",
+  "authorization_stage": "MISSION_95_SYNTHETIC_CONTROL_EXECUTION",
+  "contract_hash_sha256": "d8fcd1169e638b648f8b5fccb389dfd090b016beb80e9e13d7f0a0af3210aa6a",
+  "scope_explanation": "Mission 95 closes Mission 93 GAP-01 and GAP-05 only for admitted synthetic non-alpha controls. It does not authorize the Mission 96 dashboard, strategy research, market data, protected splits, ML, exchange access, paper trading, live trading, autonomy, or capital.",
+  "implementation_authorization": {
+    "canonical_result_engine_service_implementation_authorized": true,
+    "verified_synthetic_fixture_byte_read_authorized": true,
+    "exact_synthetic_control_execution_authorized": true,
+    "canonical_artifact_write_and_verification_authorized": true,
+    "admitted_trial_terminalization_authorized": true
+  },
+  "authorization_state": {
+    "general_control_execution_authorized": false,
+    "strategy_research_authorized": false,
+    "research_reopened": false,
+    "market_data_access_authorized": false,
+    "development_market_evaluation_authorized": false,
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "protected_data_access_authorized": false,
+    "historical_backtest_authorized": false,
+    "historical_simulator_authorized": false,
+    "strategy_execution_authorized": false,
+    "model_training_authorized": false,
+    "machine_learning_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "exchange_access_authorized": false,
+    "credentials_access_authorized": false,
+    "capital_deployment_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_promotion_authorized": false,
+    "dashboard_implementation_authorized": false
+  },
+  "execution_scope": {
+    "data_class": "SYNTHETIC_FIXTURE",
+    "split_identity": "SYNTHETIC_DEVELOPMENT",
+    "permit_scope": "MISSION_95_SYNTHETIC_CONTROL_ONLY",
+    "controls": [
+      "NO_TRADE_CONTROL",
+      "BUY_AND_HOLD_CONTROL",
+      "SEEDED_RANDOM_CONTROL",
+      "SIMULATOR_STATE_MACHINE_CONTROL"
+    ],
+    "state_machine_scenarios": [
+      "ROUND_TRIP",
+      "STOP_AND_COOLDOWN",
+      "PARTIAL_FILL_SEQUENCE"
+    ],
+    "validated_control_registry_is_authority_source": false,
+    "fixed_dispatcher": true,
+    "integer_only_long_or_flat_kernel": true
+  },
+  "repository_identity": {
+    "contract_base_commit": "ac2440952d2b330344cbaef299c4378a7afd45af",
+    "implementation_repository_commit_source": "TRUSTED_COMPOSITION_ROOT",
+    "implementation_repository_commit_runtime_bound": true,
+    "implementation_repository_commit_hard_coded": false,
+    "implementation_repository_commit_format": "40_LOWERCASE_HEXADECIMAL",
+    "repository_clean_required": true,
+    "explanation": "The base commit identifies the design base. The implementation commit is runtime-bound because the publication commit does not exist during development."
+  },
+  "secure_binding": {
+    "point": "AFTER_REQUEST_DECISION_RESERVATION_BUDGET_DATASET_AND_CONTROL_REVALIDATION",
+    "pre_binding_failure_writes_ledger": false,
+    "post_binding_failure_may_terminalize": true,
+    "completed_replay_requires_fixture": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "package": {
+    "path": "offchain/research/engine_service",
+    "production_files": [
+      "offchain/research/engine_service/__init__.py",
+      "offchain/research/engine_service/models.py",
+      "offchain/research/engine_service/strict_json.py",
+      "offchain/research/engine_service/synthetic_fixture.py",
+      "offchain/research/engine_service/synthetic_controls.py",
+      "offchain/research/engine_service/result_bundle.py",
+      "offchain/research/engine_service/service.py"
+    ],
+    "standard_library_only": true,
+    "dynamic_imports_permitted": false,
+    "runtime_registration_permitted": false,
+    "plugin_api_permitted": false
+  },
+  "public_api": {
+    "loader_signature": "load_linked_result(*, result_root: Path | str, trial_ledger: TrialLedger, trial_id: str) -> LinkedResult",
+    "caller_expected_identity_dictionary_accepted": false,
+    "caller_expected_result_hash_accepted": false,
+    "caller_created_result_link_is_public_trust_source": false,
+    "persisted_result_link_and_completed_event_required": true,
+    "public_complete_with_result_present": false,
+    "verified_result_completion_is_internal": true,
+    "arbitrary_result_bundle_construction_supported": false
+  },
+  "resource_limits": {
+    "MAX_EVENTS": 512,
+    "MAX_ACCOUNTING_VALUE": 9223372036854775807,
+    "MAX_FIXTURE_BYTES": 1048576,
+    "MAX_EVENT_LEDGER_BYTES": 1048576,
+    "MAX_RESULT_BYTES": 1048576
+  },
+  "fixture_v1": {
+    "top_level_fields": [
+      "schema_version",
+      "fixture_id",
+      "instrument_id",
+      "currency_unit",
+      "initial_cash_units",
+      "trade_quantity_units",
+      "fee_bps",
+      "slippage_bps",
+      "events",
+      "canonical_fixture_hash"
+    ],
+    "event_fields": [
+      "event_id",
+      "timestamp",
+      "mid_price_units",
+      "available_fill_bps"
+    ],
+    "actual_file_byte_hash_required": true,
+    "single_open_required": true,
+    "canonical_fixture_hash_excludes": [
+      "canonical_fixture_hash"
+    ],
+    "persisted_result_reconstruction_required": true,
+    "reconstruction_source_file_required": false,
+    "reconstruction_uses_exact_loader_mapping_validation": true,
+    "dataset_content_hash_is_canonical_fixture_byte_sha256": true
+  },
+  "persisted_identity_verification": {
+    "request_core_independently_reconstructed": true,
+    "reservation_request_hash_independently_matched": true,
+    "dataset_resolution_core_independently_reconstructed": true,
+    "dataset_resolution_hash_matches_admitted_decision": true,
+    "metadata_sha256_is_upstream_catalog_record_identity": true,
+    "accounting_metrics_recalculated": false
+  },
+  "component_identities": {
+    "code_identity": "DELTAGRID_MISSION95_CANONICAL_RESULT_ENGINE_V1",
+    "simulator_identity": "DELTAGRID_SYNTHETIC_LONG_OR_FLAT_SIMULATOR_V1",
+    "execution_model_identity": "DELTAGRID_AVAILABLE_FILL_TARGET_DELTA_EXECUTION_MODEL_V1",
+    "cost_model_identity": "DELTAGRID_INTEGER_FEE_SLIPPAGE_COST_MODEL_V1",
+    "risk_model_identity": "DELTAGRID_INTEGER_DRAWDOWN_EXPOSURE_CONCENTRATION_RISK_MODEL_V1"
+  },
+  "timing_diagnostics": {
+    "source": "CANONICAL_FIXTURE_EVENT_TIMESTAMPS",
+    "fields": [
+      "event_count",
+      "interval_count",
+      "data_start_at",
+      "data_end_at",
+      "duration_microseconds",
+      "minimum_interval_microseconds",
+      "maximum_interval_microseconds",
+      "nonpositive_interval_count"
+    ],
+    "integer_microsecond_arithmetic": true,
+    "wall_clock_used": false,
+    "floating_point_used": false,
+    "local_timezone_conversion_used": false
+  },
+  "result_bundle_v1": {
+    "top_level_fields": [
+      "schema_version",
+      "result_bundle_id",
+      "result_bundle_version",
+      "mission_contract",
+      "admission",
+      "engine",
+      "dataset",
+      "control",
+      "result",
+      "execution",
+      "metrics",
+      "protected_access_counts",
+      "artifacts",
+      "warnings",
+      "verification",
+      "mission93_gap_05_field_map",
+      "canonical_result_hash"
+    ],
+    "canonical_result_hash_excludes": [
+      "canonical_result_hash"
+    ],
+    "derived_artifact_paths": [
+      "<result_root>/<trial_id>/event-ledger.json",
+      "<result_root>/<trial_id>/result.json"
+    ],
+    "required_warnings": [
+      "SYNTHETIC_ONLY_NON_ALPHA_CONTROL",
+      "NO_PROFITABILITY_INFERENCE",
+      "NO_RESEARCH_TRADING_OR_CAPITAL_AUTHORITY"
+    ],
+    "completion_requires_independent_verification": true
+  },
+  "result_bundle_field_inventories": {
+    "admission": [
+      "request_id",
+      "request_hash",
+      "request_created_at",
+      "decision_id",
+      "decision_hash",
+      "decision_token",
+      "reason_token",
+      "trial_id",
+      "budget_id",
+      "budget_hash",
+      "declared_trial_number",
+      "reservation_reserved_at",
+      "initiated_by",
+      "experiment_family",
+      "total_trial_budget",
+      "repository_clean",
+      "dataset_resolution_hash",
+      "validated_control_hash"
+    ],
+    "engine": [
+      "engine_id",
+      "engine_version",
+      "kernel_id",
+      "kernel_version",
+      "implementation_repository_commit",
+      "permit_scope",
+      "permit_hash",
+      "code_identity",
+      "simulator_identity",
+      "execution_model_identity",
+      "cost_model_identity",
+      "risk_model_identity"
+    ],
+    "dataset": [
+      "dataset_id",
+      "dataset_content_hash",
+      "artifact_id",
+      "artifact_path",
+      "metadata_hash",
+      "resolution_hash",
+      "fixture_id",
+      "fixture_hash",
+      "data_class",
+      "split_identity",
+      "instrument_id",
+      "currency_unit",
+      "initial_cash_units",
+      "trade_quantity_units",
+      "fee_bps",
+      "slippage_bps",
+      "provenance_reference",
+      "resolution_authorization_stage",
+      "resolution_reason_token"
+    ],
+    "result": [
+      "status_token",
+      "reason_token",
+      "human_explanation",
+      "recorded_at",
+      "data_start_at",
+      "data_end_at",
+      "failure_stop_or_rejection_reason"
+    ],
+    "execution": [
+      "event_count",
+      "targets_hash",
+      "final_state",
+      "timing_diagnostics"
+    ]
+  },
+  "result_status": {
+    "status_token": "RESULT_VERIFIED",
+    "reason_token": "SYNTHETIC_CONTROL_RESULT_VERIFIED",
+    "failure_stop_or_rejection_reason": null,
+    "recorded_at_source": "ADMITTED_REQUEST_CREATED_AT",
+    "authoritative_fact": "CALCULATION_AND_ARTIFACTS_VERIFIED",
+    "trial_completion_claim": false
+  },
+  "trial_result_link": {
+    "fields": [
+      "trial_id",
+      "result_bundle_id",
+      "result_bundle_hash",
+      "result_bundle_path",
+      "linked_at",
+      "canonical_result_link_hash"
+    ],
+    "transaction": "BEGIN IMMEDIATE",
+    "required_prior_status": "ADMITTED",
+    "completion_status": "COMPLETED",
+    "completion_reason": "SYNTHETIC_CONTROL_COMPLETED",
+    "result_bound_finalization_is_internal": true,
+    "generic_mission_94_admitted_to_completed_compatibility": true,
+    "generic_completed_without_verified_link_is_loadable_mission_95_result": false,
+    "immutable": true,
+    "identical_replay_idempotent": true,
+    "conflicting_replay_rejected": true
+  },
+  "mission93_gap_05_field_map": [
+    {
+      "mission93_field": "schema_version",
+      "mission95_paths": ["$.schema_version"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "result_bundle_id",
+      "mission95_paths": ["$.result_bundle_id"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "manifest_id",
+      "mission95_paths": ["$.admission.request_id"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "manifest_hash_sha256",
+      "mission95_paths": ["$.admission.request_hash"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "code_identity",
+      "mission95_paths": ["$.engine.code_identity"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "repository_commit",
+      "mission95_paths": ["$.engine.implementation_repository_commit"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "dataset_ids",
+      "mission95_paths": ["$.dataset.dataset_id"],
+      "cardinality": "SINGLETON_LIST",
+      "transformation": "SINGLETON_PROJECTION"
+    },
+    {
+      "mission93_field": "dataset_hashes",
+      "mission95_paths": ["$.dataset.dataset_content_hash"],
+      "cardinality": "SINGLETON_LIST",
+      "transformation": "SINGLETON_PROJECTION"
+    },
+    {
+      "mission93_field": "simulator_identity",
+      "mission95_paths": ["$.engine.simulator_identity"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "cost_model_identity",
+      "mission95_paths": ["$.engine.cost_model_identity"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "execution_model_identity",
+      "mission95_paths": ["$.engine.execution_model_identity"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "risk_model_identity",
+      "mission95_paths": ["$.engine.risk_model_identity"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "start_timestamp",
+      "mission95_paths": ["$.result.data_start_at"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "end_timestamp",
+      "mission95_paths": ["$.result.data_end_at"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "status_token",
+      "mission95_paths": ["$.result.status_token"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "reason_token",
+      "mission95_paths": ["$.result.reason_token"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "failure_stop_or_rejection_reason",
+      "mission95_paths": ["$.result.failure_stop_or_rejection_reason"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "human_explanation",
+      "mission95_paths": ["$.result.human_explanation"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "gross_result",
+      "mission95_paths": ["$.metrics.trial.gross_result_units"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "net_result",
+      "mission95_paths": ["$.metrics.trial.net_result_units"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "benchmark",
+      "mission95_paths": ["$.metrics.benchmark"],
+      "cardinality": "OBJECT",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "costs_by_component",
+      "mission95_paths": [
+        "$.metrics.trial.fee_cost_units",
+        "$.metrics.trial.slippage_cost_units",
+        "$.metrics.trial.funding_cost_units",
+        "$.metrics.trial.borrowing_cost_units",
+        "$.metrics.trial.impact_cost_units",
+        "$.metrics.trial.latency_cost_units"
+      ],
+      "cardinality": "OBJECT",
+      "transformation": "FIELD_GROUP"
+    },
+    {
+      "mission93_field": "maximum_drawdown",
+      "mission95_paths": [
+        "$.metrics.trial.maximum_drawdown_units",
+        "$.metrics.trial.maximum_drawdown_bps"
+      ],
+      "cardinality": "OBJECT",
+      "transformation": "FIELD_GROUP"
+    },
+    {
+      "mission93_field": "exposure",
+      "mission95_paths": [
+        "$.metrics.trial.exposure_position_units_sum",
+        "$.metrics.trial.exposure_event_count",
+        "$.metrics.trial.exposure_bps"
+      ],
+      "cardinality": "OBJECT",
+      "transformation": "FIELD_GROUP"
+    },
+    {
+      "mission93_field": "turnover",
+      "mission95_paths": ["$.metrics.trial.turnover_units"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "trade_count",
+      "mission95_paths": ["$.metrics.trial.trade_count"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "concentration",
+      "mission95_paths": ["$.metrics.trial.concentration_bps"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "timing_diagnostics",
+      "mission95_paths": ["$.execution.timing_diagnostics"],
+      "cardinality": "OBJECT",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "protected_access_counts",
+      "mission95_paths": ["$.protected_access_counts"],
+      "cardinality": "OBJECT",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "artifact_paths",
+      "mission95_paths": ["$.artifacts[].relative_path"],
+      "cardinality": "ARRAY",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "warnings",
+      "mission95_paths": ["$.warnings"],
+      "cardinality": "ARRAY",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "verification_results",
+      "mission95_paths": ["$.verification"],
+      "cardinality": "OBJECT",
+      "transformation": "DIRECT"
+    },
+    {
+      "mission93_field": "canonical_result_hash_sha256",
+      "mission95_paths": ["$.canonical_result_hash"],
+      "cardinality": "SCALAR",
+      "transformation": "DIRECT"
+    }
+  ],
+  "orphan_artifacts": {
+    "unlinked_result_is_recoverable": true,
+    "unlinked_result_is_authoritative_completed_result": false,
+    "authority_requires_verified_link_and_matching_completed_event": true
+  },
+  "token_explanations": {
+    "RESULT_VERIFIED": "The canonical result bundle and its declared artifacts were verified.",
+    "SYNTHETIC_CONTROL_RESULT_VERIFIED": "The synthetic control calculation and canonical artifacts were verified.",
+    "TRIAL_TERMINALIZATION_FAILED": "The securely bound trial failure could not be persisted."
+  },
+  "reason_tokens": [
+    "ADMISSION_DECISION_NOT_ADMITTED",
+    "ADMISSION_DECISION_HASH_MISMATCH",
+    "ADMISSION_IDENTITY_MISMATCH",
+    "TRIAL_STATE_NOT_ADMITTED",
+    "TRIAL_RESERVATION_MISMATCH",
+    "SYNTHETIC_FIXTURE_PATH_UNSAFE",
+    "SYNTHETIC_FIXTURE_MISSING",
+    "SYNTHETIC_FIXTURE_HASH_MISMATCH",
+    "SYNTHETIC_FIXTURE_SCHEMA_INVALID",
+    "CONTROL_EXECUTION_FAILED",
+    "RESULT_PATH_UNSAFE",
+    "RESULT_WRITE_FAILED",
+    "RESULT_SCHEMA_INVALID",
+    "RESULT_HASH_MISMATCH",
+    "RESULT_ARTIFACT_MISMATCH",
+    "SYNTHETIC_CONTROL_COMPLETED",
+    "RESULT_VERIFIED",
+    "SYNTHETIC_CONTROL_RESULT_VERIFIED",
+    "TRIAL_TERMINALIZATION_FAILED",
+    "IMPLEMENTATION_REPOSITORY_COMMIT_INVALID",
+    "SQLITE_CONTENTION",
+    "INTERNAL_INTEGRITY_FAILURE"
+  ]
+}

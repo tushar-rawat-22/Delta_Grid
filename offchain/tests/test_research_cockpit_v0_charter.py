@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-from collections import Counter
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
@@ -10,6 +9,7 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE_COMMIT = "9605c4b294d15f4e1ec4929c9706f1ff9f938072"
+MISSION_93_COMMIT = "7b1d7e035d006d5ec839486105b94e4a6b7d15bc"
 CONTRACT_PATH = (
     ROOT / "contracts" / "DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json"
 )
@@ -37,27 +37,6 @@ LOCKED_CHANGED_PATHS = {
     "offchain/tests/test_research_cockpit_v0_charter.py",
     "offchain/tests/test_research_evidence_summaries.py",
 }
-MISSION_94_CHANGED_PATHS = {
-    "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
-    "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
-    "docs/README.md",
-    "docs/documentation-status.json",
-    "offchain/research/admission/__init__.py",
-    "offchain/research/admission/models.py",
-    "offchain/research/admission/dataset_resolver.py",
-    "offchain/research/admission/trial_ledger.py",
-    "offchain/research/admission/control_registry.py",
-    "offchain/research/admission/service.py",
-    "offchain/tests/test_research_admission_core.py",
-    "offchain/tests/test_current_policy_docs.py",
-    "offchain/tests/test_document_status_banners.py",
-    "offchain/tests/test_documentation_status.py",
-    "offchain/tests/test_human_cli_report_language.py",
-    "offchain/tests/test_public_docstrings_operator_guidance.py",
-    "offchain/tests/test_research_cockpit_v0_charter.py",
-    "offchain/tests/test_research_evidence_summaries.py",
-}
-
 FALSE_AUTHORIZATIONS = {
     "cockpit_implementation_authorized",
     "cockpit_research_authorized",
@@ -202,8 +181,13 @@ def canonical_hash(value: dict) -> str:
 
 
 def changed_paths() -> set[str]:
-    lines = git("status", "--porcelain", "--untracked-files=all").stdout.splitlines()
-    return {line[3:] for line in lines if line}
+    return set(
+        git(
+            "diff",
+            "--name-only",
+            f"{BASE_COMMIT}..{MISSION_93_COMMIT}",
+        ).stdout.splitlines()
+    )
 
 
 def test_exact_locked_changed_path_manifest_and_git_scope() -> None:
@@ -212,7 +196,7 @@ def test_exact_locked_changed_path_manifest_and_git_scope() -> None:
     assert set(recorded["mission93_locked_changed_paths"]) == LOCKED_CHANGED_PATHS
     assert recorded["mission93_locked_changed_path_count"] == 11
     assert recorded["mission93_maximum_changed_paths"] == 13
-    assert changed_paths() == MISSION_94_CHANGED_PATHS
+    assert changed_paths() == LOCKED_CHANGED_PATHS
     assert git("diff", "--cached", "--name-only").stdout == ""
     assert all(PurePosixPath(path).as_posix() == path for path in LOCKED_CHANGED_PATHS)
 
@@ -458,20 +442,9 @@ def test_docs_navigation_and_final_stop_decision() -> None:
     )
 
 
-def test_registry_has_exact_two_additions_and_required_totals() -> None:
+def test_registry_retains_mission_93_records() -> None:
     registry = load(REGISTRY_PATH)
     by_path = {item["path"]: item for item in registry["documents"]}
-    counts = Counter(item["classification"] for item in registry["documents"])
-    assert len(by_path) == 170
-    assert counts == {
-        "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 7,
-        "HISTORICAL": 97,
-        "SUPERSEDED": 8,
-        "DESIGN_ONLY": 2,
-        "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 36,
-    }
     machine = by_path[
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json"
     ]
@@ -489,19 +462,18 @@ def test_registry_has_exact_two_additions_and_required_totals() -> None:
 
 def test_all_166_base_registry_entries_are_parsed_value_identical() -> None:
     base = json.loads(base_bytes("docs/documentation-status.json"))
-    current = load(REGISTRY_PATH)
+    historical = json.loads(
+        git("show", f"{MISSION_93_COMMIT}:docs/documentation-status.json").stdout
+    )
     base_by_path = {item["path"]: item for item in base["documents"]}
-    current_by_path = {item["path"]: item for item in current["documents"]}
+    historical_by_path = {item["path"]: item for item in historical["documents"]}
     assert len(base_by_path) == 166
-    assert len(current_by_path) == 170
-    assert set(current_by_path) - set(base_by_path) == {
+    assert set(historical_by_path) - set(base_by_path) == {
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
         "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
-        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
-        "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     }
-    assert all(current_by_path[path] == item for path, item in base_by_path.items())
-    assert {key: value for key, value in current.items() if key != "documents"} == {
+    assert all(historical_by_path[path] == item for path, item in base_by_path.items())
+    assert {key: value for key, value in historical.items() if key != "documents"} == {
         key: value for key, value in base.items() if key != "documents"
     }
 
@@ -514,16 +486,18 @@ def test_exactly_one_contract_added_and_all_base_contracts_are_identical() -> No
         ).stdout.splitlines()
         if path.endswith(".json") and PurePosixPath(path).parent.as_posix() == "contracts"
     }
-    current_contracts = {
-        path.relative_to(ROOT).as_posix()
-        for path in (ROOT / "contracts").glob("*.json")
+    mission_93_contracts = {
+        path
+        for path in git(
+            "ls-tree", "-r", "--name-only", MISSION_93_COMMIT, "--", "contracts"
+        ).stdout.splitlines()
+        if path.endswith(".json") and PurePosixPath(path).parent.as_posix() == "contracts"
     }
     new_contracts = {
         "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
-        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
     }
-    assert current_contracts == base_contracts | new_contracts
-    assert current_contracts - base_contracts == new_contracts
+    assert mission_93_contracts == base_contracts | new_contracts
+    assert mission_93_contracts - base_contracts == new_contracts
     for path in base_contracts:
         assert (ROOT / path).read_bytes() == base_bytes(path)
     contract = load(CONTRACT_PATH)

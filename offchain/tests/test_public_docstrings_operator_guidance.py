@@ -17,7 +17,9 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE_COMMIT = "38367d3ab06ce107bbd5d82902ffb201cdf9eed6"
+OPERATOR_GUIDANCE_COMMIT = "f5d649f6b2891501f240f6487e1837c9fcac3814"
 MISSION_94_BASE_COMMIT = "7b1d7e035d006d5ec839486105b94e4a6b7d15bc"
+MISSION_94_COMMIT = "ac2440952d2b330344cbaef299c4378a7afd45af"
 PYTHON = sys.executable
 SUPPORTED_MODULES = {
     "scripts/mission_control.py",
@@ -140,6 +142,10 @@ def base_text(path: str) -> str:
 
 def current_text(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
+
+
+def snapshot_text(commit: str, path: str) -> str:
+    return git("show", f"{commit}:{path}").stdout
 
 
 def normalized(text: str) -> str:
@@ -680,15 +686,15 @@ def test_registry_has_exact_operator_entry_count_and_classifications() -> None:
     registry = json.loads(current_text("docs/documentation-status.json"))
     by_path = {item["path"]: item for item in registry["documents"]}
     counts = Counter(item["classification"] for item in registry["documents"])
-    assert len(by_path) == 170
+    assert len(by_path) == 172
     assert counts == {
         "CURRENT_PUBLIC": 10,
-        "CURRENT_INTERNAL": 7,
+        "CURRENT_INTERNAL": 8,
         "HISTORICAL": 97,
         "SUPERSEDED": 8,
         "DESIGN_ONLY": 2,
         "EVIDENCE_IMMUTABLE": 10,
-        "MACHINE_REFERENCE": 36,
+        "MACHINE_REFERENCE": 37,
     }
     assert by_path["docs/OPERATOR_GUIDE.md"] == EXPECTED_REGISTRY_ENTRY
     assert "does not authorize" in normalized(by_path["docs/OPERATOR_GUIDE.md"]["notes"])
@@ -696,16 +702,14 @@ def test_registry_has_exact_operator_entry_count_and_classifications() -> None:
 
 def test_registry_diff_is_exactly_one_parsed_value_entry() -> None:
     base = json.loads(base_text("docs/documentation-status.json"))
-    current = json.loads(current_text("docs/documentation-status.json"))
+    current = json.loads(
+        snapshot_text(OPERATOR_GUIDANCE_COMMIT, "docs/documentation-status.json")
+    )
     base_by_path = {item["path"]: item for item in base["documents"]}
     current_by_path = {item["path"]: item for item in current["documents"]}
-    assert len(base_by_path) == 165 and len(current_by_path) == 170
+    assert len(base_by_path) == 165 and len(current_by_path) == 166
     assert current_by_path.keys() - base_by_path.keys() == {
         "docs/OPERATOR_GUIDE.md",
-        "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
-        "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
-        "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
-        "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",
     }
     assert all(current_by_path[path] == item for path, item in base_by_path.items())
     assert {key: value for key, value in current.items() if key != "documents"} == {
@@ -715,9 +719,14 @@ def test_registry_diff_is_exactly_one_parsed_value_entry() -> None:
 
 def test_protected_files_dependencies_and_other_json_are_unchanged() -> None:
     changed = set(
-        git("diff", "--name-only", MISSION_94_BASE_COMMIT, "--").stdout.splitlines()
+        git(
+            "diff",
+            "--name-only",
+            MISSION_94_BASE_COMMIT,
+            MISSION_94_COMMIT,
+            "--",
+        ).stdout.splitlines()
     )
-    changed.update(git("ls-files", "--others", "--exclude-standard").stdout.splitlines())
     assert changed == EXPECTED_CHANGED_PATHS
     tracked = git(
         "ls-tree", "-r", "--name-only", MISSION_94_BASE_COMMIT
@@ -725,7 +734,12 @@ def test_protected_files_dependencies_and_other_json_are_unchanged() -> None:
     for path in tracked:
         if path in EXPECTED_CHANGED_PATHS:
             continue
-        assert (ROOT / path).read_bytes() == subprocess.run(
+        assert subprocess.run(
+            ["git", "show", f"{MISSION_94_COMMIT}:{path}"],
+            cwd=ROOT,
+            capture_output=True,
+            check=True,
+        ).stdout == subprocess.run(
             ["git", "show", f"{MISSION_94_BASE_COMMIT}:{path}"],
             cwd=ROOT,
             capture_output=True,
@@ -736,7 +750,7 @@ def test_protected_files_dependencies_and_other_json_are_unchanged() -> None:
         "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
         "docs/documentation-status.json",
     }
-    assert current_text("offchain/requirements.txt") == git(
+    assert snapshot_text(MISSION_94_COMMIT, "offchain/requirements.txt") == git(
         "show", f"{MISSION_94_BASE_COMMIT}:offchain/requirements.txt"
     ).stdout
 

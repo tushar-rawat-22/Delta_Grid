@@ -4,12 +4,15 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
+import re
 import sqlite3
 from typing import Iterator
 
 from .models import (
     AdmissionError,
     BudgetDefinition,
+    TrialEvent,
+    TrialResultLink,
     TrialReservation,
     canonical_hash,
 )
@@ -41,6 +44,9 @@ TRANSITIONS = {
     "COMPLETED": frozenset(),
     "SUPERSEDED": frozenset(),
 }
+TRIAL_ID_RE = re.compile(r"trial-[0-9a-f]{32}\Z")
+RESULT_BUNDLE_ID_RE = re.compile(r"result-bundle-[0-9a-f]{32}\Z")
+SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
 
 
 SCHEMA_SQL = """
@@ -85,6 +91,14 @@ CREATE TABLE IF NOT EXISTS trial_events (
     canonical_event_hash TEXT NOT NULL UNIQUE,
     UNIQUE (trial_id, sequence_number)
 );
+CREATE TABLE IF NOT EXISTS trial_result_links (
+    trial_id TEXT PRIMARY KEY REFERENCES trial_reservations(trial_id),
+    result_bundle_id TEXT NOT NULL UNIQUE,
+    result_bundle_hash TEXT NOT NULL UNIQUE,
+    result_bundle_path TEXT NOT NULL UNIQUE,
+    linked_at TEXT NOT NULL,
+    canonical_result_link_hash TEXT NOT NULL UNIQUE
+);
 CREATE TRIGGER IF NOT EXISTS trial_budgets_no_update
 BEFORE UPDATE ON trial_budgets BEGIN
     SELECT RAISE(ABORT, 'IMMUTABLE_TRIAL_BUDGET');
@@ -122,6 +136,14 @@ END;
 CREATE TRIGGER IF NOT EXISTS trial_events_no_delete
 BEFORE DELETE ON trial_events BEGIN
     SELECT RAISE(ABORT, 'APPEND_ONLY_TRIAL_EVENT');
+END;
+CREATE TRIGGER IF NOT EXISTS trial_result_links_no_update
+BEFORE UPDATE ON trial_result_links BEGIN
+    SELECT RAISE(ABORT, 'IMMUTABLE_TRIAL_RESULT_LINK');
+END;
+CREATE TRIGGER IF NOT EXISTS trial_result_links_no_delete
+BEFORE DELETE ON trial_result_links BEGIN
+    SELECT RAISE(ABORT, 'IMMUTABLE_TRIAL_RESULT_LINK');
 END;
 """
 
@@ -419,6 +441,22 @@ class TrialLedger:
             ),
         )
 
+    @staticmethod
+    def _verify_event_row(row: sqlite3.Row) -> None:
+        core = {
+            "trial_id": row["trial_id"],
+            "sequence_number": row["sequence_number"],
+            "status_token": row["status_token"],
+            "reason_token": row["reason_token"],
+            "event_timestamp": row["event_timestamp"],
+        }
+        expected_hash = canonical_hash(core)
+        if (
+            expected_hash != row["canonical_event_hash"]
+            or row["event_id"] != f"event-{expected_hash[:32]}"
+        ):
+            raise AdmissionError("INTERNAL_INTEGRITY_FAILURE")
+
     def append_event(
         self,
         *,
@@ -436,13 +474,16 @@ class TrialLedger:
             try:
                 latest = connection.execute(
                     """
-                    SELECT sequence_number, status_token FROM trial_events
+                    SELECT event_id, trial_id, sequence_number, status_token,
+                           reason_token, event_timestamp, canonical_event_hash
+                    FROM trial_events
                     WHERE trial_id = ? ORDER BY sequence_number DESC LIMIT 1
                     """,
                     (trial_id,),
                 ).fetchone()
                 if latest is None:
                     raise AdmissionError("INTERNAL_INTEGRITY_FAILURE")
+                self._verify_event_row(latest)
                 if status_token not in TRANSITIONS[latest["status_token"]]:
                     raise AdmissionError("INTERNAL_INTEGRITY_FAILURE")
                 self._insert_event(
@@ -457,6 +498,136 @@ class TrialLedger:
             except AdmissionError:
                 connection.rollback()
                 raise
+            except sqlite3.DatabaseError as error:
+                connection.rollback()
+                raise AdmissionError("INTERNAL_INTEGRITY_FAILURE") from error
+
+    def get_reservation(self, trial_id: str) -> TrialReservation:
+        """Return an immutable reservation by trial identity."""
+
+        with self._connection() as connection:
+            row = connection.execute(
+                "SELECT * FROM trial_reservations WHERE trial_id = ?", (trial_id,)
+            ).fetchone()
+        if row is None:
+            raise AdmissionError("TRIAL_RESERVATION_MISMATCH")
+        return TrialReservation(**dict(row))
+
+    def latest_status(self, trial_id: str) -> str:
+        """Return the latest append-only status for a reserved trial."""
+
+        return self.latest_event(trial_id).status_token
+
+    def latest_event(self, trial_id: str) -> TrialEvent:
+        """Return the latest event after verifying its canonical hash."""
+
+        with self._connection() as connection:
+            row = connection.execute(
+                """
+                SELECT event_id, trial_id, sequence_number, status_token,
+                       reason_token, event_timestamp, canonical_event_hash
+                FROM trial_events
+                WHERE trial_id = ? ORDER BY sequence_number DESC LIMIT 1
+                """,
+                (trial_id,),
+            ).fetchone()
+        if row is None:
+            raise AdmissionError("TRIAL_STATE_NOT_ADMITTED")
+        self._verify_event_row(row)
+        return TrialEvent(**dict(row))
+
+    @staticmethod
+    def _result_link_from_row(row: sqlite3.Row) -> TrialResultLink:
+        return TrialResultLink.from_mapping(dict(row))
+
+    def get_result_link(self, trial_id: str) -> TrialResultLink | None:
+        """Return a trial's immutable result link when one exists."""
+
+        with self._connection() as connection:
+            row = connection.execute(
+                "SELECT * FROM trial_result_links WHERE trial_id = ?", (trial_id,)
+            ).fetchone()
+        return None if row is None else self._result_link_from_row(row)
+
+    def _complete_with_verified_result(
+        self,
+        link: TrialResultLink,
+    ) -> TrialResultLink:
+        """Atomically link a result and append the sole completion event."""
+
+        if not isinstance(link, TrialResultLink):
+            raise AdmissionError("RESULT_ARTIFACT_MISMATCH")
+        link = TrialResultLink.from_mapping(link.as_dict())
+        if (
+            TRIAL_ID_RE.fullmatch(link.trial_id) is None
+            or RESULT_BUNDLE_ID_RE.fullmatch(link.result_bundle_id) is None
+            or SHA256_RE.fullmatch(link.result_bundle_hash) is None
+            or link.result_bundle_path != f"{link.trial_id}/result.json"
+        ):
+            raise AdmissionError("RESULT_ARTIFACT_MISMATCH")
+        with self._connection() as connection:
+            try:
+                connection.execute("BEGIN IMMEDIATE")
+                existing_row = connection.execute(
+                    "SELECT * FROM trial_result_links WHERE trial_id = ?",
+                    (link.trial_id,),
+                ).fetchone()
+                latest = connection.execute(
+                    """
+                    SELECT event_id, trial_id, sequence_number, status_token,
+                           reason_token, event_timestamp, canonical_event_hash
+                    FROM trial_events
+                    WHERE trial_id = ? ORDER BY sequence_number DESC LIMIT 1
+                    """,
+                    (link.trial_id,),
+                ).fetchone()
+                if latest is not None:
+                    self._verify_event_row(latest)
+                if existing_row is not None:
+                    existing = self._result_link_from_row(existing_row)
+                    if existing != link or latest is None or latest["status_token"] != "COMPLETED":
+                        raise AdmissionError("RESULT_ARTIFACT_MISMATCH")
+                    connection.commit()
+                    return existing
+                if latest is None or latest["status_token"] != "ADMITTED":
+                    raise AdmissionError("TRIAL_STATE_NOT_ADMITTED")
+                connection.execute(
+                    """
+                    INSERT INTO trial_result_links (
+                        trial_id, result_bundle_id, result_bundle_hash,
+                        result_bundle_path, linked_at, canonical_result_link_hash
+                    ) VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        link.trial_id,
+                        link.result_bundle_id,
+                        link.result_bundle_hash,
+                        link.result_bundle_path,
+                        link.linked_at,
+                        link.canonical_result_link_hash,
+                    ),
+                )
+                self._insert_event(
+                    connection,
+                    trial_id=link.trial_id,
+                    sequence_number=latest["sequence_number"] + 1,
+                    status_token="COMPLETED",
+                    reason_token="SYNTHETIC_CONTROL_COMPLETED",
+                    event_timestamp=link.linked_at,
+                )
+                connection.commit()
+                return link
+            except AdmissionError:
+                connection.rollback()
+                raise
+            except sqlite3.OperationalError as error:
+                connection.rollback()
+                if "locked" in str(error).casefold() or "busy" in str(error).casefold():
+                    raise AdmissionError("SQLITE_CONTENTION") from error
+                raise AdmissionError("INTERNAL_INTEGRITY_FAILURE") from error
+            except sqlite3.IntegrityError as error:
+                connection.rollback()
+                raise AdmissionError("RESULT_ARTIFACT_MISMATCH") from error
             except sqlite3.DatabaseError as error:
                 connection.rollback()
                 raise AdmissionError("INTERNAL_INTEGRITY_FAILURE") from error

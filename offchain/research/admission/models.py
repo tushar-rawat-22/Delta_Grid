@@ -31,6 +31,32 @@ REQUEST_FIELDS = frozenset(
         "canonical_request_hash",
     }
 )
+DECISION_FIELDS = frozenset(
+    {
+        "schema_version",
+        "decision_id",
+        "request_id",
+        "trial_id",
+        "decision_token",
+        "reason_token",
+        "dataset_resolution_hash",
+        "validated_control_hash",
+        "budget_id",
+        "declared_trial_number",
+        "created_at",
+        "canonical_decision_hash",
+    }
+)
+RESULT_LINK_FIELDS = frozenset(
+    {
+        "trial_id",
+        "result_bundle_id",
+        "result_bundle_hash",
+        "result_bundle_path",
+        "linked_at",
+        "canonical_result_link_hash",
+    }
+)
 
 
 def canonical_json(value: Any) -> str:
@@ -266,6 +292,73 @@ class TrialReservation:
 
 
 @dataclass(frozen=True)
+class TrialResultLink:
+    """An immutable link from one admitted trial to its canonical result."""
+
+    trial_id: str
+    result_bundle_id: str
+    result_bundle_hash: str
+    result_bundle_path: str
+    linked_at: str
+    canonical_result_link_hash: str
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> "TrialResultLink":
+        """Parse an exact result link and verify its canonical identity."""
+
+        if not isinstance(value, Mapping) or set(value) != RESULT_LINK_FIELDS:
+            raise AdmissionError("RESULT_ARTIFACT_MISMATCH")
+        if any(
+            not isinstance(value[field], str) or not value[field]
+            for field in RESULT_LINK_FIELDS
+        ):
+            raise AdmissionError("RESULT_ARTIFACT_MISMATCH")
+        core = dict(value)
+        supplied_hash = core.pop("canonical_result_link_hash")
+        if canonical_hash(core) != supplied_hash:
+            raise AdmissionError("RESULT_ARTIFACT_MISMATCH")
+        return cls(**dict(value))
+
+    @classmethod
+    def create(
+        cls,
+        *,
+        trial_id: str,
+        result_bundle_id: str,
+        result_bundle_hash: str,
+        result_bundle_path: str,
+        linked_at: str,
+    ) -> "TrialResultLink":
+        core = {
+            "trial_id": trial_id,
+            "result_bundle_id": result_bundle_id,
+            "result_bundle_hash": result_bundle_hash,
+            "result_bundle_path": result_bundle_path,
+            "linked_at": linked_at,
+        }
+        return cls(**core, canonical_result_link_hash=canonical_hash(core))
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class TrialEvent:
+    """One verified append-only trial lifecycle event."""
+
+    event_id: str
+    trial_id: str
+    sequence_number: int
+    status_token: str
+    reason_token: str
+    event_timestamp: str
+    canonical_event_hash: str
+
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class AdmissionDecision:
     """The deterministic terminal output of Mission 94."""
 
@@ -281,6 +374,68 @@ class AdmissionDecision:
     declared_trial_number: int
     created_at: str
     canonical_decision_hash: str
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any]) -> "AdmissionDecision":
+        """Parse exact fields and verify the decision's canonical identity."""
+
+        if not isinstance(value, Mapping) or set(value) != DECISION_FIELDS:
+            raise AdmissionError(
+                "ADMISSION_DECISION_HASH_MISMATCH",
+                "admission decision fields are not exact",
+            )
+        if value["schema_version"] != "1.0":
+            raise AdmissionError(
+                "ADMISSION_DECISION_HASH_MISMATCH",
+                "admission decision schema is unsupported",
+            )
+        required_strings = {
+            "decision_id",
+            "request_id",
+            "decision_token",
+            "reason_token",
+            "budget_id",
+            "created_at",
+            "canonical_decision_hash",
+        }
+        if any(
+            not isinstance(value[field], str) or not value[field]
+            for field in required_strings
+        ):
+            raise AdmissionError(
+                "ADMISSION_DECISION_HASH_MISMATCH",
+                "admission decision strings are invalid",
+            )
+        nullable_strings = {
+            "trial_id",
+            "dataset_resolution_hash",
+            "validated_control_hash",
+        }
+        if any(
+            value[field] is not None
+            and (not isinstance(value[field], str) or not value[field])
+            for field in nullable_strings
+        ):
+            raise AdmissionError(
+                "ADMISSION_DECISION_HASH_MISMATCH",
+                "admission decision nullable strings are invalid",
+            )
+        if (
+            type(value["declared_trial_number"]) is not int
+            or value["declared_trial_number"] < 0
+        ):
+            raise AdmissionError(
+                "ADMISSION_DECISION_HASH_MISMATCH",
+                "admission decision trial number is invalid",
+            )
+        core = dict(value)
+        supplied_hash = core.pop("canonical_decision_hash")
+        if canonical_hash(core) != supplied_hash:
+            raise AdmissionError(
+                "ADMISSION_DECISION_HASH_MISMATCH",
+                "admission decision hash does not match",
+            )
+        return cls(**dict(value))
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
