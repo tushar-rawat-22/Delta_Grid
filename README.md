@@ -1,100 +1,101 @@
 # DeltaGrid
 
-DeltaGrid is a Python-based quantitative research platform I built to test cryptocurrency trading strategies before allowing them anywhere near real capital. It combines market-data validation, event-driven backtesting, realistic execution-cost assumptions, risk controls, statistical testing, and reproducible evidence.
+DeltaGrid is Tushar Rawat's private quantitative research and investment-system
+project. I built it to test cryptocurrency trading ideas under realistic data,
+cost, chronology, and risk constraints—and to preserve negative results instead
+of turning attractive backtests into premature trading claims.
 
 ## Current status
 
-The research infrastructure is complete, but there is **no validated profitable strategy**. This repository **does not authorize live trading or capital deployment**. Infrastructure maturity does not establish alpha.
+**There is no validated profitable strategy. No candidate is selected.**
 
-The final project freeze was published in commit `ce82c5b887a08185b7acceb35480783d02eb0b5d`. None of the tested strategies met the promotion standard, so live trading, paper trading, and capital deployment remain disabled.
+Paper trading and live trading are not authorized. Exchange access, credential
+access, and capital deployment are not authorized. Software tests do not
+establish alpha.
 
-That negative strategy result is not a profitability success. The engineering success is that DeltaGrid rejected weak hypotheses instead of overfitting or deploying them.
+The final project freeze was published at commit
+`ce82c5b887a08185b7acceb35480783d02eb0b5d`. It closed the authorized research
+families without a promotable candidate. Later work added narrow research and
+observation infrastructure, but it did not reopen strategy research or grant
+trading authority.
 
 ## Why I built it
 
-Most trading projects begin with indicators and end with a profitable-looking backtest. I wanted to build the process in the opposite order: define the hypothesis, freeze the rules, verify the data, account for costs, test chronologically, and reject the strategy when the evidence is weak.
+I wanted the process to start with a falsifiable hypothesis rather than an
+indicator: freeze the rules, verify when data became available, model costs,
+test chronologically, and reject the idea when the evidence is weak. DeltaGrid
+separates research, validation, risk, execution, operations, and review so that
+one component cannot promote its own result.
 
-## How DeltaGrid works
+## Research outcome
 
-```text
-Public market data
-        ↓
-Acquisition and certification
-        ↓
-Features and strategy rules
-        ↓
-Event-driven simulation
-        ↓
-Costs and risk
-        ↓
-Statistical evaluation
-        ↓
-Evidence and decision
-```
-
-- **Data acquisition and certification:** Collects public market data with provenance, coverage checks, normalized records, and deterministic identities.
-- **Research contracts:** Freezes the hypothesis, data boundaries, candidate count, costs, and decision gates before results can influence the rules.
-- **Features and strategy implementation:** Builds causally timed features and fixed strategy logic without looking ahead.
-- **Event-driven backtesting:** Simulates signals, entries, exits, stops, cooldowns, and position state in timestamp order.
-- **Execution costs:** Applies normal, conservative, and severe assumptions for fees, spread, slippage, and latency.
-- **Risk controls:** Measures drawdown and concentration while enforcing position, leverage, reserve, stop, and capital boundaries.
-- **Statistical evaluation:** Uses chronological stages, null controls, multiple-testing correction, replication, and robustness checks.
-- **Evidence and decision gates:** Writes versioned evidence and promotes nothing unless every frozen requirement passes.
-
-## What it includes
-
-- Public crypto-data acquisition with provenance records
-- Deterministic dataset certification for BTC, ETH, and SOL research data
-- Event-driven strategy simulation
-- Normal, conservative, and severe execution-cost assumptions
-- Drawdown and concentration analysis
-- Chronological development, validation, and sealed holdout boundaries
-- Null controls and Holm multiple-testing correction
-- Versioned contracts, evidence files, and SHA-256 identities
-- Historical Freqtrade parity infrastructure, without current strategy or trading authorization
-- Automated regression tests
-
-## Research completed
-
-| Research area | Outcome |
+| Research family | Recorded outcome |
 |---|---|
-| Synthetic benchmark pipeline | Infrastructure completed; no real-market validated alpha |
+| Synthetic benchmark work | Built research infrastructure; did not validate real-market alpha |
 | Funding and basis carry | Rejected |
 | Directional strategies | Rejected |
 | Macro-regime hypothesis | Rejected before strategy construction |
 | Trade-flow and lead-lag hypotheses | Rejected in development |
 
-Alpha Search B was rejected on development data without opening validation or holdout; its committed publication evidence records zero scoped validation access and zero scoped holdout access.
+Alpha Search B was rejected on development data. Its publication records zero
+scoped validation access and zero scoped holdout access. The detailed results,
+statistical controls, and evidence links are in the
+[Final Project Report](docs/DELTAGRID_FINAL_PROJECT_REPORT.md).
 
-The detailed timeline, candidate results, statistical controls, and decision evidence are in the [Final Project Report](docs/DELTAGRID_FINAL_PROJECT_REPORT.md).
+The Alpha Search B rejection was published at
+`a31f4da4fc8b52ca2fa6aaad697350d6e9180736`. That commit is the historical
+research base, **not a permanent assertion about every future repository
+HEAD**. No Alpha Search B candidate was authorized for Freqtrade translation.
 
-## Engineering highlights
+## What exists now
 
-- Python-based research engine
-- Deterministic, versioned research contracts
-- Causal feature timing and chronological evaluation
-- Event-driven execution semantics
-- Explicit fees, spread, slippage, latency, and cost stress
-- Sealed validation and holdout boundaries
-- Historical Freqtrade parity infrastructure; lookahead, recursive, and other bias analyses remain future gates
-- 731 passing automated tests in the full suite at the published final freeze
-- Reproducible evidence and checksum manifests
+Historical infrastructure includes public-data acquisition, dataset
+certification, causal features, event-driven simulation, execution-cost and
+risk models, sealed evaluation boundaries, statistical controls, and Freqtrade
+parity work. Its existence is not current permission to collect protected data,
+run a candidate, access an exchange, or trade.
 
-Passing tests verify the implementation and repository invariants; they are not evidence that a strategy is profitable.
+The current backend sequence is deliberately narrower:
 
-## Repository structure
+| Mission | Result |
+|---|---|
+| 93 | Audited and froze the interfaces needed before cockpit work |
+| 94 | Added budgeted admission and immutable trial reservation for permitted synthetic controls |
+| 95 | Added deterministic execution and independently verifiable result bundles |
+| 96A | Added read-only ledger and verified-result projections |
+| 96B | Added a loopback-only, read-only cockpit |
+| 97 | Added one durable observation workflow with leases, fencing, bounded retries, recovery, and immutable manifests |
 
-```text
-contracts/       Research, safety, and freeze contracts
-offchain/        Data, simulation, research, and test code
-docs/            Architecture, decisions, policies, and reports
-docs/evidence/   Tracked research evidence and checksum manifests
-scripts/         Verification and operational utilities
-```
+Mission 97 was published at commit
+`8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153
+passing tests and one third-party `websockets.legacy` deprecation warning. Those
+tests cover software behavior and repository invariants; they do not establish
+alpha.
+
+## Provisional roadmap: Missions 98–107
+
+This is planning direction, not authorization. Each mission would require its
+own reviewed contract before it could use new data, execute research, access an
+exchange, paper trade, live trade, or deploy capital.
+
+| Mission | Planning direction |
+|---|---|
+| 98 | Choose the next permitted research action from fixed evidence, budgets, and policy |
+| 99 | Maintain reproducible, certified, availability-aware market datasets |
+| 100 | Provide a general event-driven research runtime for registered strategies and controls |
+| 101 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
+| 102 | Observe approved candidates on current data without exchange orders |
+| 103 | Add durable paper execution, accounting, and reconciliation |
+| 104 | Govern portfolio allocation, exposure, drawdown, leverage, and kill switches independently |
+| 105 | Isolate exchange connectivity and restricted credentials behind risk checks |
+| 106 | Consider a manually activated, severely limited tiny-capital pilot only after independent approval |
+| 107 | Connect research, validation, observation, deployment, reduction, and retirement under separate controls |
 
 ## Running the tests
 
-The repository does not currently document a verified fresh-clone bootstrap for the complete test environment. For an already configured checkout with the ignored local virtual environment at `offchain/.venv`, run:
+The repository does not currently document a verified fresh-clone bootstrap for
+the complete test environment. For an already configured checkout with the
+ignored local virtual environment at `offchain/.venv`, run:
 
 ```bash
 env -u PYTHONPATH \
@@ -105,70 +106,73 @@ offchain/.venv/bin/python -m pytest \
   -q
 ```
 
-The virtual environment is local and ignored; it is not included in a fresh clone.
-
-## Limitations and safety
-
-- There is no validated profitable strategy, no live orders, no current paper-trading authorization, and no capital deployment.
-- Cost, slippage, latency, and market-impact models contain assumptions and cannot reproduce every live-market condition.
-- Backtests and statistical tests do not guarantee future results.
-- Future research requires a new versioned reopening contract before any data-driven strategy work begins.
-- Test success verifies those properties only; it does not establish alpha.
-- No Alpha Search B candidate was authorized for Freqtrade translation.
-
-The Alpha Search B rejection was published in commit `a31f4da4fc8b52ca2fa6aaad697350d6e9180736`. That commit is the historical research base, **not a permanent assertion about every future repository HEAD**. The later commit `ce82c5b887a08185b7acceb35480783d02eb0b5d` published the final project freeze.
+The virtual environment is local and ignored; it is not included in a fresh
+clone.
 
 ## Documentation
 
-- [Final Project Report](docs/DELTAGRID_FINAL_PROJECT_REPORT.md)
-- [Final Freeze Explanation](docs/DELTAGRID_FINAL_FREEZE.md)
-- [Final Freeze Contract](contracts/DELTAGRID_FINAL_FREEZE_V1.json)
-- [Future Strategy Intake Policy](docs/FUTURE_STRATEGY_INTAKE_POLICY.md)
-- [ML Research Adapter](docs/DELTAGRID_ML_RESEARCH_ADAPTER.md)
-- [Product Reset](docs/DELTAGRID_PRODUCT_RESET.md)
-- [Alpha Search A Rejection](docs/ALPHA_SEARCH_A_REJECTION.md)
-- [Alpha Search B Protocol](docs/ALPHA_SEARCH_B_PROTOCOL.md)
-- [Final Freeze Evidence](docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json)
-
-## Author
-
-Built by Tushar Rawat as an independent quantitative research and software-engineering project.
+- [Documentation home](docs/README.md)
+- [Final freeze](docs/DELTAGRID_FINAL_FREEZE.md)
+- [Current research policy](docs/RESEARCH_POLICY.md)
+- [Current risk policy](docs/RISK_POLICY.md)
+- [Current safety invariants](docs/SAFETY_INVARIANTS.md)
+- [Evidence summaries](docs/research-summaries/README.md)
+- [Operator guide](docs/OPERATOR_GUIDE.md)
+- [Documentation registry](docs/documentation-status.json)
 
 <details>
 <summary>Historical compatibility notes</summary>
 
-These markers are retained for historical documentation verification. They describe earlier repository phases and do not override the current project status above.
+These markers are retained for historical documentation verification. They
+describe earlier repository phases and do not override the current project
+status above.
 
-Committed pre-freeze evidence records 37 passing Alpha Search B/reset focused tests and 715 passing complete off-chain tests, with one third-party `websockets.legacy` deprecation warning. These are historical pre-freeze baselines, not the full-suite total at the published final freeze.
+Committed pre-freeze evidence records 37 passing Alpha Search B/reset focused
+tests and 715 passing complete off-chain tests, with one third-party
+`websockets.legacy` deprecation warning. These are historical pre-freeze
+baselines, not the full-suite total at the published final freeze.
 
 <!-- MISSION-84-CLOSURE:START -->
 ### Mission 84 Closure
 
-Mission 84 closed its deterministic synthetic-fixture pipeline with zero real-data validated alpha candidates. The historical fixture-screening records remain preserved but authorize no model training, strategy promotion, live signal, order, capital, or profitability claim. There is no Mission 84.9.
+Mission 84 closed its deterministic synthetic-fixture pipeline with zero
+real-data validated alpha candidates. The historical fixture-screening records
+remain preserved but authorize no model training, strategy promotion, live
+signal, order, capital, or profitability claim. There is no Mission 84.9.
 <!-- MISSION-84-CLOSURE:END -->
 
 <!-- MISSION-85-CHARTER:START -->
 ### Mission 85 Crypto Funding-Carry Research Charter
 
-Mission 85 locked a falsification-first funding-carry charter before real-market collection. It did not prove profitability and prohibited ML rescue, live trading, orders, and capital. Its next authorized data-only phase was Mission 86 Real-Market Data Foundation.
+Mission 85 locked a falsification-first funding-carry charter before real-market
+collection. It did not prove profitability and prohibited ML rescue, live
+trading, orders, and capital. Its next authorized data-only phase was Mission 86
+Real-Market Data Foundation.
 <!-- MISSION-85-CHARTER:END -->
 
 <!-- MISSION-86-DATA-FOUNDATION:START -->
 ### Mission 86 Real-Market Data Foundation
 
-Mission 86 implemented public-data acquisition, normalization, provenance, and deterministic manifests. It performed no strategy backtest or profitability analysis. Its output remained `UNCERTIFIED_PENDING_MISSION87` until Mission 87 Dataset Certification and Quality Gate.
+Mission 86 implemented public-data acquisition, normalization, provenance, and
+deterministic manifests. It performed no strategy backtest or profitability
+analysis. Its output remained `UNCERTIFIED_PENDING_MISSION87` until Mission 87
+Dataset Certification and Quality Gate.
 <!-- MISSION-86-DATA-FOUNDATION:END -->
 
 <!-- MISSION-87-CERTIFICATION:START -->
 ### Mission 87 Dataset Certification and Quality Gate
 
-Mission 87 certified structural data quality and lineage. It performed no strategy backtest or holdout performance evaluation. The next historical phase was Mission 88 Execution and Cost Reality Model.
+Mission 87 certified structural data quality and lineage. It performed no
+strategy backtest or holdout performance evaluation. The next historical phase
+was Mission 88 Execution and Cost Reality Model.
 <!-- MISSION-87-CERTIFICATION:END -->
 
 <!-- MISSION-88-COST-MODEL:START -->
 ### Mission 88 Execution and Cost Reality Model
 
-Mission 88 completed an assumption-bounded cost model with no strategy backtest and no order-book precision claim. Its next historical phase was Mission 89 Baseline Strategy Falsification.
+Mission 88 completed an assumption-bounded cost model with no strategy backtest
+and no order-book precision claim. Its next historical phase was
+Mission 89 Baseline Strategy Falsification.
 <!-- MISSION-88-COST-MODEL:END -->
 
 </details>

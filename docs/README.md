@@ -1,6 +1,6 @@
 # DeltaGrid documentation
 
-This page is the entrance to DeltaGrid's documentation. It separates the
+This page is the navigation entrance to DeltaGrid's documentation. It separates
 documents that describe the project today from historical decisions, future
 designs, immutable research evidence, and machine-oriented records.
 
@@ -10,17 +10,18 @@ authorized now.
 
 ## Start here
 
-- [Project overview](../README.md) explains what DeltaGrid is, what was built,
-  and the present result for a general reader.
-- [Final freeze](DELTAGRID_FINAL_FREEZE.md) explains why research stopped and
-  defines the current authorization boundary.
+- [Project overview](../README.md) explains DeltaGrid's goal, current
+  architecture, completed research, present authority, and planned milestone
+  sequence for a general reader.
+- [Final freeze](DELTAGRID_FINAL_FREEZE.md) explains why result-bearing research
+  stopped and defines the controlling strategy and trading boundary.
 - [Future strategy intake policy](FUTURE_STRATEGY_INTAKE_POLICY.md) defines the
   gate a genuinely new proposal must pass before new research can begin.
 - [ML research adapter](DELTAGRID_ML_RESEARCH_ADAPTER.md) records a possible
   future design policy. It does not authorize implementation or model training.
 - [Research Cockpit v0 charter](DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md)
   records the read-only interface audit and its
-  `STOP_REPOSITORY_INTERFACE_GAPS_FOUND` decision. It does not authorize a
+  `STOP_REPOSITORY_INTERFACE_GAPS_FOUND` decision. That charter does not authorize a
   dashboard, research, protected-data access, or trading.
 - [Research Admission Core](DELTAGRID_RESEARCH_ADMISSION_CORE.md) documents the
   synthetic-only, no-execution gate authorized by the Mission 94 contract.
@@ -29,27 +30,43 @@ authorized now.
   for exactly admitted synthetic non-alpha controls.
 - [Research Control Plane v1](DELTAGRID_RESEARCH_CONTROL_PLANE.md) documents
   Mission 96A's read-only ledger, verified-result projection, and integrity
-  incident boundary. It does not authorize the cockpit UI or research.
+  incident boundary.
 - [Research Cockpit v0](DELTAGRID_RESEARCH_COCKPIT_UI.md) documents Mission
   96B's loopback-only, single-user browser presentation over Mission 96A. It
   adds no research, accounting, risk, validation, execution, or trading logic.
 - [Durable Observation Orchestrator v1](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md)
   documents Mission 97's one fixed local foreground observation workflow,
   durable event history, leases, recovery, and immutable artifacts. It adds no
-  research, market, model, trading, exchange, autonomous, or capital authority.
+  research, market, model, trading, exchange, autonomous-trading, or capital
+  authority.
 
-These documents answer different questions. The root README is the public
-overview; the final freeze controls current project status; the intake policy
-governs possible future proposals; and the ML adapter is design-only.
+These documents answer different questions. The root README is living
+documentation and the public overview; the final freeze controls strategy
+research and trading status; the intake policy governs possible future
+proposals; and the Mission 93–97 records describe the narrow backend components
+implemented after the freeze.
 
 ## Current project state
 
-DeltaGrid's research infrastructure is complete, but the research did not find
-a validated profitable strategy. No candidate is selected. Paper trading and
-live trading are not authorized, and capital deployment is blocked.
+DeltaGrid's research infrastructure is complete, but the completed research did
+not find a validated profitable strategy. No candidate is selected. Alpha
+discovery has stopped under the final freeze. Paper trading, live trading,
+exchange access, credential access, and capital deployment are not authorized.
 
-Alpha discovery has stopped. New strategy work requires a new versioned
-reopening contract before implementation or result-bearing research begins.
+The final freeze remains controlling for result-bearing research and trading.
+Engineering continued only through separately versioned contracts that built a
+research admission boundary, deterministic synthetic control execution,
+canonical evidence, read-only system projection, a local cockpit, and a durable
+observation workflow.
+
+The current published backend chain ends at Mission 97 commit
+`8afa19a06dd6f1b100befce067107c1fa347d471`. The complete repository suite at
+that publication passed 1,153 tests with one third-party
+`websockets.legacy` deprecation warning. Passing tests verify software and
+repository properties; they do not establish alpha or capital authority.
+
+New strategy work still requires a new versioned reopening contract before
+implementation or result-bearing research begins.
 
 ## Documentation status labels
 
@@ -82,17 +99,34 @@ bodies.
 ## Understand the current system
 
 Begin with the [project overview](../README.md), then read the
-[final project report](DELTAGRID_FINAL_PROJECT_REPORT.md) for a detailed account
-of the implemented research platform and completed research.
+[final project report](DELTAGRID_FINAL_PROJECT_REPORT.md) for the completed
+research programme and its negative economic result.
 
-A concise, current architecture explanation has not yet been created.
-[Architecture State](ARCHITECTURE_STATE.md) is a cumulative historical record of
-mission-era architecture. It is useful for tracing how components appeared,
-but it is not the current architecture authority and does not authorize those
-components to operate.
+The current backend architecture is the Mission 93–97 chain:
+
+| Mission | Document | Responsibility |
+|---|---|---|
+| 93 | [Research Cockpit v0 charter](DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md) | Identified the missing application, dataset, ledger, control, and result interfaces before presentation work |
+| 94 | [Research Admission Core](DELTAGRID_RESEARCH_ADMISSION_CORE.md) | Controls budgets, immutable trial reservations, permitted synthetic datasets, and exact non-alpha controls |
+| 95 | [Canonical Result Engine Service](DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md) | Executes admitted synthetic controls and publishes independently verifiable result bundles |
+| 96A | [Research Control Plane](DELTAGRID_RESEARCH_CONTROL_PLANE.md) | Produces read-only system, trial, result, and incident projections without recalculating evidence |
+| 96B | [Research Cockpit](DELTAGRID_RESEARCH_COCKPIT_UI.md) | Presents Mission 96A snapshots through a loopback-only single-user browser interface |
+| 97 | [Durable Observation Orchestrator](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md) | Progresses one fixed observation workflow with durable state, bounded retries, fencing, recovery, and immutable manifests |
+
+[Architecture State](ARCHITECTURE_STATE.md) remains a cumulative historical
+record of mission-era architecture. It is useful for tracing how earlier
+components appeared, but it is not the current architecture authority and does
+not authorize those components to operate.
 
 The final project report is preserved evidence from the freeze publication. It
-should be read alongside the current status in the root README and final freeze.
+should be read alongside the living root README, the final freeze, and the
+Mission 93–97 implementation contracts.
+
+## Planned direction
+
+The provisional Mission 98–107 roadmap appears once, in the
+[root README](../README.md#provisional-roadmap-missions-98107). It is planning
+direction rather than authorization.
 
 ## Current policies
 
@@ -108,9 +142,9 @@ current gate for considering genuinely new work.
 
 ## Research history
 
-The following records explain how DeltaGrid reached its final result. They are
-historical records, not current permission to resume a programme or perform a
-listed next action.
+The following records explain how DeltaGrid reached its final research result.
+They are historical records, not current permission to resume a programme or
+perform a listed next action.
 
 - [Product reset](DELTAGRID_PRODUCT_RESET.md) changed the project from
   open-ended infrastructure growth to a finite falsification programme.
@@ -146,20 +180,30 @@ the present project plan.
 
 - [Research and evidence summaries](research-summaries/README.md) provide
   plain-English companions to the preserved research records below.
-- [Contracts](../contracts/) contain deterministic research, safety, and freeze
-  records.
+- [Contracts](../contracts/) contain deterministic research, safety,
+  implementation, and freeze records.
 - [Evidence](evidence/) contains committed research and verification records.
 - [Alpha Search B development evidence](evidence/alpha_search_b_development/)
   contains the raw development publication and checksum manifest.
 - [Final-freeze evidence](evidence/deltagrid_final_freeze/) contains the freeze
-  verification record and its checksum manifest.
+  verification record, its historical checksum manifest, and exact publication
+  snapshots of the root README and final-freeze verification test.
 
 Contracts and evidence intentionally use formal machine status codes, exact
 hashes, counters, identities, and deterministic formatting. They should not be
-conversationally rewritten. The companion summaries explain them without
-replacing or silently reinterpreting the raw records. They do not reopen
-research or change any authorization; exact historical facts remain controlled
-by the linked contracts and evidence.
+conversationally rewritten. Companion summaries explain them without replacing
+or silently reinterpreting the raw records. They do not reopen research or
+change any authorization; exact historical facts remain controlled by the
+linked contracts and evidence.
+
+Because the root README is living documentation, its final-freeze publication
+bytes are preserved separately as
+[`README.final-freeze-publication.txt`](evidence/deltagrid_final_freeze/README.final-freeze-publication.txt).
+The publication-era freeze test is likewise preserved as
+[`test_deltagrid_final_freeze.final-freeze-publication.py.txt`](evidence/deltagrid_final_freeze/test_deltagrid_final_freeze.final-freeze-publication.py.txt).
+These immutable snapshots retain the two historical identities recorded in the
+publication manifest; the living files may change without rewriting that
+evidence.
 
 ## Superseded and design-only material
 
@@ -188,18 +232,25 @@ Use the [root README test instructions](../README.md#running-the-tests) for an
 already configured checkout. The repository does not currently claim a verified
 fresh-clone bootstrap for the complete test environment.
 
-The [operator guide](OPERATOR_GUIDE.md) documents the two supported current local
-development and verification commands. It explains safe dry-run use, local logs,
-repository actions, and failure handling. The public docstrings for those
-supported operator modules are also current. The guide does not authorize
-research or trading.
+The [operator guide](OPERATOR_GUIDE.md) documents the two supported current
+local development and verification commands:
+`scripts/mission_control.py` and `scripts/mission_pack_runner.py`. It explains
+safe dry-run use, local logs, repository actions, and failure handling. Public
+docstrings for those supported operator modules are also current. The guide
+does not authorize research or trading. Those utilities are not the Mission 97
+orchestrator.
+
+Mission 97's separate bounded foreground commands are documented in the
+[Durable Observation Orchestrator guide](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md).
+They progress one fixed read-only observation workflow and expose no arbitrary
+command, plugin, background scheduler, research, or trading interface.
 
 The current local verification CLIs and the plain-text command logs they produce
-have been reviewed for clear human-facing language. Their command syntax,
-machine-readable JSON, contracts, and evidence remain unchanged. A successful
-command or generated report verifies only its stated software checks: it does
-not establish profitable alpha or authorize paper trading, live trading, capital
-deployment, ML operation, or autonomous execution.
+have been reviewed for clear human-facing language. Their machine-readable JSON,
+contracts, and evidence remain unchanged. A successful command or generated report
+verifies only its stated software checks: it does not establish profitable alpha
+or authorize paper trading, live trading, capital deployment, model operation,
+or autonomous trading.
 
 ## Documentation registry
 
@@ -216,5 +267,7 @@ research evidence, and authorization boundaries.
 
 ## Authority rule
 
-When historical documents conflict with the final freeze, the final freeze
-controls.
+When historical documents conflict with the final freeze, the final freeze controls.
+
+Later Mission 93–97 contracts control only the narrow backend capabilities they
+explicitly authorize.

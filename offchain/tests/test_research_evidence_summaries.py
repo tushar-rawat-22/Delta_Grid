@@ -16,6 +16,7 @@ REGISTRY_PATH = ROOT / "docs" / "documentation-status.json"
 BASE_COMMIT = "8d8e0d469a52e8a93382fa92b8117a2b09a10df6"
 SUMMARY_COMMIT = "172691b773949cd6516da65a498989ce81e767a0"
 MISSION_93_BASE_COMMIT = "9605c4b294d15f4e1ec4929c9706f1ff9f938072"
+FINAL_FREEZE_PUBLICATION_COMMIT = "ce82c5b887a08185b7acceb35480783d02eb0b5d"
 EXCEPTION = "docs/evidence/alpha_search_b_development/DEVELOPMENT_DECISION.md"
 
 SUMMARY_PATHS = {
@@ -76,9 +77,15 @@ SOURCE_GROUPS = {
 }
 
 CANONICAL_SOURCES = set().union(*SOURCE_GROUPS.values())
+ALPHA_SEARCH_B_CHECKSUM_MANIFEST = (
+    "docs/evidence/alpha_search_b_development/SHA256SUMS.txt"
+)
+FINAL_FREEZE_CHECKSUM_MANIFEST = (
+    "docs/evidence/deltagrid_final_freeze/SHA256SUMS.txt"
+)
 CHECKSUM_MANIFESTS = {
-    "docs/evidence/alpha_search_b_development/SHA256SUMS.txt",
-    "docs/evidence/deltagrid_final_freeze/SHA256SUMS.txt",
+    ALPHA_SEARCH_B_CHECKSUM_MANIFEST,
+    FINAL_FREEZE_CHECKSUM_MANIFEST,
 }
 
 EXPECTED_CHANGED_PATHS = {
@@ -115,13 +122,21 @@ def normalized(text: str) -> str:
     return " ".join(text.casefold().split())
 
 
-def base_bytes(path: str) -> bytes:
+def commit_bytes(commit: str, path: str) -> bytes:
     return subprocess.run(
-        ["git", "show", f"{BASE_COMMIT}:{path}"],
+        ["git", "show", f"{commit}:{path}"],
         cwd=ROOT,
         check=True,
         capture_output=True,
     ).stdout
+
+
+def base_bytes(path: str) -> bytes:
+    return commit_bytes(BASE_COMMIT, path)
+
+
+def final_freeze_publication_bytes(path: str) -> bytes:
+    return commit_bytes(FINAL_FREEZE_PUBLICATION_COMMIT, path)
 
 
 def base_text(path: str) -> str:
@@ -460,11 +475,16 @@ def test_registry_preserves_source_metadata_and_conflicts() -> None:
 
 
 def test_canonical_sources_and_checksum_manifests_match_base_bytes() -> None:
-    for path in CANONICAL_SOURCES | CHECKSUM_MANIFESTS:
+    for path in CANONICAL_SOURCES | {ALPHA_SEARCH_B_CHECKSUM_MANIFEST}:
         current = (ROOT / path).read_bytes()
         expected = base_bytes(path)
         assert hashlib.sha256(current).digest() == hashlib.sha256(expected).digest()
         assert current == expected
+
+    current = (ROOT / FINAL_FREEZE_CHECKSUM_MANIFEST).read_bytes()
+    expected = final_freeze_publication_bytes(FINAL_FREEZE_CHECKSUM_MANIFEST)
+    assert hashlib.sha256(current).digest() == hashlib.sha256(expected).digest()
+    assert current == expected
 
 
 def test_changed_scope_excludes_every_protected_path() -> None:
