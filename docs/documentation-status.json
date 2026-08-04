@@ -52,12 +52,12 @@
       "authority_level": "CONTROLLING_PUBLIC",
       "conflicts_with_current_state": false,
       "test_dependent": true,
-      "checksum_dependent": true,
+      "checksum_dependent": false,
       "referenced_by_other_records": true,
       "ai_tone_severity": 1,
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
-      "notes": "Start here for public status; checksum-bound by final-freeze evidence."
+      "notes": "Living public overview. Its final-freeze publication bytes are preserved in docs/evidence/deltagrid_final_freeze/README.final-freeze-publication.txt."
     },
     {
       "path": "contracts/ALPHA_SEARCH_A_REJECTION_V1.json",
@@ -2475,6 +2475,21 @@
       "notes": "Companion: research-summaries/FINAL_FREEZE.md. This preserved source remains controlling for exact historical facts."
     },
     {
+      "path": "docs/evidence/deltagrid_final_freeze/README.final-freeze-publication.txt",
+      "classification": "EVIDENCE_IMMUTABLE",
+      "audience": "maintainers and technical reviewers",
+      "purpose": "exact byte snapshot of the root README at the final-freeze publication commit",
+      "authority_level": "HISTORICAL_EVIDENCE",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": true,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Exact publication snapshot from commit ce82c5b887a08185b7acceb35480783d02eb0b5d with SHA-256 ee295883750171a7587dd8c043fdbe4cf6b78bdc971b7947501e56e2ed53e33a. Its digest is represented by the historical manifest identity README.md."
+    },
+    {
       "path": "docs/evidence/deltagrid_final_freeze/SHA256SUMS.txt",
       "classification": "MACHINE_REFERENCE",
       "audience": "Software, tests, verification tools, and technical reviewers",
@@ -2488,6 +2503,21 @@
       "readability_severity": 0,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Do not rewrite or reorder outside an explicit evidence publication."
+    },
+    {
+      "path": "docs/evidence/deltagrid_final_freeze/test_deltagrid_final_freeze.final-freeze-publication.py.txt",
+      "classification": "EVIDENCE_IMMUTABLE",
+      "audience": "maintainers, test engineers and technical reviewers",
+      "purpose": "exact byte snapshot of the final-freeze verification test at the final-freeze publication commit",
+      "authority_level": "HISTORICAL_EVIDENCE",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": true,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Exact publication snapshot from commit ce82c5b887a08185b7acceb35480783d02eb0b5d with SHA-256 3b632f82306cd568abc1f45f6413382806c2c702b916a01a581cbb15ad193283. Its digest is represented by the historical manifest identity offchain/tests/test_deltagrid_final_freeze.py."
     },
     {
       "path": "docs/research-summaries/ALPHA_SEARCH_A.md",

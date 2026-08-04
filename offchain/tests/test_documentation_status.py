@@ -14,6 +14,33 @@ STYLE_GUIDE = ROOT / "docs" / "DOCUMENTATION_STYLE.md"
 OPERATOR_GUIDE = ROOT / "docs" / "OPERATOR_GUIDE.md"
 APPROVED_BASE_COMMIT = "d25ca877373e384b3d0b7b8780db8e743c9b589b"
 BATCH_4_BASE_COMMIT = "8d8e0d469a52e8a93382fa92b8117a2b09a10df6"
+FINAL_FREEZE_PUBLICATION_COMMIT = "ce82c5b887a08185b7acceb35480783d02eb0b5d"
+PUBLICATION_SNAPSHOTS = {
+    (
+        "docs/evidence/deltagrid_final_freeze/"
+        "README.final-freeze-publication.txt"
+    ): {
+        "digest": (
+            "ee295883750171a7587dd8c043fdbe4cf"
+            "6b78bdc971b7947501e56e2ed53e33a"
+        ),
+        "manifest_identity": "README.md",
+    },
+    (
+        "docs/evidence/deltagrid_final_freeze/"
+        "test_deltagrid_final_freeze.final-freeze-publication.py.txt"
+    ): {
+        "digest": (
+            "3b632f82306cd568abc1f45f641338280"
+            "6c2c702b916a01a581cbb15ad193283"
+        ),
+        "manifest_identity": "offchain/tests/test_deltagrid_final_freeze.py",
+    },
+}
+FINAL_FREEZE_PUBLICATION_REPAIR_DOCUMENTS = {
+    "README.md",
+    *PUBLICATION_SNAPSHOTS,
+}
 
 ALLOWED_CLASSIFICATIONS = {
     "CURRENT_PUBLIC",
@@ -126,7 +153,7 @@ EXPECTED_CLASSIFICATION_COUNTS = {
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
-    "EVIDENCE_IMMUTABLE": 10,
+    "EVIDENCE_IMMUTABLE": 12,
     "MACHINE_REFERENCE": 40,
 }
 
@@ -617,6 +644,11 @@ def test_dependency_and_conflict_fields_are_booleans() -> None:
 def test_readme_is_current_public() -> None:
     registered = documents_by_path()
     assert registered["README.md"]["classification"] == "CURRENT_PUBLIC"
+    assert registered["README.md"]["checksum_dependent"] is False
+    assert (
+        "docs/evidence/deltagrid_final_freeze/"
+        "README.final-freeze-publication.txt"
+    ) in registered["README.md"]["notes"]
     assert registered["docs/README.md"]["classification"] == "CURRENT_PUBLIC"
     assert registered["docs/OPERATOR_GUIDE.md"] == EXPECTED_OPERATOR_GUIDE_ENTRY
     docs_home = DOCS_HOME.read_text(encoding="utf-8")
@@ -691,6 +723,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             target_paths
             | batch_4_paths
             | BATCH_6_DOCUMENTS
+            | FINAL_FREEZE_PUBLICATION_REPAIR_DOCUMENTS
             | MISSION_93_DOCUMENTS
             | MISSION_94_DOCUMENTS
             | MISSION_95_DOCUMENTS
@@ -702,9 +735,14 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
     base_non_target_entries = [
         item
         for item in load_batch_4_base_registry()["documents"]
-        if item["path"] not in target_paths | batch_4_paths
+        if item["path"]
+        not in (
+            target_paths
+            | batch_4_paths
+            | FINAL_FREEZE_PUBLICATION_REPAIR_DOCUMENTS
+        )
     ]
-    assert len(non_target_entries) == 19
+    assert len(non_target_entries) == 18
     assert non_target_entries == base_non_target_entries
 
 
@@ -730,6 +768,20 @@ def test_every_evidence_file_is_registered() -> None:
     }
     assert evidence_paths
     assert evidence_paths <= set(registered)
+
+    for path, expected in PUBLICATION_SNAPSHOTS.items():
+        assert (ROOT / path).is_file()
+        item = registered[path]
+        assert item["classification"] == "EVIDENCE_IMMUTABLE"
+        assert item["authority_level"] == "HISTORICAL_EVIDENCE"
+        assert item["conflicts_with_current_state"] is False
+        assert item["test_dependent"] is True
+        assert item["checksum_dependent"] is True
+        assert item["referenced_by_other_records"] is True
+        assert item["recommended_treatment"] == "LEAVE_UNCHANGED"
+        assert FINAL_FREEZE_PUBLICATION_COMMIT in item["notes"]
+        assert expected["digest"] in item["notes"]
+        assert expected["manifest_identity"] in item["notes"]
 
 
 def test_no_evidence_file_is_assigned_rewrite() -> None:
@@ -827,10 +879,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 175
+    assert len(approved) == 177
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 178
+    assert len(registered) == 180
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES

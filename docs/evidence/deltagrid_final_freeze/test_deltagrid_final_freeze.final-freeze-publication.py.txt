@@ -5,7 +5,6 @@ import json
 import re
 import subprocess
 from pathlib import Path
-from types import MappingProxyType
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,24 +29,8 @@ VERIFICATION = (
     / "docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json"
 )
 MANIFEST = ROOT / "docs/evidence/deltagrid_final_freeze/SHA256SUMS.txt"
-FROZEN_README = (
-    ROOT
-    / "docs/evidence/deltagrid_final_freeze/"
-    "README.final-freeze-publication.txt"
-)
-FROZEN_FREEZE_TEST = (
-    ROOT
-    / "docs/evidence/deltagrid_final_freeze/"
-    "test_deltagrid_final_freeze.final-freeze-publication.py.txt"
-)
 
 BASE_COMMIT = "a31f4da4fc8b52ca2fa6aaad697350d6e9180736"
-FROZEN_README_HASH = (
-    "ee295883750171a7587dd8c043fdbe4cf6b78bdc971b7947501e56e2ed53e33a"
-)
-FROZEN_FREEZE_TEST_HASH = (
-    "3b632f82306cd568abc1f45f6413382806c2c702b916a01a581cbb15ad193283"
-)
 PROTOCOL_HASH = "ee82fdb3758028cfa6455ffa610cbff46855890ded65cc2175801897fe509469"
 COST_HASH = "e102f6aa21f83dfdc05090411c790f1d2ed2803d02f310fb3289e67c2790165c"
 DECISION_HASH = "3aa332f04287e55d8ceefeb7d19b2265363f70a703bda2cc98efab85f1f2984a"
@@ -116,12 +99,6 @@ EXPECTED_MANIFEST_PATHS = [
     "docs/evidence/deltagrid_final_freeze/FINAL_FREEZE_VERIFICATION.json",
     "offchain/tests/test_deltagrid_final_freeze.py",
 ]
-PUBLICATION_TARGETS = MappingProxyType(
-    {
-        "README.md": FROZEN_README,
-        "offchain/tests/test_deltagrid_final_freeze.py": FROZEN_FREEZE_TEST,
-    }
-)
 
 
 def load(path: Path) -> dict:
@@ -262,7 +239,7 @@ def test_committed_pre_freeze_baselines_are_labelled_historically() -> None:
     assert contract["pre_freeze_alpha_search_b_reset_focused_pass_count"] == 37
     assert contract["pre_freeze_complete_suite_pass_count"] == 715
     assert contract["pre_freeze_warning_count"] == 1
-    readme = FROZEN_README.read_text(encoding="utf-8")
+    readme = README.read_text(encoding="utf-8")
     report = REPORT.read_text(encoding="utf-8")
     assert "Committed pre-freeze evidence records 37" in readme
     assert "715 passing complete off-chain tests" in readme
@@ -273,18 +250,13 @@ def test_committed_pre_freeze_baselines_are_labelled_historically() -> None:
 
 def test_readme_prominently_states_the_public_closure() -> None:
     readme = README.read_text(encoding="utf-8")
-    opening = readme[:700]
-    normalized_opening = " ".join(opening.split())
-    assert "no validated profitable strategy" in normalized_opening.lower()
-    assert "No candidate is selected" in normalized_opening
-    assert "Paper trading and live trading are not authorized" in normalized_opening
-    assert (
-        "Exchange access, credential access, and capital deployment"
-        in normalized_opening
-    )
-    assert "Software tests do not establish alpha" in normalized_opening
+    opening = readme[:900]
+    assert "no validated profitable strategy" in opening
+    assert "does not authorize live trading or capital deployment" in opening
+    assert "Infrastructure maturity does not establish alpha" in opening
+    assert "Test success verifies those properties only; it does not establish alpha" in readme
     assert "No Alpha Search B candidate was authorized for Freqtrade translation" in readme
-    assert "planning direction, not authorization" in readme
+    assert "not a permanent assertion about every future repository HEAD" in readme
 
 
 def test_final_report_contains_every_required_historical_phase() -> None:
@@ -394,28 +366,8 @@ def test_checksum_manifest_has_exact_paths_and_verifies() -> None:
         parsed.append((digest, path))
     assert [path for _, path in parsed] == EXPECTED_MANIFEST_PATHS
     assert str(MANIFEST.relative_to(ROOT)) not in EXPECTED_MANIFEST_PATHS
-    by_path = {path: digest for digest, path in parsed}
-    assert by_path["README.md"] == FROZEN_README_HASH
-    assert (
-        by_path["offchain/tests/test_deltagrid_final_freeze.py"]
-        == FROZEN_FREEZE_TEST_HASH
-    )
     for digest, relative in parsed:
-        publication_target = PUBLICATION_TARGETS.get(relative, ROOT / relative)
-        assert file_hash(publication_target) == digest
-
-
-def test_publication_snapshots_are_exact_immutable_bytes() -> None:
-    assert file_hash(FROZEN_README) == FROZEN_README_HASH
-    assert file_hash(FROZEN_FREEZE_TEST) == FROZEN_FREEZE_TEST_HASH
-    assert (
-        FROZEN_README.read_text(encoding="utf-8").encode("utf-8")
-        == FROZEN_README.read_bytes()
-    )
-    assert (
-        FROZEN_FREEZE_TEST.read_text(encoding="utf-8").encode("utf-8")
-        == FROZEN_FREEZE_TEST.read_bytes()
-    )
+        assert file_hash(ROOT / relative) == digest
 
 
 def test_no_raw_alpha_search_b_data_is_tracked() -> None:
@@ -431,8 +383,10 @@ def test_no_raw_alpha_search_b_data_is_tracked() -> None:
 
 def test_closure_files_contain_no_obvious_credential_material() -> None:
     paths = [
-        ROOT / relative for relative in EXPECTED_MANIFEST_PATHS
-    ] + [FROZEN_README, FROZEN_FREEZE_TEST, MANIFEST]
+        ROOT / relative
+        for relative in EXPECTED_MANIFEST_PATHS
+        if (ROOT / relative).exists()
+    ] + [MANIFEST]
     assignment = re.compile(
         r"(?i)\b(?:api[_-]?key|secret|access[_-]?token)\s*[:=]\s*[\"']?"
         r"[A-Za-z0-9_./+=-]{12,}"
