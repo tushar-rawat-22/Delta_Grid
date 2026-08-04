@@ -122,12 +122,12 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 10,
+    "CURRENT_INTERNAL": 11,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
-    "MACHINE_REFERENCE": 39,
+    "MACHINE_REFERENCE": 40,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -234,6 +234,10 @@ MISSION_96A_DOCUMENTS = {
 MISSION_96B_DOCUMENTS = {
     "contracts/DELTAGRID_RESEARCH_COCKPIT_UI_V1.json",
     "docs/DELTAGRID_RESEARCH_COCKPIT_UI.md",
+}
+MISSION_97_DOCUMENTS = {
+    "contracts/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR_V1.json",
+    "docs/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md",
 }
 EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
     "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json": {
@@ -344,6 +348,62 @@ EXPECTED_MISSION_96B_REGISTRY_ENTRIES = {
         ),
     },
 }
+EXPECTED_MISSION_97_REGISTRY_ENTRIES = {
+    "contracts/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR_V1.json": {
+        "path": "contracts/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR_V1.json",
+        "classification": "MACHINE_REFERENCE",
+        "audience": (
+            "Maintainers, software verification, operators, and "
+            "research-integrity reviewers"
+        ),
+        "purpose": (
+            "Current machine-readable durable observation orchestrator "
+            "implementation and authority boundary"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 0,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Authorizes only Mission 97 local durable foreground progression of "
+            "one fixed read-only observation workflow, immutable artifacts, "
+            "leases, bounded retries, recovery, cancellation, and status "
+            "reporting. It grants no arbitrary workflow, shell, Git, research, "
+            "market, model, exchange, trading, autonomous, or capital authority."
+        ),
+    },
+    "docs/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md": {
+        "path": "docs/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md",
+        "classification": "CURRENT_INTERNAL",
+        "audience": (
+            "Maintainers, research-integrity reviewers, operators, and test "
+            "engineers"
+        ),
+        "purpose": (
+            "Current human explanation and local operating guide for the "
+            "Durable Observation Orchestrator v1"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 1,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Explains Mission 97's single fixed local foreground observation "
+            "workflow, durable events, fencing, recovery, immutable artifacts, "
+            "and honest capture semantics without authorizing arbitrary "
+            "workflows, research, market or protected-data access, models, "
+            "trading, exchanges, autonomy, or capital."
+        ),
+    },
+}
 
 
 def load_registry() -> dict:
@@ -370,7 +430,7 @@ def repository_relative(path: Path) -> str:
 
 
 def approved_inventory() -> set[str]:
-    """Return the explicit 163-file inventory approved through Batch 6."""
+    """Return the rolling approved inventory through Mission 97."""
     paths = {
         ".gitignore",
         "README.md",
@@ -636,6 +696,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_95_DOCUMENTS
             | MISSION_96A_DOCUMENTS
             | MISSION_96B_DOCUMENTS
+            | MISSION_97_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -766,10 +827,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 173
+    assert len(approved) == 175
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 176
+    assert len(registered) == 178
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES
@@ -778,6 +839,10 @@ def test_registry_covers_exact_approved_inventory() -> None:
         path: registered[path]
         for path in EXPECTED_MISSION_96B_REGISTRY_ENTRIES
     } == EXPECTED_MISSION_96B_REGISTRY_ENTRIES
+    assert {
+        path: registered[path]
+        for path in EXPECTED_MISSION_97_REGISTRY_ENTRIES
+    } == EXPECTED_MISSION_97_REGISTRY_ENTRIES
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()

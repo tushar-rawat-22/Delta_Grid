@@ -24,6 +24,10 @@ SUPPORTED_MODULES = {
     "scripts/mission_control.py",
     "scripts/mission_pack_runner.py",
 }
+AUTHORIZED_POST_BASE_CLIS = {
+    "offchain/research/cockpit/__main__.py",
+    "offchain/orchestration/__main__.py",
+}
 EXPECTED_PUBLIC_SYMBOLS = {
     "scripts/mission_control.py": {
         "CommandResult",
@@ -755,13 +759,22 @@ def test_no_new_cli_entry_point_or_absolute_test_dependency_exists() -> None:
         and not path.startswith("offchain/tests/")
         and "argparse.ArgumentParser" in base_text(path)
     }
+    # Generic rolling ownership lives here; feature tests own the flags and
+    # semantics of each explicitly authorized post-baseline CLI.
     current_clis = {
         path
-        for path in git("ls-files", "*.py").stdout.splitlines()
-        if not path.startswith("offchain/tests/")
+        for path in git(
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+        ).stdout.splitlines()
+        if path.endswith(".py")
+        and path.startswith(("offchain/", "scripts/"))
+        and not path.startswith("offchain/tests/")
         and "argparse.ArgumentParser" in current_text(path)
     }
-    assert current_clis == base_clis
+    assert current_clis == base_clis | AUTHORIZED_POST_BASE_CLIS
     own_text = Path(__file__).read_text(encoding="utf-8")
     assert ("/" + "Users" + "/") not in own_text
 

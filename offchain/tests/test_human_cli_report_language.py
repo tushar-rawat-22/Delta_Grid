@@ -25,6 +25,10 @@ ELIGIBLE_CLI_PATHS = {
     "scripts/mission_control.py",
     "scripts/mission_pack_runner.py",
 }
+AUTHORIZED_POST_BASE_CLIS = {
+    "offchain/research/cockpit/__main__.py",
+    "offchain/orchestration/__main__.py",
+}
 ELIGIBLE_REPORT_RENDERERS = {
     ("scripts/mission_control.py", "run_command"),
 }
@@ -249,12 +253,22 @@ def test_cli_parser_contracts_match_base():
         and not path.startswith("offchain/tests/")
         and "ArgumentParser" in base_text(path)
     }
+    # This is the generic rolling CLI owner. Mission-specific tests own each
+    # authorized CLI's flags; this inventory rejects any future unowned CLI.
     current_cli_paths = {
         path
-        for path in git("ls-files", "*.py").stdout.splitlines()
-        if not path.startswith("offchain/tests/") and "ArgumentParser" in current_text(path)
+        for path in git(
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+        ).stdout.splitlines()
+        if path.endswith(".py")
+        and path.startswith(("offchain/", "scripts/"))
+        and not path.startswith("offchain/tests/")
+        and "ArgumentParser" in current_text(path)
     }
-    assert current_cli_paths == base_cli_paths
+    assert current_cli_paths == base_cli_paths | AUTHORIZED_POST_BASE_CLIS
 
 
 def test_human_help_explains_purpose_inputs_outputs_and_dry_run():

@@ -33,6 +33,10 @@ authorized now.
 - [Research Cockpit v0](DELTAGRID_RESEARCH_COCKPIT_UI.md) documents Mission
   96B's loopback-only, single-user browser presentation over Mission 96A. It
   adds no research, accounting, risk, validation, execution, or trading logic.
+- [Durable Observation Orchestrator v1](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md)
+  documents Mission 97's one fixed local foreground observation workflow,
+  durable event history, leases, recovery, and immutable artifacts. It adds no
+  research, market, model, trading, exchange, autonomous, or capital authority.
 
 These documents answer different questions. The root README is the public
 overview; the final freeze controls current project status; the intake policy

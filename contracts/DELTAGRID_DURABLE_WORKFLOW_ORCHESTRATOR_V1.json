@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-durable-workflow-orchestrator-v1",
+  "contract_version": 1,
+  "base_commit": "a9f21bffd1d581e96a947854b30a961af770d7f1",
+  "preceding_contract": "contracts/DELTAGRID_RESEARCH_COCKPIT_UI_V1.json",
+  "preceding_contract_hash_sha256": "13846c63a6fcd07b2a4603aadd388960e74282de486bddf39907a09aa053c8d3",
+  "functional_dependency": "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
+  "functional_dependency_hash_sha256": "c1e0c8c55db90fe8a81d3afe2d243537c703dbee6a945596f4b37c5ee13e70a9",
+  "authorization_stage": "MISSION_97_BOUNDED_OBSERVATION_ORCHESTRATION",
+  "contract_hash_sha256": "c1840ed9f438f520401bbf24e501bb2a327f4718124745f275474ac76eeab272",
+  "scope_explanation": "Mission 97 authorizes one local durable foreground observation workflow over the existing Mission 96A read-only control plane. It is not a generic workflow platform, scheduler daemon, research or strategy engine, trading agent, shell runner, plugin system, deployment system, mission-pack runner, or Git automation system.",
+  "implementation_authorization": {
+    "orchestration_database_authorized": true,
+    "fixed_observation_workflow_authorized": true,
+    "bounded_workflow_progression_authorized": true,
+    "append_only_orchestration_events_authorized": true,
+    "ephemeral_leases_authorized": true,
+    "deterministic_fencing_authorized": true,
+    "idempotent_action_receipts_authorized": true,
+    "bounded_retries_authorized": true,
+    "crash_recovery_authorized": true,
+    "immutable_orchestration_artifacts_authorized": true,
+    "mission_96a_read_only_observation_authorized": true,
+    "operator_cancellation_authorized": true,
+    "local_foreground_cli_authorized": true
+  },
+  "authorization_state": {
+    "arbitrary_workflow_authorized": false,
+    "dynamic_action_registration_authorized": false,
+    "shell_execution_authorized": false,
+    "subprocess_authorized": false,
+    "mission_pack_execution_authorized": false,
+    "repository_file_mutation_authorized": false,
+    "git_commit_authorized": false,
+    "git_push_authorized": false,
+    "background_daemon_authorized": false,
+    "remote_scheduler_authorized": false,
+    "remote_service_authorized": false,
+    "research_ledger_write_authorized": false,
+    "trial_reservation_authorized": false,
+    "trial_admission_authorized": false,
+    "mission_95_control_execution_authorized": false,
+    "result_finalization_authorized": false,
+    "strategy_research_authorized": false,
+    "market_data_access_authorized": false,
+    "development_market_evaluation_authorized": false,
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "protected_data_access_authorized": false,
+    "model_training_authorized": false,
+    "model_promotion_authorized": false,
+    "signal_generation_authorized": false,
+    "portfolio_construction_authorized": false,
+    "exchange_access_authorized": false,
+    "credential_access_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "capital_deployment_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_promotion_authorized": false,
+    "autonomous_trading_execution_authorized": false,
+    "self_modifying_policy_authorized": false,
+    "self_modifying_action_inventory_authorized": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "workflow_definition": {
+    "workflow_definition_id": "RESEARCH_OBSERVATION_REFRESH_V1",
+    "workflow_definition_version": 1,
+    "canonical_workflow_definition_hash": "31c8ff6d912f1be046724330a4c5f49bc16925ac952d8db60d00a2e1c3c51f27",
+    "steps": [
+      {
+        "step_id": "CAPTURE_CONTROL_PLANE_SNAPSHOT",
+        "action_id": "CAPTURE_RESEARCH_CONTROL_PLANE_SNAPSHOT_V1"
+      },
+      {
+        "step_id": "VERIFY_CONTROL_PLANE_SNAPSHOT",
+        "action_id": "VERIFY_RESEARCH_CONTROL_PLANE_SNAPSHOT_V1"
+      },
+      {
+        "step_id": "PUBLISH_OBSERVATION_MANIFEST",
+        "action_id": "PUBLISH_RESEARCH_OBSERVATION_MANIFEST_V1"
+      }
+    ],
+    "branching_authorized": false,
+    "parallelism_authorized": false,
+    "loops_authorized": false,
+    "dynamic_conditions_authorized": false
+  },
+  "retry_policy": {
+    "maximum_attempts_per_step": 3,
+    "retry_delays_seconds": [
+      5,
+      30
+    ],
+    "random_jitter_authorized": false,
+    "service_sleep_authorized": false,
+    "lease_expiry_consumes_attempt": true
+  },
+  "durability": {
+    "database_journal_mode": "DELETE",
+    "database_synchronous": "EXTRA",
+    "mutations_use_begin_immediate": true,
+    "authoritative_status_is_event_derived": true,
+    "receipt_is_sole_artifact_inventory": true,
+    "artifacts_use_derived_no_clobber_paths": true,
+    "filesystem_and_sqlite_cross_system_atomicity_claimed": false,
+    "first_valid_step_1_artifact_wins": true,
+    "prepublication_retry_may_observe_later_valid_state": true,
+    "postpublication_replay_reuses_exact_bytes": true,
+    "receipt_completed_at_is_successful_persistence_time": true,
+    "crash_adoption_may_have_later_completed_at": true,
+    "hypothetical_uncommitted_receipt_identity_reconstruction_claimed": false
+  },
+  "resource_limits": {
+    "maximum_workflow_input_bytes": 65536,
+    "maximum_event_count_per_run": 1000,
+    "maximum_returned_run_count": 10000,
+    "maximum_snapshot_artifact_bytes": 4194304,
+    "maximum_verification_artifact_bytes": 1048576,
+    "maximum_manifest_artifact_bytes": 1048576,
+    "maximum_json_nesting_depth": 64,
+    "maximum_identifier_length": 128,
+    "maximum_reason_length": 1024,
+    "maximum_path_text_length": 4096,
+    "maximum_ticks": 10000,
+    "lease_duration_seconds_range": [
+      5,
+      3600
+    ],
+    "busy_timeout_milliseconds_range": [
+      100,
+      30000
+    ],
+    "busy_timeout_milliseconds_default": 5000
+  },
+  "observation_semantics": {
+    "observation_as_of_is_snapshot_and_incident_timestamp": true,
+    "mutable_source_historical_filtering_promised": false,
+    "mission_96a_public_boundary_only": true,
+    "quantitative_metric_recalculation_authorized": false,
+    "global_exactly_once_execution_claimed": false,
+    "one_accepted_immutable_receipt_per_step": true
+  },
+  "non_retryable_error_inventory": [
+    "ORCHESTRATION_SCHEMA_INCOMPATIBLE",
+    "ORCHESTRATION_ROW_INTEGRITY_FAILURE",
+    "GOVERNANCE_CONTRACT_INTEGRITY_FAILURE",
+    "WORKFLOW_INPUT_INVALID",
+    "RUN_KEY_CONFLICT",
+    "WORKFLOW_DEFINITION_MISMATCH",
+    "ACTION_NOT_AUTHORIZED",
+    "RESEARCH_LEDGER_INTEGRITY_FAILURE",
+    "REPOSITORY_CONTRACT_INTEGRITY_FAILURE",
+    "SNAPSHOT_INTEGRITY_FAILURE",
+    "SNAPSHOT_SCHEMA_UNSUPPORTED",
+    "ARTIFACT_PATH_UNSAFE",
+    "ARTIFACT_HASH_MISMATCH",
+    "ARTIFACT_CONFLICT",
+    "STALE_FENCING_TOKEN",
+    "CLOCK_REGRESSION",
+    "INVALID_WORKFLOW_TRANSITION",
+    "RESOURCE_LIMIT_EXCEEDED",
+    "INTERNAL_INTEGRITY_FAILURE"
+  ],
+  "package": {
+    "path": "offchain/orchestration",
+    "production_files": [
+      "offchain/orchestration/__init__.py",
+      "offchain/orchestration/__main__.py",
+      "offchain/orchestration/models.py",
+      "offchain/orchestration/strict_json.py",
+      "offchain/orchestration/definitions.py",
+      "offchain/orchestration/ledger.py",
+      "offchain/orchestration/actions.py",
+      "offchain/orchestration/service.py"
+    ],
+    "python_standard_library_and_existing_mission_93_through_96b_only": true,
+    "dependency_changes_authorized": false
+  }
+}

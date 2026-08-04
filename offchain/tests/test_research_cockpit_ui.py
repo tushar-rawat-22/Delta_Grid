@@ -429,24 +429,81 @@ def _generate_demo(location: Path, *, degraded: bool) -> dict:
     ).as_dict()
 
 
-def test_demo_snapshots_regenerate_through_missions_94_95_and_96a() -> None:
-    temporary = Path("/private/tmp/deltagrid-mission96b-demo")
-    assert not temporary.exists()
-    try:
-        healthy = _generate_demo(temporary / "healthy", degraded=False)
-        degraded = _generate_demo(temporary / "degraded", degraded=True)
-        declarations = contract()["demonstration_snapshots"]
-        assert healthy["canonical_snapshot_hash"] == declarations["healthy"][
-            "canonical_snapshot_hash"
-        ]
-        assert healthy["snapshot_id"] == declarations["healthy"]["snapshot_id"]
-        assert degraded["canonical_snapshot_hash"] == declarations["degraded"][
-            "canonical_snapshot_hash"
-        ]
-        assert degraded["snapshot_id"] == declarations["degraded"]["snapshot_id"]
-    finally:
-        if temporary.exists():
-            shutil.rmtree(temporary)
+def test_demo_snapshots_regenerate_through_missions_94_95_and_96a(
+    tmp_path: Path,
+) -> None:
+    def verify_snapshot(value: dict) -> None:
+        for inventory, hash_field in (
+            ("trials", "canonical_trial_projection_hash"),
+            ("results", "canonical_result_projection_hash"),
+            ("incidents", "canonical_incident_hash"),
+        ):
+            for item in value[inventory]:
+                core = dict(item)
+                supplied = core.pop(hash_field)
+                assert canonical_hash(core) == supplied
+        system_without_id = dict(value["system"])
+        assert system_without_id.pop("snapshot_id") == value["snapshot_id"]
+        identity_core = {
+            "schema_version": value["schema_version"],
+            "snapshot_version": value["snapshot_version"],
+            "system": system_without_id,
+            "trials": value["trials"],
+            "results": value["results"],
+            "incidents": value["incidents"],
+        }
+        assert value["snapshot_id"] == (
+            f"snapshot-{canonical_hash(identity_core)[:32]}"
+        )
+        snapshot_core = dict(value)
+        supplied_snapshot_hash = snapshot_core.pop("canonical_snapshot_hash")
+        assert canonical_hash(snapshot_core) == supplied_snapshot_hash
+
+    def without_path_bound_identity(value: dict) -> dict:
+        detached = json.loads(canonical_json(value))
+        # Mission 96A intentionally binds absolute paths into these derived
+        # identities, so only those checkout-local identities are excluded.
+        for field in (
+            "ledger_path_identity",
+            "result_root_path_identity",
+            "repository_root_path_identity",
+            "snapshot_id",
+        ):
+            detached["system"].pop(field)
+        detached.pop("snapshot_id")
+        detached.pop("canonical_snapshot_hash")
+        return detached
+
+    generated = {
+        "healthy": _generate_demo(tmp_path / "healthy", degraded=False),
+        "degraded": _generate_demo(tmp_path / "degraded", degraded=True),
+    }
+    committed = {
+        scenario: demo_value(scenario)
+        for scenario in ("healthy", "degraded")
+    }
+    declarations = contract()["demonstration_snapshots"]
+    path_fields = (
+        "ledger_path_identity",
+        "result_root_path_identity",
+        "repository_root_path_identity",
+    )
+    for scenario in ("healthy", "degraded"):
+        regenerated = generated[scenario]
+        frozen = committed[scenario]
+        verify_snapshot(regenerated)
+        assert without_path_bound_identity(regenerated) == (
+            without_path_bound_identity(frozen)
+        )
+        assert all(
+            regenerated["system"][field] != frozen["system"][field]
+            for field in path_fields
+        )
+        expected = declarations[scenario]
+        assert regenerated["system"]["health_token"] == expected["health_token"]
+        assert len(regenerated["trials"]) == expected["trial_count"]
+        assert len(regenerated["results"]) == expected["verified_result_count"]
+        assert len(regenerated["incidents"]) == expected["incident_count"]
 
 
 def test_demo_source_detaches_values_rejects_scenario_and_symlink(
