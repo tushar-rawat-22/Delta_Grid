@@ -122,12 +122,12 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 9,
+    "CURRENT_INTERNAL": 10,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 10,
-    "MACHINE_REFERENCE": 38,
+    "MACHINE_REFERENCE": 39,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -231,6 +231,10 @@ MISSION_96A_DOCUMENTS = {
     "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
     "docs/DELTAGRID_RESEARCH_CONTROL_PLANE.md",
 }
+MISSION_96B_DOCUMENTS = {
+    "contracts/DELTAGRID_RESEARCH_COCKPIT_UI_V1.json",
+    "docs/DELTAGRID_RESEARCH_COCKPIT_UI.md",
+}
 EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
     "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json": {
         "path": "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
@@ -282,6 +286,61 @@ EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
             "projections without authorizing UI, research, market or "
             "protected-data access, models, trading, exchanges, autonomy, or "
             "capital."
+        ),
+    },
+}
+EXPECTED_MISSION_96B_REGISTRY_ENTRIES = {
+    "contracts/DELTAGRID_RESEARCH_COCKPIT_UI_V1.json": {
+        "path": "contracts/DELTAGRID_RESEARCH_COCKPIT_UI_V1.json",
+        "classification": "MACHINE_REFERENCE",
+        "audience": (
+            "Maintainers, software verification, operators, and "
+            "research-integrity reviewers"
+        ),
+        "purpose": (
+            "Current machine-readable local read-only Research Cockpit UI "
+            "implementation and authority boundary"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 0,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Authorizes only Mission 96B loopback HTTP serving, fixed "
+            "demonstration snapshots, Mission 96A connected observations, "
+            "deterministic presentation, and local UI tests. It grants no "
+            "writes, research, market, validation, model, exchange, trading, "
+            "autonomous, or capital authority."
+        ),
+    },
+    "docs/DELTAGRID_RESEARCH_COCKPIT_UI.md": {
+        "path": "docs/DELTAGRID_RESEARCH_COCKPIT_UI.md",
+        "classification": "CURRENT_INTERNAL",
+        "audience": (
+            "Maintainers, research-integrity reviewers, operators, and test "
+            "engineers"
+        ),
+        "purpose": (
+            "Current human explanation and local operating guide for the "
+            "read-only Research Cockpit v0"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 1,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Explains Mission 96B loopback-only read-only presentation over "
+            "Mission 96A without authorizing ledger writes, research, market "
+            "or protected-data access, models, validation, trading, exchanges, "
+            "autonomy, or capital."
         ),
     },
 }
@@ -576,6 +635,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_94_DOCUMENTS
             | MISSION_95_DOCUMENTS
             | MISSION_96A_DOCUMENTS
+            | MISSION_96B_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -706,14 +766,18 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 171
+    assert len(approved) == 173
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 174
+    assert len(registered) == 176
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES
     } == EXPECTED_MISSION_96A_REGISTRY_ENTRIES
+    assert {
+        path: registered[path]
+        for path in EXPECTED_MISSION_96B_REGISTRY_ENTRIES
+    } == EXPECTED_MISSION_96B_REGISTRY_ENTRIES
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()

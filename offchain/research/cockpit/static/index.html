@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DeltaGrid Research Cockpit v0</title>
+  <link rel="stylesheet" href="/assets/app.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to cockpit content</a>
+  <header class="topbar">
+    <div class="brand">
+      <span class="wordmark">DELTAGRID</span>
+      <span class="product">Research Cockpit v0</span>
+    </div>
+    <div class="header-status">
+      <span id="mode-badge" class="badge">LOADING</span>
+      <span id="health-badge" class="badge badge-muted">UNKNOWN</span>
+      <span class="header-fact"><span>SNAPSHOT</span><strong id="snapshot-time">—</strong></span>
+      <span class="header-fact"><span>COMMIT</span><strong id="commit-short">—</strong></span>
+      <span id="refresh-status" class="refresh-status" aria-live="polite">Starting local observation…</span>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="mode-strip" aria-label="Operating mode">
+      <strong id="mode-banner">LOCAL READ-ONLY OBSERVATION</strong>
+      <span id="incident-banner" class="incident-banner" hidden>DEMONSTRATION INCIDENT — NOT A CURRENT SYSTEM FAILURE</span>
+      <label id="scenario-control" class="scenario-control" hidden>
+        Demonstration scenario
+        <select id="scenario-select">
+          <option value="HEALTHY">Healthy demonstration</option>
+          <option value="DEGRADED">Degraded demonstration</option>
+        </select>
+      </label>
+    </section>
+
+    <div id="error-banner" class="error-banner" role="status" aria-live="polite" hidden></div>
+
+    <section class="panel" aria-labelledby="overview-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">READ-ONLY CONTROL PLANE</p>
+          <h1 id="overview-title">System Overview</h1>
+        </div>
+        <p class="section-note">Exact Mission 96A projection. No cockpit recalculation.</p>
+      </div>
+      <dl id="overview-grid" class="stat-grid"></dl>
+      <div class="identity-grid">
+        <div><span>SNAPSHOT ID</span><code id="snapshot-id">—</code></div>
+        <div><span>CANONICAL SNAPSHOT HASH</span><code id="snapshot-hash">—</code></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="authority-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MISSION 96A BOUNDARY</p>
+          <h2 id="authority-title">Authority Matrix</h2>
+        </div>
+        <p class="section-note">Observation is not permission to act.</p>
+      </div>
+      <div class="authority-columns">
+        <div>
+          <h3>Authorized Read-Only Capabilities</h3>
+          <dl id="authorized-list" class="authority-list"></dl>
+        </div>
+        <div class="prohibited">
+          <h3>Prohibited Capabilities</h3>
+          <p class="permanent-prohibitions">Strategy research · market-data access · validation access · holdout access · model training · exchange access · paper trading · live trading · capital deployment · autonomous execution · ledger writes</p>
+          <dl id="prohibited-list" class="authority-list"></dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="trials-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">ORDER PRESERVED</p>
+          <h2 id="trials-title">Trial Registry</h2>
+        </div>
+        <p id="trial-count" class="section-note">—</p>
+      </div>
+      <div class="filters" role="group" aria-label="Trial filters">
+        <label>Text filter
+          <input id="text-filter" type="search" autocomplete="off" placeholder="Trial, budget, family or reason">
+        </label>
+        <label>Lifecycle status
+          <select id="lifecycle-filter"><option value="">All lifecycle statuses</option></select>
+        </label>
+        <label>Verification status
+          <select id="verification-filter"><option value="">All verification statuses</option></select>
+        </label>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <caption>Mission 96A trials in authoritative projection order</caption>
+          <thead>
+            <tr>
+              <th scope="col">Trial ID</th>
+              <th scope="col">Budget</th>
+              <th scope="col">Experiment family</th>
+              <th scope="col">Trial number</th>
+              <th scope="col">Reservation timestamp</th>
+              <th scope="col">Latest status</th>
+              <th scope="col">Latest reason</th>
+              <th scope="col">Event count</th>
+              <th scope="col">Result verification</th>
+              <th scope="col">Incident count</th>
+            </tr>
+          </thead>
+          <tbody id="trial-rows"></tbody>
+        </table>
+      </div>
+      <p id="no-trials" class="empty-state" hidden>No trials match the current local filters.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="result-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">EXACT VERIFIED VALUES</p>
+          <h2 id="result-title">Result Inspector</h2>
+        </div>
+        <p class="section-note">Select a verified trial. Values remain decimal strings.</p>
+      </div>
+      <div id="result-inspector" class="inspector">
+        <p class="empty-state">No verified result selected.</p>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="incidents-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">INTEGRITY OBSERVATION</p>
+          <h2 id="incidents-title">Incident Panel</h2>
+        </div>
+        <p id="incident-count" class="section-note">—</p>
+      </div>
+      <div id="incident-list" class="incident-list"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="governance-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">VERIFIED PREDECESSOR CHAIN</p>
+          <h2 id="governance-title">Governance and Contract Chain</h2>
+        </div>
+      </div>
+      <div id="governance-grid" class="governance-grid"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="evidence-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">CANONICAL DECLARATIONS</p>
+          <h2 id="evidence-title">Evidence and Warnings</h2>
+        </div>
+      </div>
+      <div id="evidence-content" class="evidence-content"></div>
+      <p class="profitability-statement">Passing software verification does not establish a profitable strategy.</p>
+      <p class="safety-statement">SYNTHETIC_ONLY_NON_ALPHA_CONTROL · NO_PROFITABILITY_INFERENCE · no protected access · no market access · no exchange access · no paper trading · no live trading · no capital deployment</p>
+    </section>
+  </main>
+</body>
+</html>

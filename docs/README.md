@@ -30,6 +30,9 @@ authorized now.
 - [Research Control Plane v1](DELTAGRID_RESEARCH_CONTROL_PLANE.md) documents
   Mission 96A's read-only ledger, verified-result projection, and integrity
   incident boundary. It does not authorize the cockpit UI or research.
+- [Research Cockpit v0](DELTAGRID_RESEARCH_COCKPIT_UI.md) documents Mission
+  96B's loopback-only, single-user browser presentation over Mission 96A. It
+  adds no research, accounting, risk, validation, execution, or trading logic.
 
 These documents answer different questions. The root README is the public
 overview; the final freeze controls current project status; the intake policy

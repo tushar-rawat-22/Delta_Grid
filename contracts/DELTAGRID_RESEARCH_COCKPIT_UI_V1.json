@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-research-cockpit-ui-v1",
+  "contract_version": 1,
+  "base_commit": "e26eea3348a7f7f502e85baf4ad7c2ad896399f6",
+  "preceding_contract": "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json",
+  "preceding_contract_hash_sha256": "c1e0c8c55db90fe8a81d3afe2d243537c703dbee6a945596f4b37c5ee13e70a9",
+  "authorization_stage": "MISSION_96B_LOCAL_RESEARCH_COCKPIT",
+  "contract_hash_sha256": "13846c63a6fcd07b2a4603aadd388960e74282de486bddf39907a09aa053c8d3",
+  "scope_explanation": "Mission 96B authorizes only a local, single-user, read-only browser presentation over Mission 96A snapshots. It adds no authoritative research, accounting, risk, validation, promotion, execution, or trading logic and does not modify the Mission 96A authority boundary.",
+  "implementation_authorization": {
+    "local_browser_interface_authorized": true,
+    "loopback_only_http_serving_authorized": true,
+    "mission_96a_snapshot_loading_authorized": true,
+    "research_control_plane_service_connected_mode_authorized": true,
+    "fixed_hash_verified_demo_snapshot_loading_authorized": true,
+    "deterministic_presentation_projection_authorized": true,
+    "client_side_text_and_status_filtering_authorized": true,
+    "standard_library_webbrowser_opening_authorized": true,
+    "local_static_html_css_javascript_authorized": true,
+    "read_only_operator_observation_authorized": true,
+    "ui_and_server_tests_authorized": true
+  },
+  "authorization_state": {
+    "remote_binding_authorized": false,
+    "lan_exposure_authorized": false,
+    "public_hosting_authorized": false,
+    "cloud_deployment_authorized": false,
+    "analytics_authorized": false,
+    "telemetry_authorized": false,
+    "external_assets_authorized": false,
+    "external_fonts_authorized": false,
+    "cdn_use_authorized": false,
+    "external_api_requests_authorized": false,
+    "ledger_write_authorized": false,
+    "database_creation_authorized": false,
+    "trial_reservation_authorized": false,
+    "trial_admission_authorized": false,
+    "lifecycle_mutation_authorized": false,
+    "result_finalization_authorized": false,
+    "control_execution_authorized": false,
+    "fixture_loading_in_cockpit_runtime_authorized": false,
+    "quantitative_metric_recalculation_authorized": false,
+    "strategy_research_authorized": false,
+    "development_market_evaluation_authorized": false,
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "protected_data_access_authorized": false,
+    "model_training_authorized": false,
+    "model_promotion_authorized": false,
+    "signal_generation_authorized": false,
+    "portfolio_construction_authorized": false,
+    "exchange_access_authorized": false,
+    "credential_access_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "capital_deployment_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_promotion_authorized": false,
+    "autonomous_execution_authorized": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "operating_modes": {
+    "exact_modes": [
+      "DEMO",
+      "CONNECTED"
+    ],
+    "demo": {
+      "synthetic_non_alpha_only": true,
+      "operational_ledger_required": false,
+      "trial_execution_at_runtime": false,
+      "fixture_loading_at_runtime": false
+    },
+    "connected": {
+      "existing_ledger_required": true,
+      "existing_result_root_required": true,
+      "repository_root_required": true,
+      "expected_repository_commit_required": true,
+      "read_only_trial_ledger_required": true,
+      "research_control_plane_service_required": true,
+      "direct_sqlite_query_permitted": false
+    }
+  },
+  "package": {
+    "path": "offchain/research/cockpit",
+    "production_python_files": [
+      "offchain/research/cockpit/__init__.py",
+      "offchain/research/cockpit/__main__.py",
+      "offchain/research/cockpit/models.py",
+      "offchain/research/cockpit/sources.py",
+      "offchain/research/cockpit/server.py"
+    ],
+    "static_files": [
+      "offchain/research/cockpit/static/index.html",
+      "offchain/research/cockpit/static/app.css",
+      "offchain/research/cockpit/static/app.js"
+    ],
+    "demo_files": [
+      "offchain/research/cockpit/demo/healthy_snapshot.json",
+      "offchain/research/cockpit/demo/degraded_snapshot.json"
+    ],
+    "public_api": [
+      "CockpitError",
+      "CockpitConfig",
+      "ResearchCockpitApplication",
+      "ResearchCockpitServer",
+      "DemoSnapshotSource",
+      "LiveSnapshotSource",
+      "MISSION_CONTRACT_ID",
+      "MISSION_CONTRACT_HASH",
+      "MISSION_BASE_COMMIT",
+      "MISSION_AUTHORIZATION_STAGE"
+    ],
+    "python_standard_library_and_existing_mission_93_through_96a_only": true,
+    "dependency_changes_authorized": false
+  },
+  "local_http_boundary": {
+    "server_class": "ThreadingHTTPServer",
+    "bind_address": "127.0.0.1",
+    "host_configurable": false,
+    "daemon_threads": true,
+    "routes": [
+      "GET /session/<one-time-token>",
+      "GET /",
+      "GET /assets/app.css",
+      "GET /assets/app.js",
+      "GET /api/v1/meta",
+      "GET /api/v1/snapshot",
+      "HEAD /",
+      "HEAD /assets/app.css",
+      "HEAD /assets/app.js",
+      "HEAD /api/v1/meta",
+      "HEAD /api/v1/snapshot"
+    ],
+    "write_methods_present": false,
+    "cors_emitted": false,
+    "proxy_awareness_present": false,
+    "directory_serving_present": false,
+    "one_time_session_bootstrap_required": true,
+    "constant_time_digest_verification_required": true
+  },
+  "api_integer_safety": {
+    "integer_encoding": "DECIMAL_STRING",
+    "booleans_preserved": true,
+    "null_preserved": true,
+    "strings_preserved": true,
+    "floats_permitted": false,
+    "browser_metric_arithmetic_permitted": false
+  },
+  "demonstration_snapshots": {
+    "healthy": {
+      "relative_path": "offchain/research/cockpit/demo/healthy_snapshot.json",
+      "byte_sha256": "19981f5ae6bacf02735eaf90d6a51e0d5096bd23fd42268aadce17a12bd368a9",
+      "canonical_snapshot_hash": "e4f116dc8a4604a8a831d24aac0fe295ad0dd4ee74eb71e986f64d317eb4f7ed",
+      "snapshot_id": "snapshot-6abde673fc6aaa5ba7e520ec16114d7b",
+      "health_token": "HEALTHY",
+      "trial_count": 1,
+      "verified_result_count": 1,
+      "incident_count": 0
+    },
+    "degraded": {
+      "relative_path": "offchain/research/cockpit/demo/degraded_snapshot.json",
+      "byte_sha256": "134d86be360ab1f157f05ee03f765c7024ed3bde2f1baaf8993a4deaedd93067",
+      "canonical_snapshot_hash": "5f7f8ca4bc9095c75473da84f9ba622b0dc8d191a12384e87c6ae3ad3a646a53",
+      "snapshot_id": "snapshot-9618e1b91f31cb959e59bbc68204ce04",
+      "health_token": "DEGRADED",
+      "trial_count": 2,
+      "verified_result_count": 1,
+      "incident_count": 1
+    }
+  },
+  "permanent_declarations": {
+    "no_write": true,
+    "no_recalculation": true,
+    "no_network": true,
+    "no_trading": true,
+    "passing_software_verification_does_not_establish_a_profitable_strategy": true
+  }
+}

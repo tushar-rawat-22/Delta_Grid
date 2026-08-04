@@ -165,6 +165,21 @@
       "notes": "Authorizes only the Mission 94 admission-core implementation and synthetic-fixture validation. Research and every market, trading, capital, model, exchange, protected-data, and autonomous authority remain false."
     },
     {
+      "path": "contracts/DELTAGRID_RESEARCH_COCKPIT_UI_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, software verification, operators, and research-integrity reviewers",
+      "purpose": "Current machine-readable local read-only Research Cockpit UI implementation and authority boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only Mission 96B loopback HTTP serving, fixed demonstration snapshots, Mission 96A connected observations, deterministic presentation, and local UI tests. It grants no writes, research, market, validation, model, exchange, trading, autonomous, or capital authority."
+    },
+    {
       "path": "contracts/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and architecture reviewers",
@@ -1828,6 +1843,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Explains the Mission 94 metadata-only, append-only, no-execution boundary without authorizing research, market or protected-data access, trading, capital, models, exchanges, or autonomy."
+    },
+    {
+      "path": "docs/DELTAGRID_RESEARCH_COCKPIT_UI.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, research-integrity reviewers, operators, and test engineers",
+      "purpose": "Current human explanation and local operating guide for the read-only Research Cockpit v0",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 96B loopback-only read-only presentation over Mission 96A without authorizing ledger writes, research, market or protected-data access, models, validation, trading, exchanges, autonomy, or capital."
     },
     {
       "path": "docs/DELTAGRID_RESEARCH_COCKPIT_V0_CHARTER.md",
