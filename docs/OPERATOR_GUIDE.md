@@ -177,6 +177,55 @@ research, paper trading, live trading, capital, ML, or autonomous execution.
 8. Rerun the smallest authorized verification that addresses the issue.
 9. Do not bypass safety gates merely to obtain PASS.
 
+### Mission 98 decision-only CLI
+
+Mission 98 has a separate local foreground CLI:
+`python -m offchain.research.director`. It needs three existing, exact,
+non-symlinked directory roots: the governance repository, a Mission 97
+observation-output root, and a Director input root. The SQLite database parent
+must also exist. Supply `--created-at`, request `requested_at`, evidence
+`observation_as_of`, and `decision_as_of` explicitly as normalized UTC values;
+the Director does not read the current time.
+
+Use `init` once to bind those roots, the expected repository commit, contract
+identity, fixed capacity, and creation timestamp. `preview` fully validates a
+relative request, optional dossier, contracts, and Mission 97 artifacts, then
+returns an independently verified recommendation without writing. `record`
+repeats that full process and atomically appends the request, decision, and
+receipt. `ResearchDirectorService.record` is the supported mutation boundary;
+the ledger has no public raw-package write API, accepts no caller-created
+receipt, and runs the independent verifier itself immediately before atomic
+persistence. `status` reads one decision by ID or lists packages
+deterministically. `verify-ledger` checks the complete append-only database.
+
+Persisted packages are checked against the exact policy-outcome triples, fixed
+explanations, compiled Mission 93–98 contract identities, deterministic
+decision identity, and exact receipt semantics. Schema verification compares
+the complete SQLite-provided table, index, and trigger definitions with an
+in-memory reference created from the same schema, rather than checking names
+alone. Ledger-only verification does not recreate external evidence; exact
+service replay revalidates the current request, dossier, and Mission 97
+artifacts.
+
+The request field `repository_clean` is a caller assertion. Production Mission
+98 code does not invoke Git to prove it. Establish repository cleanliness
+separately before creating the request.
+
+Every selected action is a recommendation only. It cannot reopen research,
+activate a draft contract, grant data access, train or promote a model, produce
+a signal, trade, place an order, access credentials, or deploy capital.
+
+If a process is interrupted during a SQLite mutation, keep the database and
+its rollback journal together and run `verify-ledger` after filesystem access
+is restored. Do not delete the journal, edit immutable rows, or try to repair
+metadata. If verification fails, preserve the failed copy for diagnosis and
+restore a known-good complete database copy.
+
+Append-only behavior depends on the supported API and the verified SQLite
+schema. It does not claim protection against a process or user with
+unrestricted filesystem access, in-process Python access, or source-code
+control; such an actor can replace the database or program.
+
 ## Git actions and approvals
 
 Mission-control clean-start checking is opt-in through

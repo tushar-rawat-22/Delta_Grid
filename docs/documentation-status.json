@@ -105,6 +105,21 @@
       "notes": "Companion: research-summaries/ALPHA_SEARCH_B.md. This preserved source remains controlling for exact historical facts."
     },
     {
+      "path": "contracts/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, software verification, operators, and research-integrity reviewers",
+      "purpose": "Current machine-readable decision-only Research Director implementation and authority boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only Mission 98 strict intake, bounded Mission 97 evidence verification, fixed recommendation selection, independent decision verification, and append-only local recording. It grants no research, market, protected-data, model, signal, portfolio, exchange, credential, order, trading, autonomous-execution, or capital authority."
+    },
+    {
       "path": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and research-integrity reviewers",
@@ -1768,6 +1783,21 @@
       "readability_severity": 5,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Companion: research-summaries/PROJECT_AUDIT_TRAIL.md. This preserved source remains controlling for exact historical facts."
+    },
+    {
+      "path": "docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, research-integrity reviewers, operators, and test engineers",
+      "purpose": "Current human explanation and local operating guide for the decision-only Autonomous Research Director v1",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 98 deterministic evidence verification, fixed policy, independent verifier, and append-only decision ledger without authorizing research, market or protected-data access, models, signals, portfolios, trading, orders, exchanges, credentials, autonomous execution, or capital."
     },
     {
       "path": "docs/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md",

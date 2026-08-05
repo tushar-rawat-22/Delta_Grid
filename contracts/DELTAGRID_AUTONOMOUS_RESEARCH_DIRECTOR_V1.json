@@ -1,0 +1,293 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-autonomous-research-director-v1",
+  "contract_version": 1,
+  "base_commit": "eab9ed19a2f77f31eb57daf5929aed479d43c540",
+  "preceding_contract": "contracts/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR_V1.json",
+  "preceding_contract_hash_sha256": "c1840ed9f438f520401bbf24e501bb2a327f4718124745f275474ac76eeab272",
+  "authorization_stage": "MISSION_98_DECISION_ONLY_RESEARCH_DIRECTION",
+  "contract_hash_sha256": "3fcf4460762af5c45d2351c10652947f87d2f200e2d9e058b39feb10e5615a55",
+  "scope_explanation": "Mission 98 authorizes one deterministic local foreground decision-only Research Director. It verifies bounded Mission 97 observation evidence, evaluates one fixed policy, emits one non-executable recommendation, independently verifies that recommendation, and may append the complete package to a local SQLite ledger. It does not reopen or execute research and grants no data, model, signal, portfolio, exchange, credential, trading, order, capital, Git, shell, network, plugin, self-modification, self-authorization, promotion, or execution authority.",
+  "implementation_authorization": {
+    "strict_request_parsing_authorized": true,
+    "strict_dossier_parsing_authorized": true,
+    "bounded_read_only_mission_97_artifact_verification_authorized": true,
+    "fixed_action_registry_evaluation_authorized": true,
+    "deterministic_decision_preview_authorized": true,
+    "append_only_recorded_decisions_authorized": true,
+    "independent_decision_verification_authorized": true,
+    "local_sqlite_persistence_authorized": true,
+    "local_foreground_cli_authorized": true,
+    "read_only_status_authorized": true,
+    "complete_ledger_verification_authorized": true,
+    "read_only_ci_workflow_authorized": true
+  },
+  "authorization_state": {
+    "research_reopened": false,
+    "research_execution_authorized": false,
+    "strategy_execution_authorized": false,
+    "market_data_collection_authorized": false,
+    "market_data_access_authorized": false,
+    "research_ledger_access_authorized": false,
+    "result_root_access_authorized": false,
+    "referenced_artifact_access_authorized": false,
+    "development_market_evaluation_authorized": false,
+    "validation_access_authorized": false,
+    "holdout_access_authorized": false,
+    "protected_data_access_authorized": false,
+    "performance_recalculation_authorized": false,
+    "model_training_authorized": false,
+    "model_evaluation_authorized": false,
+    "model_selection_authorized": false,
+    "model_promotion_authorized": false,
+    "signal_generation_authorized": false,
+    "portfolio_construction_authorized": false,
+    "portfolio_rebalancing_authorized": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "exchange_access_authorized": false,
+    "account_access_authorized": false,
+    "credential_access_authorized": false,
+    "order_creation_authorized": false,
+    "order_amendment_authorized": false,
+    "order_cancellation_authorized": false,
+    "order_routing_authorized": false,
+    "order_simulation_authorized": false,
+    "order_submission_authorized": false,
+    "capital_allocation_authorized": false,
+    "capital_deployment_authorized": false,
+    "repository_mutation_authorized": false,
+    "git_invocation_authorized": false,
+    "shell_execution_authorized": false,
+    "subprocess_authorized": false,
+    "network_authorized": false,
+    "socket_authorized": false,
+    "dynamic_import_authorized": false,
+    "plugin_loading_authorized": false,
+    "caller_defined_action_authorized": false,
+    "caller_supplied_code_authorized": false,
+    "action_registry_mutation_authorized": false,
+    "decision_budget_increase_authorized": false,
+    "self_modification_authorized": false,
+    "self_authorization_authorized": false,
+    "self_approval_authorized": false,
+    "founder_review_bypass_authorized": false,
+    "gate_replacement_authorized": false,
+    "gate_lowering_authorized": false,
+    "autonomous_research_authorized": false,
+    "autonomous_promotion_authorized": false,
+    "autonomous_trading_execution_authorized": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "package": {
+    "path": "offchain/research/director",
+    "production_files": [
+      "offchain/research/director/__init__.py",
+      "offchain/research/director/__main__.py",
+      "offchain/research/director/action_registry.py",
+      "offchain/research/director/evidence.py",
+      "offchain/research/director/ledger.py",
+      "offchain/research/director/models.py",
+      "offchain/research/director/service.py",
+      "offchain/research/director/verifier.py"
+    ],
+    "python_standard_library_and_existing_public_mission_93_through_97_only": true,
+    "dependency_changes_authorized": false
+  },
+  "action_registry": {
+    "immutable": true,
+    "recommendation_only": true,
+    "runtime_registration_exposed": false,
+    "mutation_api_exposed": false,
+    "executable_callable_stored": false,
+    "action_ids": [
+      "STOP_NO_ADMISSIBLE_ACTION",
+      "REQUEST_OBSERVATION_REFRESH",
+      "REQUEST_MISSING_INTAKE_EVIDENCE",
+      "REJECT_PROPOSAL_OVERLAP",
+      "REJECT_POLICY_CONFLICT",
+      "DRAFT_RESEARCH_REOPENING_CONTRACT",
+      "QUEUE_FOUNDER_REVIEW"
+    ]
+  },
+  "rejected_family_registry": {
+    "immutable": true,
+    "family_ids": [
+      "MISSION_89_FUNDING_BASIS_CARRY",
+      "MISSION_90_DIRECTIONAL",
+      "ALPHA_SEARCH_A_MACRO_REGIME",
+      "ALPHA_SEARCH_B_TRADE_FLOW_LEAD_LAG"
+    ]
+  },
+  "decision_policy": {
+    "immutable_order": true,
+    "exactly_one_rule_wins": true,
+    "rules": [
+      "RULE_1_UPSTREAM_INTEGRITY_STOP",
+      "RULE_2_POLICY_CONFLICT",
+      "RULE_3_OBSERVATION_REFRESH",
+      "RULE_4_NO_PROPOSAL",
+      "RULE_5_MATERIAL_OVERLAP",
+      "RULE_6_INTAKE_EVIDENCE_INCOMPLETE",
+      "RULE_7_DRAFT_CONTRACT_REQUIRED",
+      "RULE_8_FOUNDER_REVIEW"
+    ],
+    "freshness_seconds": 86400,
+    "freshness_boundary_inclusive": true,
+    "caller_reordering_authorized": false,
+    "configuration_reordering_authorized": false
+  },
+  "root_binding": {
+    "governance_repository_root_required": true,
+    "observation_output_root_required": true,
+    "director_input_root_required": true,
+    "expected_repository_commit_required": true,
+    "roots_must_preexist": true,
+    "roots_must_be_directories": true,
+    "symlink_components_permitted": false,
+    "exact_resolution_required": true,
+    "repository_clean_is_later_caller_assertion": true,
+    "database_parent_must_preexist": true,
+    "database_may_be_created": true,
+    "unrelated_path_creation_authorized": false
+  },
+  "strict_boundaries": {
+    "maximum_request_bytes": 65536,
+    "maximum_dossier_bytes": 65536,
+    "maximum_snapshot_bytes": 4194304,
+    "maximum_verification_artifact_bytes": 1048576,
+    "maximum_manifest_bytes": 1048576,
+    "maximum_json_nesting_depth": 64,
+    "maximum_identifier_length": 128,
+    "maximum_relative_path_text_length": 4096,
+    "maximum_human_text_length": 4096,
+    "maximum_reason_length": 1024,
+    "strict_utf8": true,
+    "utf8_bom_permitted": false,
+    "duplicate_object_names_permitted": false,
+    "non_finite_numbers_permitted": false,
+    "unknown_fields_permitted": false,
+    "absolute_caller_paths_permitted": false,
+    "path_traversal_permitted": false,
+    "symlinks_permitted": false
+  },
+  "request_schema": {
+    "schema_version": "1.0",
+    "repository_clean_required_value": true,
+    "requested_by_values": [
+      "FOUNDER",
+      "OPERATOR",
+      "FUTURE_AUTOMATION"
+    ],
+    "future_automation_additional_authority": false,
+    "wall_clock_read_authorized": false,
+    "canonical_hash_excludes": [
+      "canonical_request_hash"
+    ]
+  },
+  "dossier_schema": {
+    "schema_version": "1.0",
+    "proposal_kind": "RESEARCH_REOPENING_CANDIDATE",
+    "metadata_only": true,
+    "referenced_material_may_be_opened": false,
+    "only_admissible_requested_stage": "DRAFT_REOPENING_CONTRACT_ONLY",
+    "recognized_unauthorized_stages": [
+      "DEVELOPMENT_RESEARCH",
+      "VALIDATION",
+      "HOLDOUT",
+      "PAPER_TRADING",
+      "LIVE_TRADING",
+      "CAPITAL_DEPLOYMENT"
+    ],
+    "all_requested_authorities_must_be_false": true,
+    "canonical_hash_excludes": [
+      "canonical_dossier_hash"
+    ]
+  },
+  "evidence_verification": {
+    "mission_93_through_98_chain_required": true,
+    "mission_97_functional_dependency_required": true,
+    "manifest_byte_hash_required": true,
+    "linked_paths_derived_from_run_identity": true,
+    "snapshot_projection_hashes_recomputed": true,
+    "verification_declaration_trusted_without_recomputation": false,
+    "research_ledger_may_be_opened": false,
+    "result_root_may_be_opened": false,
+    "referenced_market_or_result_artifacts_may_be_opened": false
+  },
+  "decision_schema": {
+    "deterministic_decision_id": true,
+    "deterministic_canonical_hash": true,
+    "caller_supplied_action_permitted": false,
+    "caller_supplied_explanation_permitted": false,
+    "fixed_explanation_mapping": true,
+    "recommendation_only": true
+  },
+  "independent_verifier": {
+    "service_preview_may_be_called": false,
+    "service_record_may_be_called": false,
+    "shared_policy_evaluator_permitted": false,
+    "every_decision_identity_recomputed": true,
+    "verification_token": "VERIFIED",
+    "verified_at_source": "decision_as_of",
+    "wall_clock_read_authorized": false
+  },
+  "ledger": {
+    "storage": "CALLER_SUPPLIED_LOCAL_SQLITE",
+    "schema_version": 1,
+    "journal_mode": "DELETE",
+    "synchronous": "EXTRA",
+    "foreign_keys_enabled": true,
+    "mutations_use_begin_immediate": true,
+    "immutable_metadata": true,
+    "immutable_requests": true,
+    "immutable_decisions": true,
+    "immutable_verification_receipts": true,
+    "maximum_unique_recorded_decisions": 10000,
+    "maximum_configurable": false,
+    "exact_replay_consumes_budget": false,
+    "preview_consumes_budget": false,
+    "atomic_complete_package_insert": true,
+    "reset_api_exposed": false,
+    "truncate_api_exposed": false,
+    "erase_api_exposed": false,
+    "repair_api_exposed": false
+  },
+  "cli": {
+    "foreground_only": true,
+    "commands": [
+      "init",
+      "preview",
+      "record",
+      "status",
+      "verify-ledger"
+    ],
+    "canonical_single_line_json": true,
+    "interactive_prompt": false,
+    "background_process": false,
+    "network": false,
+    "git": false,
+    "shell": false,
+    "subprocess": false
+  },
+  "ci": {
+    "workflow_name": "DeltaGrid CI",
+    "job_id": "offchain-tests",
+    "read_only_permissions": true,
+    "complete_offchain_suite": true,
+    "dependency_environment_description": "BOUNDED_AND_DIAGNOSABLE_NOT_BIT_FOR_BIT_REPRODUCIBLE"
+  }
+}
