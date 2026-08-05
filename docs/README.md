@@ -39,11 +39,16 @@ authorized now.
   durable event history, leases, recovery, and immutable artifacts. It adds no
   research, market, model, trading, exchange, autonomous-trading, or capital
   authority.
+- [Autonomous Research Director v1](DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md)
+  documents Mission 98's deterministic evidence verification, fixed
+  recommendation policy, independent verifier, and append-only decision
+  ledger. A recommendation is not authority and Mission 98 performs no
+  research.
 
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future
-proposals; and the Mission 93–97 records describe the narrow backend components
+proposals; and the Mission 93–98 records describe the narrow backend components
 implemented after the freeze.
 
 ## Current project state
@@ -59,11 +64,10 @@ research admission boundary, deterministic synthetic control execution,
 canonical evidence, read-only system projection, a local cockpit, and a durable
 observation workflow.
 
-The current published backend chain ends at Mission 97 commit
-`8afa19a06dd6f1b100befce067107c1fa347d471`. The complete repository suite at
-that publication passed 1,153 tests with one third-party
-`websockets.legacy` deprecation warning. Passing tests verify software and
-repository properties; they do not establish alpha or capital authority.
+The current backend chain ends at Mission 98. Mission 98 is deterministic and
+decision-only: it can recommend a next step but cannot perform research or
+grant authority. Passing tests verify software and repository properties; they
+do not establish alpha or capital authority.
 
 New strategy work still requires a new versioned reopening contract before
 implementation or result-bearing research begins.
@@ -102,7 +106,7 @@ Begin with the [project overview](../README.md), then read the
 [final project report](DELTAGRID_FINAL_PROJECT_REPORT.md) for the completed
 research programme and its negative economic result.
 
-The current backend architecture is the Mission 93–97 chain:
+The current backend architecture is the Mission 93–98 chain:
 
 | Mission | Document | Responsibility |
 |---|---|---|
@@ -112,6 +116,7 @@ The current backend architecture is the Mission 93–97 chain:
 | 96A | [Research Control Plane](DELTAGRID_RESEARCH_CONTROL_PLANE.md) | Produces read-only system, trial, result, and incident projections without recalculating evidence |
 | 96B | [Research Cockpit](DELTAGRID_RESEARCH_COCKPIT_UI.md) | Presents Mission 96A snapshots through a loopback-only single-user browser interface |
 | 97 | [Durable Observation Orchestrator](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md) | Progresses one fixed observation workflow with durable state, bounded retries, fencing, recovery, and immutable manifests |
+| 98 | [Autonomous Research Director](DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md) | Verifies Mission 97 evidence and selects one independently verified, non-executable recommendation |
 
 [Architecture State](ARCHITECTURE_STATE.md) remains a cumulative historical
 record of mission-era architecture. It is useful for tracing how earlier
@@ -120,12 +125,12 @@ not authorize those components to operate.
 
 The final project report is preserved evidence from the freeze publication. It
 should be read alongside the living root README, the final freeze, and the
-Mission 93–97 implementation contracts.
+Mission 93–98 implementation contracts.
 
 ## Planned direction
 
-The provisional Mission 98–107 roadmap appears once, in the
-[root README](../README.md#provisional-roadmap-missions-98107). It is planning
+The provisional Mission 99–107 roadmap appears once, in the
+[root README](../README.md#provisional-roadmap-missions-99107). It is planning
 direction rather than authorization.
 
 ## Current policies
@@ -245,6 +250,11 @@ Mission 97's separate bounded foreground commands are documented in the
 They progress one fixed read-only observation workflow and expose no arbitrary
 command, plugin, background scheduler, research, or trading interface.
 
+Mission 98's separate decision-only commands are documented in the
+[Autonomous Research Director guide](DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md).
+They preview, record, inspect, and verify recommendations; they do not execute
+the recommended work or change any authorization.
+
 The current local verification CLIs and the plain-text command logs they produce
 have been reviewed for clear human-facing language. Their machine-readable JSON,
 contracts, and evidence remain unchanged. A successful command or generated report
@@ -269,5 +279,5 @@ research evidence, and authorization boundaries.
 
 When historical documents conflict with the final freeze, the final freeze controls.
 
-Later Mission 93–97 contracts control only the narrow backend capabilities they
+Later Mission 93–98 contracts control only the narrow backend capabilities they
 explicitly authorize.

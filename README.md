@@ -65,6 +65,7 @@ The current backend sequence is deliberately narrower:
 | 96A | Added read-only ledger and verified-result projections |
 | 96B | Added a loopback-only, read-only cockpit |
 | 97 | Added one durable observation workflow with leases, fencing, bounded retries, recovery, and immutable manifests |
+| 98 | Added a deterministic, decision-only Research Director that verifies Mission 97 evidence and emits one non-executable recommendation |
 
 Mission 97 was published at commit
 `8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153
@@ -72,15 +73,16 @@ passing tests and one third-party `websockets.legacy` deprecation warning. Those
 tests cover software behavior and repository invariants; they do not establish
 alpha.
 
-## Provisional roadmap: Missions 98–107
+## Provisional roadmap: Missions 99–107
 
 This is planning direction, not authorization. Each mission would require its
 own reviewed contract before it could use new data, execute research, access an
 exchange, paper trade, live trade, or deploy capital.
 
+Mission 99 is the next provisional stage.
+
 | Mission | Planning direction |
 |---|---|
-| 98 | Choose the next permitted research action from fixed evidence, budgets, and policy |
 | 99 | Maintain reproducible, certified, availability-aware market datasets |
 | 100 | Provide a general event-driven research runtime for registered strategies and controls |
 | 101 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
@@ -118,6 +120,7 @@ clone.
 - [Current safety invariants](docs/SAFETY_INVARIANTS.md)
 - [Evidence summaries](docs/research-summaries/README.md)
 - [Operator guide](docs/OPERATOR_GUIDE.md)
+- [Autonomous Research Director](docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md)
 - [Documentation registry](docs/documentation-status.json)
 
 <details>

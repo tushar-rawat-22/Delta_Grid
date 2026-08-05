@@ -149,12 +149,12 @@ FOUNDATION_DOCUMENTS = {
 
 EXPECTED_CLASSIFICATION_COUNTS = {
     "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 11,
+    "CURRENT_INTERNAL": 12,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 12,
-    "MACHINE_REFERENCE": 40,
+    "MACHINE_REFERENCE": 41,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -265,6 +265,10 @@ MISSION_96B_DOCUMENTS = {
 MISSION_97_DOCUMENTS = {
     "contracts/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR_V1.json",
     "docs/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md",
+}
+MISSION_98_DOCUMENTS = {
+    "contracts/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR_V1.json",
+    "docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md",
 }
 EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
     "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json": {
@@ -431,6 +435,63 @@ EXPECTED_MISSION_97_REGISTRY_ENTRIES = {
         ),
     },
 }
+EXPECTED_MISSION_98_REGISTRY_ENTRIES = {
+    "contracts/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR_V1.json": {
+        "path": "contracts/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR_V1.json",
+        "classification": "MACHINE_REFERENCE",
+        "audience": (
+            "Maintainers, software verification, operators, and "
+            "research-integrity reviewers"
+        ),
+        "purpose": (
+            "Current machine-readable decision-only Research Director "
+            "implementation and authority boundary"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 0,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Authorizes only Mission 98 strict intake, bounded Mission 97 "
+            "evidence verification, fixed recommendation selection, "
+            "independent decision verification, and append-only local "
+            "recording. It grants no research, market, protected-data, model, "
+            "signal, portfolio, exchange, credential, order, trading, "
+            "autonomous-execution, or capital authority."
+        ),
+    },
+    "docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md": {
+        "path": "docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md",
+        "classification": "CURRENT_INTERNAL",
+        "audience": (
+            "Maintainers, research-integrity reviewers, operators, and test "
+            "engineers"
+        ),
+        "purpose": (
+            "Current human explanation and local operating guide for the "
+            "decision-only Autonomous Research Director v1"
+        ),
+        "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+        "conflicts_with_current_state": False,
+        "test_dependent": True,
+        "checksum_dependent": False,
+        "referenced_by_other_records": True,
+        "ai_tone_severity": 1,
+        "readability_severity": 1,
+        "recommended_treatment": "LEAVE_UNCHANGED",
+        "notes": (
+            "Explains Mission 98 deterministic evidence verification, fixed "
+            "policy, independent verifier, and append-only decision ledger "
+            "without authorizing research, market or protected-data access, "
+            "models, signals, portfolios, trading, orders, exchanges, "
+            "credentials, autonomous execution, or capital."
+        ),
+    },
+}
 
 
 def load_registry() -> dict:
@@ -457,7 +518,7 @@ def repository_relative(path: Path) -> str:
 
 
 def approved_inventory() -> set[str]:
-    """Return the rolling approved inventory through Mission 97."""
+    """Return the rolling approved inventory through Mission 98."""
     paths = {
         ".gitignore",
         "README.md",
@@ -730,6 +791,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_96A_DOCUMENTS
             | MISSION_96B_DOCUMENTS
             | MISSION_97_DOCUMENTS
+            | MISSION_98_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -879,10 +941,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 177
+    assert len(approved) == 179
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 180
+    assert len(registered) == 182
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES
@@ -895,6 +957,10 @@ def test_registry_covers_exact_approved_inventory() -> None:
         path: registered[path]
         for path in EXPECTED_MISSION_97_REGISTRY_ENTRIES
     } == EXPECTED_MISSION_97_REGISTRY_ENTRIES
+    assert {
+        path: registered[path]
+        for path in EXPECTED_MISSION_98_REGISTRY_ENTRIES
+    } == EXPECTED_MISSION_98_REGISTRY_ENTRIES
     assert all(
         registered[path] == expected
         for path, expected in FOUNDATION_DOCUMENTS.items()
