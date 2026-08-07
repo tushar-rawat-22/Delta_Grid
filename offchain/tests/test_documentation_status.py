@@ -148,13 +148,13 @@ FOUNDATION_DOCUMENTS = {
 }
 
 EXPECTED_CLASSIFICATION_COUNTS = {
-    "CURRENT_PUBLIC": 10,
-    "CURRENT_INTERNAL": 12,
+    "CURRENT_PUBLIC": 11,
+    "CURRENT_INTERNAL": 15,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 12,
-    "MACHINE_REFERENCE": 41,
+    "MACHINE_REFERENCE": 43,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -269,6 +269,14 @@ MISSION_97_DOCUMENTS = {
 MISSION_98_DOCUMENTS = {
     "contracts/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR_V1.json",
     "docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md",
+}
+MISSION_99_DOCUMENTS = {
+    "AGENTS.md",
+    "LICENSE",
+    "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V1.json",
+    "contracts/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE_V1.json",
+    "docs/DELTAGRID_AUTONOMY_CONSTITUTION.md",
+    "docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md",
 }
 EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
     "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json": {
@@ -521,6 +529,8 @@ def approved_inventory() -> set[str]:
     """Return the rolling approved inventory through Mission 98."""
     paths = {
         ".gitignore",
+        "AGENTS.md",
+        "LICENSE",
         "README.md",
         "contracts/foundry.toml",
         "contracts/remappings.txt",
@@ -705,6 +715,8 @@ def test_dependency_and_conflict_fields_are_booleans() -> None:
 def test_readme_is_current_public() -> None:
     registered = documents_by_path()
     assert registered["README.md"]["classification"] == "CURRENT_PUBLIC"
+    assert registered["LICENSE"]["classification"] == "CURRENT_PUBLIC"
+    assert registered["AGENTS.md"]["classification"] == "CURRENT_INTERNAL"
     assert registered["README.md"]["checksum_dependent"] is False
     assert (
         "docs/evidence/deltagrid_final_freeze/"
@@ -792,6 +804,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_96B_DOCUMENTS
             | MISSION_97_DOCUMENTS
             | MISSION_98_DOCUMENTS
+            | MISSION_99_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -941,10 +954,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 179
+    assert len(approved) == 185
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 182
+    assert len(registered) == 188
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES

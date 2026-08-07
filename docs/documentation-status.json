@@ -45,6 +45,36 @@
       "notes": "Keep as machine-oriented configuration or reference."
     },
     {
+      "path": "AGENTS.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers and code-editing agents",
+      "purpose": "Current repository-local operating instructions for safe code changes",
+      "authority_level": "CURRENT_SUPPORTING",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Concise maintainer instructions. It is subordinate to current contracts and policies and does not grant research, exchange, trading, credential, order, or capital authority."
+    },
+    {
+      "path": "LICENSE",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public readers, project reviewers, and permission requesters",
+      "purpose": "Current reserved-rights notice for the public DeltaGrid repository",
+      "authority_level": "CONTROLLING_RIGHTS_NOTICE",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "States that DeltaGrid is publicly visible but not open source, reserves all rights not otherwise required by GitHub platform terms or law, and gives the permission contact address."
+    },
+    {
       "path": "README.md",
       "classification": "CURRENT_PUBLIC",
       "audience": "Public readers and project reviewers",
@@ -118,6 +148,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Authorizes only Mission 98 strict intake, bounded Mission 97 evidence verification, fixed recommendation selection, independent decision verification, and append-only local recording. It grants no research, market, protected-data, model, signal, portfolio, exchange, credential, order, trading, autonomous-execution, or capital authority."
+    },
+    {
+      "path": "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, software verification, and risk reviewers",
+      "purpose": "Current machine-readable root authority and permanent self-authorization boundary",
+      "authority_level": "ROOT_AUTONOMY_CONSTITUTION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Defines founder root authority, the proposal-versus-activation separation, fail-closed uncertainty, and the permanent prohibition on self-authorization. It grants no current paper, live, exchange, credential, order, or capital authority."
     },
     {
       "path": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
@@ -238,6 +283,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Authorizes only Mission 96A local read-only ledger inspection, verified linked-result loading, deterministic projections, and integrity incidents. It grants no UI, research, market, protected-data, model, exchange, trading, autonomous, or capital authority."
+    },
+    {
+      "path": "contracts/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, software verification, operators, data engineers, and research-integrity reviewers",
+      "purpose": "Current machine-readable temporal market-data custody, release, certification, recovery, and resolver boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only Mission 99 local market-data custody, metadata-safe legacy audit, immutable releases, independent certification, recovery inspection, and synthetic-only resolution. It grants no network refresh, real-data research, strategy, performance, model, signal, portfolio, exchange, credential, order, paper, live, or capital authority."
     },
     {
       "path": "contracts/foundry.toml",
@@ -1800,6 +1860,21 @@
       "notes": "Explains Mission 98 deterministic evidence verification, fixed policy, independent verifier, and append-only decision ledger without authorizing research, market or protected-data access, models, signals, portfolios, trading, orders, exchanges, credentials, autonomous execution, or capital."
     },
     {
+      "path": "docs/DELTAGRID_AUTONOMY_CONSTITUTION.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Founder, maintainers, operators, and risk reviewers",
+      "purpose": "Current human explanation of DeltaGrid root authority and autonomy limits",
+      "authority_level": "ROOT_AUTONOMY_CONSTITUTION_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains founder root authority, bounded autonomous actions, proposal and activation separation, and the permanent self-authorization prohibition without granting paper, live, exchange, credential, order, or capital authority."
+    },
+    {
       "path": "docs/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md",
       "classification": "CURRENT_INTERNAL",
       "audience": "Maintainers, research-integrity reviewers, operators, and test engineers",
@@ -1948,6 +2023,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Explains Mission 96A read-only ledger and verified-result projections without authorizing UI, research, market or protected-data access, models, trading, exchanges, autonomy, or capital."
+    },
+    {
+      "path": "docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, data engineers, research-integrity reviewers, operators, and test engineers",
+      "purpose": "Current human explanation and safe operating guide for the Temporal Market Data Control Plane v1",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 99 temporal custody, immutable releases, independent certification, metadata-safe legacy audit, recovery, and synthetic-only as-of resolution without authorizing network refresh, real-data research, strategy, model, trading, exchange, credentials, orders, or capital."
     },
     {
       "path": "docs/DELTA_AUTONOMOUS_BOT_ROADMAP.md",

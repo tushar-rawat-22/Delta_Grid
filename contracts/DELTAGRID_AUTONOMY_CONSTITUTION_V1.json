@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-autonomy-constitution-v1",
+  "contract_version": 1,
+  "authority_version": 1,
+  "base_commit": "f9a8e35c85bf736eedc21eb6ae3df0f788386e8f",
+  "contract_hash_sha256": "b9b1d48dd3f65ac492b287e9d5dcebe11f69063138698bf37432c11869a3da5b",
+  "purpose": {
+    "tenant_model": "SINGLE_TENANT",
+    "owner": "Tushar Rawat",
+    "capital_scope": "FOUNDERS_OWN_CAPITAL_ONLY_IF_SEPARATELY_AUTHORIZED",
+    "self_advancing_definition": "The system may improve bounded research processes, propose changes, collect already-authorized public data, run already-authorized experiments, reject weak candidates, quarantine invalid evidence, recover bounded workflows, stop itself, and reduce risk inside frozen limits.",
+    "self_authorizing_definition": "The system may not grant, approve, merge, deploy, or activate new authority."
+  },
+  "root_authority": {
+    "holder": "FOUNDER",
+    "delegation_must_be_explicit_and_versioned": true,
+    "uncertainty_behavior": "FAIL_CLOSED",
+    "software_error_free_guarantee": false
+  },
+  "autonomous_action_categories": [
+    "EXECUTE_ALREADY_AUTHORIZED_BOUNDED_WORKFLOW",
+    "PROPOSE_CHANGE_WITHOUT_ACTIVATION",
+    "COLLECT_ALREADY_AUTHORIZED_PUBLIC_DATA",
+    "RUN_ALREADY_AUTHORIZED_EXPERIMENT",
+    "REJECT_WEAK_CANDIDATE",
+    "QUARANTINE_INVALID_EVIDENCE",
+    "RECOVER_BOUNDED_WORKFLOW",
+    "STOP_OR_REDUCE_RISK_WITHIN_FROZEN_LIMITS"
+  ],
+  "founder_only_action_categories": [
+    "CHANGE_AUTONOMY_CONSTITUTION",
+    "CHANGE_CAPITAL_OR_EXPOSURE_LIMIT",
+    "ADD_EXCHANGE_PROVIDER_ACCOUNT_OR_CREDENTIAL",
+    "OPEN_VALIDATION_OR_HOLDOUT_DATA",
+    "APPROVE_NEW_STRATEGY_FAMILY",
+    "PROMOTE_CANDIDATE",
+    "ENABLE_PAPER_TRADING",
+    "ENABLE_LIVE_TRADING",
+    "ENABLE_EXCHANGE_CONNECTIVITY",
+    "AUTHORIZE_ORDER",
+    "AUTHORIZE_CAPITAL_DEPLOYMENT",
+    "WEAKEN_SAFETY_GATE",
+    "OVERRIDE_SAFETY_STOP",
+    "ACTIVATE_SYSTEM_GENERATED_CODE_OR_POLICY_CHANGE"
+  ],
+  "proposal_activation_separation": {
+    "system_may_propose": true,
+    "system_may_approve_own_proposal": false,
+    "system_may_activate_own_proposal": false,
+    "proposal_is_authority": false,
+    "permanent_self_authorization_prohibition": true
+  },
+  "current_authority": {
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_connectivity": false,
+    "credential_access": false,
+    "order_authorization": false,
+    "capital_deployment": false
+  },
+  "change_control": {
+    "reviewed_pull_request_required": true,
+    "ci_required": true,
+    "founder_approval_required": true,
+    "authority_version_increment_required": true,
+    "automatic_activation": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}

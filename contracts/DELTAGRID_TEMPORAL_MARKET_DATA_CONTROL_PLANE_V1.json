@@ -1,0 +1,297 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-temporal-market-data-control-plane-v1",
+  "contract_version": 1,
+  "base_commit": "f9a8e35c85bf736eedc21eb6ae3df0f788386e8f",
+  "autonomy_constitution_id": "deltagrid-autonomy-constitution-v1",
+  "autonomy_constitution_hash_sha256": "b9b1d48dd3f65ac492b287e9d5dcebe11f69063138698bf37432c11869a3da5b",
+  "contract_hash_sha256": "159a822f77e3c6bf6409e04b2c25a61c5c7232cf6e73ea160ffb6cbf167d5d4c",
+  "authorization_stage": "MISSION_99_TEMPORAL_MARKET_DATA_CUSTODY_ONLY",
+  "purpose": "Create immutable, reproducible, revision-aware market-data releases with explicit temporal provenance while granting no research or trading authority.",
+  "source_scope": {
+    "providers": [
+      "BINANCE_PUBLIC"
+    ],
+    "allowed_hosts": [
+      "api.binance.com",
+      "data-api.binance.vision",
+      "fapi.binance.com"
+    ],
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "streams": [
+      "spot_ohlcv",
+      "perpetual_ohlcv",
+      "mark_price_ohlcv",
+      "index_price_ohlcv",
+      "funding_rates"
+    ],
+    "bar_intervals": [
+      "1h"
+    ],
+    "live_public_refresh_execution": false,
+    "mission_99_network_request_limit": 0
+  },
+  "legacy_acceptance_inventory": {
+    "mission86_files": 277,
+    "mission86_gzip_raw_responses": 276,
+    "mission86_json_manifests": 1,
+    "mission86_manifest_relative_path": "offchain/data/mission86/manifest.json",
+    "mission86_manifest_file_sha256": "c32ff8bc6db7627049deb42fa0fa2084c2fe6f5a7bac28bc01111b709dce03ae",
+    "mission87_files": 1,
+    "mission87_json_certificates": 1,
+    "mission87_certificate_relative_path": "offchain/data/mission87/certificate.json",
+    "mission87_certificate_file_sha256": "ca26ae9c380ad4bea641cd4e96eea2f50c5c0eb85cb1b11c995c5809a2fb007b",
+    "sqlite_counts": {
+      "mission86_dataset_manifests": 1,
+      "mission86_foundation_checks": 12,
+      "mission86_funding_rates": 8208,
+      "mission86_ingestion_checkpoints": 15,
+      "mission86_ingestion_runs": 1,
+      "mission86_market_bars": 262656,
+      "mission86_raw_responses": 276,
+      "mission86_stream_coverage": 15,
+      "mission87_certification_runs": 1,
+      "mission87_dataset_certificates": 1,
+      "mission87_quality_checks": 23,
+      "mission87_series_certifications": 15
+    },
+    "universal_future_dataset_assumption": false
+  },
+  "temporal_semantics": {
+    "bar_event_time": "COMPLETED_BAR_CLOSE_OR_END_TIMESTAMP",
+    "funding_event_time": "SETTLED_FUNDING_TIMESTAMP",
+    "source_time_meaning": "PROVIDER_DECLARED_COMPLETION_OR_PUBLICATION_TIME",
+    "available_at_meaning": "EARLIEST_TIME_ALLOWED_IN_AS_OF_CAUSAL_RESOLUTION",
+    "required_observation_fields": [
+      "event_time",
+      "source_time",
+      "available_at",
+      "availability_class",
+      "availability_policy_id",
+      "first_observed_at",
+      "last_verified_at",
+      "record_hash",
+      "revision_number",
+      "supersedes_record_hash",
+      "source_response_hash",
+      "receipt_hash",
+      "normalizer_id"
+    ],
+    "availability_classes": [
+      "OBSERVED_LIVE",
+      "SOURCE_DECLARED",
+      "CONSERVATIVE_RECONSTRUCTION",
+      "UNKNOWN"
+    ],
+    "unknown_causal_access": "DENY",
+    "conservative_reconstruction_is_observed_fact": false,
+    "production_reconstruction_policy_activated": false,
+    "legacy_default_availability_class": "UNKNOWN",
+    "availability_classes_may_mix_silently": false,
+    "bad_or_unknown_clock_health_is_observed_live": false
+  },
+  "receipt_evidence": {
+    "kinds": [
+      "FORWARD_CAPTURE_V1",
+      "LEGACY_CAPTURE_V1"
+    ],
+    "legacy_forward_only_fields_may_be_fabricated": false,
+    "observation_requires_receipt": true,
+    "observation_requires_source_response_match": true,
+    "receipt_requires_raw_object": true
+  },
+  "revision_rules": {
+    "corrections_append": true,
+    "overwrite_prior_revision": false,
+    "cycles": "REJECT",
+    "missing_parents": "REJECT",
+    "forks": "REJECT",
+    "inconsistent_logical_identity": "REJECT",
+    "timestamp_regression": "REJECT",
+    "exact_duplicates": "IDEMPOTENT_COALESCE",
+    "conflicting_duplicates": "REJECT"
+  },
+  "release_model": {
+    "release_kind": "FULL_SNAPSHOT_V1",
+    "child_contains_complete_parent_evidence": true,
+    "shared_content_addressed_raw_object_store": true,
+    "synthetic_and_real_lineage_may_mix": false
+  },
+  "release_identity": {
+    "semantic_core_contains_release_id": false,
+    "semantic_core_contains_release_core_hash": false,
+    "release_core_hash": "SHA256_CANONICAL_RELEASE_SEMANTIC_CORE",
+    "release_id": "m99-<release_core_hash>",
+    "wall_clock_publication_in_semantic_identity": false,
+    "sqlite_physical_hash_is_semantic_identity": false,
+    "staging_identity_is_semantic_identity": false
+  },
+  "runtime": {
+    "production_default_root": "~/.deltagrid/market_data",
+    "layout": [
+      "catalogue.sqlite3",
+      "objects/sha256",
+      "releases",
+      "staging",
+      "incidents",
+      "locks/publication.lock"
+    ],
+    "root_inside_repository_permitted": false,
+    "symlinks_permitted": false,
+    "path_traversal_permitted": false,
+    "directory_mode_octal": "0700",
+    "file_mode_octal": "0600",
+    "silent_file_replacement_permitted": false,
+    "publication_atomic_same_filesystem_staging": true,
+    "publication_single_writer_lock": "POSIX_FLOCK",
+    "automatic_evidence_deletion": false,
+    "required_directory_fsync_fail_closed": true,
+    "publication_lock_is_security_sandbox": false,
+    "supported_runtime_environment": "LOCAL_POSIX_MACOS_FILESYSTEM"
+  },
+  "publication_visibility": {
+    "resolver_discovers_only_catalogued_certified_releases": true,
+    "staging_visible_to_resolver": false,
+    "renamed_uncatalogued_release_visible_to_resolver": false,
+    "catalogue_insert_before_final_published_verification": false
+  },
+  "certification": {
+    "public_certifier_requires_certificate_file": true,
+    "public_certifier_creates_or_repairs_certificate": false,
+    "independent_persisted_evidence_reconstruction": true,
+    "exact_sqlite_schema_required": true,
+    "unexpected_tables_views_triggers_or_indexes": "REJECT",
+    "full_snapshot_parent_verification": true,
+    "raw_gzip_and_decompressed_hash_verification": true,
+    "public_certifier_published_release_only": true,
+    "staged_verifier_separate": true
+  },
+  "resolver": {
+    "public_unrestricted_sql": false,
+    "real_data_research_resolution": false,
+    "synthetic_test_resolution": true,
+    "permitted_authorization_stages": [
+      "SYNTHETIC_TEST_ONLY"
+    ],
+    "unknown_availability": "DENY_RELEASE_RESOLUTION",
+    "records_after_decision_time": "EXCLUDE",
+    "validation_or_holdout_requires_explicit_external_authority": true
+  },
+  "legacy_build": {
+    "real_builder_is_separate_narrow_path": true,
+    "explicit_acknowledgement": "BUILD_LEGACY_RELEASE",
+    "requires_clean_repository": true,
+    "repository_identity_is_read_from_git": true,
+    "re_runs_exact_audit_before_publication": true,
+    "legacy_availability_class": "UNKNOWN",
+    "real_data_research_resolution": false,
+    "mission_99_execution_performs_real_build": false,
+    "metadata_safe_audit_proof_persisted_in_release": true
+  },
+  "recovery": {
+    "inspection_only": true,
+    "automatic_repair": false,
+    "automatic_delete": false,
+    "classifies_orphan_objects": true,
+    "classifies_orphan_releases": true,
+    "classifies_dangling_catalogue_rows": true,
+    "classifies_invalid_catalogued_releases": true,
+    "classifies_incident_evidence": true
+  },
+  "resource_bounds": {
+    "allowed_provider_count": 1,
+    "allowed_host_count": 3,
+    "allowed_symbol_count": 3,
+    "allowed_stream_count": 5,
+    "allowed_interval_count": 1,
+    "maximum_legacy_raw_responses": 276,
+    "expected_legacy_market_bar_count": 262656,
+    "expected_legacy_funding_count": 8208,
+    "expected_legacy_series_count": 15,
+    "maximum_response_bytes": 8388608,
+    "maximum_decompressed_response_bytes": 33554432,
+    "maximum_total_raw_object_bytes": 134217728,
+    "maximum_release_rows": 300000,
+    "maximum_receipts": 300,
+    "maximum_release_files": 3,
+    "maximum_release_sqlite_bytes": 268435456,
+    "maximum_staging_bytes": 335544320,
+    "maximum_total_acceptance_runtime_bytes": 536870912,
+    "maximum_retry_count": 3,
+    "maximum_request_count": 0,
+    "maximum_acceptance_release_count": 4,
+    "maximum_publication_lock_wait_seconds": 2,
+    "maximum_bounded_audit_runtime_seconds": 60,
+    "maximum_json_bytes": 8388608,
+    "maximum_json_nesting": 64,
+    "maximum_header_count": 32,
+    "maximum_header_bytes": 16384,
+    "maximum_warning_count": 64,
+    "maximum_quarantine_count": 256,
+    "bounds_basis": "The exact legacy source has 276 raw responses and 270864 normalized observations. The remaining limits provide bounded headroom for one custody release and synthetic acceptance tests without authorizing collection."
+  },
+  "protected_data": {
+    "development_research_access": false,
+    "validation_research_access": false,
+    "holdout_research_access": false,
+    "protected_observation_output": false,
+    "legacy_audit_output_metadata_only": true,
+    "custody_integrity_rehash_without_value_output": true,
+    "custody_integrity_rehash_is_research_access": false
+  },
+  "authorization_state": {
+    "market_data_custody": true,
+    "metadata_safe_legacy_audit": true,
+    "synthetic_release_testing": true,
+    "live_refresh": false,
+    "real_data_research_resolution": false,
+    "strategy_authority": false,
+    "performance_authority": false,
+    "model_or_ml_authority": false,
+    "signal_authority": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_access": false,
+    "credential_access": false,
+    "order_placement": false,
+    "portfolio_authority": false,
+    "capital_deployment": false,
+    "profitability_claim": false,
+    "self_authorization": false
+  },
+  "prohibited_capabilities": [
+    "NETWORK_COLLECTION",
+    "GENERIC_PROVIDER_PLUGIN",
+    "BACKGROUND_DAEMON",
+    "WEBSOCKET_COLLECTOR",
+    "STRATEGY",
+    "RETURN_OR_PERFORMANCE_CALCULATION",
+    "MODEL_OR_ML",
+    "SIGNAL",
+    "PORTFOLIO",
+    "PAPER_OR_LIVE_TRADING",
+    "EXCHANGE_CREDENTIAL_OR_ORDER_ACCESS",
+    "CAPITAL_DEPLOYMENT",
+    "SELF_AUTHORIZATION"
+  ],
+  "stopping_rule": "Stop after contracts, synthetic publication and crash/recovery verification, metadata-safe legacy audit, documentation, regressions, diff checks, one full suite, and final review. Do not execute the real migration.",
+  "next_stage_boundary": "A later founder-approved contract is required before any real-data research resolution, refresh, strategy, model, paper, live, exchange, order, or capital use.",
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}
