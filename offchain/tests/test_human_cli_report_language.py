@@ -26,6 +26,7 @@ ELIGIBLE_CLI_PATHS = {
     "scripts/mission_pack_runner.py",
 }
 AUTHORIZED_POST_BASE_CLIS = {
+    "offchain/market_data_control/__main__.py",
     "offchain/research/cockpit/__main__.py",
     "offchain/orchestration/__main__.py",
 }

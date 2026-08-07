@@ -1,6 +1,6 @@
 # DeltaGrid
 
-DeltaGrid is Tushar Rawat's private quantitative research and investment-system
+DeltaGrid is Tushar Rawat's single-user quantitative research and investment-system
 project. I built it to test cryptocurrency trading ideas under realistic data,
 cost, chronology, and risk constraints—and to preserve negative results instead
 of turning attractive backtests into premature trading claims.
@@ -18,6 +18,12 @@ The final project freeze was published at commit
 families without a promotable candidate. Later work added narrow research and
 observation infrastructure, but it did not reopen strategy research or grant
 trading authority.
+
+Mission 99 now adds a temporal market-data control plane. It can create and
+independently certify immutable synthetic releases, audit Mission 86/87
+metadata, classify recovery evidence, and resolve synthetic records as of a
+decision time. It makes no network requests, and real-data research resolution
+remains unauthorized.
 
 ## Why I built it
 
@@ -66,6 +72,7 @@ The current backend sequence is deliberately narrower:
 | 96B | Added a loopback-only, read-only cockpit |
 | 97 | Added one durable observation workflow with leases, fencing, bounded retries, recovery, and immutable manifests |
 | 98 | Added a deterministic, decision-only Research Director that verifies Mission 97 evidence and emits one non-executable recommendation |
+| 99 | Added immutable, revision-aware market-data custody, independent certification, deterministic recovery inspection, and a bounded synthetic as-of resolver |
 
 Mission 97 was published at commit
 `8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153
@@ -73,17 +80,17 @@ passing tests and one third-party `websockets.legacy` deprecation warning. Those
 tests cover software behavior and repository invariants; they do not establish
 alpha.
 
-## Provisional roadmap: Missions 99–107
+## Provisional roadmap: Missions 100–107
 
 This is planning direction, not authorization. Each mission would require its
 own reviewed contract before it could use new data, execute research, access an
 exchange, paper trade, live trade, or deploy capital.
 
-Mission 99 is the next provisional stage.
+Mission 100 is the next provisional stage. Mission 99's implementation does not
+authorize any later roadmap item.
 
 | Mission | Planning direction |
 |---|---|
-| 99 | Maintain reproducible, certified, availability-aware market datasets |
 | 100 | Provide a general event-driven research runtime for registered strategies and controls |
 | 101 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
 | 102 | Observe approved candidates on current data without exchange orders |
@@ -92,6 +99,14 @@ Mission 99 is the next provisional stage.
 | 105 | Isolate exchange connectivity and restricted credentials behind risk checks |
 | 106 | Consider a manually activated, severely limited tiny-capital pilot only after independent approval |
 | 107 | Connect research, validation, observation, deployment, reduction, and retirement under separate controls |
+
+## Public review and rights
+
+This repository is visible for portfolio demonstration, inspection, and
+professional review. It is not open source, and public visibility does not
+grant general permission to use, copy, modify, redistribute, deploy, host, or
+commercialize it. See the [LICENSE](LICENSE) for the concise terms and contact
+address.
 
 ## Running the tests
 
@@ -121,6 +136,8 @@ clone.
 - [Evidence summaries](docs/research-summaries/README.md)
 - [Operator guide](docs/OPERATOR_GUIDE.md)
 - [Autonomous Research Director](docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md)
+- [Autonomy constitution](docs/DELTAGRID_AUTONOMY_CONSTITUTION.md)
+- [Temporal Market Data Control Plane](docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md)
 - [Documentation registry](docs/documentation-status.json)
 
 <details>

@@ -16,10 +16,12 @@ contracts/lib/
 offchain/.venv/
 __pycache__/
 *.pyc
+.pytest_cache/
 
 # Databases and logs
 *.db
 *.sqlite
+*.sqlite3
 *.log
 
 # OS files
@@ -47,6 +49,9 @@ offchain/data/mission89/
 # MISSION-90-RUNTIME:START
 offchain/data/mission90/
 # MISSION-90-RUNTIME:END
+
+# Mission 99 runtime is required outside the checkout; this is defensive only.
+offchain/data/mission99/
 
 # Alpha Search B raw, processed, ledger, and placebo artifacts
 /offchain/data/alpha_search_b/

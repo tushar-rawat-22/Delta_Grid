@@ -44,11 +44,18 @@ authorized now.
   recommendation policy, independent verifier, and append-only decision
   ledger. A recommendation is not authority and Mission 98 performs no
   research.
+- [Autonomy constitution v1](DELTAGRID_AUTONOMY_CONSTITUTION.md) fixes founder
+  root authority, separates proposals from activation, and permanently
+  prohibits self-authorization.
+- [Temporal Market Data Control Plane v1](DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md)
+  documents Mission 99's immutable revision-aware releases, independent
+  certification, legacy metadata audit, recovery classification, and
+  synthetic-only as-of resolver.
 
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future
-proposals; and the Mission 93–98 records describe the narrow backend components
+proposals; and the Mission 93–99 records describe the narrow backend components
 implemented after the freeze.
 
 ## Current project state
@@ -64,10 +71,10 @@ research admission boundary, deterministic synthetic control execution,
 canonical evidence, read-only system projection, a local cockpit, and a durable
 observation workflow.
 
-The current backend chain ends at Mission 98. Mission 98 is deterministic and
-decision-only: it can recommend a next step but cannot perform research or
-grant authority. Passing tests verify software and repository properties; they
-do not establish alpha or capital authority.
+The current backend chain ends at Mission 99. Mission 98 remains deterministic
+and decision-only. Mission 99 adds data custody without authorizing fresh
+collection or real-data research resolution. Passing tests verify software and
+repository properties; they do not establish alpha or capital authority.
 
 New strategy work still requires a new versioned reopening contract before
 implementation or result-bearing research begins.
@@ -106,7 +113,7 @@ Begin with the [project overview](../README.md), then read the
 [final project report](DELTAGRID_FINAL_PROJECT_REPORT.md) for the completed
 research programme and its negative economic result.
 
-The current backend architecture is the Mission 93–98 chain:
+The current backend architecture is the Mission 93–99 chain:
 
 | Mission | Document | Responsibility |
 |---|---|---|
@@ -117,6 +124,7 @@ The current backend architecture is the Mission 93–98 chain:
 | 96B | [Research Cockpit](DELTAGRID_RESEARCH_COCKPIT_UI.md) | Presents Mission 96A snapshots through a loopback-only single-user browser interface |
 | 97 | [Durable Observation Orchestrator](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md) | Progresses one fixed observation workflow with durable state, bounded retries, fencing, recovery, and immutable manifests |
 | 98 | [Autonomous Research Director](DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md) | Verifies Mission 97 evidence and selects one independently verified, non-executable recommendation |
+| 99 | [Temporal Market Data Control Plane](DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md) | Custodies immutable, revision-aware releases; independently certifies them; audits legacy metadata; and resolves only authorized synthetic evidence as of a decision time |
 
 [Architecture State](ARCHITECTURE_STATE.md) remains a cumulative historical
 record of mission-era architecture. It is useful for tracing how earlier
@@ -125,12 +133,12 @@ not authorize those components to operate.
 
 The final project report is preserved evidence from the freeze publication. It
 should be read alongside the living root README, the final freeze, and the
-Mission 93–98 implementation contracts.
+Mission 93–99 implementation contracts.
 
 ## Planned direction
 
-The provisional Mission 99–107 roadmap appears once, in the
-[root README](../README.md#provisional-roadmap-missions-99107). It is planning
+The provisional Mission 100–107 roadmap appears once, in the
+[root README](../README.md#provisional-roadmap-missions-100107). It is planning
 direction rather than authorization.
 
 ## Current policies
@@ -279,5 +287,5 @@ research evidence, and authorization boundaries.
 
 When historical documents conflict with the final freeze, the final freeze controls.
 
-Later Mission 93–98 contracts control only the narrow backend capabilities they
+Later Mission 93–99 contracts control only the narrow backend capabilities they
 explicitly authorize.
