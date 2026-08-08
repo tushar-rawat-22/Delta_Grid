@@ -12,6 +12,7 @@ from pathlib import Path
 import platform
 import sqlite3
 import ssl
+import stat
 import subprocess
 import sys
 import time
@@ -47,7 +48,7 @@ from .schema import initialize_schema, verify_schema
 
 DIR_MODE = 0o700
 FILE_MODE = 0o600
-RUNTIME_SUBDIRS = ("objects/sha256", "incidents", "locks", "backups")
+RUNTIME_SUBDIRS = ("objects", "objects/sha256", "incidents", "locks", "backups")
 JOURNAL_NAME = "acquisition.sqlite3"
 LOCK_NAME = "locks/acquisition.lock"
 MAX_RAW_OBJECT_BYTES = 8 * 1024 * 1024
@@ -91,6 +92,25 @@ def _chmod(path: Path, mode: int) -> None:
         os.chmod(path, mode, follow_symlinks=False)
     except (NotImplementedError, TypeError):
         os.chmod(path, mode)
+
+
+def _require_private_directory(path: Path, label: str) -> None:
+    if path.is_symlink() or not path.is_dir():
+        raise AcquisitionError("RUNTIME_DIRECTORY_INVALID", label)
+    mode = stat.S_IMODE(path.stat().st_mode)
+    if mode != DIR_MODE:
+        raise AcquisitionError("RUNTIME_DIRECTORY_MODE_INVALID", f"{label}:{mode:04o}")
+
+
+def _verify_private_runtime_directories(runtime: Path) -> None:
+    _require_private_directory(runtime, ".")
+    for relative in RUNTIME_SUBDIRS:
+        _require_private_directory(runtime / relative, relative)
+    prefix_root = runtime / "objects" / "sha256"
+    for child in prefix_root.iterdir():
+        if child.is_symlink() or not child.is_dir():
+            raise AcquisitionError("RAW_OBJECT_DIRECTORY_INVALID", child.name)
+        _require_private_directory(child, f"objects/sha256/{child.name}")
 
 
 def _fsync_dir(path: Path) -> None:
@@ -377,6 +397,7 @@ class Journal:
     def open(cls, root: str | Path, *, readonly: bool = False) -> "Journal":
         load_contracts()
         runtime = validate_runtime_root(root)
+        _verify_private_runtime_directories(runtime)
         db = runtime / JOURNAL_NAME
         if not db.is_file() or db.is_symlink():
             raise AcquisitionError("JOURNAL_MISSING")

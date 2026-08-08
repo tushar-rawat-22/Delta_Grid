@@ -91,6 +91,7 @@ class FakeOpener:
                         "adjustedFundingRateFloor": "-0.0075",
                         "fundingIntervalHours": 8,
                         "disclaimer": False,
+                        "updateTime": now_ms if symbol != core.SYMBOLS[-1] else None,
                     }
                     for symbol in core.SYMBOLS
                 ],
@@ -235,6 +236,8 @@ def test_initialize_runtime_schema_and_modes(tmp_path, mocked_contracts, monkeyp
     assert stat.S_IMODE(root.stat().st_mode) == 0o700
     db = root / journal.JOURNAL_NAME
     assert stat.S_IMODE(db.stat().st_mode) == 0o600
+    for relative in journal.RUNTIME_SUBDIRS:
+        assert stat.S_IMODE((root / relative).stat().st_mode) == 0o700
     result = journal.verify_journal(root)
     assert result["verdict"] == "PASS"
     assert result["counts"]["capture_batches"] == 0
@@ -262,7 +265,7 @@ def test_raw_object_is_gzip_content_addressed_and_idempotent(tmp_path, mocked_co
 def test_orphan_raw_object_is_reported_not_deleted(tmp_path, mocked_contracts, monkeypatch):
     root = _init(tmp_path, mocked_contracts, monkeypatch)
     orphan_dir = root / "objects" / "sha256" / "aa"
-    orphan_dir.mkdir(parents=True)
+    orphan_dir.mkdir(mode=0o700)
     import gzip
     data = gzip.compress(b"orphan", mtime=0)
     orphan = orphan_dir / ("a" * 64 + ".gz")
@@ -791,3 +794,79 @@ def test_verify_journal_rejects_observation_attached_to_failed_batch(tmp_path, m
     conn.commit(); conn.close()
     with pytest.raises(core.AcquisitionError, match="FAILED_BATCH_OBSERVATION_PRESENT"):
         journal.verify_journal(root)
+
+def test_funding_info_update_time_is_narrowly_accepted_and_preserved():
+    rows = service._funding_config_rows(
+        [
+            {
+                "symbol": "BTCUSDT",
+                "adjustedFundingRateCap": "0.0075",
+                "adjustedFundingRateFloor": "-0.0075",
+                "fundingIntervalHours": 8,
+                "disclaimer": False,
+                "updateTime": 1760000000000,
+            },
+            {
+                "symbol": "ETHUSDT",
+                "adjustedFundingRateCap": "0.0075",
+                "adjustedFundingRateFloor": "-0.0075",
+                "fundingIntervalHours": 8,
+                "disclaimer": False,
+                "updateTime": None,
+            },
+        ],
+        "BTCUSDT",
+    )
+    assert rows == [
+        {
+            "symbol": "BTCUSDT",
+            "funding_interval_hours": 8,
+            "funding_rate_cap": "0.0075",
+            "funding_rate_floor": "-0.0075",
+            "disclaimer": False,
+            "provider_update_time_ms": 1760000000000,
+        }
+    ]
+
+    null_rows = service._funding_config_rows(
+        [{"symbol": "BTCUSDT", "fundingIntervalHours": 8, "updateTime": None}],
+        "BTCUSDT",
+    )
+    assert null_rows[0]["provider_update_time_ms"] is None
+
+    with pytest.raises(core.AcquisitionError, match="FUNDING_INFO_UPDATE_TIME_INVALID"):
+        service._funding_config_rows(
+            [{"symbol": "BTCUSDT", "fundingIntervalHours": 8, "updateTime": "bad"}],
+            "BTCUSDT",
+        )
+
+    with pytest.raises(core.AcquisitionError, match="FUNDING_INFO_SCHEMA_INVALID"):
+        service._funding_config_rows(
+            [{"symbol": "BTCUSDT", "fundingIntervalHours": 8, "mysteryField": 1}],
+            "BTCUSDT",
+        )
+
+
+def test_runtime_directory_mode_drift_fails_closed(
+    tmp_path,
+    mocked_contracts,
+    monkeypatch,
+):
+    root = _init(tmp_path, mocked_contracts, monkeypatch)
+    os.chmod(root / "objects", 0o755)
+    with pytest.raises(core.AcquisitionError, match="RUNTIME_DIRECTORY_MODE_INVALID"):
+        journal.Journal.open(root, readonly=True)
+
+
+def test_actual_activation_remediation_contract_is_bound_when_present():
+    if (
+        not core.AUTONOMY_V1_PATH.exists()
+        or not core.MISSION99_PATH.exists()
+        or not core.MISSION100_REMEDIATION_PATH.exists()
+    ):
+        pytest.skip("base repository contracts not present in package-only sandbox")
+    core.load_contracts()
+    assert (
+        core.MISSION100_REMEDIATION_HASH
+        == "e69cf1810a355e5d460d565f432ce7f86ec72f45819f69c33c1c14d86294992f"
+    )

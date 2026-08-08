@@ -154,7 +154,7 @@ EXPECTED_CLASSIFICATION_COUNTS = {
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 12,
-    "MACHINE_REFERENCE": 45,
+    "MACHINE_REFERENCE": 46,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -279,6 +279,7 @@ MISSION_99_DOCUMENTS = {
     "docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md",
 }
 MISSION_100_DOCUMENTS = {
+    "contracts/DELTAGRID_MISSION100_FIRST_LIVE_ACTIVATION_REMEDIATION_V1.json",
     "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V2.json",
     "contracts/DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION_V1.json",
     "docs/DELTAGRID_AUTONOMY_CONSTITUTION_V2.md",
@@ -961,10 +962,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 189
+    assert len(approved) == 190
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 192
+    assert len(registered) == 193
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES

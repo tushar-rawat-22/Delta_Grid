@@ -20,12 +20,14 @@ AUTONOMY_V1_PATH = REPOSITORY_ROOT / "contracts" / "DELTAGRID_AUTONOMY_CONSTITUT
 AUTONOMY_V2_PATH = REPOSITORY_ROOT / "contracts" / "DELTAGRID_AUTONOMY_CONSTITUTION_V2.json"
 MISSION99_PATH = REPOSITORY_ROOT / "contracts" / "DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE_V1.json"
 MISSION100_PATH = REPOSITORY_ROOT / "contracts" / "DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION_V1.json"
+MISSION100_REMEDIATION_PATH = REPOSITORY_ROOT / "contracts" / "DELTAGRID_MISSION100_FIRST_LIVE_ACTIVATION_REMEDIATION_V1.json"
 
 AUTONOMY_V1_HASH = "b9b1d48dd3f65ac492b287e9d5dcebe11f69063138698bf37432c11869a3da5b"
 MISSION99_HASH = "159a822f77e3c6bf6409e04b2c25a61c5c7232cf6e73ea160ffb6cbf167d5d4c"
 # Filled by the build script after contract contents are frozen.
 AUTONOMY_V2_HASH = "a9d830e14ad1d93efbfd7529e9ee937926d577aeb63792acf900fbc80d968664"
 MISSION100_HASH = "42f1ebe86264268763978d6969c2a605924805433a041647f2625dfd297e16e3"
+MISSION100_REMEDIATION_HASH = "e69cf1810a355e5d460d565f432ce7f86ec72f45819f69c33c1c14d86294992f"
 
 PROVIDER = "BINANCE_PUBLIC"
 SPOT_HOST = "data-api.binance.vision"
@@ -263,6 +265,11 @@ def load_contracts() -> tuple[Mapping[str, Any], Mapping[str, Any], Mapping[str,
     v2 = _load_contract(AUTONOMY_V2_PATH, AUTONOMY_V2_HASH, "deltagrid-autonomy-constitution-v2")
     m99 = _load_contract(MISSION99_PATH, MISSION99_HASH, "deltagrid-temporal-market-data-control-plane-v1")
     m100 = _load_contract(MISSION100_PATH, MISSION100_HASH, "deltagrid-forward-market-data-acquisition-v1")
+    remediation = _load_contract(
+        MISSION100_REMEDIATION_PATH,
+        MISSION100_REMEDIATION_HASH,
+        "deltagrid-mission100-first-live-activation-remediation-v1",
+    )
 
     if v2.get("parent_constitution_id") != v1.get("contract_id"):
         raise AcquisitionError("AUTONOMY_LINEAGE_ID_MISMATCH")
@@ -292,6 +299,33 @@ def load_contracts() -> tuple[Mapping[str, Any], Mapping[str, Any], Mapping[str,
         raise AcquisitionError("M100_M99_HASH_MISMATCH")
     if m100.get("base_commit") != "5f1936c2989213612a078e72acbeaec3f871971f":
         raise AcquisitionError("M100_BASE_COMMIT_MISMATCH")
+    if remediation.get("parent_contract_id") != m100.get("contract_id"):
+        raise AcquisitionError("M100_REMEDIATION_PARENT_ID_MISMATCH")
+    if remediation.get("parent_contract_hash_sha256") != MISSION100_HASH:
+        raise AcquisitionError("M100_REMEDIATION_PARENT_HASH_MISMATCH")
+    if remediation.get("base_commit") != "2ad3924049aa823ab994d9082357e23eeb06ddc8":
+        raise AcquisitionError("M100_REMEDIATION_BASE_COMMIT_MISMATCH")
+    if remediation.get("authority_change") is not False:
+        raise AcquisitionError("M100_REMEDIATION_AUTHORITY_CHANGE_INVALID")
+    schema_amendment = remediation.get("provider_schema_amendment", {})
+    update_time = schema_amendment.get("additional_optional_fields", {}).get("updateTime", {})
+    if schema_amendment.get("endpoint") != "funding_info":
+        raise AcquisitionError("M100_REMEDIATION_ENDPOINT_MISMATCH")
+    if tuple(update_time.get("json_types", ())) != ("integer", "null"):
+        raise AcquisitionError("M100_REMEDIATION_UPDATE_TIME_TYPES_MISMATCH")
+    if update_time.get("minimum_when_integer") != 0:
+        raise AcquisitionError("M100_REMEDIATION_UPDATE_TIME_RANGE_MISMATCH")
+    if update_time.get("normalized_field") != "provider_update_time_ms":
+        raise AcquisitionError("M100_REMEDIATION_UPDATE_TIME_FIELD_MISMATCH")
+    if schema_amendment.get("all_other_unknown_fields") != "REJECT":
+        raise AcquisitionError("M100_REMEDIATION_UNKNOWN_FIELD_POLICY_MISMATCH")
+    permissions = remediation.get("runtime_permission_remediation", {})
+    if permissions.get("directory_mode_octal") != "0700" or permissions.get("file_mode_octal") != "0600":
+        raise AcquisitionError("M100_REMEDIATION_PERMISSION_MODE_MISMATCH")
+    if permissions.get("intermediate_parent_mode_must_be_explicit") is not True:
+        raise AcquisitionError("M100_REMEDIATION_PARENT_MODE_POLICY_MISMATCH")
+    if permissions.get("permission_drift_behavior") != "FAIL_CLOSED":
+        raise AcquisitionError("M100_REMEDIATION_PERMISSION_DRIFT_POLICY_MISMATCH")
     provider_scope = m100.get("provider_scope", {})
     if provider_scope.get("provider") != PROVIDER:
         raise AcquisitionError("M100_PROVIDER_SCOPE_MISMATCH")
@@ -352,6 +386,8 @@ def load_contracts() -> tuple[Mapping[str, Any], Mapping[str, Any], Mapping[str,
     ):
         if authority.get(key) is not False:
             raise AcquisitionError("M100_PROHIBITED_AUTHORITY_ENABLED", key)
+    if deep_thaw(remediation.get("authorization_state", {})) != deep_thaw(authority):
+        raise AcquisitionError("M100_REMEDIATION_AUTHORITY_STATE_MISMATCH")
     return v1, v2, m99, m100
 
 

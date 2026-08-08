@@ -8,7 +8,13 @@ from pathlib import Path
 import sys
 
 from .backup import ACK_BACKUP, export_backup, verify_backup
-from .core import AcquisitionError, AUTONOMY_V2_HASH, MISSION100_HASH, load_contracts
+from .core import (
+    AcquisitionError,
+    AUTONOMY_V2_HASH,
+    MISSION100_HASH,
+    MISSION100_REMEDIATION_HASH,
+    load_contracts,
+)
 from .journal import initialize_runtime, verify_journal
 from .service import ACK_CAPTURE, capture_once
 
@@ -56,7 +62,15 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "show-contract":
             load_contracts()
-            print(_json({"autonomy_v2_hash": AUTONOMY_V2_HASH, "mission100_hash": MISSION100_HASH}))
+            print(
+                _json(
+                    {
+                        "autonomy_v2_hash": AUTONOMY_V2_HASH,
+                        "mission100_hash": MISSION100_HASH,
+                        "mission100_activation_remediation_hash": MISSION100_REMEDIATION_HASH,
+                    }
+                )
+            )
             return 0
         if args.command == "init-runtime":
             if args.acknowledge != "INITIALIZE_FORWARD_ACQUISITION_RUNTIME":

@@ -56,7 +56,8 @@ authorized now.
   market-data collection only.
 - [Forward Market Data Acquisition](DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md)
   documents Mission 100 forward capture, raw evidence, receipt time, clock
-  checks, revisions, checkpoints, and local backup verification.
+  checks, revisions, checkpoints, local backup verification, and the narrow
+  first-live activation remediation.
 
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
