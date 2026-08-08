@@ -40,6 +40,38 @@ The activation remediation recognizes only `updateTime` as an additional optiona
 
 The same activation exposed a filesystem-permission bug: recursive directory creation did not apply `0700` to the intermediate `objects` directory. Runtime creation now creates each private parent explicitly, and opening a journal fails closed if the runtime or object-prefix directories drift from `0700`. This amendment changes no research, account, credential, order, trading, or capital authority.
 
+## Production activation
+
+Mission 100 completed its controlled production activation on 2026-08-08.
+
+The first live attempt failed closed on an undocumented `fundingInfo`
+`updateTime` field. That failed batch remains preserved with its three receipts
+and raw objects. No observation or checkpoint from that attempt became
+authoritative.
+
+After the versioned schema amendment was merged, the one known runtime
+permission defect was repaired from `0755` to `0700`. File hashes were identical
+before and after that permission-only repair.
+
+The second controlled capture ran on commit
+`3d5fff9043ee4686e75b95c5b28c44e6e2928313` and completed successfully. The exact internal batch identifier remains in the
+private acquisition journal and is intentionally omitted from this public record. It made 18 logical requests and
+recorded 18 receipts, 12 closed-hour bar observations, 15 stream/symbol
+checkpoints, and three funding-configuration snapshots. Provider clock health
+was `HEALTHY`, no request exhausted its retry budget, the append-only journal
+verified, and the private runtime permission audit passed.
+
+The post-capture backup also verified independently. Its SHA-256 is
+`57c67e003e27a03838bb085f5e523d39e93e5fcda5f86d82960dd60cc36a701b`; its
+manifest SHA-256 is
+`3fd9f02c2f2aa7aafd353c1d2703f7d0f344f372815e66e27f3ab2423ff23d77`.
+Local filesystem paths are intentionally not part of this public record.
+
+This activation proves that the bounded acquisition and evidence-custody path
+can operate end to end against the live public provider. It does not establish
+alpha, make the data research-admissible, install a scheduler, authorize
+account access, or authorize paper/live trading, orders, or capital.
+
 ## Research boundary
 
 Mission 100 evidence is not a Mission 99 certified real-data release and cannot be resolved for strategy research. A later reviewed custody bridge is required before forward evidence can become an admissible research dataset.

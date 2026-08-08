@@ -28,9 +28,13 @@ remains unauthorized.
 Mission 100 adds one deliberately narrow network authority: bounded,
 unauthenticated collection from frozen Binance public market-data endpoints.
 It records forward receipt time, raw evidence, retries, revisions, checkpoints,
-and local backup evidence in a private runtime. It still does not authorize
-strategy research, real-data research resolution, exchange accounts, credentials,
-orders, paper/live trading, or capital.
+and local backup evidence in a private runtime. Its controlled production
+activation completed successfully on 2026-08-08 after a first live attempt
+failed closed and was preserved for review. The successful capture verified the
+full request, custody, journal, checkpoint, backup, and private-permission path.
+Mission 100 still does not make the evidence research-admissible or authorize
+strategy research, exchange accounts, credentials, orders, paper/live trading,
+or capital. Recurring scheduler activation remains a separate operator decision.
 
 ## Why I built it
 
