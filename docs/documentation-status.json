@@ -165,6 +165,21 @@
       "notes": "Defines founder root authority, the proposal-versus-activation separation, fail-closed uncertainty, and the permanent prohibition on self-authorization. It grants no current paper, live, exchange, credential, order, or capital authority."
     },
     {
+      "path": "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V2.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, operators, software verification, and authority reviewers",
+      "purpose": "Machine-readable founder authority change that permits only bounded unauthenticated public market-data collection",
+      "authority_level": "CURRENT_CONTROLLING_AUTHORITY_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Mission 100 authority extension. It preserves founder root authority and grants no research, credential, account, order, paper/live trading, or capital authority."
+    },
+    {
       "path": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and research-integrity reviewers",
@@ -208,6 +223,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Companion: research-summaries/FINAL_FREEZE.md. This preserved source remains controlling for exact historical facts."
+    },
+    {
+      "path": "contracts/DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, operators, software verification, and data-integrity reviewers",
+      "purpose": "Machine-readable Mission 100 endpoint, temporal, journal, backup, and authority boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only the frozen Mission 100 public-market acquisition surface. Real-data research resolution and trading remain prohibited."
     },
     {
       "path": "contracts/DELTAGRID_PRODUCT_RESET_V1.json",
@@ -1875,6 +1905,21 @@
       "notes": "Explains founder root authority, bounded autonomous actions, proposal and activation separation, and the permanent self-authorization prohibition without granting paper, live, exchange, credential, order, or capital authority."
     },
     {
+      "path": "docs/DELTAGRID_AUTONOMY_CONSTITUTION_V2.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, operators, and authority reviewers",
+      "purpose": "Human explanation of the Mission 100 autonomy authority change",
+      "authority_level": "CURRENT_CONTROLLING_AUTHORITY_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains the bounded public-data authority added by autonomy constitution v2 without expanding research or trading authority."
+    },
+    {
       "path": "docs/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE.md",
       "classification": "CURRENT_INTERNAL",
       "audience": "Maintainers, research-integrity reviewers, operators, and test engineers",
@@ -1933,6 +1978,21 @@
       "readability_severity": 4,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Companion: research-summaries/FINAL_FREEZE.md. This preserved source remains controlling for exact historical facts."
+    },
+    {
+      "path": "docs/DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, operators, data-integrity reviewers, and test engineers",
+      "purpose": "Current human explanation of Mission 100 forward public-market acquisition",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains forward acquisition, evidence custody, temporal semantics, backup, and the continuing research/trading firewall."
     },
     {
       "path": "docs/DELTAGRID_ML_RESEARCH_ADAPTER.md",

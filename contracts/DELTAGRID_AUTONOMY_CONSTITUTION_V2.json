@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-autonomy-constitution-v2",
+  "contract_version": 2,
+  "authority_version": 2,
+  "base_commit": "5f1936c2989213612a078e72acbeaec3f871971f",
+  "parent_constitution_id": "deltagrid-autonomy-constitution-v1",
+  "parent_constitution_hash_sha256": "b9b1d48dd3f65ac492b287e9d5dcebe11f69063138698bf37432c11869a3da5b",
+  "contract_hash_sha256": "a9d830e14ad1d93efbfd7529e9ee937926d577aeb63792acf900fbc80d968664",
+  "purpose": {
+    "tenant_model": "SINGLE_TENANT",
+    "owner": "Tushar Rawat",
+    "capital_scope": "FOUNDERS_OWN_CAPITAL_ONLY_IF_SEPARATELY_AUTHORIZED",
+    "authority_change": "Authorize only bounded unauthenticated public market-data network collection under a separately frozen Mission 100 contract.",
+    "self_authorizing_definition": "The system may not grant, approve, merge, deploy, or activate new authority."
+  },
+  "root_authority": {
+    "holder": "FOUNDER",
+    "delegation_must_be_explicit_and_versioned": true,
+    "uncertainty_behavior": "FAIL_CLOSED",
+    "software_error_free_guarantee": false
+  },
+  "current_authority": {
+    "public_market_data_network_access": true,
+    "public_market_data_provider": "BINANCE_PUBLIC",
+    "exchange_account_connectivity": false,
+    "credential_access": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "order_authorization": false,
+    "capital_deployment": false
+  },
+  "network_authority": {
+    "authentication_permitted": false,
+    "signed_requests_permitted": false,
+    "api_keys_permitted": false,
+    "account_endpoints_permitted": false,
+    "trade_endpoints_permitted": false,
+    "websockets_permitted": false,
+    "generic_provider_plugins_permitted": false,
+    "caller_supplied_hosts_permitted": false,
+    "caller_supplied_urls_permitted": false,
+    "redirects_permitted": false,
+    "environment_proxies_permitted": false
+  },
+  "proposal_activation_separation": {
+    "system_may_propose": true,
+    "system_may_approve_own_proposal": false,
+    "system_may_activate_own_proposal": false,
+    "proposal_is_authority": false,
+    "permanent_self_authorization_prohibition": true
+  },
+  "change_control": {
+    "reviewed_pull_request_required": true,
+    "ci_required": true,
+    "founder_approval_required": true,
+    "authority_version_increment_required": true,
+    "automatic_activation": false
+  },
+  "scope_rule": "Authority version 2 does not authorize research, protected-data access, validation, holdout, strategies, performance evaluation, models, signals, portfolio allocation, paper/live trading, credentials, orders, or capital.",
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}

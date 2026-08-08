@@ -1,0 +1,266 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-forward-market-data-acquisition-v1",
+  "contract_version": 1,
+  "base_commit": "5f1936c2989213612a078e72acbeaec3f871971f",
+  "autonomy_constitution_id": "deltagrid-autonomy-constitution-v2",
+  "autonomy_constitution_hash_sha256": "a9d830e14ad1d93efbfd7529e9ee937926d577aeb63792acf900fbc80d968664",
+  "mission99_contract_id": "deltagrid-temporal-market-data-control-plane-v1",
+  "mission99_contract_hash_sha256": "159a822f77e3c6bf6409e04b2c25a61c5c7232cf6e73ea160ffb6cbf167d5d4c",
+  "contract_hash_sha256": "42f1ebe86264268763978d6969c2a605924805433a041647f2625dfd297e16e3",
+  "authorization_stage": "MISSION_100_FORWARD_PUBLIC_MARKET_DATA_ACQUISITION_ONLY",
+  "purpose": "Accumulate forward-observed public provider evidence with bounded network authority, immutable raw custody, append-only receipts, revision-aware observations, explicit clock health, deterministic checkpoints, and no research or trading authority.",
+  "provider_scope": {
+    "provider": "BINANCE_PUBLIC",
+    "spot_host": "data-api.binance.vision",
+    "futures_host": "fapi.binance.com",
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "streams": [
+      "spot_ohlcv",
+      "perpetual_ohlcv",
+      "mark_price_ohlcv",
+      "index_price_ohlcv",
+      "funding_rates"
+    ],
+    "bar_interval": "1h",
+    "websockets": false,
+    "host_fallback": false,
+    "generic_provider_plugin": false
+  },
+  "endpoint_allowlist": {
+    "spot_time": {
+      "method": "GET",
+      "host": "data-api.binance.vision",
+      "path": "/api/v3/time",
+      "parameters": []
+    },
+    "spot_ohlcv": {
+      "method": "GET",
+      "host": "data-api.binance.vision",
+      "path": "/api/v3/klines",
+      "parameters": [
+        "endTime",
+        "interval",
+        "limit",
+        "startTime",
+        "symbol"
+      ]
+    },
+    "futures_time": {
+      "method": "GET",
+      "host": "fapi.binance.com",
+      "path": "/fapi/v1/time",
+      "parameters": []
+    },
+    "perpetual_ohlcv": {
+      "method": "GET",
+      "host": "fapi.binance.com",
+      "path": "/fapi/v1/klines",
+      "parameters": [
+        "endTime",
+        "interval",
+        "limit",
+        "startTime",
+        "symbol"
+      ]
+    },
+    "mark_price_ohlcv": {
+      "method": "GET",
+      "host": "fapi.binance.com",
+      "path": "/fapi/v1/markPriceKlines",
+      "parameters": [
+        "endTime",
+        "interval",
+        "limit",
+        "startTime",
+        "symbol"
+      ]
+    },
+    "index_price_ohlcv": {
+      "method": "GET",
+      "host": "fapi.binance.com",
+      "path": "/fapi/v1/indexPriceKlines",
+      "parameters": [
+        "endTime",
+        "interval",
+        "limit",
+        "pair",
+        "startTime"
+      ]
+    },
+    "funding_rates": {
+      "method": "GET",
+      "host": "fapi.binance.com",
+      "path": "/fapi/v1/fundingRate",
+      "parameters": [
+        "endTime",
+        "limit",
+        "startTime",
+        "symbol"
+      ]
+    },
+    "funding_info": {
+      "method": "GET",
+      "host": "fapi.binance.com",
+      "path": "/fapi/v1/fundingInfo",
+      "parameters": []
+    }
+  },
+  "transport": {
+    "https_only": true,
+    "port": 443,
+    "system_ca_and_hostname_verification": true,
+    "redirects": false,
+    "environment_proxies": false,
+    "cookies": false,
+    "request_bodies": false,
+    "authorization_header": false,
+    "x_mbx_apikey_header": false,
+    "signed_requests": false,
+    "maximum_logical_requests_per_capture": 18,
+    "maximum_http_attempts_per_capture": 60,
+    "request_timeout_seconds": 10,
+    "maximum_retries_per_request": 2,
+    "maximum_retry_after_seconds": 30,
+    "maximum_response_bytes": 8388608,
+    "maximum_time_range_hours": 168
+  },
+  "clock_health": {
+    "spot_time_endpoint_required": true,
+    "futures_time_endpoint_required": true,
+    "maximum_absolute_provider_offset_ms": 5000,
+    "maximum_wall_vs_monotonic_drift_ms": 1000,
+    "unhealthy_clock_observed_live_authorized": false
+  },
+  "temporal_capture": {
+    "bar_event_time": "COMPLETED_BAR_CLOSE_TIMESTAMP",
+    "funding_event_time": "SETTLED_FUNDING_TIMESTAMP",
+    "available_at": "LOCAL_RESPONSE_RECEIPT_TIME",
+    "availability_class": "OBSERVED_LIVE",
+    "closed_bar_safety_margin_ms": 5000,
+    "maximum_catchup_hours": 168,
+    "revision_sweep_hours": 24,
+    "first_run_behavior": "CAPTURE_MOST_RECENT_FULLY_CLOSED_HOUR_ONLY",
+    "provider_correction_behavior": "APPEND_LATER_REVISION_WITH_LATER_AVAILABILITY",
+    "hardcoded_funding_interval_hours": false,
+    "funding_info_observed_each_capture": true,
+    "funding_info_query_model": "ONE_ZERO_PARAMETER_SNAPSHOT_PER_CAPTURE_FILTER_TO_FROZEN_UNIVERSE"
+  },
+  "journal": {
+    "runtime_default": "~/.deltagrid/forward_market_data",
+    "repository_runtime_permitted": false,
+    "append_only_evidence": true,
+    "single_writer_lock": "POSIX_FLOCK",
+    "directory_mode_octal": "0700",
+    "file_mode_octal": "0600",
+    "raw_objects": "DETERMINISTIC_GZIP_MTIME_ZERO_CONTENT_ADDRESSED",
+    "raw_object_registry": "SQLITE",
+    "checkpoint_advances_only_after_evidence_commit": true,
+    "failed_batch_observations_authoritative": false,
+    "automatic_evidence_deletion": false,
+    "full_object_scan_each_capture": false,
+    "explicit_verify_journal_can_scan_objects": true
+  },
+  "backup": {
+    "local_export_supported": true,
+    "cloud_provider_authorized": false,
+    "credentials_authorized": false,
+    "capture_must_stop_if_backup_missing": false,
+    "later_research_may_require_verified_backup": true
+  },
+  "mission99_boundary": {
+    "mission100_modifies_mission99_v1": false,
+    "mission100_publishes_mission99_real_release": false,
+    "mission100_evidence_is_mission99_certified_release": false,
+    "future_reviewed_custody_bridge_required": true,
+    "real_data_research_resolution": false
+  },
+  "authorization_state": {
+    "public_market_data_collection": true,
+    "private_runtime_evidence": true,
+    "metadata_safe_verification": true,
+    "real_data_research_resolution": false,
+    "strategy_authority": false,
+    "performance_authority": false,
+    "model_or_ml_authority": false,
+    "signal_authority": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_account_access": false,
+    "credential_access": false,
+    "order_placement": false,
+    "portfolio_authority": false,
+    "capital_deployment": false,
+    "profitability_claim": false,
+    "self_authorization": false
+  },
+  "prohibited_capabilities": [
+    "AUTHENTICATED_EXCHANGE_REQUEST",
+    "SIGNED_REQUEST",
+    "API_KEY_OR_SECRET_ACCESS",
+    "ACCOUNT_OR_BALANCE_QUERY",
+    "ORDER_OR_TRADE_ENDPOINT",
+    "WEBSOCKET_COLLECTION",
+    "GENERIC_PROVIDER_PLUGIN",
+    "CALLER_SUPPLIED_HOST_OR_URL",
+    "STRATEGY",
+    "RETURN_OR_PERFORMANCE_CALCULATION",
+    "MODEL_OR_ML",
+    "SIGNAL",
+    "PORTFOLIO",
+    "PAPER_OR_LIVE_TRADING",
+    "CAPITAL_DEPLOYMENT",
+    "REAL_DATA_RESEARCH_RESOLUTION",
+    "SELF_AUTHORIZATION"
+  ],
+  "acceptance": {
+    "live_binance_request_during_implementation_or_tests": false,
+    "scheduler_installation_during_mission": false,
+    "real_data_research_resolution_during_mission": false,
+    "full_suite_required": true,
+    "post_merge_ci_required": true
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "provider_schema_validation": {
+    "unknown_endpoint_parameters": "REJECT",
+    "non_universe_symbol_or_pair": "REJECT",
+    "bar_tuple_length": 12,
+    "bar_numeric_fields": "FINITE_DECIMAL_STRINGS",
+    "bar_timestamp_fields": "EXACT_INTEGERS",
+    "bar_price_relationships": "HIGH_GE_LOW_AND_OPEN_CLOSE_WITHIN_RANGE",
+    "funding_required_fields": [
+      "fundingRate",
+      "fundingTime",
+      "markPrice",
+      "symbol"
+    ],
+    "funding_optional_fields": [
+      "rateType"
+    ],
+    "funding_unknown_fields": "REJECT",
+    "funding_rate_types": [
+      "Regular",
+      "Special"
+    ],
+    "funding_info_zero_parameter_snapshot": true,
+    "funding_info_unknown_fields": "REJECT",
+    "schema_drift_behavior": "FAIL_CLOSED_PRESERVE_RAW_RESPONSE_EVIDENCE"
+  }
+}

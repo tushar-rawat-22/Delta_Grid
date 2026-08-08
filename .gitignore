@@ -55,3 +55,7 @@ offchain/data/mission99/
 
 # Alpha Search B raw, processed, ledger, and placebo artifacts
 /offchain/data/alpha_search_b/
+# Mission 100 runtime must remain private and outside the checkout; defensive only.
+# MISSION-100-RUNTIME:START
+offchain/data/mission100/
+# MISSION-100-RUNTIME:END

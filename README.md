@@ -25,6 +25,13 @@ metadata, classify recovery evidence, and resolve synthetic records as of a
 decision time. It makes no network requests, and real-data research resolution
 remains unauthorized.
 
+Mission 100 adds one deliberately narrow network authority: bounded,
+unauthenticated collection from frozen Binance public market-data endpoints.
+It records forward receipt time, raw evidence, retries, revisions, checkpoints,
+and local backup evidence in a private runtime. It still does not authorize
+strategy research, real-data research resolution, exchange accounts, credentials,
+orders, paper/live trading, or capital.
+
 ## Why I built it
 
 I wanted the process to start with a falsifiable hypothesis rather than an
@@ -73,6 +80,7 @@ The current backend sequence is deliberately narrower:
 | 97 | Added one durable observation workflow with leases, fencing, bounded retries, recovery, and immutable manifests |
 | 98 | Added a deterministic, decision-only Research Director that verifies Mission 97 evidence and emits one non-executable recommendation |
 | 99 | Added immutable, revision-aware market-data custody, independent certification, deterministic recovery inspection, and a bounded synthetic as-of resolver |
+| 100 | Added bounded forward public-market acquisition with immutable raw evidence, append-only receipts, clock checks, revisions, checkpoints, and local backup verification |
 
 Mission 97 was published at commit
 `8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153
@@ -80,25 +88,24 @@ passing tests and one third-party `websockets.legacy` deprecation warning. Those
 tests cover software behavior and repository invariants; they do not establish
 alpha.
 
-## Provisional roadmap: Missions 100–107
+## Provisional roadmap: Missions 101–109
 
-This is planning direction, not authorization. Each mission would require its
-own reviewed contract before it could use new data, execute research, access an
-exchange, paper trade, live trade, or deploy capital.
-
-Mission 100 is the next provisional stage. Mission 99's implementation does not
-authorize any later roadmap item.
+This is planning direction, not authorization. Each mission requires its own
+reviewed contract before it can use new authority. Mission 100 collects forward
+provider evidence, but that evidence is not yet admitted to result-bearing
+research.
 
 | Mission | Planning direction |
 |---|---|
-| 100 | Provide a general event-driven research runtime for registered strategies and controls |
-| 101 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
-| 102 | Observe approved candidates on current data without exchange orders |
-| 103 | Add durable paper execution, accounting, and reconciliation |
-| 104 | Govern portfolio allocation, exposure, drawdown, leverage, and kill switches independently |
-| 105 | Isolate exchange connectivity and restricted credentials behind risk checks |
-| 106 | Consider a manually activated, severely limited tiny-capital pilot only after independent approval |
-| 107 | Connect research, validation, observation, deployment, reduction, and retirement under separate controls |
+| 101 | Add a founder-approved research reopening authority and narrow experiment permits, including the reviewed bridge from Mission 100 evidence into Mission 99 custody |
+| 102 | Provide a general event-driven research runtime that can execute only permitted experiments |
+| 103 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
+| 104 | Observe approved candidates on current data without exchange orders |
+| 105 | Add durable paper execution, accounting, and reconciliation |
+| 106 | Govern portfolio allocation, exposure, drawdown, leverage, and kill switches independently |
+| 107 | Isolate exchange connectivity and restricted credentials behind independent risk checks |
+| 108 | Consider a manually activated, severely limited tiny-capital pilot only after independent approval |
+| 109 | Connect research, validation, observation, deployment, reduction, and retirement under separate bounded controls |
 
 ## Public review and rights
 
@@ -136,8 +143,10 @@ clone.
 - [Evidence summaries](docs/research-summaries/README.md)
 - [Operator guide](docs/OPERATOR_GUIDE.md)
 - [Autonomous Research Director](docs/DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md)
-- [Autonomy constitution](docs/DELTAGRID_AUTONOMY_CONSTITUTION.md)
+- [Autonomy constitution v1](docs/DELTAGRID_AUTONOMY_CONSTITUTION.md)
+- [Autonomy constitution v2](docs/DELTAGRID_AUTONOMY_CONSTITUTION_V2.md)
 - [Temporal Market Data Control Plane](docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md)
+- [Forward Market Data Acquisition](docs/DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md)
 - [Documentation registry](docs/documentation-status.json)
 
 <details>
