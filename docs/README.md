@@ -51,11 +51,17 @@ authorized now.
   documents Mission 99's immutable revision-aware releases, independent
   certification, legacy metadata audit, recovery classification, and
   synthetic-only as-of resolver.
+- [Autonomy constitution v2](DELTAGRID_AUTONOMY_CONSTITUTION_V2.md) records
+  the founder-approved authority change for bounded unauthenticated public
+  market-data collection only.
+- [Forward Market Data Acquisition](DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md)
+  documents Mission 100 forward capture, raw evidence, receipt time, clock
+  checks, revisions, checkpoints, and local backup verification.
 
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future
-proposals; and the Mission 93–99 records describe the narrow backend components
+proposals; and the Mission 93–100 records describe the narrow backend components
 implemented after the freeze.
 
 ## Current project state
@@ -71,10 +77,13 @@ research admission boundary, deterministic synthetic control execution,
 canonical evidence, read-only system projection, a local cockpit, and a durable
 observation workflow.
 
-The current backend chain ends at Mission 99. Mission 98 remains deterministic
-and decision-only. Mission 99 adds data custody without authorizing fresh
-collection or real-data research resolution. Passing tests verify software and
-repository properties; they do not establish alpha or capital authority.
+The current backend chain ends at Mission 100. Mission 98 remains deterministic
+and decision-only. Mission 99 adds data custody without authorizing network
+collection or real-data research resolution. Mission 100 separately authorizes
+only bounded unauthenticated public-market collection into a private acquisition
+journal; it does not reopen strategy research or make that evidence research
+admissible. Passing tests verify software and repository properties; they do not
+establish alpha or capital authority.
 
 New strategy work still requires a new versioned reopening contract before
 implementation or result-bearing research begins.
@@ -113,7 +122,7 @@ Begin with the [project overview](../README.md), then read the
 [final project report](DELTAGRID_FINAL_PROJECT_REPORT.md) for the completed
 research programme and its negative economic result.
 
-The current backend architecture is the Mission 93–99 chain:
+The current backend architecture is the Mission 93–100 chain:
 
 | Mission | Document | Responsibility |
 |---|---|---|
@@ -125,6 +134,7 @@ The current backend architecture is the Mission 93–99 chain:
 | 97 | [Durable Observation Orchestrator](DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md) | Progresses one fixed observation workflow with durable state, bounded retries, fencing, recovery, and immutable manifests |
 | 98 | [Autonomous Research Director](DELTAGRID_AUTONOMOUS_RESEARCH_DIRECTOR.md) | Verifies Mission 97 evidence and selects one independently verified, non-executable recommendation |
 | 99 | [Temporal Market Data Control Plane](DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md) | Custodies immutable, revision-aware releases; independently certifies them; audits legacy metadata; and resolves only authorized synthetic evidence as of a decision time |
+| 100 | [Forward Market Data Acquisition](DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md) | Collects only frozen public Binance market data into a private append-only forward-evidence journal with clock, retry, revision, checkpoint, and backup controls |
 
 [Architecture State](ARCHITECTURE_STATE.md) remains a cumulative historical
 record of mission-era architecture. It is useful for tracing how earlier
@@ -133,12 +143,12 @@ not authorize those components to operate.
 
 The final project report is preserved evidence from the freeze publication. It
 should be read alongside the living root README, the final freeze, and the
-Mission 93–99 implementation contracts.
+Mission 93–100 implementation contracts.
 
 ## Planned direction
 
-The provisional Mission 100–107 roadmap appears once, in the
-[root README](../README.md#provisional-roadmap-missions-100107). It is planning
+The provisional Mission 101–109 roadmap appears once, in the
+[root README](../README.md#provisional-roadmap-missions-101109). It is planning
 direction rather than authorization.
 
 ## Current policies
