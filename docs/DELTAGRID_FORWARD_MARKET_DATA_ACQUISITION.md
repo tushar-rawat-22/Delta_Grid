@@ -32,6 +32,14 @@ Each capture checks both Spot and USDⓈ-M server time. DeltaGrid compares provi
 
 Mission 100 can export and verify a local evidence backup. No cloud backup provider or backup credential is authorized. Capture does not stop merely because a backup target is unavailable; later research admission may require a verified backup.
 
+## First-live activation amendment
+
+The first production activation on 2026-08-08 failed closed before any market observation or checkpoint became authoritative. The live `fundingInfo` response included an additional `updateTime` field on every returned row, while the public documentation still omitted that field. The failed batch, its three receipts, raw objects, and verified backup are preserved as incident evidence.
+
+The activation remediation recognizes only `updateTime` as an additional optional field, accepts only a non-negative integer or `null`, and preserves it as `provider_update_time_ms`. Every other unknown `fundingInfo` field is still rejected.
+
+The same activation exposed a filesystem-permission bug: recursive directory creation did not apply `0700` to the intermediate `objects` directory. Runtime creation now creates each private parent explicitly, and opening a journal fails closed if the runtime or object-prefix directories drift from `0700`. This amendment changes no research, account, credential, order, trading, or capital authority.
+
 ## Research boundary
 
 Mission 100 evidence is not a Mission 99 certified real-data release and cannot be resolved for strategy research. A later reviewed custody bridge is required before forward evidence can become an admissible research dataset.

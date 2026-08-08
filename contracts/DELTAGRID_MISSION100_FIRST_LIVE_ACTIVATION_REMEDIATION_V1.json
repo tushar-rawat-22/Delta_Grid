@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-mission100-first-live-activation-remediation-v1",
+  "contract_version": 1,
+  "parent_contract_id": "deltagrid-forward-market-data-acquisition-v1",
+  "parent_contract_hash_sha256": "42f1ebe86264268763978d6969c2a605924805433a041647f2625dfd297e16e3",
+  "base_commit": "2ad3924049aa823ab994d9082357e23eeb06ddc8",
+  "purpose": "Narrow first-live activation remediation for one observed Binance fundingInfo schema addition and secure intermediate runtime directory creation. This amendment changes no research, trading, credential, order, or capital authority.",
+  "authority_change": false,
+  "provider_schema_amendment": {
+    "endpoint": "funding_info",
+    "additional_optional_fields": {
+      "updateTime": {
+        "json_types": [
+          "integer",
+          "null"
+        ],
+        "minimum_when_integer": 0,
+        "normalized_field": "provider_update_time_ms"
+      }
+    },
+    "all_other_unknown_fields": "REJECT",
+    "raw_response_remains_authoritative_evidence": true
+  },
+  "runtime_permission_remediation": {
+    "directory_mode_octal": "0700",
+    "file_mode_octal": "0600",
+    "intermediate_parent_mode_must_be_explicit": true,
+    "permission_drift_behavior": "FAIL_CLOSED",
+    "automatic_recursive_permission_repair": false
+  },
+  "incident_preservation": {
+    "first_live_failed_batch_must_be_preserved": true,
+    "raw_response_evidence_must_be_preserved": true,
+    "historical_evidence_rewrite_or_delete": false
+  },
+  "authorization_state": {
+    "public_market_data_collection": true,
+    "private_runtime_evidence": true,
+    "metadata_safe_verification": true,
+    "real_data_research_resolution": false,
+    "strategy_authority": false,
+    "performance_authority": false,
+    "model_or_ml_authority": false,
+    "signal_authority": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_account_access": false,
+    "credential_access": false,
+    "order_placement": false,
+    "portfolio_authority": false,
+    "capital_deployment": false,
+    "profitability_claim": false,
+    "self_authorization": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  },
+  "contract_hash_sha256": "e69cf1810a355e5d460d565f432ce7f86ec72f45819f69c33c1c14d86294992f"
+}

@@ -240,6 +240,21 @@
       "notes": "Authorizes only the frozen Mission 100 public-market acquisition surface. Real-data research resolution and trading remain prohibited."
     },
     {
+      "path": "contracts/DELTAGRID_MISSION100_FIRST_LIVE_ACTIVATION_REMEDIATION_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, operators, data-integrity reviewers, and verification tools",
+      "purpose": "Versioned first-live Mission 100 activation remediation contract",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_AMENDMENT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 0,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Narrowly recognizes the observed fundingInfo updateTime field and hardens private runtime directory creation without expanding research or trading authority."
+    },
+    {
       "path": "contracts/DELTAGRID_PRODUCT_RESET_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Software, tests, verification tools, and technical reviewers",

@@ -259,7 +259,14 @@ def _funding_config_rows(payload: Any, symbol: str) -> list[dict[str, Any]]:
     else:
         raise AcquisitionError("FUNDING_INFO_SCHEMA_INVALID")
     selected: list[dict[str, Any]] = []
-    allowed = {"symbol", "adjustedFundingRateCap", "adjustedFundingRateFloor", "fundingIntervalHours", "disclaimer"}
+    allowed = {
+        "symbol",
+        "adjustedFundingRateCap",
+        "adjustedFundingRateFloor",
+        "fundingIntervalHours",
+        "disclaimer",
+        "updateTime",
+    }
     for row in rows:
         if not isinstance(row, dict) or set(row) - allowed:
             raise AcquisitionError("FUNDING_INFO_SCHEMA_INVALID")
@@ -274,6 +281,9 @@ def _funding_config_rows(payload: Any, symbol: str) -> list[dict[str, Any]]:
         disclaimer = row.get("disclaimer")
         if disclaimer is not None and type(disclaimer) is not bool:
             raise AcquisitionError("FUNDING_INFO_DISCLAIMER_INVALID")
+        update_time = row.get("updateTime")
+        if update_time is not None and (type(update_time) is not int or update_time < 0):
+            raise AcquisitionError("FUNDING_INFO_UPDATE_TIME_INVALID")
         cap = row.get("adjustedFundingRateCap")
         floor = row.get("adjustedFundingRateFloor")
         selected.append(
@@ -283,6 +293,7 @@ def _funding_config_rows(payload: Any, symbol: str) -> list[dict[str, Any]]:
                 "funding_rate_cap": None if cap is None else _decimal_text(cap, "funding_rate_cap"),
                 "funding_rate_floor": None if floor is None else _decimal_text(floor, "funding_rate_floor"),
                 "disclaimer": disclaimer,
+                "provider_update_time_ms": update_time,
             }
         )
     return selected
