@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-autonomy-constitution-v3",
+  "contract_version": 3,
+  "authority_version": 3,
+  "base_commit": "48fc8bfd69792dbef00145e9f76c7e13a064d918",
+  "parent_constitution_id": "deltagrid-autonomy-constitution-v2",
+  "parent_constitution_hash_sha256": "a9d830e14ad1d93efbfd7529e9ee937926d577aeb63792acf900fbc80d968664",
+  "contract_hash_sha256": "cdd768ee04693845f9c1dcc4af3a03bad03a62685b24681d1ff8426230c84743",
+  "purpose": {
+    "tenant_model": "SINGLE_TENANT",
+    "owner": "Tushar Rawat",
+    "root_authority": "FOUNDER",
+    "authority_change": "Authorize only Mission 101 forward-custody bridge governance, certified forward-custody release creation, immutable development dataset descriptors, founder-controlled finite development permits, and metadata-only development admission eligibility and reservation.",
+    "research_reopened_semantics": "GOVERNANCE_AND_METADATA_ONLY_NO_RESULT_BEARING_EXECUTION",
+    "self_authorizing_definition": "Software may verify existing authority but may not grant, approve, activate, expand, or resurrect authority for itself."
+  },
+  "mission101_authority": {
+    "forward_custody_bridge_governance": true,
+    "certified_forward_custody_release_creation": true,
+    "development_dataset_descriptor_creation": true,
+    "founder_controlled_development_permit_issuance_and_verification": true,
+    "development_admission_eligibility_and_reservation": true,
+    "result_bearing_research_execution": false,
+    "backtesting": false,
+    "return_pnl_or_performance_calculation": false,
+    "validation_access": false,
+    "holdout_access": false,
+    "model_training_or_ml": false,
+    "signal_generation": false,
+    "candidate_ranking_or_promotion": false,
+    "portfolio_authority": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_account_access": false,
+    "credential_access": false,
+    "signed_requests": false,
+    "order_placement": false,
+    "capital_deployment": false,
+    "profitability_claim": false,
+    "self_authorization": false
+  },
+  "root_authority": {
+    "holder": "FOUNDER",
+    "local_trust_boundary": "SINGLE_OS_USER_PRIVATE_RUNTIME_AND_EXPLICIT_OPERATOR_ACKNOWLEDGEMENT",
+    "issuer_role_label_is_cryptographic_authentication": false,
+    "delegation_must_be_explicit_and_versioned": true,
+    "uncertainty_behavior": "FAIL_CLOSED"
+  },
+  "proposal_activation_separation": {
+    "system_may_propose": true,
+    "system_may_approve_own_proposal": false,
+    "system_may_activate_own_proposal": false,
+    "proposal_is_authority": false,
+    "permanent_self_authorization_prohibition": true
+  },
+  "change_control": {
+    "reviewed_pull_request_required": true,
+    "ci_required": true,
+    "founder_approval_required": true,
+    "authority_version_increment_required": true,
+    "automatic_activation": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}

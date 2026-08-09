@@ -34,7 +34,17 @@ failed closed and was preserved for review. The successful capture verified the
 full request, custody, journal, checkpoint, backup, and private-permission path.
 Mission 100 still does not make the evidence research-admissible or authorize
 strategy research, exchange accounts, credentials, orders, paper/live trading,
-or capital. Recurring scheduler activation remains a separate operator decision.
+or capital. Recurring scheduler activation is private operator state rather than
+repository authority or state.
+
+Mission 101 adds the governed bridge from a previously exported, independently
+verified Mission 100 backup into a distinct forward-custody profile. It can
+certify exact forward evidence, describe an immutable real-market development
+dataset, record a finite founder-controlled development permit, and reserve a
+metadata-only development admission. It does not execute an experiment, open
+validation or holdout data, calculate performance, train a model, produce a
+signal, or authorize paper/live trading. No production permit was activated by
+the implementation; Mission 102 is the next planned execution-runtime mission.
 
 ## Why I built it
 
@@ -85,6 +95,7 @@ The current backend sequence is deliberately narrower:
 | 98 | Added a deterministic, decision-only Research Director that verifies Mission 97 evidence and emits one non-executable recommendation |
 | 99 | Added immutable, revision-aware market-data custody, independent certification, deterministic recovery inspection, and a bounded synthetic as-of resolver |
 | 100 | Added bounded forward public-market acquisition with immutable raw evidence, append-only receipts, clock checks, revisions, checkpoints, and local backup verification |
+| 101 | Added independently certified forward custody, exact development dataset descriptors, finite founder permits, and metadata-only Admission V2; result-bearing execution remains closed |
 
 Mission 97 was published at commit
 `8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153
@@ -92,7 +103,7 @@ passing tests and one third-party `websockets.legacy` deprecation warning. Those
 tests cover software behavior and repository invariants; they do not establish
 alpha.
 
-## Provisional roadmap: Missions 101–109
+## Mission 101 status and provisional roadmap: Missions 102–109
 
 This is planning direction, not authorization. Each mission requires its own
 reviewed contract before it can use new authority. Mission 100 collects forward
@@ -101,7 +112,7 @@ research.
 
 | Mission | Planning direction |
 |---|---|
-| 101 | Add a founder-approved research reopening authority and narrow experiment permits, including the reviewed bridge from Mission 100 evidence into Mission 99 custody |
+| 101 | Implemented the founder-controlled governance, forward-custody, exact-dataset, permit, and metadata-only development-admission machinery; no result-bearing execution |
 | 102 | Provide a general event-driven research runtime that can execute only permitted experiments |
 | 103 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
 | 104 | Observe approved candidates on current data without exchange orders |
@@ -151,6 +162,7 @@ clone.
 - [Autonomy constitution v2](docs/DELTAGRID_AUTONOMY_CONSTITUTION_V2.md)
 - [Temporal Market Data Control Plane](docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md)
 - [Forward Market Data Acquisition](docs/DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md)
+- [Mission 101 Research Reopening Governance](docs/DELTAGRID_RESEARCH_REOPENING_GOVERNANCE.md)
 - [Documentation registry](docs/documentation-status.json)
 
 <details>

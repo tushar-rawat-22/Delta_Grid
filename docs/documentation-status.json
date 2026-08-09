@@ -180,6 +180,21 @@
       "notes": "Mission 100 authority extension. It preserves founder root authority and grants no research, credential, account, order, paper/live trading, or capital authority."
     },
     {
+      "path": "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V3.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, software verification, and authority reviewers",
+      "purpose": "Machine-readable founder authority change for Mission 101 custody, exact development datasets, finite permits, and metadata-only admission",
+      "authority_level": "CURRENT_CONTROLLING_AUTHORITY_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Mission 101 authority extension. It preserves founder root authority and grants no result-bearing execution, validation, holdout, ML, signal, paper/live trading, exchange, credential, order, capital, or self-authorization authority."
+    },
+    {
       "path": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and research-integrity reviewers",
@@ -328,6 +343,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Authorizes only Mission 96A local read-only ledger inspection, verified linked-result loading, deterministic projections, and integrity incidents. It grants no UI, research, market, protected-data, model, exchange, trading, autonomous, or capital authority."
+    },
+    {
+      "path": "contracts/DELTAGRID_RESEARCH_REOPENING_GOVERNANCE_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, software verification, operators, and research-integrity reviewers",
+      "purpose": "Current machine-readable Mission 101 backup bridge, forward-custody, exact-dataset, permit, and Admission V2 boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only independently verified Mission 100 backup bridging, distinct certified forward custody, mixed-stream latest-causal-revision development dataset descriptors with frozen per-stream intervals, finite founder-controlled permits with observed clean-repository binding, trusted issue and revocation times, causal historical revocation, and global append-only capacity, exact private Mission 94 ledger wrapping, trusted-time metadata-only development admission with independently observed repository identity, and the exact reviewed 48fc M100 lineage. Result-bearing execution and all protected, model, signal, trading, exchange, credential, order, and capital authority remain closed."
     },
     {
       "path": "contracts/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE_V1.json",
@@ -2098,6 +2128,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Explains Mission 96A read-only ledger and verified-result projections without authorizing UI, research, market or protected-data access, models, trading, exchanges, autonomy, or capital."
+    },
+    {
+      "path": "docs/DELTAGRID_RESEARCH_REOPENING_GOVERNANCE.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Founder, maintainers, operators, data-integrity reviewers, and research-integrity reviewers",
+      "purpose": "Current Mission 101 design and operator boundary for forward custody, development datasets, permits, and Admission V2",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 101's verified immutable-backup bridge, reviewed 48fc source compatibility, distinct forward-custody identities, persisted-byte certification, mixed-stream latest causal revision selection with frozen per-stream intervals, independently observed clean-repository permit and admission binding, trusted permit write times, causal historical revocation, global append-only permit capacity linearization, exact private Mission 94 ledger wrapping, and trusted-time metadata-only admission without authorizing result-bearing execution, validation, holdout, ML, signals, paper/live trading, exchanges, credentials, orders, or capital."
     },
     {
       "path": "docs/DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md",

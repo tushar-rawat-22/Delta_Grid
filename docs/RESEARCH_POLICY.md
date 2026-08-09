@@ -21,6 +21,14 @@ New strategy work requires genuinely new evidence and a new versioned
 reopening contract. Historical next actions, available code, and previously
 implemented research infrastructure do not reopen the programme.
 
+Mission 101 now provides a narrower versioned governance path for independently
+verified forward custody, immutable real-market development dataset identity,
+finite founder-controlled permits, and metadata-only development admission.
+That machinery does not satisfy or bypass the separate authority required for
+result-bearing execution. No development experiment, validation, holdout, ML,
+signal, paper/live trading, exchange, credential, order, or capital action is
+authorized by Mission 101 admission alone.
+
 ## Research-First Operating Model
 
 Research must establish a falsifiable economic hypothesis before
