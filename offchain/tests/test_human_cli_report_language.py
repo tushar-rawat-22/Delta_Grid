@@ -28,6 +28,7 @@ ELIGIBLE_CLI_PATHS = {
 AUTHORIZED_POST_BASE_CLIS = {
     "offchain/market_data_control/__main__.py",
     "offchain/market_data_acquisition/__main__.py",
+    "offchain/research/reopening/__main__.py",
     "offchain/research/cockpit/__main__.py",
     "offchain/orchestration/__main__.py",
 }
