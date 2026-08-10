@@ -34,6 +34,7 @@ from offchain.research.development_runtime import (
     build_execution_specification,
     finalize_verified_result,
 )
+from offchain.research.development_runtime import loader as loader_module
 from offchain.research.development_runtime.finalizer import terminalize_failed_claim
 from offchain.research.development_runtime.artifacts import build_result_artifacts
 from offchain.research.development_runtime.runtime import claim_execution_spec, publish_artifact, trial_directory
@@ -46,6 +47,8 @@ from offchain.research.development_runtime.core import (
     canonical_hash,
 )
 from offchain.research.development_runtime.registry import ALL_STREAMS
+from offchain.research.statistical_governance import integrations as m103_integrations
+from offchain.research.statistical_governance.integrations import M102ResultSource
 from offchain.research.development_runtime import __main__ as cli_module
 from offchain.tests import test_mission101_research_reopening as m101
 
@@ -1059,6 +1062,56 @@ def test_execution_failure_uses_fresh_injected_audit_time(chain: dict[str, Any])
     latest = ledger.latest_event(decision["trial_id"])
     assert latest.status_token == "FAILED"
     assert latest.event_timestamp == chain["expires_at"]
+    monkeypatch = pytest.MonkeyPatch()
+    try:
+        monkeypatch.setattr(m103_integrations, "production_registry", lambda: registry)
+        evidence = m103_integrations._verify_terminal_m102_source(M102ResultSource(
+            result_runtime=root, trial_id=decision["trial_id"], ledger_path=ledger.database_path,
+            authority_root=chain["authority_root"], descriptor=chain["descriptor"],
+            release_directory=chain["release_directory"], custody_runtime_root=chain["custody_root"],
+        ))
+    finally:
+        monkeypatch.undo()
+    assert evidence["terminal_status"] == "FAILED"
+    assert evidence["failure_timestamp"] == chain["expires_at"]
+    assert evidence["result_link_absent"] is True
+
+
+def test_exact_hash_loader_never_parses_excluded_real_release_payload(
+    chain: dict[str, Any], monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    events = load_causal_events(
+        chain["descriptor"], release_directory=chain["release_directory"],
+        custody_runtime_root=chain["custody_root"],
+        observable_inputs=("spot_ohlcv:BTCUSDT",),
+    )
+    assert len(events) >= 1
+    included = events[0]
+    envelope = loader_module.verify_release_envelope_without_values(
+        chain["release_directory"], custody_runtime_root=chain["custody_root"],
+    )
+    excluded_metadata = next(
+        row for row in envelope["release_core"]["custody_records"]
+        if row["custody_record_hash"] != included.custody_record_hash
+    )
+    excluded_payload_hash = excluded_metadata["source_m100_payload_hash"]
+    original = loader_module._strict_payload
+
+    def guarded(stream: str, raw: str, expected_hash: str):
+        if expected_hash == excluded_payload_hash:
+            raise AssertionError("excluded payload parsed")
+        return original(stream, raw, expected_hash)
+
+    monkeypatch.setattr(loader_module, "_strict_payload", guarded)
+    opened = loader_module.load_causal_events_by_custody_hashes(
+        release_directory=chain["release_directory"], custody_runtime_root=chain["custody_root"],
+        custody_record_hashes=(included.custody_record_hash,),
+        exact_observable_inputs=("spot_ohlcv:BTCUSDT",),
+        expected_release_id=envelope["release_id"],
+        expected_release_core_hash=envelope["release_core_hash"],
+        expected_release_certificate_hash=envelope["certificate_hash"],
+    )
+    assert [event.custody_record_hash for event in opened] == [included.custody_record_hash]
 
 
 def test_public_verification_requires_exact_finalized_m94_link(chain: dict[str, Any]) -> None:

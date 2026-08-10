@@ -189,62 +189,24 @@ def _strict_payload(stream: str, raw: str, expected_hash: str) -> dict[str, Any]
     return payload
 
 
-def load_causal_events(
-    descriptor: Mapping[str, Any] | str | Path,
-    *,
-    release_directory: str | Path,
-    custody_runtime_root: str | Path,
-    observable_inputs: tuple[str, ...] | None = None,
+def _load_exact_custody_events(
+    envelope: Mapping[str, Any], *, release_directory: str | Path,
+    custody_record_hashes: tuple[str, ...],
 ) -> tuple[MarketEvent, ...]:
-    """Recertify upstream bytes and open only descriptor-selected payload JSON."""
+    """Open and verify payload JSON for exactly the supplied custody hashes."""
 
-    envelope = verify_release_envelope_without_values(
-        release_directory, custody_runtime_root=custody_runtime_root
-    )
-    selected_descriptor = verify_development_dataset_descriptor(descriptor)
     if (
-        selected_descriptor["source_forward_custody_release_id"] != envelope["release_id"]
-        or selected_descriptor["release_core_hash"] != envelope["release_core_hash"]
-        or selected_descriptor["release_certificate_hash"] != envelope["certificate_hash"]
+        not custody_record_hashes
+        or len(custody_record_hashes) > MAX_SELECTED_RECORDS
+        or len(custody_record_hashes) != len(set(custody_record_hashes))
     ):
-        raise DevelopmentRuntimeError("DATASET_RELEASE_BINDING_MISMATCH")
-    selected = selected_descriptor["selected_custody_record_hashes"]
-    if len(selected) > MAX_SELECTED_RECORDS:
-        raise DevelopmentRuntimeError("SELECTED_RECORD_COUNT_LIMIT")
-    release = envelope["release_core"]
-    expected_selected = _latest_causally_available_records(
-        release["custody_records"], provider=selected_descriptor["provider"],
-        symbols=selected_descriptor["allowed_symbols"], streams=selected_descriptor["allowed_streams"],
-        stream_intervals=selected_descriptor["stream_intervals"],
-        start=parse_utc(selected_descriptor["temporal_start"], "temporal_start"),
-        end=parse_utc(selected_descriptor["temporal_end_as_of"], "temporal_end_as_of"),
-        cutoff=parse_utc(selected_descriptor["causal_availability_cutoff"], "causal_availability_cutoff"),
-    )
-    if expected_selected != selected:
-        raise DevelopmentRuntimeError("DATASET_RECORD_SET_RECONSTRUCTION_MISMATCH")
-    custody = {item["custody_record_hash"]: item for item in release["custody_records"]}
-    if set(selected) - set(custody):
+        raise DevelopmentRuntimeError("SELECTED_RECORD_SET_INVALID")
+    custody = {
+        item["custody_record_hash"]: item
+        for item in envelope["release_core"]["custody_records"]
+    }
+    if set(custody_record_hashes) - set(custody):
         raise DevelopmentRuntimeError("SELECTED_CUSTODY_RECORD_MISSING")
-    opened_selected = list(selected)
-    if observable_inputs is not None:
-        scope = tuple(observable_inputs)
-        if not scope or len(scope) != len(set(scope)):
-            raise DevelopmentRuntimeError("VARIANT_OBSERVABLE_SCOPE_INVALID")
-        for instrument_id in scope:
-            parse_instrument_id(instrument_id)
-        scoped = set(scope)
-        opened_selected = [
-            custody_hash for custody_hash in selected
-            if canonical_instrument_id(
-                custody[custody_hash]["stream"], custody[custody_hash]["symbol"]
-            ) in scoped
-        ]
-        present = {
-            canonical_instrument_id(custody[item]["stream"], custody[item]["symbol"])
-            for item in opened_selected
-        }
-        if present != scoped:
-            raise DevelopmentRuntimeError("VARIANT_OBSERVABLE_INPUT_MISSING")
     backup = Path(release_directory) / "source-backup.zip"
     events: list[MarketEvent] = []
     try:
@@ -252,7 +214,7 @@ def load_causal_events(
         with materialization as (runtime, _manifest, _manifest_hash):
             with Journal.open(runtime, readonly=True) as journal:
                 conn = journal.conn
-                source_hashes = [custody[item]["source_m100_record_hash"] for item in opened_selected]
+                source_hashes = [custody[item]["source_m100_record_hash"] for item in custody_record_hashes]
                 rows: dict[str, Any] = {}
                 # Bounded one-at-a-time lookup avoids SQLite parameter limits and
                 # never parses an excluded observation's payload_json.
@@ -261,7 +223,7 @@ def load_causal_events(
                     if row is None or source_hash in rows:
                         raise DevelopmentRuntimeError("SOURCE_RECORD_MISSING_OR_DUPLICATE")
                     rows[source_hash] = row
-                for custody_hash in opened_selected:
+                for custody_hash in custody_record_hashes:
                     metadata = custody[custody_hash]
                     row = rows[metadata["source_m100_record_hash"]]
                     source_core = {
@@ -351,3 +313,104 @@ def load_causal_events(
     if len({item.event_id for item in events}) != len(events):
         raise DevelopmentRuntimeError("EVENT_IDENTITY_COLLISION")
     return tuple(events)
+
+
+def load_causal_events_by_custody_hashes(
+    *, release_directory: str | Path, custody_runtime_root: str | Path,
+    custody_record_hashes: tuple[str, ...], exact_observable_inputs: tuple[str, ...],
+    expected_release_id: str, expected_release_core_hash: str,
+    expected_release_certificate_hash: str,
+) -> tuple[MarketEvent, ...]:
+    """Recertify a release and open no payload outside an exact committed hash set."""
+
+    envelope = verify_release_envelope_without_values(
+        release_directory, custody_runtime_root=custody_runtime_root
+    )
+    if (
+        envelope["release_id"] != expected_release_id
+        or envelope["release_core_hash"] != expected_release_core_hash
+        or envelope["certificate_hash"] != expected_release_certificate_hash
+    ):
+        raise DevelopmentRuntimeError("DATASET_RELEASE_BINDING_MISMATCH")
+    scope = tuple(exact_observable_inputs)
+    if not scope or len(scope) != len(set(scope)):
+        raise DevelopmentRuntimeError("VARIANT_OBSERVABLE_SCOPE_INVALID")
+    for instrument_id in scope:
+        parse_instrument_id(instrument_id)
+    custody = {
+        item["custody_record_hash"]: item
+        for item in envelope["release_core"]["custody_records"]
+    }
+    if set(custody_record_hashes) - set(custody):
+        raise DevelopmentRuntimeError("SELECTED_CUSTODY_RECORD_MISSING")
+    if any(
+        canonical_instrument_id(custody[item]["stream"], custody[item]["symbol"]) not in set(scope)
+        for item in custody_record_hashes
+    ):
+        raise DevelopmentRuntimeError("EXACT_OBSERVABLE_SCOPE_MISMATCH")
+    return _load_exact_custody_events(
+        envelope, release_directory=release_directory,
+        custody_record_hashes=custody_record_hashes,
+    )
+
+
+def load_causal_events(
+    descriptor: Mapping[str, Any] | str | Path,
+    *,
+    release_directory: str | Path,
+    custody_runtime_root: str | Path,
+    observable_inputs: tuple[str, ...] | None = None,
+) -> tuple[MarketEvent, ...]:
+    """Recertify upstream bytes and open only descriptor-selected payload JSON."""
+
+    envelope = verify_release_envelope_without_values(
+        release_directory, custody_runtime_root=custody_runtime_root
+    )
+    selected_descriptor = verify_development_dataset_descriptor(descriptor)
+    if (
+        selected_descriptor["source_forward_custody_release_id"] != envelope["release_id"]
+        or selected_descriptor["release_core_hash"] != envelope["release_core_hash"]
+        or selected_descriptor["release_certificate_hash"] != envelope["certificate_hash"]
+    ):
+        raise DevelopmentRuntimeError("DATASET_RELEASE_BINDING_MISMATCH")
+    selected = selected_descriptor["selected_custody_record_hashes"]
+    if len(selected) > MAX_SELECTED_RECORDS:
+        raise DevelopmentRuntimeError("SELECTED_RECORD_COUNT_LIMIT")
+    release = envelope["release_core"]
+    expected_selected = _latest_causally_available_records(
+        release["custody_records"], provider=selected_descriptor["provider"],
+        symbols=selected_descriptor["allowed_symbols"], streams=selected_descriptor["allowed_streams"],
+        stream_intervals=selected_descriptor["stream_intervals"],
+        start=parse_utc(selected_descriptor["temporal_start"], "temporal_start"),
+        end=parse_utc(selected_descriptor["temporal_end_as_of"], "temporal_end_as_of"),
+        cutoff=parse_utc(selected_descriptor["causal_availability_cutoff"], "causal_availability_cutoff"),
+    )
+    if expected_selected != selected:
+        raise DevelopmentRuntimeError("DATASET_RECORD_SET_RECONSTRUCTION_MISMATCH")
+    custody = {item["custody_record_hash"]: item for item in release["custody_records"]}
+    if set(selected) - set(custody):
+        raise DevelopmentRuntimeError("SELECTED_CUSTODY_RECORD_MISSING")
+    opened_selected = list(selected)
+    if observable_inputs is not None:
+        scope = tuple(observable_inputs)
+        if not scope or len(scope) != len(set(scope)):
+            raise DevelopmentRuntimeError("VARIANT_OBSERVABLE_SCOPE_INVALID")
+        for instrument_id in scope:
+            parse_instrument_id(instrument_id)
+        scoped = set(scope)
+        opened_selected = [
+            custody_hash for custody_hash in selected
+            if canonical_instrument_id(
+                custody[custody_hash]["stream"], custody[custody_hash]["symbol"]
+            ) in scoped
+        ]
+        present = {
+            canonical_instrument_id(custody[item]["stream"], custody[item]["symbol"])
+            for item in opened_selected
+        }
+        if present != scoped:
+            raise DevelopmentRuntimeError("VARIANT_OBSERVABLE_INPUT_MISSING")
+    return _load_exact_custody_events(
+        envelope, release_directory=release_directory,
+        custody_record_hashes=tuple(opened_selected),
+    )

@@ -6,7 +6,11 @@ DeltaGrid has no validated profitable strategy and no selected candidate. The
 final freeze remains controlling except for narrow prospective authority
 expressly granted by later versioned contracts. Mission 102 permits only an
 exact consumed-permit-bound `REAL_MARKET_DEVELOPMENT` trial to execute; its
-production registry initially contains zero economic families. Paper trading
+production registry initially contains zero economic families. Mission 103
+permits only finite-program qualification infrastructure and separately
+founder-authorized one-use protected-stage machinery. Both M103 production
+registries are empty, no M103 campaign or protected execution exists, and its
+maximum verdict has authority effect `NONE`. Paper trading
 and live trading are not authorized, and capital deployment is blocked.
 
 The [final freeze](DELTAGRID_FINAL_FREEZE.md) and its
@@ -43,6 +47,11 @@ An authorization change requires all of the following:
 
 - Validation and holdout data cannot be accessed without explicit
   authorization for that protected stage.
+- Protected payload values cannot be loaded until the exact one-use founder
+  authorization is consumed and `OPENED` is durably committed.
+- Replication, validation and holdout scored records are pairwise disjoint,
+  obey their frozen purge/gap/embargo, and begin from flat cash. Context does
+  not produce scored PnL.
 - Features and decisions may use only information available at the relevant
   decision timestamp; future information is prohibited.
 - Dataset identities, provenance, availability times, transformations, and
@@ -94,6 +103,9 @@ training, evaluation, promotion, or trading.
   preserved.
 - Failed checks and abandoned attempts cannot be silently removed from the
   evidence or experiment budget.
+- A failed, missing or crashed declared hypothesis remains in the complete
+  program-wide multiplicity family. An exact retry gets neither fresh capacity
+  nor fresh randomness.
 - Historical records cannot override the later controlling contract.
 
 ## Changing an invariant
@@ -108,7 +120,9 @@ record, or decision.
 
 ## Current non-authorizations
 
-The current policies authorize no research beyond the exact Mission 101 and
-Mission 102 development gates. They do not authorize validation or holdout
-access, ML work, paper or dry-run operation, live trading, orders, private-key
-or account access, capital deployment, or autonomous promotion and execution.
+The current policies authorize no research beyond the exact Mission 101,
+Mission 102 and Mission 103 gates. Mission 103 infrastructure does not itself
+open replication, validation or holdout; each future stage needs its exact
+founder authorization. The policies do not authorize ML work, paper or dry-run
+operation, live trading, orders, private-key or account access, capital
+deployment, or autonomous promotion and execution.

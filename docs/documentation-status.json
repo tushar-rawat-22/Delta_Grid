@@ -210,6 +210,21 @@
       "notes": "Mission 102 authority extension. It permits only exact consumed-permit-bound real-market development result execution and preserves founder root authority; validation, holdout, ML, promotion, paper/live trading, exchange, credential, signed-request, order, capital, profitability-claim, and self-authorization authority remain false."
     },
     {
+      "path": "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V5.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, software verification, and authority reviewers",
+      "purpose": "Machine-readable founder authority change for Mission 103 finite statistics and separately authorized protected-evidence governance",
+      "authority_level": "CURRENT_CONTROLLING_AUTHORITY_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Mission 103 authority extension. It permits only finite-program qualification infrastructure and separately founder-authorized one-use replication, validation and holdout governance. M104 observation, ML, paper/live trading, exchanges, credentials, signed requests, orders, portfolio allocation, leverage enlargement, capital and self-authorization remain false."
+    },
+    {
       "path": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and research-integrity reviewers",
@@ -283,6 +298,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Authorizes only the frozen Mission 100 public-market acquisition surface. Real-data research resolution and trading remain prohibited."
+    },
+    {
+      "path": "contracts/DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, statistical reviewers, data-integrity reviewers, and software verification",
+      "purpose": "Current machine-readable Mission 103 campaign, statistical, protected-partition, authorization, and progression boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Defines campaign-level anti-reset admission, exact program-wide statistics, a one-candidate freeze, prospective protected partitions, one-use founder authorizations and durable opening. Both production registries are empty and the maximum verdict has authority effect NONE."
     },
     {
       "path": "contracts/DELTAGRID_MISSION100_FIRST_LIVE_ACTIVATION_REMEDIATION_V1.json",
@@ -2083,6 +2113,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Explains forward acquisition, evidence custody, temporal semantics, backup, and the continuing research/trading firewall."
+    },
+    {
+      "path": "docs/DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Founder, maintainers, statistical reviewers, data-integrity reviewers, and software verification",
+      "purpose": "Current Mission 103 architecture and authority boundary for finite statistics and protected-evidence progression",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 103 campaign anti-reset admission, program-before-nonce founder activation and deterministic seed derivation, post-result M102 execution-spec binding and derived terminal evidence, exact program-wide empirical statistics and Holm correction, one-candidate freeze, causal prospective partitions, exact-hash protected opening, sealed empty production registries, one-use founder authorization, durable opening and exact recovery. No production campaign or protected execution exists."
     },
     {
       "path": "docs/DELTAGRID_ML_RESEARCH_ADAPTER.md",

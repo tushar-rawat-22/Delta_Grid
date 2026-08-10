@@ -15,7 +15,10 @@ component must respect.
 DeltaGrid has no approved strategy, no active paper portfolio, no live
 positions, and no capital authorization. Mission 102 permits only bounded
 research-simulation accounting for an exact admitted development trial; the
-production registry initially has zero economic families. Paper execution,
+production registry initially has zero economic families. Mission 103 adds
+anti-reset statistics and protected-stage governance, but both of its
+production registries are empty and no campaign or protected execution exists.
+Its highest verdict has authority effect `NONE`. Paper execution,
 live execution, and account operation are not authorized. Any related
 repository capability is inactive, and its existence provides no authority.
 
@@ -43,6 +46,13 @@ weak sample size, regime instability, concentrated profit and loss, and
 unrealistic execution costs. Candidate, feature, parameter, threshold, and
 model attempts must remain within a preregistered budget and an appropriate
 multiple-testing correction.
+
+Multiplicity is global to a frozen program. Renaming families, variants or
+hypotheses, creating a new program after rejection, replaying a permit, shifting
+a future window, or converting a crash into a fresh statistical chance cannot
+reset that budget. Protected values remain inaccessible until the exact
+one-use opening is durably committed. A crash after that commit consumes the
+authorization permanently; only exact-identity recovery is allowed.
 
 Promotion must depend on chronological evidence, realistic fees and execution
 stress, null controls, replication, concentration, and parameter sensitivity.

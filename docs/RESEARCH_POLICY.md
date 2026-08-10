@@ -39,6 +39,23 @@ order, and capital boundaries. Its production experiment registry initially
 contains zero economic families, and no real Mission 102 research was executed
 during implementation.
 
+Mission 103 adds campaign-level multiplicity protection and infrastructure for
+independent qualification of already-finalized Mission 102 results. A founder
+admission commits the complete proposal before its null nonce exists. The
+program freezes every inferential hypothesis across every family, exact
+statistical and hard-gate rules, and prospective replication, validation and
+holdout specifications before results can guide selection. Failed, missing and
+crashed hypotheses remain in the program-wide family with p-value 1. At most
+one candidate may be fixed, with no later fallback.
+
+Each protected stage still needs a distinct exact one-use founder
+authorization. A prior pass creates eligibility to request the next
+authorization; it does not open that stage. Mission 103's production
+statistical-adapter and protected-evaluator registries contain zero entries,
+and its implementation created no campaign, program, candidate,
+materialization, authorization or protected execution. Its maximum successful
+verdict is only `QUALIFIED_FOR_M104_OBSERVATION` with authority effect `NONE`.
+
 ## Research-First Operating Model
 
 Research must establish a falsifiable economic hypothesis before
@@ -120,6 +137,13 @@ one narrow parameter choice, or one optimistic cost scenario must fail or be
 classified as inconclusive under the frozen rules. Statistical significance
 alone does not establish a durable economic edge or future profitability.
 
+For a Mission 103 program, `m` is every distinct declared inferential
+hypothesis across all economic families. One-sided Monte Carlo evidence uses
+`(1 + favorable null count) / (R + 1)` and
+`R >= max(5000, ceil(m / alpha) - 1)`. Holm correction is applied once across
+all `m`; it is never reset per family. Exact deterministic retries do not create
+fresh hypotheses or randomness, and cannot erase failed attempts.
+
 ## Promotion and rejection
 
 A candidate advances only when it passes every fixed gate for its current
@@ -171,7 +195,7 @@ authorize validation, holdout, paper evaluation, ML, capital, or live trading.
 
 This policy does not itself authorize:
 
-- any research outside an exact Mission 101 permit and Mission 102 execution gate;
+- any research outside the exact Mission 101, Mission 102, and Mission 103 gates;
 - validation or holdout access;
 - paper trading or dry-run operation;
 - live trading or order placement;

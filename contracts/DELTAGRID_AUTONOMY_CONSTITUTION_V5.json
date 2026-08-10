@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-autonomy-constitution-v5",
+  "contract_version": 5,
+  "authority_version": 5,
+  "base_commit": "abf40633426dcbb443d70732a36c05598a574d38",
+  "parent_constitution_id": "deltagrid-autonomy-constitution-v4",
+  "parent_constitution_hash_sha256": "1ffb9b3fcbf5adae63727a136e2c33a952e646fc1362d1e8dfd9b5482851b9e2",
+  "contract_hash_sha256": "7055bba73f10ebb78f8791511d0b926ef1d8d7dae9099b843fae81d9aa074767",
+  "purpose": {
+    "tenant_model": "SINGLE_TENANT",
+    "owner": "FOUNDER",
+    "root_authority": "FOUNDER",
+    "authority_change": "Authorize only Mission 103 finite-program statistical qualification infrastructure and separately founder-authorized one-use REPLICATION, VALIDATION, and HOLDOUT protected-evidence governance needed to determine eligibility for Mission 104 observation.",
+    "maximum_successful_verdict": "QUALIFIED_FOR_M104_OBSERVATION",
+    "maximum_successful_verdict_authority_effect": "NONE",
+    "self_authorizing_definition": "Software may verify existing authority but may not grant, approve, activate, expand, or resurrect authority for itself."
+  },
+  "mission103_authority": {
+    "finite_program_statistical_qualification": true,
+    "research_campaign_admission_machinery": true,
+    "protected_partition_specification_and_materialization_machinery": true,
+    "founder_controlled_one_use_replication_opening": true,
+    "founder_controlled_one_use_validation_opening": true,
+    "founder_controlled_one_use_holdout_opening": true,
+    "m104_observation_eligibility_determination": true,
+    "m104_observation": false,
+    "model_training_or_ml": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_account_access": false,
+    "credential_access": false,
+    "signed_exchange_requests": false,
+    "order_placement": false,
+    "portfolio_allocation": false,
+    "leverage_or_risk_enlargement": false,
+    "capital_deployment": false,
+    "profitability_claim": false,
+    "self_authorization": false
+  },
+  "activation_gates": {
+    "committed_campaign_proposal_precedes_founder_nonce": true,
+    "immutable_finite_program_precedes_result_inspection": true,
+    "complete_multiplicity_family": true,
+    "independently_finalized_m102_results": true,
+    "prospective_protected_partition_specs": true,
+    "exact_one_use_founder_authorization_per_protected_stage": true,
+    "durable_opening_precedes_value_access": true,
+    "fixed_candidate_no_fallback": true
+  },
+  "root_authority": {
+    "holder": "FOUNDER",
+    "local_trust_boundary": "SINGLE_OS_USER_PRIVATE_RUNTIME_AND_EXPLICIT_OPERATOR_ACKNOWLEDGEMENT",
+    "delegation_must_be_explicit_and_versioned": true,
+    "uncertainty_behavior": "FAIL_CLOSED"
+  },
+  "proposal_activation_separation": {
+    "system_may_propose": true,
+    "system_may_approve_own_proposal": false,
+    "system_may_activate_own_proposal": false,
+    "proposal_is_authority": false,
+    "novelty_is_software_decidable": false,
+    "permanent_self_authorization_prohibition": true
+  },
+  "change_control": {
+    "reviewed_pull_request_required": true,
+    "ci_required": true,
+    "founder_approval_required": true,
+    "authority_version_increment_required": true,
+    "automatic_activation": false
+  },
+  "canonical_json": {
+    "excluded_fields": ["contract_hash_sha256"],
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}

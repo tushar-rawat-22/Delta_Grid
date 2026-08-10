@@ -57,6 +57,18 @@ development experiment can currently execute. No real Mission 102 research was
 run during implementation. Validation, holdout, ML, promotion, paper/live
 trading, exchange and credential access, orders, and capital remain closed.
 
+Mission 103 adds independent finite-program statistical governance above those
+development results. It commits a founder-controlled campaign before revealing
+a 256-bit null nonce, freezes the complete program-wide multiplicity family,
+uses exact empirical p-values and program-wide Holm correction, selects at most
+one fixed candidate, and governs prospective one-use `REPLICATION`,
+`VALIDATION`, and `HOLDOUT` openings. Protected values become available only
+after a durable one-use opening commits. The production statistical-adapter and
+protected-evaluator registries both contain zero entries, and no Mission 103
+production state, campaign, program, candidate, permit, materialization, or
+protected execution was created during implementation. The maximum verdict,
+`QUALIFIED_FOR_M104_OBSERVATION`, has authority effect `NONE`.
+
 ## Why I built it
 
 I wanted the process to start with a falsifiable hypothesis rather than an
@@ -108,6 +120,7 @@ The current backend sequence is deliberately narrower:
 | 100 | Added bounded forward public-market acquisition with immutable raw evidence, append-only receipts, clock checks, revisions, checkpoints, and local backup verification |
 | 101 | Added independently certified forward custody, exact development dataset descriptors, finite founder permits, and metadata-only Admission V2; result-bearing execution remains closed |
 | 102 | Added consumed-permit-bound development execution, immutable trial specifications, causal selected-value loading, deterministic accounting, independent replay, and Mission 94 finalization; production family count is zero |
+| 103 | Added campaign-level anti-reset governance, exact program-wide statistics, one-candidate freeze, prospective protected partitions, and one-use founder-authorized protected progression; both production registries are empty |
 
 Mission 97 was published at commit
 `8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153
@@ -115,7 +128,7 @@ passing tests and one third-party `websockets.legacy` deprecation warning. Those
 tests cover software behavior and repository invariants; they do not establish
 alpha.
 
-## Mission 101 status and provisional roadmap: Missions 102–109
+## Mission 103 status and provisional roadmap: Missions 104–109
 
 This is planning direction, not authorization. Each mission requires its own
 reviewed contract before it can use new authority. Mission 100 collects forward
@@ -126,7 +139,7 @@ research.
 |---|---|
 | 101 | Implemented the founder-controlled governance, forward-custody, exact-dataset, permit, and metadata-only development-admission machinery; no result-bearing execution |
 | 102 | Implemented a general event-driven development runtime that can execute only exact permitted experiments; no production family is registered |
-| 103 | Enforce independent development, validation, holdout, replication, and multiple-testing gates |
+| 103 | Implemented independent finite-program statistics and separately founder-authorized protected replication, validation, and holdout governance; no production program or protected opening exists |
 | 104 | Observe approved candidates on current data without exchange orders |
 | 105 | Add durable paper execution, accounting, and reconciliation |
 | 106 | Govern portfolio allocation, exposure, drawdown, leverage, and kill switches independently |
@@ -176,6 +189,7 @@ clone.
 - [Forward Market Data Acquisition](docs/DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md)
 - [Mission 101 Research Reopening Governance](docs/DELTAGRID_RESEARCH_REOPENING_GOVERNANCE.md)
 - [Mission 102 Development Research Runtime](docs/DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md)
+- [Mission 103 Independent Statistical and Protected-Evidence Governance](docs/DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md)
 - [Documentation registry](docs/documentation-status.json)
 
 <details>
