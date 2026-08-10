@@ -163,6 +163,40 @@ def test_source_file_rejects_arbitrary_paths() -> None:
         source_file(ROOT, "offchain/market_data_acquisition/schema.py")
 
 
+
+def test_export_rejects_symlink_parent_component(tmp_path: Path) -> None:
+    physical = tmp_path / "physical"
+    physical.mkdir()
+    alias = tmp_path / "alias"
+    alias.symlink_to(physical, target_is_directory=True)
+
+    with pytest.raises(ProjectionError, match="PATH_SYMLINK_FORBIDDEN"):
+        export_projection(alias / "projection-package")
+
+
+def test_verify_rejects_symlink_parent_component(tmp_path: Path) -> None:
+    physical = tmp_path / "physical"
+    package = physical / "projection-package"
+    export_projection(package)
+
+    alias = tmp_path / "alias"
+    alias.symlink_to(physical, target_is_directory=True)
+
+    with pytest.raises(ProjectionError, match="PACKAGE_PATH_SYMLINK"):
+        verify_projection_package(alias / "projection-package")
+
+
+def test_export_accepts_canonicalized_physical_destination(tmp_path: Path) -> None:
+    physical = tmp_path / "physical"
+    physical.mkdir()
+    alias = tmp_path / "alias"
+    alias.symlink_to(physical, target_is_directory=True)
+
+    destination = (alias / "projection-package").resolve(strict=False)
+    exported = export_projection(destination)
+    assert exported["verdict"] == "PASS"
+    assert verify_projection_package(destination) == exported
+
 def test_export_and_verify_round_trip(tmp_path: Path) -> None:
     destination = tmp_path / "projection-package"
     exported = export_projection(destination)

@@ -43,7 +43,7 @@ The public web application will be a consumer of projection evidence. It will no
 
 ## Output boundary
 
-Exports must go to an absolute directory outside the Git checkout. Symlink destinations, non-empty existing destinations, and output-file collisions fail closed. Files are written exclusively rather than overwritten.
+Exports must go to an absolute directory outside the Git checkout. Any symbolic-link component in the destination path fails closed; operators that intentionally start from an alias must first resolve it to a physical path. Non-empty existing destinations and output-file collisions also fail closed. Files are written exclusively rather than overwritten.
 
 The exporter does not upload or publish the package. Network publication belongs to the separate web product and will be reviewed independently.
 
