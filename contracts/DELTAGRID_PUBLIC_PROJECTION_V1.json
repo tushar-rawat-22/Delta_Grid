@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-public-projection-v1",
+  "contract_version": 1,
+  "authorization_stage": "P1_PUBLIC_REPOSITORY_PROJECTION_ONLY",
+  "base_commit": "6e31f3d8ac062feccf91eeeb8c6d71733f4f56b7",
+  "base_commit_semantics": "MISSION103_CLOSED_MAIN_BASELINE_FOR_P1_1",
+  "autonomy_constitution_id": "deltagrid-autonomy-constitution-v5",
+  "autonomy_constitution_hash_sha256": "7055bba73f10ebb78f8791511d0b926ef1d8d7dae9099b843fae81d9aa074767",
+  "mission103_contract_id": "deltagrid-independent-research-validation-governance-v1",
+  "mission103_contract_hash_sha256": "19cc7af157e6350a736a272dd73c16a407eb42e68368ad84f970896da60d10f4",
+  "contract_hash_sha256": "bf288d8b6349c2843b5196fa1857ae9c464773bbcf7cad9d821785ea67dfb6e8",
+  "purpose": "Export and independently verify a deterministic public projection derived only from explicitly allowlisted public repository contracts, public documentation identities, and clean repository identity, without opening private runtimes, market values, protected evidence, credentials, trading authority, or network access.",
+  "authority_effect": "NONE",
+  "authority": {
+    "public_repository_projection": true,
+    "private_runtime_metadata_projection": false,
+    "market_value_projection": false,
+    "protected_value_projection": false,
+    "network_access": false,
+    "research_execution": false,
+    "validation_or_holdout_opening": false,
+    "model_or_ml": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_access": false,
+    "credential_access": false,
+    "signed_requests": false,
+    "orders": false,
+    "portfolio_allocation": false,
+    "capital_deployment": false,
+    "self_authorization": false
+  },
+  "source_scope": {
+    "repository_identity_required": true,
+    "clean_repository_required": true,
+    "arbitrary_paths": false,
+    "symlinks": false,
+    "allowed_contract_paths": [
+      "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V5.json",
+      "contracts/DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE_V1.json"
+    ],
+    "allowed_public_document_paths": [
+      "README.md",
+      "docs/RESEARCH_POLICY.md",
+      "docs/RISK_POLICY.md",
+      "docs/SAFETY_INVARIANTS.md"
+    ],
+    "private_runtime_roots": false,
+    "sqlite_open": false,
+    "environment_secrets": false,
+    "git_remote_credentials": false
+  },
+  "projection": {
+    "schema_id": "DELTAGRID_PUBLIC_PROJECTION_V1",
+    "source_classes": [
+      "REPOSITORY_IDENTITY",
+      "CONTRACT_DERIVED",
+      "PUBLIC_DOCUMENT_IDENTITY"
+    ],
+    "sections": [
+      "core_identity",
+      "authority",
+      "contract_identities",
+      "public_document_identities"
+    ],
+    "market_data_values": false,
+    "runtime_paths": false,
+    "protected_windows": false,
+    "founder_nonces": false,
+    "command_state": false,
+    "deterministic_for_same_clean_repository_state": true
+  },
+  "output": {
+    "format": "CANONICAL_JSON_PACKAGE_V1",
+    "files": [
+      "projection.json",
+      "manifest.json"
+    ],
+    "destination_must_be_outside_repository": true,
+    "destination_symlink_forbidden": true,
+    "existing_nonempty_destination_forbidden": true,
+    "write_mode": "EXCLUSIVE_NO_CLOBBER",
+    "manifest_binds_projection_sha256": true,
+    "independent_verifier": true,
+    "network_publish": false
+  },
+  "failure_policy": {
+    "unknown_contract_identity": "REJECT",
+    "contract_hash_mismatch": "REJECT",
+    "dirty_repository": "REJECT",
+    "unexpected_source_path": "REJECT",
+    "symlink_source_or_destination": "REJECT",
+    "existing_output_conflict": "REJECT",
+    "unknown_projection_field": "REJECT"
+  },
+  "acceptance": {
+    "focused_tests_required": true,
+    "targeted_m100_m103_regressions_required": true,
+    "documentation_registry_update_required": true,
+    "full_suite_required": true,
+    "github_ci_required": true,
+    "private_runtime_access_during_tests": false,
+    "network_access_during_tests": false
+  },
+  "canonical_json": {
+    "excluded_fields": [
+      "contract_hash_sha256"
+    ],
+    "sort_keys": true,
+    "separators": [
+      ",",
+      ":"
+    ],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}

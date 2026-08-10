@@ -345,6 +345,21 @@
       "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
     },
     {
+      "path": "contracts/DELTAGRID_PUBLIC_PROJECTION_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, software verification, public-observer developers, and security reviewers",
+      "purpose": "Current machine-readable P1.1 deterministic repository-only public projection boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only deterministic repository/public-contract projection and package verification. It opens no private runtime or market/protected value, makes no network request, and grants no research, trading, exchange, credential, order, capital, or self-authorization authority."
+    },
+    {
       "path": "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and research-integrity reviewers",
@@ -2158,6 +2173,21 @@
       "readability_severity": 3,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
+    },
+    {
+      "path": "docs/DELTAGRID_PUBLIC_PROJECTION.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Founder, maintainers, public-observer developers, security reviewers, and test engineers",
+      "purpose": "Current human explanation and local operating guide for P1.1 public projection",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains P1.1's repository-only deterministic projection, exact allowlist, canonical package, and independent verifier without authorizing private-runtime access, market values, research, protected data, trading, exchanges, credentials, orders, or capital."
     },
     {
       "path": "docs/DELTAGRID_RESEARCH_ADMISSION_CORE.md",

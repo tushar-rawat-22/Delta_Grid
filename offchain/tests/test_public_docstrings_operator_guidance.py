@@ -32,6 +32,7 @@ AUTHORIZED_POST_BASE_CLIS = {
     "offchain/research/statistical_governance/__main__.py",
     "offchain/research/cockpit/__main__.py",
     "offchain/orchestration/__main__.py",
+    "offchain/public_projection/__main__.py",
 }
 EXPECTED_PUBLIC_SYMBOLS = {
     "scripts/mission_control.py": {
