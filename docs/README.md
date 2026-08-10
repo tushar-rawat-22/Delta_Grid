@@ -71,11 +71,17 @@ authorized now.
   execution specification, sealed future-extensible registry, causal selected
   value loader, deterministic accounting, independent replay, and atomic
   Mission 94 completion. Its production registry contains zero families.
+- [Independent statistical and protected-evidence governance](DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md)
+  documents Mission 103's campaign-level anti-reset admission, exact
+  program-wide empirical statistics and Holm correction, one fixed candidate,
+  prospective protected partitions, metadata-only materialization, and durable
+  one-use founder-authorized protected openings. Both production registries are
+  empty.
 
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future
-proposals; and the Mission 93–102 records describe the narrow backend components
+proposals; and the Mission 93–103 records describe the narrow backend components
 implemented after the freeze.
 
 ## Current project state
@@ -91,7 +97,7 @@ research admission boundary, deterministic synthetic control execution,
 canonical evidence, read-only system projection, a local cockpit, and a durable
 observation workflow.
 
-The current backend chain ends at Mission 102. Mission 98 remains deterministic
+The current backend chain ends at Mission 103. Mission 98 remains deterministic
 and decision-only. Mission 99 adds data custody without authorizing network
 collection or real-data research resolution. Mission 100 separately authorizes
 only bounded unauthenticated public-market collection into a private acquisition
@@ -103,8 +109,12 @@ software and repository properties; they do not establish alpha or capital
 authority. Mission 102 permits only an exact Mission 101 admitted development
 trial to execute through its consumed permit slot. The production registry
 initially has no economic family, and no real Mission 102 research was executed
-during implementation. Mission 103 remains the planned validation and
-statistical-promotion mission. Validation, holdout, ML, promotion, paper/live
+during implementation. No Mission 103 campaign, program, candidate,
+materialization, authorization, or protected execution was created during
+implementation; its statistical-adapter and protected-evaluator registries
+both have zero production entries. Validation and holdout remain closed until
+exact future founder authorizations, and a maximum M103 verdict has authority
+effect `NONE`. ML, paper/live
 trading, exchanges, credentials, orders, and capital remain unauthorized.
 
 ## Documentation status labels
@@ -141,7 +151,7 @@ Begin with the [project overview](../README.md), then read the
 [final project report](DELTAGRID_FINAL_PROJECT_REPORT.md) for the completed
 research programme and its negative economic result.
 
-The current backend architecture is the Mission 93–101 chain:
+The current backend architecture is the Mission 93–103 chain:
 
 | Mission | Document | Responsibility |
 |---|---|---|
@@ -155,6 +165,8 @@ The current backend architecture is the Mission 93–101 chain:
 | 99 | [Temporal Market Data Control Plane](DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md) | Custodies immutable, revision-aware releases; independently certifies them; audits legacy metadata; and resolves only authorized synthetic evidence as of a decision time |
 | 100 | [Forward Market Data Acquisition](DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md) | Collects only frozen public Binance market data into a private append-only forward-evidence journal with clock, retry, revision, checkpoint, and backup controls |
 | 101 | [Research Reopening Governance](DELTAGRID_RESEARCH_REOPENING_GOVERNANCE.md) | Verifies immutable Mission 100 backups, certifies distinct forward custody, binds exact development datasets and permits, and performs metadata-only development admission without execution |
+| 102 | [Development Research Runtime](DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md) | Executes only an exact consumed-permit-bound development trial and independently replays and finalizes its evidence; production family count is zero |
+| 103 | [Independent statistical and protected-evidence governance](DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md) | Prevents campaign/program multiplicity reset, applies exact program-wide statistics, freezes at most one candidate, and governs prospective one-use protected stages; production adapter and evaluator counts are zero |
 
 [Architecture State](ARCHITECTURE_STATE.md) remains a cumulative historical
 record of mission-era architecture. It is useful for tracing how earlier
@@ -163,13 +175,13 @@ not authorize those components to operate.
 
 The final project report is preserved evidence from the freeze publication. It
 should be read alongside the living root README, the final freeze, and the
-Mission 93–101 implementation contracts.
+Mission 93–103 implementation contracts.
 
 ## Planned direction
 
-Mission 101's implemented status and the provisional Mission 102–109 roadmap
+Mission 103's implemented status and the provisional Mission 104–109 roadmap
 appear once, in the
-[root README](../README.md#mission-101-status-and-provisional-roadmap-missions-102109).
+[root README](../README.md#mission-103-status-and-provisional-roadmap-missions-104109).
 The remaining roadmap is planning direction rather than authorization.
 
 ## Current policies
