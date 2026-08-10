@@ -195,6 +195,21 @@
       "notes": "Mission 101 authority extension. It preserves founder root authority and grants no result-bearing execution, validation, holdout, ML, signal, paper/live trading, exchange, credential, order, capital, or self-authorization authority."
     },
     {
+      "path": "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V4.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, software verification, and authority reviewers",
+      "purpose": "Machine-readable founder authority change for narrowly gated Mission 102 development result execution",
+      "authority_level": "CURRENT_CONTROLLING_AUTHORITY_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Mission 102 authority extension. It permits only exact consumed-permit-bound real-market development result execution and preserves founder root authority; validation, holdout, ML, promotion, paper/live trading, exchange, credential, signed-request, order, capital, profitability-claim, and self-authorization authority remain false."
+    },
+    {
       "path": "contracts/DELTAGRID_CANONICAL_RESULT_ENGINE_SERVICE_V1.json",
       "classification": "MACHINE_REFERENCE",
       "audience": "Maintainers, software verification, and research-integrity reviewers",
@@ -208,6 +223,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Authorizes only Mission 95 synthetic fixture reading, the four exact non-alpha controls, canonical artifact verification, and admitted-trial terminalization. It grants no general research, market, protected-data, model, trading, exchange, autonomous, or capital authority."
+    },
+    {
+      "path": "contracts/DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, operators, software verification, and research-integrity reviewers",
+      "purpose": "Current machine-readable Mission 102 secure development execution and independent replay boundary",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only exact Mission 101 consumed-permit-bound REAL_MARKET_DEVELOPMENT execution, immutable one-trial specifications, causal selected-value loading, deterministic research accounting, independent replay, and Mission 94 completion. The production registry initially contains zero families; validation, holdout, ML, promotion, paper/live trading, exchanges, credentials, orders, and capital remain closed."
     },
     {
       "path": "contracts/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR_V1.json",
@@ -1978,6 +2008,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Explains Mission 95 deterministic synthetic control execution, canonical artifacts, independent verification, and terminal recovery without authorizing research, market or protected-data access, models, trading, exchanges, autonomy, or capital."
+    },
+    {
+      "path": "docs/DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Founder, maintainers, operators, data-integrity reviewers, and research-integrity reviewers",
+      "purpose": "Current Mission 102 architecture and operator boundary for permitted development result execution",
+      "authority_level": "CURRENT_CONTROLLING_STAGE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 1,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains Mission 102 exact consumed-permit binding, fresh revocation-aware authority snapshots, one-trial execution specifications, private locks, sealed future-extensible registry, causal source loading, next-eligible-close fills, economic-time funding, Decimal accounting, compact artifacts, independent replay, and Mission 94 finalization without authorizing validation, holdout, ML, promotion, paper/live trading, exchanges, credentials, orders, or capital."
     },
     {
       "path": "docs/DELTAGRID_DURABLE_WORKFLOW_ORCHESTRATOR.md",

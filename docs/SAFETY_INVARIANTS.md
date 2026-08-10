@@ -2,10 +2,12 @@
 
 ## Current boundary
 
-DeltaGrid is frozen as a completed quantitative research platform with no
-validated profitable strategy and no selected candidate. Alpha discovery is
-stopped. Paper trading and live trading are not authorized, and capital
-deployment is blocked.
+DeltaGrid has no validated profitable strategy and no selected candidate. The
+final freeze remains controlling except for narrow prospective authority
+expressly granted by later versioned contracts. Mission 102 permits only an
+exact consumed-permit-bound `REAL_MARKET_DEVELOPMENT` trial to execute; its
+production registry initially contains zero economic families. Paper trading
+and live trading are not authorized, and capital deployment is blocked.
 
 The [final freeze](DELTAGRID_FINAL_FREEZE.md) and its
 [deterministic contract](../contracts/DELTAGRID_FINAL_FREEZE_V1.json) control
@@ -106,6 +108,7 @@ record, or decision.
 
 ## Current non-authorizations
 
-The current policies do not authorize new research, validation or holdout
+The current policies authorize no research beyond the exact Mission 101 and
+Mission 102 development gates. They do not authorize validation or holdout
 access, ML work, paper or dry-run operation, live trading, orders, private-key
 or account access, capital deployment, or autonomous promotion and execution.
