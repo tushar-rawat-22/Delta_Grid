@@ -104,7 +104,8 @@ def load_contracts(repository_root: Path | None = None) -> tuple[dict[str, Any],
     autonomy = _load_exact_contract(root / "contracts" / AUTONOMY_V5_PATH.name, AUTONOMY_V5_ID, AUTONOMY_V5_HASH)
     mission103 = _load_exact_contract(root / "contracts" / MISSION103_PATH.name, MISSION103_ID, MISSION103_HASH)
     if (
-        contract.get("authority_effect") != "NONE"
+        contract.get("base_commit") != BASE_COMMIT
+        or contract.get("authority_effect") != "NONE"
         or contract.get("autonomy_constitution_id") != AUTONOMY_V5_ID
         or contract.get("autonomy_constitution_hash_sha256") != AUTONOMY_V5_HASH
         or contract.get("mission103_contract_id") != MISSION103_ID
@@ -137,8 +138,25 @@ def _git(root: Path, *args: str) -> str:
         raise ProjectionError("REPOSITORY_IDENTITY_UNAVAILABLE") from error
 
 
+def _require_repository_lineage(root: Path) -> None:
+    top = Path(_git(root, "rev-parse", "--show-toplevel")).resolve(strict=True)
+    if top != root:
+        raise ProjectionError("REPOSITORY_ROOT_MISMATCH")
+    try:
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", BASE_COMMIT, "HEAD"],
+            cwd=root,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise ProjectionError("REPOSITORY_LINEAGE_MISMATCH") from error
+
+
 def repository_identity(repository_root: Path | None = None) -> str:
     root = (repository_root or REPOSITORY_ROOT).resolve(strict=True)
+    _require_repository_lineage(root)
     commit = _git(root, "rev-parse", "HEAD")
     require_commit(commit)
     try:
