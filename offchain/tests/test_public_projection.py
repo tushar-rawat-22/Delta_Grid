@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import json
 from pathlib import Path
 import stat
@@ -18,6 +19,7 @@ from offchain.public_projection import (
 from offchain.public_projection.__main__ import main as projection_main
 from offchain.public_projection.core import (
     ALLOWED_PUBLIC_DOCUMENT_PATHS,
+    BASE_COMMIT,
     MANIFEST_FILENAME,
     PROJECTION_FILENAME,
     REPOSITORY_ROOT,
@@ -29,12 +31,14 @@ from offchain.public_projection.schema import validate_projection
 
 
 ROOT = Path(__file__).resolve().parents[2]
+PUBLIC_PROJECTION_ROOT = ROOT / "offchain" / "public_projection"
 
 
 def test_contract_is_exact_and_non_authorizing() -> None:
     contract, autonomy, mission103 = load_contracts()
     assert contract["contract_hash_sha256"] == CONTRACT_HASH
     assert contract_hash(contract) == CONTRACT_HASH
+    assert contract["base_commit"] == BASE_COMMIT
     assert contract["authority_effect"] == "NONE"
     assert contract["authority"]["public_repository_projection"] is True
     assert all(
@@ -71,6 +75,33 @@ def test_p1_1_contract_forbids_private_runtime_and_network_sources() -> None:
     assert scope["git_remote_credentials"] is False
     assert scope["arbitrary_paths"] is False
     assert contract["output"]["network_publish"] is False
+
+
+def test_projection_package_has_no_network_or_private_runtime_imports() -> None:
+    forbidden_modules = {
+        "http.client",
+        "httpx",
+        "requests",
+        "socket",
+        "sqlite3",
+        "urllib.request",
+        "websockets",
+        "offchain.market_data_acquisition.backup",
+        "offchain.market_data_acquisition.journal",
+        "offchain.market_data_acquisition.service",
+        "offchain.research.research_reopening",
+        "offchain.research.statistical_governance.store",
+        "offchain.research.statistical_governance.protected",
+    }
+    for path in sorted(PUBLIC_PROJECTION_ROOT.glob("*.py")):
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        imported: set[str] = set()
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                imported.update(alias.name for alias in node.names)
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                imported.add(node.module)
+        assert not (imported & forbidden_modules), f"forbidden import in {path}: {sorted(imported & forbidden_modules)}"
 
 
 def test_projection_is_deterministic_and_contains_only_allowlisted_sections() -> None:
@@ -205,6 +236,20 @@ def test_projection_schema_rejects_unknown_field() -> None:
     projection["unexpected"] = "forbidden"
     with pytest.raises(ProjectionError, match="PROJECTION_SCHEMA_INVALID"):
         validate_projection(projection)
+
+
+def test_documentation_registry_classifies_p1_files() -> None:
+    registry = json.loads((ROOT / "docs" / "documentation-status.json").read_text(encoding="utf-8"))
+    by_path = {item["path"]: item for item in registry["documents"]}
+    assert by_path["contracts/DELTAGRID_PUBLIC_PROJECTION_V1.json"]["classification"] == "MACHINE_REFERENCE"
+    assert by_path["docs/DELTAGRID_PUBLIC_PROJECTION.md"]["classification"] == "CURRENT_INTERNAL"
+    assert all(
+        by_path[path]["recommended_treatment"] == "LEAVE_UNCHANGED"
+        for path in (
+            "contracts/DELTAGRID_PUBLIC_PROJECTION_V1.json",
+            "docs/DELTAGRID_PUBLIC_PROJECTION.md",
+        )
+    )
 
 
 def test_cli_show_contract_is_machine_safe(capsys: pytest.CaptureFixture[str]) -> None:
