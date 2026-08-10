@@ -12,7 +12,9 @@ from .exporter import export_projection
 from .verifier import verify_projection_package
 
 
-def _print(value: object, *, stream: object = sys.stdout) -> None:
+def _print(value: object, *, stream: object | None = None) -> None:
+    if stream is None:
+        stream = sys.stdout
     print(canonical_json(value), file=stream)
 
 
