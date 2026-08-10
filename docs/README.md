@@ -78,6 +78,11 @@ authorized now.
   one-use founder-authorized protected openings. Both production registries are
   empty.
 
+
+- [Platform P1.1 public projection](DELTAGRID_PUBLIC_PROJECTION.md) documents
+  the deterministic repository-only public projection boundary, canonical
+  package and independent verifier. It opens no private runtime or market
+  values and has authority effect `NONE`.
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future
@@ -168,6 +173,8 @@ The current backend architecture is the Mission 93–103 chain:
 | 102 | [Development Research Runtime](DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md) | Executes only an exact consumed-permit-bound development trial and independently replays and finalizes its evidence; production family count is zero |
 | 103 | [Independent statistical and protected-evidence governance](DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md) | Prevents campaign/program multiplicity reset, applies exact program-wide statistics, freezes at most one candidate, and governs prospective one-use protected stages; production adapter and evaluator counts are zero |
 
+| P1.1 | [Public Projection](DELTAGRID_PUBLIC_PROJECTION.md) | Exports and independently verifies a deterministic repository/public-contract projection without opening private runtimes, market values, protected data, network access, or trading authority |
+
 [Architecture State](ARCHITECTURE_STATE.md) remains a cumulative historical
 record of mission-era architecture. It is useful for tracing how earlier
 components appeared, but it is not the current architecture authority and does
@@ -178,6 +185,8 @@ should be read alongside the living root README, the final freeze, and the
 Mission 93–103 implementation contracts.
 
 ## Planned direction
+
+Platform P1.1 is a separate non-authorizing productization boundary. It does not consume Mission 104, which remains reserved for observation of an actually qualified candidate.
 
 Mission 103's implemented status and the provisional Mission 104–109 roadmap
 appear once, in the
