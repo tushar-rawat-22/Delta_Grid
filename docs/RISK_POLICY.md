@@ -13,9 +13,11 @@ component must respect.
 ## Current risk state
 
 DeltaGrid has no approved strategy, no active paper portfolio, no live
-positions, and no capital authorization. Paper execution, live execution, and
-account operation are not authorized. Any related repository capability is
-inactive, and its existence provides no authority.
+positions, and no capital authorization. Mission 102 permits only bounded
+research-simulation accounting for an exact admitted development trial; the
+production registry initially has zero economic families. Paper execution,
+live execution, and account operation are not authorized. Any related
+repository capability is inactive, and its existence provides no authority.
 
 ## Live Trading Remains Blocked
 

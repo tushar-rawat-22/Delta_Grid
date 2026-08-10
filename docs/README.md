@@ -66,11 +66,16 @@ authorized now.
   repository identity for metadata-only Admission V2, and causal permit
   revocation. It authorizes no
   result-bearing execution.
+- [Development Research Runtime](DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md)
+  documents Mission 102's exact consumed-permit binding, immutable one-trial
+  execution specification, sealed future-extensible registry, causal selected
+  value loader, deterministic accounting, independent replay, and atomic
+  Mission 94 completion. Its production registry contains zero families.
 
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future
-proposals; and the Mission 93–100 records describe the narrow backend components
+proposals; and the Mission 93–102 records describe the narrow backend components
 implemented after the freeze.
 
 ## Current project state
@@ -86,7 +91,7 @@ research admission boundary, deterministic synthetic control execution,
 canonical evidence, read-only system projection, a local cockpit, and a durable
 observation workflow.
 
-The current backend chain ends at Mission 101. Mission 98 remains deterministic
+The current backend chain ends at Mission 102. Mission 98 remains deterministic
 and decision-only. Mission 99 adds data custody without authorizing network
 collection or real-data research resolution. Mission 100 separately authorizes
 only bounded unauthenticated public-market collection into a private acquisition
@@ -95,8 +100,12 @@ admissible without Mission 101's separate verified bridge, exact descriptor,
 and applicable permit. Mission 101 adds those governance and admission
 mechanisms but stops before result-bearing execution. Passing tests verify
 software and repository properties; they do not establish alpha or capital
-authority. Mission 102 remains the planned execution-runtime mission and
-requires its own reviewed authority before any permitted experiment can run.
+authority. Mission 102 permits only an exact Mission 101 admitted development
+trial to execute through its consumed permit slot. The production registry
+initially has no economic family, and no real Mission 102 research was executed
+during implementation. Mission 103 remains the planned validation and
+statistical-promotion mission. Validation, holdout, ML, promotion, paper/live
+trading, exchanges, credentials, orders, and capital remain unauthorized.
 
 ## Documentation status labels
 

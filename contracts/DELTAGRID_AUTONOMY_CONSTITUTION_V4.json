@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-autonomy-constitution-v4",
+  "contract_version": 4,
+  "authority_version": 4,
+  "base_commit": "38417b1ceab82b381d2535ff146a7e6a843c3815",
+  "parent_constitution_id": "deltagrid-autonomy-constitution-v3",
+  "parent_constitution_hash_sha256": "cdd768ee04693845f9c1dcc4af3a03bad03a62685b24681d1ff8426230c84743",
+  "contract_hash_sha256": "1ffb9b3fcbf5adae63727a136e2c33a952e646fc1362d1e8dfd9b5482851b9e2",
+  "purpose": {
+    "tenant_model": "SINGLE_TENANT",
+    "owner": "Tushar Rawat",
+    "root_authority": "FOUNDER",
+    "authority_change": "Authorize only securely bound, deterministic, event-driven result execution for an exact Mission 101 admitted REAL_MARKET_DEVELOPMENT trial.",
+    "research_reopened_semantics": "GATED_REAL_MARKET_DEVELOPMENT_RESULT_EXECUTION_ONLY",
+    "self_authorizing_definition": "Software may verify existing authority but may not grant, approve, activate, expand, or resurrect authority for itself."
+  },
+  "mission102_authority": {
+    "real_market_development_result_execution": true,
+    "validation_access": false,
+    "holdout_access": false,
+    "model_training_or_ml": false,
+    "candidate_ranking_or_promotion": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_account_access": false,
+    "credential_access": false,
+    "signed_exchange_requests": false,
+    "order_placement": false,
+    "capital_deployment": false,
+    "profitability_claim": false,
+    "self_authorization": false
+  },
+  "root_authority": {
+    "holder": "FOUNDER",
+    "local_trust_boundary": "SINGLE_OS_USER_PRIVATE_RUNTIME_AND_EXPLICIT_OPERATOR_ACKNOWLEDGEMENT",
+    "delegation_must_be_explicit_and_versioned": true,
+    "uncertainty_behavior": "FAIL_CLOSED"
+  },
+  "activation_gates": {
+    "exact_mission101_permit": true,
+    "exact_consumed_permit_slot_for_trial": true,
+    "exact_mission101_dataset_and_release": true,
+    "exact_mission94_admitted_trial": true,
+    "clean_permit_bound_repository_commit": true,
+    "fresh_authority_snapshot": true,
+    "immutable_execution_specification": true,
+    "sealed_registered_family_and_variant": true,
+    "independent_result_verification": true
+  },
+  "proposal_activation_separation": {
+    "system_may_propose": true,
+    "system_may_approve_own_proposal": false,
+    "system_may_activate_own_proposal": false,
+    "proposal_is_authority": false,
+    "permanent_self_authorization_prohibition": true
+  },
+  "change_control": {
+    "reviewed_pull_request_required": true,
+    "ci_required": true,
+    "founder_approval_required": true,
+    "authority_version_increment_required": true,
+    "automatic_activation": false
+  },
+  "canonical_json": {
+    "excluded_fields": ["contract_hash_sha256"],
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "ensure_ascii": true,
+    "allow_nan": false,
+    "encoding": "utf-8",
+    "digest": "sha256"
+  }
+}

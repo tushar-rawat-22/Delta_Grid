@@ -6,7 +6,9 @@ This current internal policy governs how DeltaGrid converts an economic idea
 into reproducible evidence and a documented decision. It protects the quality
 of that decision; it does not authorize research or trading.
 
-The [final freeze](DELTAGRID_FINAL_FREEZE.md) controls present project status.
+The [final freeze](DELTAGRID_FINAL_FREEZE.md) controls present project status
+except for the narrow prospective authority expressly granted by later
+versioned contracts.
 The deterministic contract is
 [`DELTAGRID_FINAL_FREEZE_V1.json`](../contracts/DELTAGRID_FINAL_FREEZE_V1.json).
 
@@ -21,13 +23,21 @@ New strategy work requires genuinely new evidence and a new versioned
 reopening contract. Historical next actions, available code, and previously
 implemented research infrastructure do not reopen the programme.
 
-Mission 101 now provides a narrower versioned governance path for independently
+Mission 101 provides a narrower versioned governance path for independently
 verified forward custody, immutable real-market development dataset identity,
 finite founder-controlled permits, and metadata-only development admission.
 That machinery does not satisfy or bypass the separate authority required for
 result-bearing execution. No development experiment, validation, holdout, ML,
 signal, paper/live trading, exchange, credential, order, or capital action is
 authorized by Mission 101 admission alone.
+
+Mission 102 permits deterministic result execution only for an exact admitted
+`REAL_MARKET_DEVELOPMENT` trial that owns its exact already-consumed Mission 101
+permit slot. It fixes one preregistered variant per trial and preserves
+validation, holdout, ML, promotion, paper/live trading, exchange, credential,
+order, and capital boundaries. Its production experiment registry initially
+contains zero economic families, and no real Mission 102 research was executed
+during implementation.
 
 ## Research-First Operating Model
 
@@ -159,9 +169,9 @@ authorize validation, holdout, paper evaluation, ML, capital, or live trading.
 
 ## What this policy does not authorize
 
-This policy does not authorize:
+This policy does not itself authorize:
 
-- new strategy research or backtesting;
+- any research outside an exact Mission 101 permit and Mission 102 execution gate;
 - validation or holdout access;
 - paper trading or dry-run operation;
 - live trading or order placement;
