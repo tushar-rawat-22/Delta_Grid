@@ -8,6 +8,8 @@ I built the project around falsification. A failed hypothesis stays in the recor
 
 **There is no validated profitable strategy. No candidate is selected.**
 
+Paper trading and live trading are not authorized. Exchange access, credential access, and capital deployment are not authorized. Software tests do not establish alpha.
+
 | Boundary | Current state |
 |---|---|
 | Result-bearing strategy research | Frozen unless separately reopened under the published governance path |
