@@ -1,14 +1,14 @@
 # DeltaGrid
 
+**There is no validated profitable strategy. No candidate is selected.**
+
+Paper trading and live trading are not authorized. Exchange access, credential access, and capital deployment are not authorized. Software tests do not establish alpha.
+
 DeltaGrid is a single-user quantitative research system built to answer a harder question than “does this backtest look good?”: **can a trading hypothesis survive causal data handling, realistic costs, preregistered rules, independent verification, and deliberately closed promotion gates?**
 
 I built the project around falsification. A failed hypothesis stays in the record. A passing software test is not treated as evidence of alpha. A component being implemented does not give it permission to trade.
 
 ## Current status
-
-**There is no validated profitable strategy. No candidate is selected.**
-
-Paper trading and live trading are not authorized. Exchange access, credential access, and capital deployment are not authorized. Software tests do not establish alpha.
 
 | Boundary | Current state |
 |---|---|
@@ -62,6 +62,8 @@ The Alpha Search B rejection was published at `a31f4da4fc8b52ca2fa6aaad697350d6e
 ## Engineering sequence
 
 Historical infrastructure includes public-data acquisition, dataset certification, causal features, event-driven simulation, execution-cost and risk models, sealed evaluation boundaries, statistical controls, and Freqtrade parity work. Its existence is not current permission to collect protected data, run a candidate, access an exchange, or trade.
+
+Mission 99 established the revision-aware temporal market-data control plane that the later forward-custody work builds on.
 
 The current backend and projection sequence is deliberately narrower:
 
