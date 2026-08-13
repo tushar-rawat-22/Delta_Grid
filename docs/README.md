@@ -83,12 +83,15 @@ authorized now.
   `NONE` authority boundary.
 - [RAB-1 overlap decision](RAB1_OVERLAP_DECISION.md) records the pre-value
   lineage decision and the contradiction stop condition.
-
-
 - [Platform P1.1 public projection](DELTAGRID_PUBLIC_PROJECTION.md) documents
   the deterministic repository-only public projection boundary, canonical
   package and independent verifier. It opens no private runtime or market
   values and has authority effect `NONE`.
+- [Research Engine](../web/docs/RESEARCH_ENGINE.md) documents the founder-only
+  product surface, independent public-data providers, data semantics, and
+  `NON_RAB1_RESEARCH_ONLY` boundary.
+- [Web security boundary](../web/docs/SECURITY_BOUNDARY.md) documents the
+  public, founder-human, founder-machine, and research isolation controls.
 These documents answer different questions. The root README is living
 documentation and the public overview; the final freeze controls strategy
 research and trading status; the intake policy governs possible future

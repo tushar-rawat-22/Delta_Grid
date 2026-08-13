@@ -3133,6 +3133,66 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Companion: research-summaries/MISSIONS_89_TO_92.md. This preserved source remains controlling for exact historical facts."
+    },
+    {
+      "path": "web/README.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public reviewers, maintainers, and the founder",
+      "purpose": "Current entry point for the observer, founder Worker, and research-engine component",
+      "authority_level": "CURRENT_SUPPORTING",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Documents the canonical monorepo web component. It does not authorize protected research, Mission 104, trading, credentials, orders, allocation, or capital."
+    },
+    {
+      "path": "web/docs/ARCHITECTURE.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Maintainers, security reviewers, and operators",
+      "purpose": "Current deployment and trust-boundary architecture for the public and founder Workers",
+      "authority_level": "CURRENT_SUPPORTING",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains component boundaries without granting authority or exposing secrets."
+    },
+    {
+      "path": "web/docs/RESEARCH_ENGINE.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public reviewers, maintainers, researchers, and the founder",
+      "purpose": "Current product, provider, data-semantics, and deployment description for the Research Engine",
+      "authority_level": "CURRENT_SUPPORTING",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Describes the NON_RAB1_RESEARCH_ONLY workspace and independent public-data collectors with authority effect NONE."
+    },
+    {
+      "path": "web/docs/SECURITY_BOUNDARY.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Public reviewers, maintainers, security reviewers, and the founder",
+      "purpose": "Current authentication, isolation, secret-handling, and non-authority boundary for the web component",
+      "authority_level": "CURRENT_SUPPORTING",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Records the exact founder, MFA, application-session, CSRF, machine-auth, and research-isolation controls without granting authority."
     }
   ]
 }

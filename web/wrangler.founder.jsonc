@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "deltagrid-founder-gateway",
+  "main": "founder/worker.ts",
+  "compatibility_date": "2026-08-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "send_metrics": false,
+  "dependencies_instrumentation": {
+    "enabled": false
+  },
+  "observability": {
+    "enabled": false
+  },
+  "assets": {
+    "directory": "./research-dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "triggers": {
+    "crons": ["*/5 * * * *"]
+  },
+  "vars": {
+    "DELTAGRID_CORE_COMMIT": "d94441f2f32fd8edc7b416beecd88b2b087d01a9",
+    "DELTAGRID_AUTHORITY_STATE": "NONE"
+  },
+  "d1_databases": [
+    {
+      "binding": "DELTAGRID_SYSTEM_DB",
+      "database_name": "deltagrid-founder-system",
+      "database_id": "f8686853-830d-42d5-a57a-176bde9503fd",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "secrets": {
+    "required": [
+      "DELTAGRID_ACCESS_TEAM_DOMAIN",
+      "DELTAGRID_ACCESS_AUD",
+      "DELTAGRID_FOUNDER_EMAIL",
+      "DELTAGRID_AGENT_ACCESS_AUD",
+      "DELTAGRID_AGENT_HMAC_KEY",
+      "DELTAGRID_RESEARCH_CSRF_KEY",
+      "ALPHA_VANTAGE_API_KEY",
+      "FRED_API_KEY"
+    ]
+  }
+}

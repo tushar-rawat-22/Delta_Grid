@@ -1,0 +1,50 @@
+{
+  "name": "deltagrid-observer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.12 <25"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.3": true,
+    "unrs-resolver@1.12.2": true,
+    "workerd@1.20260804.1": true
+  },
+  "scripts": {
+    "install:locked-safe": "node scripts/install-locked-safe.mjs",
+    "dev": "next dev",
+    "dev:research": "vite --config research-app/vite.config.ts",
+    "build": "next build",
+    "build:research": "vite build --config research-app/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "test": "node --test tests/*.test.ts",
+    "verify:deps": "node scripts/verify-dependencies.mjs",
+    "verify:source": "node scripts/verify-source-boundary.mjs",
+    "verify:founder": "node scripts/verify-founder-boundary.mjs",
+    "verify:founder-schema": "node scripts/verify-founder-schema.mjs",
+    "verify:output": "node scripts/verify-output.mjs",
+    "build:founder": "npm run build:research && wrangler deploy --config wrangler.founder.jsonc --dry-run --outdir /tmp/deltagrid-founder-worker",
+    "check": "npm run verify:deps && npm run verify:source && npm run verify:founder && npm run verify:founder-schema && npm run typecheck && npm run lint && npm test && npm run build && npm run verify:output && npm run build:founder",
+    "preview": "wrangler dev --local"
+  },
+  "dependencies": {
+    "jose": "6.2.4",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.5",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.0",
+    "typescript": "6.0.3",
+    "vite": "8.2.1",
+    "wrangler": "4.120.1"
+  }
+}

@@ -976,7 +976,7 @@ def test_rights_notice_and_registry_include_public_operating_files() -> None:
     entries = {item["path"]: item for item in registry["documents"]}
     assert entries["LICENSE"]["classification"] == "CURRENT_PUBLIC"
     assert entries["AGENTS.md"]["classification"] == "CURRENT_INTERNAL"
-    assert len(registry["documents"]) == 207
+    assert len(registry["documents"]) == 211
 
 
 def test_cli_source_exposes_init_and_no_collection_command() -> None:
