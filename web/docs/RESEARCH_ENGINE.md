@@ -19,7 +19,7 @@ The Research Engine is a founder-only market-research workspace served by the ex
 | SEC Company Facts | Fixed CIK fundamentals | None | Identified DeltaGrid user agent and bounded facts subset |
 | Treasury Fiscal Data | Latest Debt to the Penny | None | Fixed official dataset endpoint |
 
-The five-minute UTC cron advances at most one due instrument per provider. A failed or quota-limited source therefore cannot block independent sources. Duplicate scheduled delivery cannot duplicate collection for the same provider, instrument and time bucket. Responses are capped at 4 MiB, hashed, parsed through provider-specific schemas and recorded in append-only receipts. Raw provider payloads are not stored in D1.
+The five-minute UTC cron advances at most one due instrument per provider. A failed or quota-limited source therefore cannot block independent sources. Duplicate scheduled delivery cannot duplicate collection for the same provider, instrument and time bucket. Responses are capped at 4 MiB, except the fixed SEC Company Facts endpoint which has an isolated 8 MiB ceiling for legitimate large-issuer payloads. Every response is hashed, parsed through provider-specific schemas and recorded in append-only receipts. Raw provider payloads are not stored in D1. Network, rate-limit, and upstream 5xx failures retry after five minutes; structural failures retain the one-hour backoff and provider quota exhaustion retains the full-day backoff.
 
 ## Data semantics
 
