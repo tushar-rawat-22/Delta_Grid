@@ -72,7 +72,7 @@ export async function collectNextResearchProvider(
   ).bind(now, providerId ?? null, providerId ?? null).first<DueInstrument>();
   if (!due) return;
 
-  const bucket = new Date(Math.floor(scheduledTime / 900_000) * 900_000).toISOString();
+  const bucket = new Date(Math.floor(scheduledTime / 300_000) * 300_000).toISOString();
   const claim = await db.prepare(
     `INSERT OR IGNORE INTO research_collection_claims (
       provider_id, instrument_id, scheduled_bucket, claimed_at
@@ -376,20 +376,20 @@ export async function fetchProviderPayload(
 ): Promise<{ text: string; bytes: number; sha256: string }> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort("PROVIDER_TIMEOUT"), timeoutMs);
-  let response: Response;
   try {
-    response = await fetcher(url, { headers, signal: controller.signal, redirect: "manual" });
-  } catch {
+    const response = await fetcher(url, { headers, signal: controller.signal, redirect: "manual" });
+    if (response.status >= 300 && response.status < 400) {
+      throw new ProviderCollectionError("PROVIDER_REDIRECT_REJECTED");
+    }
+    if (!response.ok) throw new ProviderCollectionError(`PROVIDER_HTTP_${response.status}`);
+    const text = await readBoundedText(response, maximumBytes);
+    return { text, bytes: new TextEncoder().encode(text).byteLength, sha256: await sha256Hex(text) };
+  } catch (error) {
+    if (error instanceof ProviderCollectionError) throw error;
     throw new ProviderCollectionError("PROVIDER_NETWORK_FAILURE");
   } finally {
     clearTimeout(timeout);
   }
-  if (response.status >= 300 && response.status < 400) {
-    throw new ProviderCollectionError("PROVIDER_REDIRECT_REJECTED");
-  }
-  if (!response.ok) throw new ProviderCollectionError(`PROVIDER_HTTP_${response.status}`);
-  const text = await readBoundedText(response, maximumBytes);
-  return { text, bytes: new TextEncoder().encode(text).byteLength, sha256: await sha256Hex(text) };
 }
 
 export async function readBoundedText(response: Response, maximumBytes: number): Promise<string> {

@@ -80,6 +80,16 @@ test("provider transport fails explicitly on timeout and upstream outage", async
     fetchProviderPayload(new URL("https://provider.example.test/data"), new Headers(), 1024, 100, outageFetcher),
     /PROVIDER_HTTP_503/u,
   );
+
+  const stalledBodyFetcher: typeof fetch = async (_input, init) => new Response(new ReadableStream({
+    start(controller) {
+      init?.signal?.addEventListener("abort", () => controller.error(new Error("aborted")));
+    },
+  }));
+  await assert.rejects(
+    fetchProviderPayload(new URL("https://provider.example.test/data"), new Headers(), 1024, 5, stalledBodyFetcher),
+    /PROVIDER_NETWORK_FAILURE/u,
+  );
 });
 
 test("provider transport uses Worker-compatible manual redirects and rejects every redirect", async () => {
