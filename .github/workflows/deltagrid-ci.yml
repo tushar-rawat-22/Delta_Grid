@@ -118,6 +118,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Check out the pinned admitted core
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: tushar-rawat-22/Delta_Grid
+          ref: ${{ env.P1_CORE_COMMIT }}
+          path: _core
+          fetch-depth: 0
+          persist-credentials: false
+
       - name: Install locked web dependencies
         working-directory: web
         run: npm run install:locked-safe
@@ -132,6 +141,7 @@ jobs:
           set -euo pipefail
           DEST="$RUNNER_TEMP/p1-public-projection"
           (
+            cd _core
             PYTHONDONTWRITEBYTECODE=1 python -m offchain.public_projection export --destination "$DEST"
             PYTHONDONTWRITEBYTECODE=1 python -m offchain.public_projection verify --path "$DEST"
           )
