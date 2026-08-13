@@ -93,7 +93,7 @@ export const pageContent: Record<string, ObserverPageContent> = {
       },
       {
         title: "Research result",
-        body: "The public repository currently records no validated profitable strategy and no selected candidate. Those two statements come from the README because the P1.1 projection does not contain alpha or candidate fields.",
+        body: "The public repository currently records no validated profitable strategy and no selected candidate. Those statements are document-derived because the sealed public projection deliberately contains no alpha or candidate fields.",
         provenance: "PUBLIC_DOCUMENT_DERIVED",
         source: `${PUBLIC_SOURCE} · README.md`,
       },
@@ -260,15 +260,15 @@ export const pageContent: Record<string, ObserverPageContent> = {
     ],
   },
   docs: {
-    eyebrow: "Documentation",
-    title: "Public claims are tied to source files",
+    eyebrow: "Verification index",
+    title: "Three documents define the public boundary.",
     summary:
-      "The admitted package identifies the public documents used by the projection. Narrative statements that are not projection fields remain clearly marked as document-derived.",
+      "Each document is identified by its repository path and exact SHA-256 digest. The interface separates cryptographically verified fields from statements summarized from public documents.",
     cards: currentProjection.projection.public_document_identities
       .filter((item) => item.path !== "README.md")
       .map((item) => ({
         title: item.path.split("/").at(-1) ?? item.path,
-        body: `Public repository path: ${item.path}. SHA-256: ${item.sha256}.`,
+        body: `Repository path: ${item.path}. Content digest: ${item.sha256}.`,
         provenance: "VERIFIED_P1_PROJECTION" as const,
         source: VERIFIED_PROJECTION_SOURCE,
       })),
