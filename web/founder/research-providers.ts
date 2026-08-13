@@ -42,10 +42,24 @@ export async function collectDueResearchProviders(env: ProviderEnv, scheduledTim
   ).bind(now).all<{ provider_id: DueInstrument["provider_id"] }>();
   if (!dueProviders.success) throw new Error("RESEARCH_DUE_PROVIDER_QUERY_FAILED");
 
+  const providers = dueProviders.results ?? [];
   const outcomes = await Promise.allSettled(
-    (dueProviders.results ?? []).map((provider) => collectNextResearchProvider(env, scheduledTime, provider.provider_id)),
+    providers.map((provider) => collectNextResearchProvider(env, scheduledTime, provider.provider_id)),
   );
-  if (outcomes.some((outcome) => outcome.status === "rejected")) {
+  let incomplete = false;
+  outcomes.forEach((outcome, index) => {
+    if (outcome.status !== "rejected") return;
+    incomplete = true;
+    const message = outcome.reason instanceof Error ? outcome.reason.message : "";
+    console.error(JSON.stringify({
+      event: "research_provider_batch_item_failure",
+      provider_id: providers[index]?.provider_id ?? "UNKNOWN_PROVIDER",
+      error_code: /^[A-Z0-9_]+$/u.test(message) ? message : "UNEXPECTED_PROVIDER_BATCH_FAILURE",
+      boundary: RESEARCH_BOUNDARY,
+      authority_effect: RESEARCH_AUTHORITY,
+    }));
+  });
+  if (incomplete) {
     throw new Error("RESEARCH_PROVIDER_BATCH_INCOMPLETE");
   }
 }
@@ -397,9 +411,8 @@ export async function readBoundedText(response: Response, maximumBytes: number):
   if (declared > maximumBytes) throw new ProviderCollectionError("PROVIDER_RESPONSE_TOO_LARGE");
   if (!response.body) throw new ProviderCollectionError("PROVIDER_RESPONSE_EMPTY");
   const reader = response.body.getReader();
-  const decoder = new TextDecoder();
+  const chunks: Uint8Array[] = [];
   let bytes = 0;
-  let output = "";
   while (true) {
     const result = await reader.read();
     if (result.done) break;
@@ -408,10 +421,15 @@ export async function readBoundedText(response: Response, maximumBytes: number):
       await reader.cancel("PROVIDER_RESPONSE_TOO_LARGE");
       throw new ProviderCollectionError("PROVIDER_RESPONSE_TOO_LARGE");
     }
-    output += decoder.decode(result.value, { stream: true });
+    chunks.push(result.value);
   }
-  output += decoder.decode();
-  return output;
+  const joined = new Uint8Array(bytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    joined.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(joined);
 }
 
 export function providerRetrySeconds(
