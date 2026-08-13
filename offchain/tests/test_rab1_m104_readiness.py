@@ -166,7 +166,7 @@ def test_t0_selection_uses_only_healthy_complete_metadata(tmp_path: Path) -> Non
         CREATE TABLE metadata(key TEXT PRIMARY KEY,value TEXT);
         CREATE TABLE capture_batches(batch_id TEXT PRIMARY KEY,status TEXT);
         CREATE TABLE receipts(receipt_hash TEXT PRIMARY KEY,clock_status TEXT);
-        CREATE TABLE observations(event_time_ms INTEGER,symbol TEXT,stream TEXT,batch_id TEXT,receipt_hash TEXT);
+        CREATE TABLE observations(event_time_ms INTEGER,symbol TEXT,stream TEXT,batch_id TEXT,receipt_hash TEXT,available_at TEXT);
         INSERT INTO metadata VALUES('created_at','2026-08-13T00:00:00.000Z');
         INSERT INTO capture_batches VALUES('batch','COMPLETE');
         INSERT INTO receipts VALUES('receipt','HEALTHY');
@@ -174,8 +174,14 @@ def test_t0_selection_uses_only_healthy_complete_metadata(tmp_path: Path) -> Non
     )
     hour = int(datetime(2026, 8, 13, 8, tzinfo=timezone.utc).timestamp() * 1000)
     for symbol in ("BTCUSDT", "ETHUSDT", "SOLUSDT"):
-        connection.execute("INSERT INTO observations VALUES(?,?,?,?,?)", (hour, symbol, "perpetual_ohlcv", "batch", "receipt"))
-        connection.execute("INSERT INTO observations VALUES(?,?,?,?,?)", (hour, symbol, "funding_rates", "batch", "receipt"))
+        connection.execute(
+            "INSERT INTO observations VALUES(?,?,?,?,?,?)",
+            (hour - 1, symbol, "perpetual_ohlcv", "batch", "receipt", "2026-08-13T08:05:00.000Z"),
+        )
+        connection.execute(
+            "INSERT INTO observations VALUES(?,?,?,?,?,?)",
+            (hour + 2, symbol, "funding_rates", "batch", "receipt", "2026-08-13T08:10:00.000Z"),
+        )
     connection.commit()
     connection.close()
-    assert select_t0_metadata(path) == "2026-08-13T08:00:00.000Z"
+    assert select_t0_metadata(path) == "2026-08-13T09:00:00.000Z"
