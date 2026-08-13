@@ -451,6 +451,7 @@ export function providerRetrySeconds(
   if (outcome === "OPERATIONAL") return cadenceSeconds;
   if (detailCode === "PROVIDER_QUOTA_REACHED") return 86_400;
   if (outcome === "DEGRADED") return 21_600;
+  if (detailCode === "PROVIDER_HTTP_525" || detailCode === "PROVIDER_HTTP_526") return cadenceSeconds;
   if (detailCode === "PROVIDER_NETWORK_FAILURE" || /^PROVIDER_HTTP_(?:429|5\d\d)$/u.test(detailCode)) return 300;
   return 3_600;
 }
