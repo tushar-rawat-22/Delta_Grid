@@ -65,6 +65,15 @@ test("bounded provider reader rejects declared and streamed oversize payloads", 
   );
   await assert.rejects(readBoundedText(new Response("x".repeat(20)), 10), /PROVIDER_RESPONSE_TOO_LARGE/u);
   assert.equal(await readBoundedText(new Response('{"ok":true}'), 32), '{"ok":true}');
+
+  const pieces = Array.from({ length: 512 }, (_, index) => `chunk-${String(index).padStart(4, "0")};`);
+  const manyChunkBody = new ReadableStream<Uint8Array>({
+    start(controller) {
+      for (const piece of pieces) controller.enqueue(new TextEncoder().encode(piece));
+      controller.close();
+    },
+  });
+  assert.equal(await readBoundedText(new Response(manyChunkBody), 16_384), pieces.join(""));
 });
 
 test("provider transport fails explicitly on timeout and upstream outage", async () => {
