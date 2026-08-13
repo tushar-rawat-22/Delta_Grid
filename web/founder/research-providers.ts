@@ -3,6 +3,7 @@ import type { D1DatabaseLike, D1StatementLike } from "./database.ts";
 import { RESEARCH_AUTHORITY, RESEARCH_BOUNDARY } from "./research-database.ts";
 
 const MAX_PROVIDER_BYTES = 4_194_304;
+const MAX_SEC_COMPANYFACTS_BYTES = 8_388_608;
 const PROVIDER_TIMEOUT_MS = 15_000;
 const MAX_INSERT_BATCH = 50;
 
@@ -296,7 +297,14 @@ async function collectSec(
 ): Promise<CollectionResult> {
   const cik = instrument.cik;
   if (!cik || !/^\d{10}$/u.test(cik)) throw new ProviderCollectionError("PROVIDER_SCHEMA_INVALID");
-  const payload = await fetchProviderPayload(new URL(`https://data.sec.gov/api/xbrl/companyfacts/CIK${cik}.json`), identifiedHeaders(env));
+  // Company Facts responses for large issuers can legitimately exceed the
+  // general provider cap. Keep a separate, still-bounded ceiling for this one
+  // fixed SEC endpoint instead of weakening every adapter.
+  const payload = await fetchProviderPayload(
+    new URL(`https://data.sec.gov/api/xbrl/companyfacts/CIK${cik}.json`),
+    identifiedHeaders(env),
+    MAX_SEC_COMPANYFACTS_BYTES,
+  );
   const decoded = objectValue(parseProviderJson(payload.text));
   const facts = objectValue(objectValue(decoded.facts)["us-gaap"]);
   const metricKeys = ["Assets", "Liabilities", "Revenues", "NetIncomeLoss", "StockholdersEquity"];
@@ -414,6 +422,7 @@ export function providerRetrySeconds(
   if (outcome === "OPERATIONAL") return cadenceSeconds;
   if (detailCode === "PROVIDER_QUOTA_REACHED") return 86_400;
   if (outcome === "DEGRADED") return 21_600;
+  if (detailCode === "PROVIDER_NETWORK_FAILURE" || /^PROVIDER_HTTP_(?:429|5\d\d)$/u.test(detailCode)) return 300;
   return 3_600;
 }
 
