@@ -114,13 +114,14 @@ test("provider transport uses Worker-compatible manual redirects and rejects eve
   assert.equal(redirectMode, "manual");
 });
 
-test("provider retry policy isolates quota, transient, and structural failures", () => {
+test("provider retry policy isolates quota, transient, TLS, and structural failures", () => {
   assert.equal(providerRetrySeconds("OPERATIONAL", "COLLECTION_SUCCEEDED", 3_600), 3_600);
   assert.equal(providerRetrySeconds("DEGRADED", "PROVIDER_SECRET_MISSING", 3_600), 21_600);
   assert.equal(providerRetrySeconds("DEGRADED", "PROVIDER_QUOTA_REACHED", 3_600), 86_400);
   assert.equal(providerRetrySeconds("FAILED", "PROVIDER_NETWORK_FAILURE", 3_600), 300);
   assert.equal(providerRetrySeconds("FAILED", "PROVIDER_HTTP_429", 3_600), 300);
-  assert.equal(providerRetrySeconds("FAILED", "PROVIDER_HTTP_525", 3_600), 300);
+  assert.equal(providerRetrySeconds("FAILED", "PROVIDER_HTTP_525", 86_400), 86_400);
+  assert.equal(providerRetrySeconds("FAILED", "PROVIDER_HTTP_526", 86_400), 86_400);
   assert.equal(providerRetrySeconds("FAILED", "PROVIDER_SCHEMA_INVALID", 3_600), 3_600);
 });
 
