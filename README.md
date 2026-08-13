@@ -2,6 +2,8 @@
 
 **There is no validated profitable strategy. No candidate is selected.**
 
+RAB-1 is prospectively locked, but no result has been opened.
+
 Paper trading and live trading are not authorized. Exchange access, credential access, and capital deployment are not authorized. Software tests do not establish alpha.
 
 DeltaGrid is a single-user quantitative research system built to answer a harder question than “does this backtest look good?”: **can a trading hypothesis survive causal data handling, realistic costs, preregistered rules, independent verification, and deliberately closed promotion gates?**
@@ -12,7 +14,7 @@ I built the project around falsification. A failed hypothesis stays in the recor
 
 | Boundary | Current state |
 |---|---|
-| Result-bearing strategy research | Frozen unless separately reopened under the published governance path |
+| Result-bearing strategy research | One exact RAB-1 prospective programme is locked; no result has been opened |
 | Mission 104 candidate observation | Not authorized; there is no qualified candidate to observe |
 | Paper trading | Not authorized |
 | Live trading | Not authorized |
@@ -79,8 +81,8 @@ The current backend and projection sequence is deliberately narrower:
 | 99 | Added immutable, revision-aware market-data custody, independent certification, deterministic recovery inspection, and a bounded synthetic as-of resolver |
 | 100 | Added bounded forward public-market acquisition with immutable raw evidence, append-only receipts, clock checks, revisions, checkpoints, and local backup verification |
 | 101 | Added independently certified forward custody, exact development dataset descriptors, finite founder permits, and metadata-only Admission V2; result-bearing execution remains closed |
-| 102 | Added consumed-permit-bound development execution, immutable trial specifications, causal selected-value loading, deterministic accounting, independent replay, and Mission 94 finalization; production family count is zero |
-| 103 | Added campaign-level anti-reset governance, exact program-wide statistics, one-candidate freeze, prospective protected partitions, and one-use founder-authorized protected progression; both production registries are empty |
+| 102 | Added consumed-permit-bound development execution, immutable trial specifications, causal selected-value loading, deterministic accounting, independent replay, and Mission 94 finalization; the prospective RAB-1 contract now authorizes exactly one four-variant family |
+| 103 | Added campaign-level anti-reset governance, exact program-wide statistics, one-candidate freeze, prospective protected partitions, and one-use founder-authorized protected progression; RAB-1 authorizes exactly one sealed adapter and one sealed evaluator |
 | P1.1 | Added a deterministic repository-only public projection package and independent verifier; private runtimes, market values, protected data, and trading authority remain closed |
 
 Mission 97 was published at commit `8afa19a06dd6f1b100befce067107c1fa347d471`. Its publication reported 1,153 passing tests and one third-party `websockets.legacy` deprecation warning. Those tests cover software behavior and repository invariants; they do not establish alpha.
@@ -91,21 +93,21 @@ Mission 100 introduced one deliberately narrow network authority: bounded, unaut
 
 Mission 101 governs the bridge from an independently verified Mission 100 backup into a distinct forward-custody profile. It can certify the evidence, describe an immutable real-market development dataset, record a finite founder-controlled permit, and reserve metadata-only admission. It does not execute an experiment or open validation/holdout values.
 
-Mission 102 provides a deterministic event-driven runtime for an exact already-admitted `REAL_MARKET_DEVELOPMENT` trial. The production experiment registry contains zero economic families, and no real Mission 102 research was run during implementation.
+Mission 102 provides a deterministic event-driven runtime for an exact already-admitted `REAL_MARKET_DEVELOPMENT` trial. The prospective RAB-1 contract registers exactly one four-variant family; no RAB-1 result has yet been opened.
 
-Mission 103 adds programme-level statistical governance, exact empirical p-values with program-wide Holm correction, at most one fixed candidate, and prospective one-use `REPLICATION`, `VALIDATION`, and `HOLDOUT` openings. Both production registries are empty. Its maximum verdict, `QUALIFIED_FOR_M104_OBSERVATION`, has authority effect `NONE`.
+Mission 103 adds programme-level statistical governance, exact empirical p-values with program-wide Holm correction, at most one fixed candidate, and prospective one-use `REPLICATION`, `VALIDATION`, and `HOLDOUT` openings. RAB-1 registers one exact 24-hour sign-flip adapter and one authoritative-M102-metrics evaluator. Its maximum verdict, `QUALIFIED_FOR_M104_OBSERVATION`, has authority effect `NONE`.
 
 P1.1 adds a public projection boundary over repository/public-contract state. It is deterministic and independently verifiable, but it does not expose private runtime state or create a path back into DeltaGrid authority.
 
 ## Mission 103 status and provisional roadmap: Missions 104–109
 
-This is planning direction, not authorization. Each mission requires its own reviewed contract before it can use new authority. Mission 100 collects forward provider evidence, but that evidence is not automatically admitted to result-bearing research. Platform P1 runs alongside this mission sequence and does not consume the reserved Mission 104 number.
+This remains planning direction, not authorization. The [Mission-104 readiness lock](docs/M104_READINESS_LOCK.md) is the only active prospective programme. It requires 180 days of forward-observed evidence and three protected-stage founder approvals. Before a passing holdout, Mission 104 remains not authorized. A failure closes RAB-1 without a replacement or rescue.
 
 | Mission | Planning direction |
 |---|---|
 | 101 | Implemented the founder-controlled governance, forward-custody, exact-dataset, permit, and metadata-only development-admission machinery; no result-bearing execution |
-| 102 | Implemented a general event-driven development runtime that can execute only exact permitted experiments; no production family is registered |
-| 103 | Implemented independent finite-program statistics and separately founder-authorized protected replication, validation, and holdout governance; no production program or protected opening exists |
+| 102 | Implemented a general event-driven development runtime; the RAB-1 prospective contract registers exactly one four-variant family |
+| 103 | Implemented independent finite-program statistics and separately founder-authorized protected progression; RAB-1 registers one adapter and evaluator, with no result or protected opening yet |
 | 104 | Observe approved candidates on current data without exchange orders |
 | 105 | Add durable paper execution, accounting, and reconciliation |
 | 106 | Govern portfolio allocation, exposure, drawdown, leverage, and kill switches independently |

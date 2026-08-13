@@ -9,10 +9,9 @@ train a model, select or promote a candidate, paper trade, live trade, access
 an exchange or credentials, place an order, or deploy capital.
 
 No real Mission 102 research was executed while this runtime was implemented.
-The production experiment registry contains zero economic families, so the
-production execute command currently fails closed with
-`EXPERIMENT_FAMILY_NOT_REGISTERED` after safe metadata binding and before it
-opens market values. There is still no validated profitable strategy and no
+Its production registry began with zero families. The later prospective RAB-1
+contract registers exactly one four-variant family without changing the
+Mission 102 contract. There is still no validated profitable strategy and no
 selected candidate.
 
 ## Secure execution chain

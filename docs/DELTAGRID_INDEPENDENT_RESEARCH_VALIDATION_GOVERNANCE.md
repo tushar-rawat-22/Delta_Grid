@@ -8,10 +8,11 @@ Autonomy Constitution v5 and
 
 This implementation did not create a campaign, admit a program, select a
 candidate, execute research, materialize or open protected evidence, or issue a
-stage authorization. Both production registries are deliberately empty. The
-code therefore cannot run a production statistical adapter or protected
-evaluator until a later reviewed change registers an exact implementation and
-the founder separately authorizes the applicable work.
+stage authorization. Both production registries were deliberately empty at
+Mission 103 publication. The later prospective RAB-1 contract registers one
+exact statistical adapter and one exact protected evaluator without changing
+the Mission 103 contract. The founder must still authorize each protected
+stage separately.
 
 ## Campaign admission and the anti-reset boundary
 

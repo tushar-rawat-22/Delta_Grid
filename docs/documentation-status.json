@@ -312,7 +312,7 @@
       "ai_tone_severity": 0,
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
-      "notes": "Defines campaign-level anti-reset admission, exact program-wide statistics, a one-candidate freeze, prospective protected partitions, one-use founder authorizations and durable opening. Both production registries are empty and the maximum verdict has authority effect NONE."
+      "notes": "Defines campaign-level anti-reset admission, exact program-wide statistics, a one-candidate freeze, prospective protected partitions, one-use founder authorizations and durable opening. RAB-1 later registers one exact adapter and evaluator without changing these bytes; the maximum verdict has authority effect NONE."
     },
     {
       "path": "contracts/DELTAGRID_MISSION100_FIRST_LIVE_ACTIVATION_REMEDIATION_V1.json",
@@ -358,6 +358,21 @@
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Authorizes only deterministic repository/public-contract projection and package verification. It opens no private runtime or market/protected value, makes no network request, and grants no research, trading, exchange, credential, order, capital, or self-authorization authority."
+    },
+    {
+      "path": "contracts/DELTAGRID_RAB1_PROSPECTIVE_PROTOCOL_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Founder, maintainers, statistical reviewers, and software verification",
+      "purpose": "Exact prospective RAB-1 family, evidence calendar, statistical gates, protected gates, and authority boundary",
+      "authority_level": "CURRENT_CONTROLLING_PROSPECTIVE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Authorizes only the exact four-hypothesis RAB-1 programme and maximum NONE-authority verdict QUALIFIED_FOR_M104_OBSERVATION; Mission 104 remains unstarted and unauthorized."
     },
     {
       "path": "contracts/DELTAGRID_RESEARCH_ADMISSION_CORE_V1.json",
@@ -2142,7 +2157,7 @@
       "ai_tone_severity": 1,
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
-      "notes": "Explains Mission 103 campaign anti-reset admission, program-before-nonce founder activation and deterministic seed derivation, post-result M102 execution-spec binding and derived terminal evidence, exact program-wide empirical statistics and Holm correction, one-candidate freeze, causal prospective partitions, exact-hash protected opening, sealed empty production registries, one-use founder authorization, durable opening and exact recovery. No production campaign or protected execution exists."
+      "notes": "Explains Mission 103 campaign anti-reset admission, program-before-nonce founder activation and deterministic seed derivation, post-result M102 execution-spec binding and derived terminal evidence, exact program-wide empirical statistics and Holm correction, one-candidate freeze, causal prospective partitions, exact-hash protected opening, sealed production registries, one-use founder authorization, durable opening and exact recovery. RAB-1 later registers one exact adapter and evaluator; no RAB-1 result or protected execution exists."
     },
     {
       "path": "docs/DELTAGRID_ML_RESEARCH_ADAPTER.md",
@@ -2370,6 +2385,21 @@
       "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
     },
     {
+      "path": "docs/M104_READINESS_LOCK.md",
+      "classification": "CURRENT_PUBLIC",
+      "audience": "Founder, maintainers, public reviewers, and research-integrity reviewers",
+      "purpose": "Current human-readable RAB-1 readiness status and Mission 104 boundary",
+      "authority_level": "CURRENT_CONTROLLING_PROSPECTIVE_EXPLANATION",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Explains the 180-day protocol, three founder approvals, no-rescue rule, and continuing Mission 104 prohibition."
+    },
+    {
       "path": "docs/MISSION89_BASELINE_FALSIFICATION.md",
       "classification": "EVIDENCE_IMMUTABLE",
       "audience": "Research, risk, and audit reviewers",
@@ -2473,6 +2503,21 @@
       "readability_severity": 5,
       "recommended_treatment": "LEAVE_UNCHANGED",
       "notes": "Batch 3 added a superseded banner; the historical body remains preserved."
+    },
+    {
+      "path": "docs/RAB1_OVERLAP_DECISION.md",
+      "classification": "CURRENT_INTERNAL",
+      "audience": "Founder, research reviewers, and maintainers",
+      "purpose": "Pre-value RAB-1 economic-lineage overlap decision",
+      "authority_level": "CURRENT_PROSPECTIVE_EVIDENCE",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Records fixture-only Mission 84 scope, Alpha Search B non-overlap, and the contradiction stop condition before RAB-1 value access."
     },
     {
       "path": "docs/README.md",

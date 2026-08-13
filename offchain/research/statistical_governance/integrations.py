@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from decimal import Decimal
 from pathlib import Path
 import sqlite3
 from typing import Any, Mapping
@@ -25,7 +26,7 @@ from offchain.market_data_acquisition.journal import Journal
 
 from .core import (
     M102_COST_EXECUTION_ID, M102_RISK_ID, GovernanceError, canonical_hash,
-    freeze_json, parse_utc,
+    freeze_json, parse_utc, require_decimal_text,
 )
 
 
@@ -132,6 +133,56 @@ def _verify_finalized_m102_source(source: M102ResultSource) -> dict[str, Any]:
     }
     evidence.pop("canonical_result_hash", None)
     return freeze_json(evidence)
+
+
+def _verified_statistical_trace(
+    source: M102ResultSource, verified: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Derive a non-persisted value trace only after full M102 replay verification."""
+
+    if verified.get("terminal_status") != "SUCCESS":
+        raise GovernanceError("RAB1_VERIFIED_TRACE_REQUIRES_SUCCESS")
+    try:
+        runtime = validate_result_runtime(source.result_runtime)
+        directory = trial_directory(runtime, source.trial_id, create=False)
+        ledger, _ = read_canonical(directory / "event-ledger.json", maximum_bytes=64 * 1024 * 1024)
+        result, _ = read_canonical(directory / "result.json", maximum_bytes=8 * 1024 * 1024)
+    except Exception as error:
+        raise GovernanceError("RAB1_VERIFIED_TRACE_LOAD_FAILED") from error
+    ledger_core = dict(ledger)
+    ledger_hash = ledger_core.pop("canonical_event_ledger_hash", None)
+    if (
+        ledger_hash != canonical_hash(ledger_core)
+        or result.get("event_ledger_hash") != ledger_hash
+        or result.get("canonical_result_hash") != verified.get("result_hash")
+    ):
+        raise GovernanceError("RAB1_VERIFIED_TRACE_BINDING_INVALID")
+    event_times = {
+        row.get("event_id"): row.get("event_time_ms")
+        for row in ledger.get("event_rows", []) if isinstance(row, dict)
+    }
+    initial = require_decimal_text(verified["metrics"]["initial_research_nav"], "initial_research_nav")
+    previous = initial
+    blocks: dict[int, Decimal] = {}
+    for row in ledger.get("accounting_rows", []):
+        if not isinstance(row, dict) or row.get("event_id") not in event_times:
+            raise GovernanceError("RAB1_VERIFIED_TRACE_SCHEMA_INVALID")
+        event_time = event_times[row["event_id"]]
+        if type(event_time) is not int or event_time < 0:
+            raise GovernanceError("RAB1_VERIFIED_TRACE_SCHEMA_INVALID")
+        equity = require_decimal_text(row.get("equity"), "equity")
+        day = event_time // 86_400_000
+        blocks[day] = blocks.get(day, Decimal(0)) + equity - previous
+        previous = equity
+    ordered = tuple(str(blocks[key]) for key in sorted(blocks))
+    if not ordered or sum((Decimal(item) for item in ordered), Decimal(0)) != require_decimal_text(verified["metrics"]["net_pnl"], "net_pnl"):
+        raise GovernanceError("RAB1_VERIFIED_TRACE_NET_PNL_MISMATCH")
+    return {
+        "trace_schema": "RAB1_VERIFIED_EVENT_LEDGER_TRACE_V1",
+        "event_ledger_hash": ledger_hash,
+        "daily_net_pnl_blocks": ordered,
+        "daily_block_count": len(ordered),
+    }
 
 
 def _terminal_trial_state(source: M102ResultSource) -> str:

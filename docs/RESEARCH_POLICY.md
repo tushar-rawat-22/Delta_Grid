@@ -15,7 +15,9 @@ The deterministic contract is
 ## Current state
 
 DeltaGrid is a completed quantitative research platform with no validated
-profitable strategy and no selected candidate. Alpha discovery is stopped.
+profitable strategy and no selected candidate. One exact prospective RAB-1
+programme is locked under a new versioned contract; its results have not been
+opened.
 Paper trading and live trading are not authorized, and capital deployment is
 blocked.
 
@@ -35,9 +37,9 @@ Mission 102 permits deterministic result execution only for an exact admitted
 `REAL_MARKET_DEVELOPMENT` trial that owns its exact already-consumed Mission 101
 permit slot. It fixes one preregistered variant per trial and preserves
 validation, holdout, ML, promotion, paper/live trading, exchange, credential,
-order, and capital boundaries. Its production experiment registry initially
-contains zero economic families, and no real Mission 102 research was executed
-during implementation.
+order, and capital boundaries. Its general implementation began with an empty
+production registry. The prospective RAB-1 contract now authorizes exactly one
+four-variant family and no other family.
 
 Mission 103 adds campaign-level multiplicity protection and infrastructure for
 independent qualification of already-finalized Mission 102 results. A founder
@@ -50,11 +52,11 @@ one candidate may be fixed, with no later fallback.
 
 Each protected stage still needs a distinct exact one-use founder
 authorization. A prior pass creates eligibility to request the next
-authorization; it does not open that stage. Mission 103's production
-statistical-adapter and protected-evaluator registries contain zero entries,
-and its implementation created no campaign, program, candidate,
-materialization, authorization or protected execution. Its maximum successful
-verdict is only `QUALIFIED_FOR_M104_OBSERVATION` with authority effect `NONE`.
+authorization; it does not open that stage. The prospective RAB-1 contract
+authorizes exactly one sealed statistical adapter and one sealed protected
+evaluator. It has not created a result, candidate, or protected execution. Its
+maximum successful verdict is only `QUALIFIED_FOR_M104_OBSERVATION` with
+authority effect `NONE`.
 
 ## Research-First Operating Model
 

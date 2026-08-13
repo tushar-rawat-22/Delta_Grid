@@ -148,13 +148,13 @@ FOUNDATION_DOCUMENTS = {
 }
 
 EXPECTED_CLASSIFICATION_COUNTS = {
-    "CURRENT_PUBLIC": 11,
-    "CURRENT_INTERNAL": 21,
+    "CURRENT_PUBLIC": 12,
+    "CURRENT_INTERNAL": 22,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
     "EVIDENCE_IMMUTABLE": 12,
-    "MACHINE_REFERENCE": 53,
+    "MACHINE_REFERENCE": 54,
 }
 
 EXPECTED_OPERATOR_GUIDE_ENTRY = {
@@ -299,6 +299,11 @@ MISSION_103_DOCUMENTS = {
     "contracts/DELTAGRID_AUTONOMY_CONSTITUTION_V5.json",
     "contracts/DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE_V1.json",
     "docs/DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md",
+}
+RAB1_DOCUMENTS = {
+    "contracts/DELTAGRID_RAB1_PROSPECTIVE_PROTOCOL_V1.json",
+    "docs/M104_READINESS_LOCK.md",
+    "docs/RAB1_OVERLAP_DECISION.md",
 }
 P1_DOCUMENTS = {
     "contracts/DELTAGRID_PUBLIC_PROJECTION_V1.json",
@@ -835,8 +840,9 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_100_DOCUMENTS
             | MISSION_101_DOCUMENTS
             | MISSION_102_DOCUMENTS
-            | MISSION_103_DOCUMENTS
-            | P1_DOCUMENTS
+                | MISSION_103_DOCUMENTS
+                | RAB1_DOCUMENTS
+                | P1_DOCUMENTS
         )
     ]
     base_non_target_entries = [
@@ -986,10 +992,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 201
+    assert len(approved) == 204
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 204
+    assert len(registered) == 207
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES
