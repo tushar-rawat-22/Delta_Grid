@@ -23,7 +23,7 @@ if (verified.projectionSha256 !== P1_PROJECTION_SHA256) {
 export const currentProjection = verified;
 export const projectionAuthority = currentProjection.projection.authority;
 export const verifiedProjectionSource =
-  `P1.1 verified projection · core ${P1_CORE_COMMIT.slice(0, 12)} · sha256 ${P1_PROJECTION_SHA256.slice(0, 12)}`;
+  `Repository-verified projection · core ${P1_CORE_COMMIT.slice(0, 12)} · sha256 ${P1_PROJECTION_SHA256.slice(0, 12)}`;
 
 export function requireClosedAuthority(field: keyof typeof projectionAuthority): "NOT AUTHORIZED" {
   if (projectionAuthority[field] !== false) {
