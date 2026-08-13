@@ -148,8 +148,8 @@ FOUNDATION_DOCUMENTS = {
 }
 
 EXPECTED_CLASSIFICATION_COUNTS = {
-    "CURRENT_PUBLIC": 12,
-    "CURRENT_INTERNAL": 22,
+    "CURRENT_PUBLIC": 15,
+    "CURRENT_INTERNAL": 23,
     "HISTORICAL": 97,
     "SUPERSEDED": 8,
     "DESIGN_ONLY": 2,
@@ -308,6 +308,12 @@ RAB1_DOCUMENTS = {
 P1_DOCUMENTS = {
     "contracts/DELTAGRID_PUBLIC_PROJECTION_V1.json",
     "docs/DELTAGRID_PUBLIC_PROJECTION.md",
+}
+WEB_DOCUMENTS = {
+    "web/README.md",
+    "web/docs/ARCHITECTURE.md",
+    "web/docs/RESEARCH_ENGINE.md",
+    "web/docs/SECURITY_BOUNDARY.md",
 }
 
 EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
@@ -595,6 +601,7 @@ def approved_inventory() -> set[str]:
         for path in (ROOT / "offchain" / "research" / "contracts").glob("*.json")
     )
     paths.update(SUMMARY_PATHS)
+    paths.update(WEB_DOCUMENTS)
     return paths
 
 
@@ -841,9 +848,10 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
             | MISSION_101_DOCUMENTS
             | MISSION_102_DOCUMENTS
                 | MISSION_103_DOCUMENTS
-                | RAB1_DOCUMENTS
-                | P1_DOCUMENTS
-        )
+                    | RAB1_DOCUMENTS
+                    | P1_DOCUMENTS
+                    | WEB_DOCUMENTS
+            )
     ]
     base_non_target_entries = [
         item
@@ -992,10 +1000,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 204
+    assert len(approved) == 208
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 207
+    assert len(registered) == 211
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES

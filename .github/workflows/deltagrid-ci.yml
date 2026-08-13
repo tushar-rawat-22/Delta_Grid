@@ -90,3 +90,61 @@ jobs:
             -p no:cacheprovider \
             offchain/tests \
             -q
+
+  web-and-founder-tests:
+    name: web-and-founder-tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      WRANGLER_SEND_METRICS: "false"
+      WRANGLER_SEND_ERROR_REPORTS: "false"
+      P1_CORE_COMMIT: "d94441f2f32fd8edc7b416beecd88b2b087d01a9"
+      P1_EXPECTED_PROJECTION_SHA256: "0e13dae7cddddff1110d79630682bfbc1495f1bc23d5ea95cf15e2906fb967c4"
+    steps:
+      - name: Check out submitted repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24.18.1"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install locked web dependencies
+        working-directory: web
+        run: npm run install:locked-safe
+
+      - name: Audit web dependency graph
+        working-directory: web
+        run: npm audit --audit-level=low
+
+      - name: Verify admitted projection against the pinned core
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST="$RUNNER_TEMP/p1-public-projection"
+          (
+            PYTHONDONTWRITEBYTECODE=1 python -m offchain.public_projection export --destination "$DEST"
+            PYTHONDONTWRITEBYTECODE=1 python -m offchain.public_projection verify --path "$DEST"
+          )
+          ACTUAL="$(sha256sum "$DEST/projection.json" | awk '{print $1}')"
+          test "$ACTUAL" = "$P1_EXPECTED_PROJECTION_SHA256"
+          node web/scripts/verify-projection-snapshot.mjs "$DEST"
+          node web/scripts/verify-projection-snapshot.mjs web/data/public-projection/v1/current
+          cmp "$DEST/projection.json" web/data/public-projection/v1/current/projection.json
+          cmp "$DEST/manifest.json" web/data/public-projection/v1/current/manifest.json
+
+      - name: Run web and founder acceptance
+        working-directory: web
+        run: npm run check
+
+      - name: Inspect founder Worker dry-run bundle
+        run: node web/scripts/verify-founder-bundle.mjs /tmp/deltagrid-founder-worker/worker.js

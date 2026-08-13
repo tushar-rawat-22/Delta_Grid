@@ -21,6 +21,7 @@ I built the project around falsification. A failed hypothesis stays in the recor
 | Exchange / credential access | Not authorized |
 | Orders / portfolio allocation / capital deployment | Not authorized |
 | P1.1 public projection | Implemented; authority effect `NONE` |
+| Founder research engine | Implemented under `web/`; delayed public data only, `NON_RAB1_RESEARCH_ONLY` |
 
 The final research freeze was published at commit `ce82c5b887a08185b7acceb35480783d02eb0b5d`. Later missions added narrower custody, admission, execution, statistical-governance, and public-projection infrastructure without rewriting the negative research result or granting trading authority.
 
@@ -37,7 +38,7 @@ DeltaGrid is not one strategy script. The repository is a set of explicit bounda
 - **Negative-evidence preservation** — rejected families and failed activation attempts remain part of the project history.
 - **Authority separation** — software capability, research permission, observation, paper execution, live execution, credentials, and capital are separate states.
 
-The public repository is the authoritative public core. Security-sensitive operating and founder-control layers are kept outside this public authority surface; they do not replace or rewrite the core.
+This repository is now the single active DeltaGrid codebase. The public core, observer, founder Worker, and research-engine source are reviewed together. Secrets, founder-authored research records, protected evidence, and private operating history remain outside Git; publishing the control code does not publish credentials or grant authority.
 
 ## Why I built it
 
@@ -124,6 +125,7 @@ contracts/                 versioned authority and machine contracts
 docs/                      current documentation, historical records and evidence maps
 offchain/                  research, custody, governance and projection code
 offchain/tests/            deterministic verification suite
+web/                       public observer, founder Worker and research engine
 scripts/                   supported local operator/verification tooling
 ```
 
@@ -147,6 +149,16 @@ offchain/.venv/bin/python -m pytest \
 ```
 
 The virtual environment is local and ignored; it is not included in a fresh clone.
+
+The web and founder surfaces have an independent locked Node dependency graph:
+
+```bash
+cd web
+npm run install:locked-safe
+npm run check
+```
+
+That check covers the static observer, authenticated founder routes, research API, data collectors, deterministic metrics, D1 schema, security boundaries, and Cloudflare Worker dry run.
 
 ## Documentation
 

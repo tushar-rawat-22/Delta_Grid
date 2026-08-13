@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+research-dist/
+.env
+.env.*
+!.env.example
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store
+.vscode/
+.idea/
+*.log
+npm-debug.log*
