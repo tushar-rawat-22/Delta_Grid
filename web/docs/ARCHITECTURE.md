@@ -24,4 +24,4 @@ The public and founder Workers remain separate deployments and exposure boundari
 
 Human Access identity is not reused as machine identity. Machine Access alone is insufficient because every request is also HMAC-signed and replay-protected. A network command supplies an action ID only; all executable argv and paths are local reviewed code.
 
-The original Provider Registry, Instrument Master and temporal evidence envelopes remain unchanged. Independent research collectors use Coinbase Exchange, Alpha Vantage, FRED, SEC Company Facts and Treasury Fiscal Data on fixed hosts with bounded responses, schemas, quotas, freshness receipts and no generic URL surface.
+The original Provider Registry, Instrument Master and temporal evidence envelopes remain unchanged. Independent research collectors use Coinbase Exchange, Alpha Vantage, FRED, fixed SEC XBRL Company Concept endpoints and Treasury Fiscal Data on fixed hosts with bounded responses, schemas, quotas, freshness receipts and no generic URL surface.

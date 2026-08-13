@@ -14,7 +14,7 @@ const dataContract = [
   ["Coinbase Exchange", "Hourly", "240 settled bars / capture"],
   ["Alpha Vantage", "Daily", "Up to 100 delayed bars"],
   ["FRED", "Daily check", "Up to 120 observations / series"],
-  ["SEC Company Facts", "Daily check", "10-K and 10-Q facts"],
+  ["SEC XBRL", "Daily check", "5 fixed company concepts"],
   ["Treasury Fiscal Data", "Daily check", "Latest Debt to the Penny"],
 ] as const;
 

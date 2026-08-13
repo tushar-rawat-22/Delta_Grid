@@ -3,7 +3,6 @@ import type { D1DatabaseLike, D1StatementLike } from "./database.ts";
 import { RESEARCH_AUTHORITY, RESEARCH_BOUNDARY } from "./research-database.ts";
 
 const MAX_PROVIDER_BYTES = 4_194_304;
-const MAX_SEC_COMPANYFACTS_BYTES = 8_388_608;
 const PROVIDER_TIMEOUT_MS = 15_000;
 const MAX_INSERT_BATCH = 50;
 
@@ -311,27 +310,35 @@ async function collectSec(
 ): Promise<CollectionResult> {
   const cik = instrument.cik;
   if (!cik || !/^\d{10}$/u.test(cik)) throw new ProviderCollectionError("PROVIDER_SCHEMA_INVALID");
-  // Company Facts responses for large issuers can legitimately exceed the
-  // general provider cap. Keep a separate, still-bounded ceiling for this one
-  // fixed SEC endpoint instead of weakening every adapter.
-  const payload = await fetchProviderPayload(
-    new URL(`https://data.sec.gov/api/xbrl/companyfacts/CIK${cik}.json`),
-    identifiedHeaders(env),
-    MAX_SEC_COMPANYFACTS_BYTES,
-  );
-  const decoded = objectValue(parseProviderJson(payload.text));
-  const facts = objectValue(objectValue(decoded.facts)["us-gaap"]);
   const metricKeys = ["Assets", "Liabilities", "Revenues", "NetIncomeLoss", "StockholdersEquity"];
-  const rows: Array<{ metric: string; end: string; filed: string; form: string; value: number; accn: string }> = [];
+  const rows: Array<{ metric: string; end: string; filed: string; form: string; value: number; accn: string; sourceSha256: string }> = [];
+  const responseIdentities: string[] = [];
+  let responseBytes = 0;
   for (const metric of metricKeys) {
-    const fact = facts[metric];
-    if (!fact || typeof fact !== "object") continue;
-    const units = objectValue(objectValue(fact).units);
+    const payload = await fetchProviderPayload(
+      new URL(`https://data.sec.gov/api/xbrl/companyconcept/CIK${cik}/us-gaap/${metric}.json`),
+      identifiedHeaders(env),
+    );
+    responseBytes += payload.bytes;
+    responseIdentities.push(`${metric}:${payload.sha256}:${payload.bytes}`);
+    const decoded = objectValue(parseProviderJson(payload.text));
+    if (decoded.cik !== Number(cik) || decoded.tag !== metric || decoded.taxonomy !== "us-gaap") {
+      throw new ProviderCollectionError("PROVIDER_SCHEMA_INVALID", payload.sha256, payload.bytes);
+    }
+    const units = objectValue(decoded.units);
     const values = Array.isArray(units.USD) ? units.USD : [];
     for (const raw of values.slice(-12)) {
       const row = objectValue(raw);
       if ((row.form !== "10-K" && row.form !== "10-Q") || typeof row.end !== "string" || typeof row.filed !== "string" || typeof row.accn !== "string") continue;
-      rows.push({ metric, end: row.end, filed: row.filed, form: row.form, value: exactFinite(row.val), accn: row.accn });
+      rows.push({
+        metric,
+        end: row.end,
+        filed: row.filed,
+        form: row.form,
+        value: exactFinite(row.val),
+        accn: row.accn,
+        sourceSha256: payload.sha256,
+      });
     }
   }
   if (rows.length === 0 || rows.length > 60) throw new ProviderCollectionError("PROVIDER_SCHEMA_INVALID");
@@ -345,10 +352,14 @@ async function collectSec(
       available_at=excluded.available_at, source_sha256=excluded.source_sha256`,
   ).bind(
     instrument.instrument_id, row.metric, row.end, row.filed, row.form, row.value, row.accn,
-    new Date(scheduledTime).toISOString(), payload.sha256, RESEARCH_BOUNDARY, RESEARCH_AUTHORITY,
+    new Date(scheduledTime).toISOString(), row.sourceSha256, RESEARCH_BOUNDARY, RESEARCH_AUTHORITY,
   ));
   await runBatches(db, statements);
-  return { responseSha256: payload.sha256, responseBytes: payload.bytes, recordCount: rows.length };
+  return {
+    responseSha256: await sha256Hex(responseIdentities.join("\n")),
+    responseBytes,
+    recordCount: rows.length,
+  };
 }
 
 async function collectTreasury(
