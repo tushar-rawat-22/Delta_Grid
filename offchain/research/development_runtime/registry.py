@@ -306,4 +306,6 @@ class ExperimentRegistry:
 
 
 def production_registry() -> ExperimentRegistry:
-    return ExperimentRegistry(())
+    from offchain.research.rab1.strategy import family_definition
+
+    return ExperimentRegistry((family_definition(),))

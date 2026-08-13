@@ -70,13 +70,19 @@ authorized now.
   documents Mission 102's exact consumed-permit binding, immutable one-trial
   execution specification, sealed future-extensible registry, causal selected
   value loader, deterministic accounting, independent replay, and atomic
-  Mission 94 completion. Its production registry contains zero families.
+  Mission 94 completion. Its registry began empty; RAB-1 now prospectively
+  authorizes exactly one four-variant family.
 - [Independent statistical and protected-evidence governance](DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md)
   documents Mission 103's campaign-level anti-reset admission, exact
   program-wide empirical statistics and Holm correction, one fixed candidate,
   prospective protected partitions, metadata-only materialization, and durable
-  one-use founder-authorized protected openings. Both production registries are
-  empty.
+  one-use founder-authorized protected openings. The prospective RAB-1
+  contract authorizes one exact adapter and evaluator without starting Mission 104.
+- [Mission-104 readiness lock](M104_READINESS_LOCK.md) records the only active
+  prospective RAB-1 programme, its 180-day forward calendar, exact gates, and
+  `NONE` authority boundary.
+- [RAB-1 overlap decision](RAB1_OVERLAP_DECISION.md) records the pre-value
+  lineage decision and the contradiction stop condition.
 
 
 - [Platform P1.1 public projection](DELTAGRID_PUBLIC_PROJECTION.md) documents
@@ -170,7 +176,7 @@ The current backend architecture is the Mission 93–103 chain:
 | 99 | [Temporal Market Data Control Plane](DELTAGRID_TEMPORAL_MARKET_DATA_CONTROL_PLANE.md) | Custodies immutable, revision-aware releases; independently certifies them; audits legacy metadata; and resolves only authorized synthetic evidence as of a decision time |
 | 100 | [Forward Market Data Acquisition](DELTAGRID_FORWARD_MARKET_DATA_ACQUISITION.md) | Collects only frozen public Binance market data into a private append-only forward-evidence journal with clock, retry, revision, checkpoint, and backup controls |
 | 101 | [Research Reopening Governance](DELTAGRID_RESEARCH_REOPENING_GOVERNANCE.md) | Verifies immutable Mission 100 backups, certifies distinct forward custody, binds exact development datasets and permits, and performs metadata-only development admission without execution |
-| 102 | [Development Research Runtime](DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md) | Executes only an exact consumed-permit-bound development trial and independently replays and finalizes its evidence; production family count is zero |
+| 102 | [Development Research Runtime](DELTAGRID_DEVELOPMENT_RESEARCH_RUNTIME.md) | Executes only an exact consumed-permit-bound development trial and independently replays and finalizes its evidence; RAB-1 prospectively registers one family |
 | 103 | [Independent statistical and protected-evidence governance](DELTAGRID_INDEPENDENT_RESEARCH_VALIDATION_GOVERNANCE.md) | Prevents campaign/program multiplicity reset, applies exact program-wide statistics, freezes at most one candidate, and governs prospective one-use protected stages; production adapter and evaluator counts are zero |
 
 | P1.1 | [Public Projection](DELTAGRID_PUBLIC_PROJECTION.md) | Exports and independently verifies a deterministic repository/public-contract projection without opening private runtimes, market values, protected data, network access, or trading authority |

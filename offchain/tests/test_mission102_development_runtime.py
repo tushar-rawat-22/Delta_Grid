@@ -364,7 +364,7 @@ def test_successful_two_store_gate_is_not_retroactively_rewritten(chain: dict[st
 def test_registry_is_empty_deterministic_and_cli_cannot_inject_adapter() -> None:
     first = production_registry()
     second = production_registry()
-    assert first.family_count == 0
+    assert first.family_count == 1
     assert first.snapshot_hash == second.snapshot_hash
     assert _registry().snapshot_hash == _registry().snapshot_hash
     parser = cli_module.build_parser()

@@ -245,9 +245,9 @@ def test_contract_lineage_includes_m99_and_m100() -> None:
     assert "unfilled_intent_count" not in mission["protected_opening"]["supported_protected_decimal_text_measurements"]
 
 
-def test_production_registries_are_empty_and_semantic_hashes_are_derived() -> None:
-    assert production_statistical_adapter_registry().entry_count == 0
-    assert production_protected_evaluator_registry().entry_count == 0
+def test_production_registries_are_statically_sealed_and_semantic_hashes_are_derived() -> None:
+    assert production_statistical_adapter_registry().entry_count == 1
+    assert production_protected_evaluator_registry().entry_count == 1
     assert TEST_ADAPTER.adapter_hash == canonical_hash({"adapter_id": "test-adapter", "definition": ADAPTER_DEFINITION})
     with pytest.raises(TypeError):
         type(production_statistical_adapter_registry())([TEST_ADAPTER])

@@ -10,6 +10,7 @@ from .core import GovernanceError, canonical_hash, freeze_json, require_identifi
 
 
 ServiceFunction = Callable[[Mapping[str, Any]], Mapping[str, Any]]
+_STATIC_REGISTRY_SEAL = object()
 
 
 @dataclass(frozen=True)
@@ -80,8 +81,14 @@ class _SealedRegistry:
     id_attr = ""
     hash_attr = ""
 
-    def __init__(self) -> None:
-        self._entries = MappingProxyType({})
+    def __init__(self, entries: tuple[Any, ...] = (), *, _seal: object | None = None) -> None:
+        if entries and _seal is not _STATIC_REGISTRY_SEAL:
+            raise TypeError("production services are statically sealed")
+        values = tuple(entries)
+        identifiers = [getattr(item, self.id_attr) for item in values]
+        if len(identifiers) != len(set(identifiers)):
+            raise GovernanceError(f"{self.kind}_REGISTRY_INVALID")
+        self._entries = MappingProxyType({getattr(item, self.id_attr): item for item in values})
 
     @property
     def entry_count(self) -> int:
@@ -116,8 +123,15 @@ class ProtectedEvaluatorRegistry(_SealedRegistry):
     hash_attr = "evaluator_hash"
 
 
-_PRODUCTION_STATISTICAL_REGISTRY = StatisticalAdapterRegistry()
-_PRODUCTION_EVALUATOR_REGISTRY = ProtectedEvaluatorRegistry()
+from offchain.research.rab1.statistics import protected_evaluator, statistical_adapter
+
+
+_PRODUCTION_STATISTICAL_REGISTRY = StatisticalAdapterRegistry(
+    (statistical_adapter(),), _seal=_STATIC_REGISTRY_SEAL,
+)
+_PRODUCTION_EVALUATOR_REGISTRY = ProtectedEvaluatorRegistry(
+    (protected_evaluator(),), _seal=_STATIC_REGISTRY_SEAL,
+)
 
 
 def production_statistical_adapter_registry() -> StatisticalAdapterRegistry:

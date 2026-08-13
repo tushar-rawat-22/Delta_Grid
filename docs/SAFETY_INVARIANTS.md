@@ -6,10 +6,11 @@ DeltaGrid has no validated profitable strategy and no selected candidate. The
 final freeze remains controlling except for narrow prospective authority
 expressly granted by later versioned contracts. Mission 102 permits only an
 exact consumed-permit-bound `REAL_MARKET_DEVELOPMENT` trial to execute; its
-production registry initially contains zero economic families. Mission 103
+production registry initially contained zero economic families; RAB-1 now
+prospectively registers exactly one four-variant family. Mission 103
 permits only finite-program qualification infrastructure and separately
 founder-authorized one-use protected-stage machinery. Both M103 production
-registries are empty, no M103 campaign or protected execution exists, and its
+registries now each contain one RAB-1 service, no RAB-1 result or protected execution exists, and its
 maximum verdict has authority effect `NONE`. Paper trading
 and live trading are not authorized, and capital deployment is blocked.
 

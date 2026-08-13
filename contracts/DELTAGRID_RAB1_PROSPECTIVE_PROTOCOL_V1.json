@@ -1,0 +1,109 @@
+{
+  "contract_id": "deltagrid-rab1-prospective-protocol-v1",
+  "contract_version": "1.0",
+  "status": "FROZEN_PROSPECTIVE_NOT_EXECUTED",
+  "effective_date": "2026-08-13",
+  "autonomy_constitution_id": "deltagrid-autonomy-constitution-v5",
+  "autonomy_constitution_hash_sha256": "7055bba73f10ebb78f8791511d0b926ef1d8d7dae9099b843fae81d9aa074767",
+  "mission102_contract_id": "deltagrid-development-research-runtime-v1",
+  "mission102_contract_hash_sha256": "9bd79130edab59392a5a7f05225de2fbb4ad2b3c84476ddc5be095cffc6851da",
+  "mission103_contract_id": "deltagrid-independent-research-validation-governance-v1",
+  "mission103_contract_hash_sha256": "19cc7af157e6350a736a272dd73c16a407eb42e68368ad84f970896da60d10f4",
+  "overlap_decision": {
+    "decision": "NO_CONTRADICTORY_REAL_MARKET_REJECTION_FOUND",
+    "mission84_pairs_residual_scope": "FIXTURE_SCREENING_ONLY",
+    "alpha_search_b_scope": "TRADE_FLOW_AND_LEAD_LAG_NOT_RESIDUAL_REVERSION",
+    "stop_condition": "ANY_CONTRADICTORY_EVIDENCE_FOUND_BEFORE_EXECUTION"
+  },
+  "production_registry_authorization": {
+    "m102_registry_snapshot_hash": "3b5e6502c53ac4a0fad2693a6ea38e17f46c6df2c6fa82737d0f97a5bf436955",
+    "family_id": "RAB1_BTC_HEDGED_ALT_RESIDUAL_REVERSION",
+    "family_hash": "a925b00fbfb9c9672d2f8d14ecd0d2e39289bb5648ac057cd90f6e80438a0908",
+    "variants": [
+      {"declared_trial_number": 1, "variant_id": "RAB1_ETH_BTC_168H", "variant_hash": "4bf4a0056536c3398183cd9860b4cb95a20b200bbe66b91da78fe4f60631bc66"},
+      {"declared_trial_number": 2, "variant_id": "RAB1_ETH_BTC_336H", "variant_hash": "9896f7a98c9d6c397a2f2443eccd3937291a6cdf43166838010044679bb8e089"},
+      {"declared_trial_number": 3, "variant_id": "RAB1_SOL_BTC_168H", "variant_hash": "f0a42c81b1c690a8484966706220a6d515d9e924c1da2ecafa28d8c05c431c03"},
+      {"declared_trial_number": 4, "variant_id": "RAB1_SOL_BTC_336H", "variant_hash": "a34007b208796afb315df1fcf1be7e8d995c2d5a9f8ab9006f0409ace0deb376"}
+    ],
+    "m103_statistical_registry_snapshot_hash": "45a52cec8745fc0a2644ae5a35ade265f3b21b5e594f5982fe839a0db6c78429",
+    "statistical_adapter_id": "RAB1_24H_BLOCK_SIGN_FLIP_ADAPTER_V1",
+    "statistical_adapter_hash": "b48352783491861688ca17b570f190a6118951e4ce4b4b9e9a136c81d8f5c0da",
+    "m103_evaluator_registry_snapshot_hash": "a2aaf64f72bb0670a7efcef34cac118c1156bc904657130abc77c77b5c94ce74",
+    "protected_evaluator_id": "RAB1_AUTHORITATIVE_M102_METRICS_EVALUATOR_V1",
+    "protected_evaluator_hash": "0c444dc6e3023ee66ef62d0c33b0de0bedfd7605811daf40cad018b8620a49d4"
+  },
+  "economic_protocol": {
+    "data": "PERPETUAL_HOURLY_BARS_AND_SETTLED_FUNDING_ONLY",
+    "rolling_beta": "CAUSAL_DECIMAL_SIMPLE_RETURN_COVARIANCE_OVER_VARIANCE",
+    "beta_clip": ["0.25", "3"],
+    "entry_absolute_z": "2",
+    "exit_absolute_z_below": "0.5",
+    "maximum_holding_hours": 24,
+    "initial_research_nav": "10000",
+    "maximum_gross_research_exposure": "2000",
+    "fee_bps_per_fill": "5",
+    "slippage_bps_per_fill": "5",
+    "funding_included": true
+  },
+  "statistical_protocol": {
+    "null": "24_HOUR_BLOCK_SIGN_FLIP",
+    "m103_owned_deterministic_draws": 9999,
+    "direction": "ONE_SIDED_GREATER",
+    "multiplicity": "PROGRAM_WIDE_HOLM_STEP_DOWN",
+    "family_wise_alpha": "0.05",
+    "maximum_selected_candidates": 1,
+    "second_best_fallback": false
+  },
+  "development_gates": {
+    "holm_corrected_significance": true,
+    "net_pnl_strictly_positive": true,
+    "minimum_daily_blocks": 60,
+    "gross_pnl_strictly_positive": true,
+    "maximum_drawdown_notional_at_most": "500",
+    "turnover_strictly_positive": true
+  },
+  "protected_gates": {
+    "stages": ["REPLICATION", "VALIDATION", "HOLDOUT"],
+    "net_pnl_strictly_positive": true,
+    "final_equity_above": "10000",
+    "gross_pnl_strictly_positive": true,
+    "turnover_strictly_positive": true,
+    "maximum_drawdown_notional_at_most": "500"
+  },
+  "evidence_timeline": {
+    "total_days": 180,
+    "warmup_days": [0, 14],
+    "development_days": [14, 90],
+    "replication_days": [90, 120],
+    "validation_days": [120, 150],
+    "holdout_days": [150, 180],
+    "maximum_prior_context_days": 14,
+    "forward_horizon_hours": 1,
+    "purge_hours": 24,
+    "embargo_hours": 24,
+    "availability_cutoff_delay_hours": 24
+  },
+  "founder_approvals": ["REPLICATION", "VALIDATION", "HOLDOUT"],
+  "terminal_policy": {
+    "failure_verdict": "PROGRAM_REJECTED",
+    "success_verdict": "QUALIFIED_FOR_M104_OBSERVATION",
+    "no_retuning": true,
+    "no_alternate_candidate": true,
+    "no_shifted_window": true,
+    "no_rescue_attempt": true,
+    "mission104_started": false,
+    "mission104_authorized": false
+  },
+  "maximum_verdict": {
+    "status": "QUALIFIED_FOR_M104_OBSERVATION",
+    "authority_effect": "NONE",
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_credentials": false,
+    "orders": false,
+    "leverage_expansion": false,
+    "capital_deployment": false,
+    "self_authorization": false
+  },
+  "contract_hash_sha256": "f77816ebb283f540899f6cb33c30ce857886e5922b5ae588605380f822f264d2"
+}

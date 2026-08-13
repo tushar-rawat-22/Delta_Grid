@@ -31,6 +31,7 @@ from .integrations import (
     _verify_repository_context, verify_materialization_integrity,
 )
 from .registry import _resolve_protected_evaluator, _resolve_statistical_adapter
+from offchain.research.rab1.statistics import STATISTICAL_ADAPTER_ID
 from .statistics import build_randomization_plan, derive_null_seed, fraction_text, holm_step_down
 from .protected import (
     PROTECTED_EXECUTOR_ID, execute_protected_candidate,
@@ -622,6 +623,10 @@ def record_development_result(
                     "verified_result": verified, "primary_statistic": program["primary_statistic"],
                     "direction": program["direction"], "null_policy": program["null_policy"],
                     **null_input}
+                if declared["statistical_adapter_id"] == STATISTICAL_ADAPTER_ID:
+                    from .integrations import _verified_statistical_trace
+
+                    adapter_input["_verified_trace"] = _verified_statistical_trace(result_source, verified)
                 try:
                     output = freeze_json(dict(adapter.function(adapter_input)))
                 except GovernanceError:
