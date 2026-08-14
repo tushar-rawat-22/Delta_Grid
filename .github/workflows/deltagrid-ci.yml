@@ -91,6 +91,9 @@ jobs:
             offchain/tests \
             -q
 
+
+      - name: Run founder-agent suite
+        run: PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider ops/founder-agent/tests -q
   web-and-founder-tests:
     name: web-and-founder-tests
     runs-on: ubuntu-24.04

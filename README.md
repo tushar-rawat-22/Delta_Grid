@@ -125,6 +125,7 @@ contracts/                 versioned authority and machine contracts
 docs/                      current documentation, historical records and evidence maps
 offchain/                  research, custody, governance and projection code
 offchain/tests/            deterministic verification suite
+ops/founder-agent/         outbound-only local founder executor and provider pilot
 web/                       public observer, founder Worker and research engine
 scripts/                   supported local operator/verification tooling
 ```
