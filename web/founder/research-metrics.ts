@@ -37,9 +37,9 @@ export function calculateMetrics(bars: ResearchBar[], annualization = 252): Rese
   const high = closes.length ? Math.max(...closes) : null;
   return {
     latest,
-    return_1d: periodReturn(closes, 1),
-    return_7d: periodReturn(closes, 7),
-    return_30d: periodReturn(closes, 30),
+    return_1d: horizonReturn(clean, 1),
+    return_7d: horizonReturn(clean, 7),
+    return_30d: horizonReturn(clean, 30),
     realized_volatility: volatility,
     maximum_drawdown: closes.length ? maxDrawdown : null,
     distance_from_high: latest !== null && high ? latest / high - 1 : null,
@@ -78,11 +78,21 @@ export function compareSeries(series: Record<string, ResearchBar[]>): {
   };
 }
 
-function periodReturn(values: number[], periods: number): number | null {
-  if (values.length <= periods) return null;
+function horizonReturn(values: ResearchBar[], days: number): number | null {
+  if (values.length < 2) return null;
+
   const latest = values.at(-1);
-  const previous = values[values.length - 1 - periods];
-  return latest && previous ? latest / previous - 1 : null;
+  if (!latest) return null;
+
+  const cutoff = Date.parse(latest.observed_at) - days * 86_400_000;
+  let anchor: ResearchBar | null = null;
+
+  for (const value of values) {
+    if (Date.parse(value.observed_at) <= cutoff) anchor = value;
+    else break;
+  }
+
+  return anchor ? latest.close / anchor.close - 1 : null;
 }
 
 function mean(values: number[]): number {

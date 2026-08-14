@@ -95,6 +95,110 @@ test("research API supports founder-scoped revisioned CRUD and fails closed on s
   assert.equal(crossOwner.status, 409);
 });
 
+test("crypto dossier exposes live metadata and true 24-hour return semantics", async () => {
+  const db = new SqliteD1();
+  const env = {
+    DELTAGRID_SYSTEM_DB: db,
+    DELTAGRID_RESEARCH_CSRF_KEY: "c".repeat(64),
+  };
+
+  const now = "2026-08-14T00:00:00.000Z";
+
+  db.database.prepare(
+    `UPDATE research_provider_state
+     SET status = 'OPERATIONAL',
+         detail_code = 'COLLECTION_SUCCEEDED',
+         last_attempt_at = ?,
+         last_success_at = ?,
+         next_due_at = ?,
+         updated_at = ?
+     WHERE provider_id = 'COINBASE_EXCHANGE'
+       AND instrument_id = 'CRYPTO_BTC_USD'`,
+  ).run(now, now, "2026-08-14T01:00:00.000Z", now);
+
+  const insert = db.database.prepare(
+    `INSERT INTO research_price_observations (
+      instrument_id, observed_at, available_at, interval,
+      open, high, low, close, volume, adjusted,
+      source_sha256, boundary, authority_effect
+    ) VALUES (
+      ?, ?, ?, 'HOUR',
+      ?, ?, ?, ?, ?, 0,
+      ?, 'NON_RAB1_RESEARCH_ONLY', 'NONE'
+    )`,
+  );
+
+  const closes: number[] = [];
+
+  for (let index = 0; index < 25; index += 1) {
+    const observedAt = new Date(
+      Date.UTC(2026, 7, 13, index),
+    ).toISOString();
+
+    const close =
+      100 + index + (index % 2 === 0 ? 2 : -2);
+
+    closes.push(close);
+
+    insert.run(
+      "CRYPTO_BTC_USD",
+      observedAt,
+      observedAt,
+      close,
+      close,
+      close,
+      close,
+      1,
+      "a".repeat(64),
+    );
+  }
+
+  const response = await handleResearchApi(
+    new Request(
+      "https://founder.example.test/api/research/v1/instruments/CRYPTO_BTC_USD",
+    ),
+    env,
+    identity,
+  );
+
+  assert.equal(response.status, 200);
+
+  const dossier = await response.json() as {
+    instrument: {
+      status: string;
+      detail_code: string;
+      latest_interval: string;
+      latest_close: number;
+      latest_observed_at: string;
+    };
+    metrics: {
+      return_1d: number | null;
+      realized_volatility: number | null;
+    };
+  };
+
+  assert.equal(dossier.instrument.status, "OPERATIONAL");
+  assert.equal(
+    dossier.instrument.detail_code,
+    "COLLECTION_SUCCEEDED",
+  );
+  assert.equal(dossier.instrument.latest_interval, "HOUR");
+  assert.equal(
+    dossier.instrument.latest_close,
+    closes.at(-1),
+  );
+
+  assert.equal(
+    dossier.metrics.return_1d,
+    closes.at(-1)! / closes[0] - 1,
+  );
+
+  assert.ok(
+    dossier.metrics.realized_volatility !== null &&
+      dossier.metrics.realized_volatility > 0,
+  );
+});
+
 test("research API rejects unknown write fields and cross-origin requests", async () => {
   const db = new SqliteD1();
   const env = { DELTAGRID_SYSTEM_DB: db, DELTAGRID_RESEARCH_CSRF_KEY: "c".repeat(64) };

@@ -168,15 +168,49 @@ export async function getPriceBars(db: D1DatabaseLike, instrumentId: string, lim
   return (result.results ?? []).toReversed();
 }
 
+function metricAnnualizationPeriods(assetClass: unknown, interval: unknown): number {
+  const asset = String(assetClass);
+  const cadence = String(interval ?? "DAY");
+
+  if (cadence === "WEEK") return 52;
+
+  if (cadence === "HOUR") {
+    return asset === "CRYPTO" ? 365 * 24 : 252 * 6.5;
+  }
+
+  return asset === "CRYPTO" ? 365 : 252;
+}
+
 export async function getInstrumentDossier(db: D1DatabaseLike, instrumentId: string): Promise<Record<string, unknown> | null> {
   const instrument = await db.prepare(
-    `SELECT instrument_id, provider_id, symbol, display_name, asset_class, provider_symbol,
-      rights_classification FROM research_instruments
-     WHERE instrument_id = ? AND enabled = 1 AND asset_class IN ('CRYPTO', 'US_EQUITY', 'US_ETF')`,
+    `SELECT i.instrument_id, i.provider_id, i.symbol, i.display_name, i.asset_class,
+      i.provider_symbol, i.rights_classification,
+      COALESCE(s.status, 'PENDING') AS status,
+      COALESCE(s.detail_code, 'AWAITING_FIRST_COLLECTION') AS detail_code,
+      s.last_success_at,
+      (SELECT p.close FROM research_price_observations p
+        WHERE p.instrument_id = i.instrument_id
+        ORDER BY p.observed_at DESC LIMIT 1) AS latest_close,
+      (SELECT p.observed_at FROM research_price_observations p
+        WHERE p.instrument_id = i.instrument_id
+        ORDER BY p.observed_at DESC LIMIT 1) AS latest_observed_at,
+      (SELECT p.interval FROM research_price_observations p
+        WHERE p.instrument_id = i.instrument_id
+        ORDER BY p.observed_at DESC LIMIT 1) AS latest_interval
+     FROM research_instruments i
+     LEFT JOIN research_provider_state s
+       ON s.instrument_id = i.instrument_id
+      AND s.provider_id = i.provider_id
+     WHERE i.instrument_id = ?
+       AND i.enabled = 1
+       AND i.asset_class IN ('CRYPTO', 'US_EQUITY', 'US_ETF')`,
   ).bind(instrumentId).first<Record<string, unknown>>();
   if (!instrument) return null;
   const bars = await getPriceBars(db, instrumentId);
-  const annualization = instrument.asset_class === "CRYPTO" ? 365 : 252;
+  const annualization = metricAnnualizationPeriods(
+    instrument.asset_class,
+    instrument.latest_interval,
+  );
   const fundamentals = await db.prepare(
     `SELECT f.metric_key, f.period_end, f.filed_at, f.form, f.unit, f.value, f.available_at
      FROM research_fundamental_facts f JOIN research_instruments fi ON fi.instrument_id = f.instrument_id
