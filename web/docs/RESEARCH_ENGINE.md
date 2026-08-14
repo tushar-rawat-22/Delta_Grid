@@ -42,3 +42,17 @@ The five-minute UTC cron advances at most one due instrument per provider. A fai
 ## Non-authority statement
 
 All research-engine schema objects carry `NON_RAB1_RESEARCH_ONLY` and authority effect `NONE`. The engine has no brokerage, exchange credential, order, paper-trading, allocation, capital or self-authorization interface. Mission 104 remains not authorized.
+
+## Quant metric semantics
+
+Research return horizons are elapsed-time horizons, not observation-count
+shortcuts. A displayed 1D, 7D, or 30D return therefore requires an observation
+at or before the corresponding UTC cutoff from the latest observation.
+
+Realized volatility is annualized using the instrument cadence. Hourly crypto
+uses 365 × 24 periods per year, daily crypto uses 365, daily U.S. equities and
+ETFs use 252, and weekly series use 52.
+
+These calculations remain inside `NON_RAB1_RESEARCH_ONLY`. They do not create
+signals, recommendations, portfolio instructions, trading authority, or
+RAB-1 evidence.

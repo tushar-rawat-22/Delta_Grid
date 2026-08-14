@@ -7,17 +7,54 @@ import { coinbaseCandleWindow, fetchProviderPayload, parseAlphaDaily, parseProvi
 const identity = { subject: "founder-subject", email: "private@example.test", expiresAt: 1_900_000_000 };
 const securityEnv = { DELTAGRID_RESEARCH_CSRF_KEY: "s".repeat(64) };
 
-test("research metrics are deterministic and preserve missing-data honesty", () => {
-  const bars = [100, 110, 99, 121].map((close, index) => ({
+test("research metrics use elapsed-day horizons and interval-aware annualization", () => {
+  const dailyBars = [100, 110, 99, 121].map((close, index) => ({
     observed_at: new Date(Date.UTC(2026, 0, index + 1)).toISOString(),
     close,
   }));
-  const metrics = calculateMetrics(bars, 252);
-  assert.equal(metrics.latest, 121);
-  assert.equal(metrics.return_1d, 121 / 99 - 1);
-  assert.equal(metrics.maximum_drawdown, 99 / 110 - 1);
+
+  const daily = calculateMetrics(dailyBars, 252);
+
+  assert.equal(daily.latest, 121);
+  assert.equal(daily.return_1d, 121 / 99 - 1);
+  assert.equal(daily.maximum_drawdown, 99 / 110 - 1);
+
+  const hourlyBars = Array.from({ length: 25 }, (_, index) => ({
+    observed_at: new Date(Date.UTC(2026, 0, 1, index)).toISOString(),
+    close: 100 + index + (index % 2 === 0 ? 2 : -2),
+  }));
+
+  const incorrectlyDailyAnnualized = calculateMetrics(hourlyBars, 365);
+  const hourly = calculateMetrics(hourlyBars, 365 * 24);
+
+  assert.equal(
+    hourly.return_1d,
+    hourlyBars.at(-1)!.close / hourlyBars[0].close - 1,
+  );
+
+  assert.equal(
+    calculateMetrics(hourlyBars.slice(-8), 365 * 24).return_1d,
+    null,
+  );
+
+  assert.ok(incorrectlyDailyAnnualized.realized_volatility !== null);
+  assert.ok(hourly.realized_volatility !== null);
+
+  assert.ok(
+    Math.abs(
+      hourly.realized_volatility /
+        incorrectlyDailyAnnualized.realized_volatility -
+        Math.sqrt(24),
+    ) < 1e-12,
+  );
+
   assert.equal(calculateMetrics([]).latest, null);
-  assert.equal(calculateMetrics([{ observed_at: "bad", close: Number.NaN }]).realized_volatility, null);
+  assert.equal(
+    calculateMetrics([
+      { observed_at: "bad", close: Number.NaN },
+    ]).realized_volatility,
+    null,
+  );
 });
 
 test("comparison aligns timestamps and returns null for zero-variance statistics", () => {
