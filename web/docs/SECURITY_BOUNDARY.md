@@ -31,6 +31,7 @@ Compromise of the public observer must not provide a path to the founder Worker,
 - exact service JWT audience plus HMAC over method, path, timestamp, nonce and body hash;
 - durable nonce replay prevention;
 - outbound-only local agent, Keychain credentials and mode-0600 config;
+- reviewed local executor and provider-pilot source lives under `ops/founder-agent/`; runtime configuration, Keychain material, raw provider payloads and local receipts remain outside Git;
 - exact core commit and clean worktree required;
 - no remote parameters, shell, code, URL, path, environment or plugin;
 - detailed output remains local; only status and SHA-256 hashes are returned.
