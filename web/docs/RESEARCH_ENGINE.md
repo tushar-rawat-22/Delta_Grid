@@ -80,3 +80,30 @@ bootstrap. It introduces no provider request, database migration or write path.
 It remains `NON_RAB1_RESEARCH_ONLY` with authority effect `NONE` and creates no
 forecast, trade signal, recommendation, paper trade, order, position,
 allocation or RAB-1 evidence.
+
+## Founder hypothesis workbench
+
+The private workspace includes a pre-admission hypothesis workbench that
+connects deterministic Intelligence attention flags to founder-authored THESIS
+records.
+
+An Intelligence priority is an observation requiring attention; it is not
+itself a hypothesis. Choosing `Draft thesis` creates only an unsaved browser
+draft containing explicit sections for economic mechanism, falsification,
+chronology, test plan, candidate and parameter budget, implementation costs,
+multiple-testing family, decision rules, and review conditions.
+
+Nothing is persisted until the founder explicitly saves the record through the
+existing revisioned research-record API.
+
+Saved hypotheses reuse the existing `research_records` and append-only
+`research_record_revisions` mechanism. No new database or migration is
+introduced.
+
+Notebook statuses such as `DRAFT`, `ACTIVE`, and `WATCHING` are workflow labels
+only. They do not reserve Mission 94 trials, consume Mission 101 permits,
+invoke Mission 102 research execution, open Mission 103 protected evidence,
+authorize Mission 104, or grant paper, live, exchange, order, allocation, or
+capital authority.
+
+The workbench remains `NON_RAB1_RESEARCH_ONLY` with authority effect `NONE`.

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { createHypothesisSeed } from "./hypothesis-model.ts";
 
-type View = "cockpit" | "brief" | "markets" | "compare" | "macro" | "notebook" | "health";
+type View = "cockpit" | "brief" | "hypotheses" | "markets" | "compare" | "macro" | "notebook" | "health";
 type Instrument = {
   instrument_id: string;
   provider_id: string;
@@ -185,6 +186,7 @@ export type Comparison = {
 const NAV: Array<[View, string, string]> = [
   ["cockpit", "Cockpit", "⌂"],
   ["brief", "Intelligence", "◈"],
+  ["hypotheses", "Hypotheses", "◇"],
   ["markets", "Markets", "◫"],
   ["compare", "Compare", "⇄"],
   ["macro", "Macro", "◎"],
@@ -258,12 +260,322 @@ export function ResearchApp() {
         {error ? <div className="inline-alert">{error}</div> : null}
         {view === "cockpit" ? <Cockpit data={data} openInstrument={(id) => { setSelectedInstrument(id); setView("markets"); }} /> : null}
         {view === "brief" ? <IntelligencePage /> : null}
+        {view === "hypotheses" ? <HypothesisWorkbench data={data} refresh={load} /> : null}
         {view === "markets" ? <Markets data={data} selected={selectedInstrument} setSelected={setSelectedInstrument} refresh={load} /> : null}
         {view === "compare" ? <Compare data={data} /> : null}
         {view === "macro" ? <Macro data={data} /> : null}
         {view === "notebook" ? <Notebook data={data} refresh={load} /> : null}
         {view === "health" ? <DataHealth data={data} /> : null}
       </main>
+    </div>
+  );
+}
+
+function HypothesisWorkbench({
+  data,
+  refresh,
+}: {
+  data: Bootstrap;
+  refresh(): Promise<void>;
+}) {
+  const theses = useMemo(
+    () =>
+      data.records.filter(
+        (record) =>
+          record.record_type === "THESIS",
+      ),
+    [data.records],
+  );
+
+  const [brief, setBrief] =
+    useState<MarketIntelligenceBrief | null>(
+      null,
+    );
+
+  const [briefError, setBriefError] =
+    useState<string | null>(null);
+
+  const [loadingBrief, setLoadingBrief] =
+    useState(true);
+
+  const [editing, setEditing] =
+    useState<ResearchRecord | null>(null);
+
+  const loadCandidates = useCallback(
+    async () => {
+      setLoadingBrief(true);
+
+      try {
+        const result =
+          await api<{
+            brief: MarketIntelligenceBrief;
+          }>(
+            "/api/research/v1/brief",
+          );
+
+        setBrief(result.brief);
+        setBriefError(null);
+      } catch (cause) {
+        setBriefError(
+          cause instanceof Error
+            ? cause.message
+            : "Intelligence candidates unavailable",
+        );
+      } finally {
+        setLoadingBrief(false);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    let ignore = false;
+
+    void api<{
+      brief: MarketIntelligenceBrief;
+    }>(
+      "/api/research/v1/brief",
+    )
+      .then((result) => {
+        if (ignore) return;
+
+        setBrief(result.brief);
+        setBriefError(null);
+      })
+      .catch((cause: unknown) => {
+        if (ignore) return;
+
+        setBriefError(
+          cause instanceof Error
+            ? cause.message
+            : "Intelligence candidates unavailable",
+        );
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLoadingBrief(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  function draftFromPriority(
+    priority: BriefPriority,
+  ): void {
+    const seed =
+      createHypothesisSeed(priority);
+
+    setEditing({
+      ...emptyRecord(),
+      record_type:
+        seed.record_type,
+      instrument_id:
+        seed.instrument_id,
+      title:
+        seed.title,
+      body:
+        seed.body,
+      status:
+        seed.status,
+      confidence:
+        seed.confidence,
+      tags_json:
+        JSON.stringify(seed.tags),
+    });
+  }
+
+  const drafts = theses.filter(
+    (record) =>
+      record.status === "DRAFT",
+  ).length;
+
+  const active = theses.filter(
+    (record) =>
+      record.status === "ACTIVE",
+  ).length;
+
+  const watching = theses.filter(
+    (record) =>
+      record.status === "WATCHING",
+  ).length;
+
+  const revisionCount =
+    theses.reduce(
+      (total, record) =>
+        total + record.revision,
+      0,
+    );
+
+  return (
+    <div className="page-stack">
+      <section className="pulse-grid">
+        <Metric
+          label="Hypotheses"
+          value={String(theses.length)}
+          note="Revisioned THESIS records"
+        />
+
+        <Metric
+          label="Draft"
+          value={String(drafts)}
+          note="Not yet active"
+        />
+
+        <Metric
+          label="Active / watching"
+          value={`${active} / ${watching}`}
+          note="Notebook workflow only"
+        />
+
+        <Metric
+          label="Recorded revisions"
+          value={String(revisionCount)}
+          note="Research history retained"
+        />
+      </section>
+
+      <div className="two-column hypothesis-columns">
+        <section className="panel">
+          <PanelHead
+            eyebrow="Research memory"
+            title="Current hypotheses"
+            meta="Select to review or revise"
+          />
+
+          <RecordList
+            records={theses}
+            empty="No thesis records yet."
+            onSelect={setEditing}
+          />
+        </section>
+
+        <section className="panel">
+          <PanelHead
+            eyebrow="Observed conditions"
+            title="Candidate questions"
+            meta="Intelligence flags · not hypotheses"
+          />
+
+          {briefError ? (
+            <div className="inline-alert">
+              {briefError}
+            </div>
+          ) : null}
+
+          {loadingBrief && !brief ? (
+            <PanelSkeleton />
+          ) : null}
+
+          {brief?.priorities.length ? (
+            <div className="hypothesis-candidate-list">
+              {brief.priorities.map(
+                (priority) => (
+                  <article
+                    className="hypothesis-candidate"
+                    key={`${priority.kind}-${priority.instrument_id}`}
+                  >
+                    <div>
+                      <span>
+                        {priority.kind
+                          .replaceAll("_", " ")}
+                      </span>
+
+                      <strong>
+                        {priority.symbol}
+                      </strong>
+
+                      <p>
+                        {priority.metric
+                          .replaceAll("_", " ")}
+                      </p>
+                    </div>
+
+                    <div className="candidate-value">
+                      <b>
+                        {priority.value === null
+                          ? "—"
+                          : formatPercent(
+                              priority.value,
+                            )}
+                      </b>
+
+                      <small>
+                        {priority.latest_observed_at
+                          ? relativeTime(
+                              priority.latest_observed_at,
+                            )
+                          : "No observation"}
+                      </small>
+                    </div>
+
+                    <button
+                      className="primary-button"
+                      onClick={() =>
+                        draftFromPriority(
+                          priority,
+                        )
+                      }
+                    >
+                      Draft thesis
+                    </button>
+                  </article>
+                ),
+              )}
+            </div>
+          ) : !loadingBrief ? (
+            <Empty text="No deterministic intelligence candidates are currently available." />
+          ) : null}
+
+          <button
+            className="secondary-button"
+            disabled={loadingBrief}
+            onClick={() =>
+              void loadCandidates()
+            }
+          >
+            {loadingBrief
+              ? "Refreshing…"
+              : "Refresh candidates"}
+          </button>
+        </section>
+      </div>
+
+      <section className="panel hypothesis-editor">
+        <PanelHead
+          eyebrow="Pre-admission planning"
+          title={
+            editing
+              ? editing.record_id
+                ? "Review hypothesis"
+                : "Draft hypothesis"
+              : "Structured research plan"
+          }
+          meta="Saving creates a revisioned notebook record only"
+        />
+
+        {editing ? (
+          <RecordEditor
+            record={editing}
+            data={data}
+            saved={async () => {
+              setEditing(null);
+              await refresh();
+            }}
+          />
+        ) : (
+          <Empty text="Select an existing thesis or turn an Intelligence priority into a structured draft." />
+        )}
+      </section>
+
+      <p className="source-line">
+        Hypothesis status is a founder-notebook workflow state only.
+        ACTIVE does not reserve a trial, consume a permit, authorize
+        research execution, open protected data, authorize Mission 104,
+        create a signal, or grant trading authority.
+      </p>
     </div>
   );
 }
