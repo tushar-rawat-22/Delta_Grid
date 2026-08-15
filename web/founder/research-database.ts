@@ -1,5 +1,13 @@
 import type { D1DatabaseLike, D1ResultLike } from "./database.ts";
-import { calculateMetrics, type ResearchBar } from "./research-metrics.ts";
+import {
+  annualizationPeriods,
+  calculateMetrics,
+  type ResearchBar,
+} from "./research-metrics.ts";
+import {
+  buildMarketIntelligenceBrief,
+  type MarketIntelligenceBrief,
+} from "./research-intelligence.ts";
 
 export const RESEARCH_BOUNDARY = "NON_RAB1_RESEARCH_ONLY" as const;
 export const RESEARCH_AUTHORITY = "NONE" as const;
@@ -168,19 +176,6 @@ export async function getPriceBars(db: D1DatabaseLike, instrumentId: string, lim
   return (result.results ?? []).toReversed();
 }
 
-function metricAnnualizationPeriods(assetClass: unknown, interval: unknown): number {
-  const asset = String(assetClass);
-  const cadence = String(interval ?? "DAY");
-
-  if (cadence === "WEEK") return 52;
-
-  if (cadence === "HOUR") {
-    return asset === "CRYPTO" ? 365 * 24 : 252 * 6.5;
-  }
-
-  return asset === "CRYPTO" ? 365 : 252;
-}
-
 export async function getInstrumentDossier(db: D1DatabaseLike, instrumentId: string): Promise<Record<string, unknown> | null> {
   const instrument = await db.prepare(
     `SELECT i.instrument_id, i.provider_id, i.symbol, i.display_name, i.asset_class,
@@ -206,8 +201,13 @@ export async function getInstrumentDossier(db: D1DatabaseLike, instrumentId: str
        AND i.asset_class IN ('CRYPTO', 'US_EQUITY', 'US_ETF')`,
   ).bind(instrumentId).first<Record<string, unknown>>();
   if (!instrument) return null;
-  const bars = await getPriceBars(db, instrumentId);
-  const annualization = metricAnnualizationPeriods(
+  const bars = await getPriceBars(
+    db,
+    instrumentId,
+    1000,
+  );
+
+  const annualization = annualizationPeriods(
     instrument.asset_class,
     instrument.latest_interval,
   );
@@ -342,6 +342,46 @@ export async function listRecordRevisions(db: D1DatabaseLike, ownerId: string, r
   ).bind(recordId, ownerId).all<Record<string, unknown>>();
   if (!result.success) throw new Error("RESEARCH_RECORD_REVISION_LIST_FAILED");
   return result.results ?? [];
+}
+
+export async function getMarketIntelligenceBrief(
+  db: D1DatabaseLike,
+  generatedAt: string,
+): Promise<MarketIntelligenceBrief> {
+  const [instruments, macro] =
+    await Promise.all([
+      listResearchInstruments(db),
+      listMacro(db),
+    ]);
+
+  const entries =
+    await Promise.all(
+      instruments.map(
+        async (instrument) =>
+          [
+            instrument.instrument_id,
+            await getPriceBars(
+              db,
+              instrument.instrument_id,
+              1000,
+            ),
+          ] as const,
+      ),
+    );
+
+  const series =
+    Object.fromEntries(entries);
+
+  return buildMarketIntelligenceBrief({
+    instruments,
+    series,
+    macro,
+    generatedAt,
+    boundary:
+      RESEARCH_BOUNDARY,
+    authorityEffect:
+      RESEARCH_AUTHORITY,
+  });
 }
 
 export async function recentDashboard(db: D1DatabaseLike, ownerId: string): Promise<Record<string, unknown>> {

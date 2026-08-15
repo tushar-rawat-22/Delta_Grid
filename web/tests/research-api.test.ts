@@ -199,6 +199,64 @@ test("crypto dossier exposes live metadata and true 24-hour return semantics", a
   );
 });
 
+test("research API exposes the founder intelligence brief as a read-only endpoint", async () => {
+  const db = new SqliteD1();
+
+  const env = {
+    DELTAGRID_SYSTEM_DB: db,
+    DELTAGRID_RESEARCH_CSRF_KEY:
+      "c".repeat(64),
+  };
+
+  const response =
+    await handleResearchApi(
+      new Request(
+        "https://founder.example.test/api/research/v1/brief",
+      ),
+      env,
+      identity,
+    );
+
+  assert.equal(
+    response.status,
+    200,
+  );
+
+  const payload =
+    await response.json() as {
+      brief: {
+        boundary: string;
+        authority_effect: string;
+        coverage: {
+          market_total: number;
+        };
+        priorities: unknown[];
+      };
+    };
+
+  assert.equal(
+    payload.brief.boundary,
+    "NON_RAB1_RESEARCH_ONLY",
+  );
+
+  assert.equal(
+    payload.brief.authority_effect,
+    "NONE",
+  );
+
+  assert.equal(
+    payload.brief.coverage.market_total,
+    8,
+  );
+
+  assert.equal(
+    Array.isArray(
+      payload.brief.priorities,
+    ),
+    true,
+  );
+});
+
 test("research API rejects unknown write fields and cross-origin requests", async () => {
   const db = new SqliteD1();
   const env = { DELTAGRID_SYSTEM_DB: db, DELTAGRID_RESEARCH_CSRF_KEY: "c".repeat(64) };
