@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 
-type View = "cockpit" | "markets" | "compare" | "macro" | "notebook" | "health";
+type View = "cockpit" | "brief" | "markets" | "compare" | "macro" | "notebook" | "health";
 type Instrument = {
   instrument_id: string;
   provider_id: string;
@@ -60,6 +60,104 @@ type ProviderHealth = {
   quota_state: string;
   rights_classification: string;
 };
+type BriefMetrics = {
+  latest: number | null;
+  return_1d: number | null;
+  return_7d: number | null;
+  return_30d: number | null;
+  realized_volatility: number | null;
+  maximum_drawdown: number | null;
+  distance_from_high: number | null;
+  observation_count: number;
+  window: string;
+};
+
+type BriefMarket = Instrument & {
+  metrics: BriefMetrics;
+  risk_7d: {
+    realized_volatility: number | null;
+    maximum_drawdown: number | null;
+    observation_count: number;
+    window: string;
+  };
+  observation_age_hours: number | null;
+  collection_age_hours: number | null;
+};
+
+type BriefRelationship = {
+  label: string;
+  left_instrument_id: string;
+  right_instrument_id: string;
+  correlation: number | null;
+  beta_right_to_left: number | null;
+  overlap_count: number;
+  window_start: string | null;
+  window_end: string | null;
+};
+
+type BriefMacroChange = {
+  instrument_id: string;
+  symbol: string;
+  display_name: string;
+  provider_id: string;
+  latest_value: number | null;
+  previous_value: number | null;
+  change: number | null;
+  relative_change: number | null;
+  direction: string;
+  unit: string | null;
+  frequency: string | null;
+  observed_at: string | null;
+};
+
+type BriefPriority = {
+  kind: string;
+  instrument_id: string;
+  symbol: string;
+  metric: string;
+  value: number | null;
+  status: string;
+  detail_code: string;
+  latest_observed_at: string | null;
+  authority_effect: "NONE";
+};
+
+type MarketIntelligenceBrief = {
+  generated_at: string;
+  boundary: "NON_RAB1_RESEARCH_ONLY";
+  authority_effect: "NONE";
+  coverage: {
+    market_total: number;
+    market_operational: number;
+    return_1d_available: number;
+    return_7d_available: number;
+    return_30d_available: number;
+    risk_7d_available: number;
+  };
+  breadth: {
+    positive_1d: number;
+    negative_1d: number;
+    flat_1d: number;
+    unavailable_1d: number;
+    label: string;
+  };
+  movers: {
+    top_gainers: BriefMarket[];
+    top_decliners: BriefMarket[];
+  };
+  risk_pressure: {
+    horizon: string;
+    highest_volatility: BriefMarket | null;
+    deepest_drawdown: BriefMarket | null;
+  };
+  relationships: {
+    horizon: string;
+    pairs: BriefRelationship[];
+  };
+  macro_changes: BriefMacroChange[];
+  priorities: BriefPriority[];
+};
+
 export type Bootstrap = {
   instruments: Instrument[];
   watchlists: Watchlist[];
@@ -86,6 +184,7 @@ export type Comparison = {
 
 const NAV: Array<[View, string, string]> = [
   ["cockpit", "Cockpit", "⌂"],
+  ["brief", "Intelligence", "◈"],
   ["markets", "Markets", "◫"],
   ["compare", "Compare", "⇄"],
   ["macro", "Macro", "◎"],
@@ -158,12 +257,475 @@ export function ResearchApp() {
         </header>
         {error ? <div className="inline-alert">{error}</div> : null}
         {view === "cockpit" ? <Cockpit data={data} openInstrument={(id) => { setSelectedInstrument(id); setView("markets"); }} /> : null}
+        {view === "brief" ? <IntelligencePage /> : null}
         {view === "markets" ? <Markets data={data} selected={selectedInstrument} setSelected={setSelectedInstrument} refresh={load} /> : null}
         {view === "compare" ? <Compare data={data} /> : null}
         {view === "macro" ? <Macro data={data} /> : null}
         {view === "notebook" ? <Notebook data={data} refresh={load} /> : null}
         {view === "health" ? <DataHealth data={data} /> : null}
       </main>
+    </div>
+  );
+}
+
+function IntelligencePage() {
+  const [brief, setBrief] =
+    useState<MarketIntelligenceBrief | null>(null);
+
+  const [loadingBrief, setLoadingBrief] =
+    useState(true);
+
+  const [briefError, setBriefError] =
+    useState<string | null>(null);
+
+  const loadBrief = useCallback(
+    async () => {
+      setLoadingBrief(true);
+
+      try {
+        const result =
+          await api<{
+            brief: MarketIntelligenceBrief;
+          }>(
+            "/api/research/v1/brief",
+          );
+
+        setBrief(result.brief);
+        setBriefError(null);
+      } catch (cause) {
+        setBriefError(
+          cause instanceof Error
+            ? cause.message
+            : "Market intelligence unavailable",
+        );
+      } finally {
+        setLoadingBrief(false);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    let ignore = false;
+
+    void api<{
+      brief: MarketIntelligenceBrief;
+    }>(
+      "/api/research/v1/brief",
+    )
+      .then((result) => {
+        if (ignore) return;
+
+        setBrief(result.brief);
+        setBriefError(null);
+      })
+      .catch((cause: unknown) => {
+        if (ignore) return;
+
+        setBriefError(
+          cause instanceof Error
+            ? cause.message
+            : "Market intelligence unavailable",
+        );
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLoadingBrief(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  if (loadingBrief && !brief) {
+    return <PanelSkeleton />;
+  }
+
+  if (!brief) {
+    return (
+      <section className="panel">
+        <Empty
+          text={
+            briefError ??
+            "Market intelligence unavailable."
+          }
+        />
+      </section>
+    );
+  }
+
+  const movers = [
+    ...brief.movers.top_gainers.map(
+      (market) => ({
+        label: "Gainer",
+        market,
+      }),
+    ),
+    ...brief.movers.top_decliners.map(
+      (market) => ({
+        label: "Decliner",
+        market,
+      }),
+    ),
+  ];
+
+  const highestVol =
+    brief.risk_pressure
+      .highest_volatility;
+
+  const drawdown =
+    brief.risk_pressure
+      .deepest_drawdown;
+
+  return (
+    <div className="page-stack">
+      <div className="brief-toolbar">
+        <p>
+          Deterministic observations only ·
+          no forecasts or trading instructions
+        </p>
+
+        <button
+          className="primary-button"
+          onClick={() => void loadBrief()}
+          disabled={loadingBrief}
+        >
+          {loadingBrief
+            ? "Refreshing…"
+            : "Refresh brief"}
+        </button>
+      </div>
+
+      {briefError ? (
+        <div className="inline-alert">
+          {briefError}
+        </div>
+      ) : null}
+
+      <section className="pulse-grid">
+        <Metric
+          label="1D coverage"
+          value={`${brief.coverage.return_1d_available}/${brief.coverage.market_total}`}
+          note="True elapsed-day returns"
+        />
+
+        <Metric
+          label="30D coverage"
+          value={`${brief.coverage.return_30d_available}/${brief.coverage.market_total}`}
+          note="No observation-count shortcut"
+        />
+
+        <Metric
+          label="1D breadth"
+          value={`${brief.breadth.positive_1d} ↑ / ${brief.breadth.negative_1d} ↓`}
+          note={brief.breadth.label
+            .replaceAll("_", " ")
+            .toLowerCase()}
+        />
+
+        <Metric
+          label="Operational"
+          value={`${brief.coverage.market_operational}/${brief.coverage.market_total}`}
+          note="Price collection mappings"
+        />
+      </section>
+
+      <div className="two-column">
+        <section className="panel">
+          <PanelHead
+            eyebrow="Observed movement"
+            title="Largest 1D moves"
+            meta="Collected markets only"
+          />
+
+          {movers.length ? (
+            <div className="brief-list">
+              {movers.map(
+                ({ label, market }) => (
+                  <div
+                    className="brief-row"
+                    key={`${label}-${market.instrument_id}`}
+                  >
+                    <span>
+                      <small>{label}</small>
+                      <strong>
+                        {market.symbol}
+                      </strong>
+                    </span>
+
+                    <b
+                      className={
+                        (market.metrics
+                          .return_1d ?? 0) >= 0
+                          ? "positive"
+                          : "negative"
+                      }
+                    >
+                      {formatPercent(
+                        market.metrics
+                          .return_1d,
+                      )}
+                    </b>
+
+                    <span>
+                      <small>Observed</small>
+                      <strong>
+                        {market.latest_observed_at
+                          ? relativeTime(
+                              market.latest_observed_at,
+                            )
+                          : "Pending"}
+                      </strong>
+                    </span>
+                  </div>
+                ),
+              )}
+            </div>
+          ) : (
+            <Empty text="A complete 1D horizon has not been collected yet." />
+          )}
+        </section>
+
+        <section className="panel">
+          <PanelHead
+            eyebrow="Risk pressure"
+            title="Trailing 7-day risk"
+            meta="Full calendar horizon required"
+          />
+
+          <div className="brief-risk-grid">
+            <article>
+              <span>
+                Highest realized volatility
+              </span>
+
+              <strong>
+                {highestVol?.symbol ?? "—"}
+              </strong>
+
+              <b>
+                {formatPercent(
+                  highestVol?.risk_7d
+                    .realized_volatility ??
+                    null,
+                )}
+              </b>
+
+              <small>
+                Annualized from a complete
+                trailing seven-calendar-day
+                window.
+              </small>
+            </article>
+
+            <article>
+              <span>
+                Deepest drawdown
+              </span>
+
+              <strong>
+                {drawdown?.symbol ?? "—"}
+              </strong>
+
+              <b>
+                {formatPercent(
+                  drawdown?.risk_7d
+                    .maximum_drawdown ??
+                    null,
+                )}
+              </b>
+
+              <small>
+                Peak-to-trough inside the
+                same complete horizon.
+              </small>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <section className="panel">
+        <PanelHead
+          eyebrow="Cross-asset structure"
+          title="Relationships"
+          meta="Up to trailing 30 calendar days"
+        />
+
+        <div className="relationship-grid">
+          {brief.relationships.pairs.map(
+            (pair) => (
+              <article
+                className="relationship-card"
+                key={pair.label}
+              >
+                <span>{pair.label}</span>
+
+                <strong>
+                  {formatDecimal(
+                    pair.correlation,
+                  )}
+                </strong>
+
+                <p>Return correlation</p>
+
+                <footer>
+                  <span>
+                    β{" "}
+                    {formatDecimal(
+                      pair.beta_right_to_left,
+                    )}
+                  </span>
+
+                  <span>
+                    {pair.overlap_count}
+                    {" "}aligned
+                  </span>
+                </footer>
+              </article>
+            ),
+          )}
+        </div>
+
+        <p className="source-line">
+          Only exactly matching observation
+          timestamps are compared. Missing
+          points are not interpolated.
+        </p>
+      </section>
+
+      <section className="panel">
+        <PanelHead
+          eyebrow="Macro tape"
+          title="Latest macro deltas"
+          meta="Series-specific units"
+        />
+
+        {brief.macro_changes.length ? (
+          <div className="brief-macro-grid">
+            {brief.macro_changes
+              .slice(0, 4)
+              .map((item) => (
+                <article
+                  className="brief-macro-card"
+                  key={item.instrument_id}
+                >
+                  <span>
+                    {item.symbol}
+                  </span>
+
+                  <strong>
+                    {formatMacro(
+                      item.latest_value,
+                      item.unit,
+                    )}
+                  </strong>
+
+                  <b
+                    className={
+                      item.change === null
+                        ? "muted"
+                        : item.change >= 0
+                          ? "positive"
+                          : "negative"
+                    }
+                  >
+                    {item.change === null
+                      ? "No prior observation"
+                      : `${
+                          item.change >= 0
+                            ? "+"
+                            : ""
+                        }${formatMacro(
+                          item.change,
+                          item.unit,
+                        )}`}
+                  </b>
+
+                  <small>
+                    {item.observed_at
+                      ? item.observed_at
+                          .slice(0, 10)
+                      : "Pending"}
+                  </small>
+                </article>
+              ))}
+          </div>
+        ) : (
+          <Empty text="No macro observations are available." />
+        )}
+
+        <p className="source-line">
+          Macro series are not ranked against
+          one another because their units and
+          economic meanings differ.
+        </p>
+      </section>
+
+      <section className="panel">
+        <PanelHead
+          eyebrow="Founder attention"
+          title="Research priorities"
+          meta="Deterministic flags · not recommendations"
+        />
+
+        {brief.priorities.length ? (
+          <div className="priority-list">
+            {brief.priorities.map(
+              (priority) => (
+                <article
+                  className="priority-item"
+                  key={`${priority.kind}-${priority.instrument_id}`}
+                >
+                  <span>
+                    {priority.kind
+                      .replaceAll("_", " ")}
+                  </span>
+
+                  <strong>
+                    {priority.symbol}
+                  </strong>
+
+                  <p>
+                    {priority.value === null
+                      ? priority.detail_code
+                          .replaceAll(
+                            "_",
+                            " ",
+                          )
+                          .toLowerCase()
+                      : formatPercent(
+                          priority.value,
+                        )}
+                  </p>
+
+                  <small>
+                    {priority.metric
+                      .replaceAll("_", " ")}
+                  </small>
+                </article>
+              ),
+            )}
+          </div>
+        ) : (
+          <Empty text="No deterministic attention flag is currently available." />
+        )}
+      </section>
+
+      <p className="source-line">
+        Generated{" "}
+        {relativeTime(
+          brief.generated_at,
+        )}
+        {" · "}
+        {brief.boundary}
+        {" · authority "}
+        {brief.authority_effect}.
+        {" "}Observed research conditions only;
+        no signal, order, allocation or RAB-1
+        evidence is created.
+      </p>
     </div>
   );
 }

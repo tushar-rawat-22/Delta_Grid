@@ -56,3 +56,27 @@ ETFs use 252, and weekly series use 52.
 These calculations remain inside `NON_RAB1_RESEARCH_ONLY`. They do not create
 signals, recommendations, portfolio instructions, trading authority, or
 RAB-1 evidence.
+
+## Founder market intelligence brief
+
+The private research workspace exposes an on-demand deterministic market
+intelligence brief derived only from observations already stored by the
+research engine.
+
+The brief reports true elapsed 1D, 7D and 30D return coverage, one-day breadth
+and observed movers, complete trailing seven-calendar-day volatility and
+drawdown, selected cross-asset relationships using only exactly aligned
+timestamps from up to 30 calendar days, latest series-specific macro changes,
+and deterministic founder-attention flags.
+
+Seven-day risk metrics fail closed until the complete calendar horizon exists.
+Cross-asset relationships may use shorter available history, but publish the
+actual overlap count and never interpolate missing timestamps. Macro series
+with incompatible units are not ranked against one another.
+
+The brief is loaded on demand rather than being added to the normal workspace
+bootstrap. It introduces no provider request, database migration or write path.
+
+It remains `NON_RAB1_RESEARCH_ONLY` with authority effect `NONE` and creates no
+forecast, trade signal, recommendation, paper trade, order, position,
+allocation or RAB-1 evidence.

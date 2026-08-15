@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { calculateMetrics, compareSeries } from "../founder/research-metrics.ts";
+import {
+  annualizationPeriods,
+  calculateMetrics,
+  calendarWindow,
+  compareSeries,
+} from "../founder/research-metrics.ts";
+import {
+  buildMarketIntelligenceBrief,
+} from "../founder/research-intelligence.ts";
 import { founderOwnerId, issueResearchCsrf, verifyResearchCsrf, verifySameOrigin } from "../founder/research-security.ts";
 import { coinbaseCandleWindow, fetchProviderPayload, parseAlphaDaily, parseProviderJson, providerRetrySeconds, readBoundedText } from "../founder/research-providers.ts";
 
@@ -54,6 +62,220 @@ test("research metrics use elapsed-day horizons and interval-aware annualization
       { observed_at: "bad", close: Number.NaN },
     ]).realized_volatility,
     null,
+  );
+});
+
+test("calendar risk windows fail closed without the full declared horizon", () => {
+  const short = Array.from(
+    { length: 3 },
+    (_, index) => ({
+      observed_at: new Date(
+        Date.UTC(2026, 0, index + 1),
+      ).toISOString(),
+      close: 100 + index,
+    }),
+  );
+
+  assert.deepEqual(
+    calendarWindow(short, 7, true),
+    [],
+  );
+
+  const full = Array.from(
+    { length: 8 },
+    (_, index) => ({
+      observed_at: new Date(
+        Date.UTC(2026, 0, index + 1),
+      ).toISOString(),
+      close: 100 + index,
+    }),
+  );
+
+  assert.equal(
+    calendarWindow(full, 7, true)
+      .length,
+    8,
+  );
+
+  assert.equal(
+    annualizationPeriods(
+      "CRYPTO",
+      "HOUR",
+    ),
+    365 * 24,
+  );
+});
+
+test("founder intelligence derives observed conditions without recommendation fields", () => {
+  const latest =
+    "2026-08-14T00:00:00.000Z";
+
+  const instruments = [
+    {
+      instrument_id:
+        "CRYPTO_BTC_USD",
+      provider_id:
+        "COINBASE_EXCHANGE",
+      symbol:
+        "BTC",
+      display_name:
+        "Bitcoin",
+      asset_class:
+        "CRYPTO",
+      status:
+        "OPERATIONAL",
+      detail_code:
+        "COLLECTION_SUCCEEDED",
+      last_success_at:
+        latest,
+      latest_close:
+        130,
+      latest_observed_at:
+        latest,
+      latest_interval:
+        "DAY",
+    },
+    {
+      instrument_id:
+        "CRYPTO_ETH_USD",
+      provider_id:
+        "COINBASE_EXCHANGE",
+      symbol:
+        "ETH",
+      display_name:
+        "Ethereum",
+      asset_class:
+        "CRYPTO",
+      status:
+        "OPERATIONAL",
+      detail_code:
+        "COLLECTION_SUCCEEDED",
+      last_success_at:
+        latest,
+      latest_close:
+        170,
+      latest_observed_at:
+        latest,
+      latest_interval:
+        "DAY",
+    },
+  ];
+
+  const btc = Array.from(
+    { length: 31 },
+    (_, index) => ({
+      observed_at: new Date(
+        Date.UTC(
+          2026,
+          6,
+          15 + index,
+        ),
+      ).toISOString(),
+      close: 100 + index,
+    }),
+  );
+
+  const eth = Array.from(
+    { length: 31 },
+    (_, index) => ({
+      observed_at: new Date(
+        Date.UTC(
+          2026,
+          6,
+          15 + index,
+        ),
+      ).toISOString(),
+      close: 200 - index,
+    }),
+  );
+
+  const brief =
+    buildMarketIntelligenceBrief({
+      instruments,
+      series: {
+        CRYPTO_BTC_USD: btc,
+        CRYPTO_ETH_USD: eth,
+      },
+      macro: [],
+      generatedAt:
+        latest,
+      boundary:
+        "NON_RAB1_RESEARCH_ONLY",
+      authorityEffect:
+        "NONE",
+    });
+
+  assert.equal(
+    brief.boundary,
+    "NON_RAB1_RESEARCH_ONLY",
+  );
+
+  assert.equal(
+    brief.authority_effect,
+    "NONE",
+  );
+
+  assert.equal(
+    brief.coverage.return_1d_available,
+    2,
+  );
+
+  assert.equal(
+    brief.coverage.return_30d_available,
+    2,
+  );
+
+  assert.equal(
+    brief.coverage.risk_7d_available,
+    2,
+  );
+
+  assert.equal(
+    brief.breadth.positive_1d,
+    1,
+  );
+
+  assert.equal(
+    brief.breadth.negative_1d,
+    1,
+  );
+
+  assert.equal(
+    brief.movers.top_gainers[0]
+      ?.symbol,
+    "BTC",
+  );
+
+  assert.equal(
+    brief.movers.top_decliners[0]
+      ?.symbol,
+    "ETH",
+  );
+
+  const btcEth =
+    brief.relationships.pairs.find(
+      (pair) =>
+        pair.label === "BTC / ETH",
+    );
+
+  assert.equal(
+    btcEth?.overlap_count,
+    31,
+  );
+
+  assert.equal(
+    "recommendation" in brief,
+    false,
+  );
+
+  assert.equal(
+    "signal" in brief,
+    false,
+  );
+
+  assert.equal(
+    "position" in brief,
+    false,
   );
 });
 

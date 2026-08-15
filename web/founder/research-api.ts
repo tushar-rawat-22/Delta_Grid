@@ -5,6 +5,7 @@ import {
   createWatchlist,
   ensureDefaultWatchlist,
   getInstrumentDossier,
+  getMarketIntelligenceBrief,
   getPriceBars,
   listMacro,
   listProviderHealth,
@@ -77,6 +78,11 @@ export async function handleResearchApi(
     if (request.method === "GET" && path === "/markets") return apiJson({ instruments: await listResearchInstruments(db), generated_at: now });
     if (request.method === "GET" && path === "/macro") return apiJson({ macro: await listMacro(db), generated_at: now });
     if (request.method === "GET" && path === "/health") return apiJson({ providers: await listProviderHealth(db), generated_at: now });
+    if (request.method === "GET" && path === "/brief") {
+      return apiJson({
+        brief: await getMarketIntelligenceBrief(db, now),
+      });
+    }
     if (request.method === "GET" && path === "/watchlists") return apiJson({ watchlists: await listWatchlists(db, ownerId) });
     if (request.method === "POST" && path === "/watchlists") {
       const body = await exactJsonBody(request);

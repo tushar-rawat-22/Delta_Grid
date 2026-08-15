@@ -20,6 +20,81 @@ export type ComparisonPoint = {
   normalized: Record<string, number>;
 };
 
+export function annualizationPeriods(
+  assetClass: unknown,
+  interval: unknown,
+): number {
+  const asset = String(assetClass);
+  const cadence = String(interval ?? "DAY");
+
+  if (cadence === "WEEK") return 52;
+
+  if (cadence === "HOUR") {
+    return asset === "CRYPTO"
+      ? 365 * 24
+      : 252 * 6.5;
+  }
+
+  return asset === "CRYPTO" ? 365 : 252;
+}
+
+export function calendarWindow(
+  bars: ResearchBar[],
+  days: number,
+  requireFullHorizon = false,
+): ResearchBar[] {
+  if (!Number.isFinite(days) || days <= 0) {
+    return [];
+  }
+
+  const clean = bars
+    .filter(
+      (bar) =>
+        Number.isFinite(bar.close) &&
+        bar.close > 0 &&
+        !Number.isNaN(
+          Date.parse(bar.observed_at),
+        ),
+    )
+    .toSorted((left, right) =>
+      left.observed_at.localeCompare(
+        right.observed_at,
+      ),
+    );
+
+  const latest = clean.at(-1);
+  if (!latest) return [];
+
+  const cutoff =
+    Date.parse(latest.observed_at) -
+    days * 86_400_000;
+
+  let anchorIndex = -1;
+
+  for (
+    let index = 0;
+    index < clean.length;
+    index += 1
+  ) {
+    if (
+      Date.parse(clean[index].observed_at) <=
+      cutoff
+    ) {
+      anchorIndex = index;
+    } else {
+      break;
+    }
+  }
+
+  if (anchorIndex >= 0) {
+    return clean.slice(anchorIndex);
+  }
+
+  return requireFullHorizon
+    ? []
+    : clean;
+}
+
 export function calculateMetrics(bars: ResearchBar[], annualization = 252): ResearchMetrics {
   const clean = bars
     .filter((bar) => Number.isFinite(bar.close) && bar.close > 0 && !Number.isNaN(Date.parse(bar.observed_at)))
