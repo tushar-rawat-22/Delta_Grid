@@ -19,12 +19,14 @@ const dataContract = [
 ] as const;
 
 const features = [
-  ["Cockpit", "Watchlist prices, collection freshness, open research tasks, catalysts, and recent revisions."],
-  ["Asset dossier", "Timestamped price history, returns, realized volatility, drawdown, and SEC facts where available."],
-  ["Compare", "Aligned normalized performance, correlation, beta, volatility, and drawdown for up to four instruments."],
-  ["Macro", "Inflation, employment, rates, yields, spreads, GDP, dollar index, and federal debt with release context."],
-  ["Notebook", "Founder-authored notes, theses, evidence, journals, catalysts, risks, and tasks with revision history."],
-  ["Data health", "Per-instrument provider status, latest success, next collection, quota state, rights, and error code."],
+  ["Cockpit", "Watchlist, collection freshness, research tasks, catalysts, and recent revisions."],
+  ["Intelligence", "Breadth, risk pressure, relationships, macro changes, and candidate research questions."],
+  ["Hypotheses", "Structured thesis records, falsification logic, finite budgets, and preregistration handoff."],
+  ["Markets", "Timestamped histories, deterministic metrics, risk summaries, and asset-dossier context."],
+  ["Compare", "Aligned normalized performance, correlation, beta, volatility, and drawdown across instruments."],
+  ["Macro", "Inflation, employment, rates, yields, spreads, GDP, dollar index, and federal debt context."],
+  ["Notebook", "Notes, theses, evidence, journals, catalysts, risks, and tasks with revision history."],
+  ["Data health", "Provider status, latest success, collection cadence, quota state, rights, and explicit errors."],
 ] as const;
 
 const snapshots = [
@@ -42,8 +44,8 @@ export function ResearchLanding() {
           <h1>A public view of a private research system.</h1>
           <p className="lede">Explore the product, research scope, architecture, evidence model, and sanitized interface publicly. Founder login unlocks the live private workspace, revisioned research records, and authenticated controls.</p>
           <div className="landing-actions">
-            <a className="founder-login" href={FOUNDER_RESEARCH_URL}><span>Founder only</span>Log in <b>↗</b></a>
-            <Link className="text-link" href="/system">Public system status</Link>
+            <Link className="founder-login" href="/research"><span>Public demo</span>Explore Demo Mode <b>→</b></Link>
+            <a className="text-link" href={FOUNDER_RESEARCH_URL}>Founder Log in ↗</a>
           </div>
           <p className="landing-disclaimer">Research only. No brokerage connection, orders, paper trading, capital, or execution authority.</p>
         </div>
@@ -65,8 +67,9 @@ export function ResearchLanding() {
       </section>
 
       <section className="landing-section compact-section">
-        <div className="section-heading"><p className="eyebrow">Workspace</p><h2>Six working views. Publicly observable, privately backed.</h2><p>The public product shows the shape and purpose of each workspace without exposing founder records or authenticated API state.</p></div>
+        <div className="section-heading"><p className="eyebrow">Workspace</p><h2>Eight working views. Publicly explorable, privately backed.</h2><p>Demo Mode mirrors the real workspace concepts with deterministic sanitized fixtures. Founder records and authenticated API state never enter the public build.</p></div>
         <div className="feature-grid">{features.map(([title, body], index) => <article key={title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{body}</p></article>)}</div>
+        <div className="landing-actions"><Link className="text-link" href="/research">Explore all eight views →</Link></div>
       </section>
 
       <section className="landing-section snapshot-section compact-section">
