@@ -22,6 +22,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "test": "node --test tests/*.test.ts",
+    "inspect:prereg-handoff": "node scripts/inspect-preregistration-handoff.mjs",
     "verify:deps": "node scripts/verify-dependencies.mjs",
     "verify:source": "node scripts/verify-source-boundary.mjs",
     "verify:public-deploy": "node scripts/verify-public-deploy.mjs",
