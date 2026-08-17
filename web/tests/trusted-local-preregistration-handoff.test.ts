@@ -13,6 +13,7 @@ import {
   compilePreregistrationHandoffManifest,
   PREREGISTRATION_HANDOFF_SCHEMA,
 } from "../research-app/src/preregistration-handoff-model.ts";
+// @ts-expect-error -- the trusted-local verifier is intentionally an unbundled Node .mjs tool.
 import { inspectPreregistrationHandoffFile } from "../scripts/inspect-preregistration-handoff.mjs";
 
 function completeBody(): string {
