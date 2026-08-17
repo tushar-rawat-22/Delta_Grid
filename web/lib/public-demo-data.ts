@@ -1,0 +1,114 @@
+export type DemoView =
+  | "cockpit"
+  | "intelligence"
+  | "hypotheses"
+  | "markets"
+  | "compare"
+  | "macro"
+  | "notebook"
+  | "health";
+
+export const PUBLIC_DEMO_IDENTITY = {
+  mode: "DEMO_MODE",
+  provenance: "DEMO_FIXTURE",
+  boundary: "PUBLIC_SANITIZED_RESEARCH_DEMO",
+  authority_effect: "NONE",
+  generated_label: "Deterministic fixture set · v1",
+} as const;
+
+export const DEMO_NAV: ReadonlyArray<{ id: DemoView; label: string; glyph: string }> = [
+  { id: "cockpit", label: "Cockpit", glyph: "⌂" },
+  { id: "intelligence", label: "Intelligence", glyph: "◈" },
+  { id: "hypotheses", label: "Hypotheses", glyph: "◇" },
+  { id: "markets", label: "Markets", glyph: "◫" },
+  { id: "compare", label: "Compare", glyph: "⇄" },
+  { id: "macro", label: "Macro", glyph: "◎" },
+  { id: "notebook", label: "Notebook", glyph: "✎" },
+  { id: "health", label: "Data health", glyph: "◆" },
+] as const;
+
+export const demoWatchlist = [
+  { symbol: "SYN-A", name: "Synthetic Growth Basket", index: 104.8, change: 1.6, state: "observed" },
+  { symbol: "SYN-B", name: "Synthetic Defensive Basket", index: 98.7, change: -0.4, state: "observed" },
+  { symbol: "SYN-C", name: "Synthetic Digital Basket", index: 111.2, change: 2.1, state: "observed" },
+  { symbol: "SYN-D", name: "Synthetic Rates Basket", index: 101.5, change: 0.2, state: "observed" },
+] as const;
+
+export const demoTasks = [
+  { title: "Review chronology assumption", type: "THESIS", status: "OPEN", due: "Demo queue" },
+  { title: "Recheck transaction-cost sensitivity", type: "EVIDENCE", status: "OPEN", due: "Demo queue" },
+  { title: "Document falsification boundary", type: "NOTE", status: "WATCHING", due: "Demo queue" },
+] as const;
+
+export const demoIntelligence = {
+  breadth: { positive: 5, negative: 2, flat: 1, unavailable: 0 },
+  risk: [
+    { label: "Highest demo volatility", value: "SYN-C", note: "7-observation normalized window" },
+    { label: "Deepest demo drawdown", value: "SYN-B", note: "-3.8% from fixture high" },
+  ],
+  priorities: [
+    { kind: "VOLATILITY_REGIME", symbol: "SYN-C", metric: "7-observation volatility", value: "+18.4%", status: "QUESTION_ONLY" },
+    { kind: "RELATIVE_WEAKNESS", symbol: "SYN-B", metric: "fixture drawdown", value: "-3.8%", status: "QUESTION_ONLY" },
+  ],
+} as const;
+
+export const demoHypotheses = [
+  {
+    id: "DEMO-HYP-001",
+    title: "Synthetic volatility compression after a dispersion shock",
+    status: "DRAFT",
+    revision: 3,
+    mechanism: "A deliberately fictional mechanism used only to demonstrate the structured research workflow.",
+    falsification: "Reject when the preregistered normalized spread fails to mean-revert inside the fixed demo horizon.",
+    budget: "6 finite demo variants",
+    bindings: "Dataset, permit, execution identity and statistical programme intentionally unresolved in Demo Mode.",
+  },
+  {
+    id: "DEMO-HYP-002",
+    title: "Synthetic cross-basket lead-lag persistence",
+    status: "WATCHING",
+    revision: 2,
+    mechanism: "Illustrates how an observation can remain a question instead of becoming a trading signal.",
+    falsification: "Reject when the relationship loses timestamp-aligned stability across the declared fixture windows.",
+    budget: "4 finite demo variants",
+    bindings: "No trial reservation, permit consumption, protected opening or execution side effect.",
+  },
+] as const;
+
+export const demoMarketSeries = [
+  { t: "T-6", a: 100.0, b: 100.0, c: 100.0 },
+  { t: "T-5", a: 100.8, b: 99.6, c: 101.4 },
+  { t: "T-4", a: 101.9, b: 99.2, c: 103.0 },
+  { t: "T-3", a: 101.5, b: 98.8, c: 105.6 },
+  { t: "T-2", a: 103.1, b: 99.0, c: 107.2 },
+  { t: "T-1", a: 103.5, b: 98.4, c: 109.5 },
+  { t: "T0", a: 104.8, b: 98.7, c: 111.2 },
+] as const;
+
+export const demoMacro = [
+  { series: "Synthetic inflation pressure", latest: 102.4, previous: 102.1, unit: "normalized index", direction: "up" },
+  { series: "Synthetic employment pressure", latest: 99.3, previous: 99.5, unit: "normalized index", direction: "down" },
+  { series: "Synthetic policy pressure", latest: 101.0, previous: 101.0, unit: "normalized index", direction: "flat" },
+  { series: "Synthetic liquidity pressure", latest: 103.2, previous: 102.7, unit: "normalized index", direction: "up" },
+] as const;
+
+export const demoNotebook = [
+  { type: "THESIS", title: "Synthetic volatility compression", status: "DRAFT", revision: 3, updated: "Fixture revision 03" },
+  { type: "EVIDENCE", title: "Chronology check example", status: "ACTIVE", revision: 2, updated: "Fixture revision 02" },
+  { type: "RISK", title: "Cost sensitivity remains unresolved", status: "WATCHING", revision: 4, updated: "Fixture revision 04" },
+  { type: "TASK", title: "Review preregistration handoff", status: "OPEN", revision: 1, updated: "Fixture revision 01" },
+] as const;
+
+export const demoHealth = [
+  { provider: "Public crypto source", scope: "Synthetic digital mapping", status: "HEALTHY", freshness: "fixture current", rights: "DEMO_ONLY" },
+  { provider: "Public equity source", scope: "Synthetic equity mapping", status: "HEALTHY", freshness: "fixture current", rights: "DEMO_ONLY" },
+  { provider: "Public macro source", scope: "Synthetic macro mapping", status: "HEALTHY", freshness: "fixture current", rights: "DEMO_ONLY" },
+  { provider: "Public company facts", scope: "Synthetic company mapping", status: "DEGRADED", freshness: "fixture delayed", rights: "DEMO_ONLY" },
+] as const;
+
+export function assertPublicDemoInvariants(): void {
+  if (PUBLIC_DEMO_IDENTITY.mode !== "DEMO_MODE") throw new Error("PUBLIC_DEMO_MODE_INVALID");
+  if (PUBLIC_DEMO_IDENTITY.provenance !== "DEMO_FIXTURE") throw new Error("PUBLIC_DEMO_PROVENANCE_INVALID");
+  if (PUBLIC_DEMO_IDENTITY.authority_effect !== "NONE") throw new Error("PUBLIC_DEMO_AUTHORITY_INVALID");
+  if (DEMO_NAV.length !== 8) throw new Error("PUBLIC_DEMO_NAV_INVALID");
+}
