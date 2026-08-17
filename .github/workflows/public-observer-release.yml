@@ -67,6 +67,10 @@ jobs:
         working-directory: web
         run: npm run install:locked-safe
 
+      - name: Audit release dependency graph
+        working-directory: web
+        run: npm audit --audit-level=low
+
       - name: Run complete web and founder release gate
         working-directory: web
         run: npm run check
