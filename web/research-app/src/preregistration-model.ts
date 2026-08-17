@@ -6,6 +6,9 @@ export const PREREGISTRATION_BOUNDARY =
 
 export const PREREGISTRATION_AUTHORITY = "NONE" as const;
 
+export const PREREGISTRATION_TERMINAL_HEADING =
+  "PREREGISTRATION HANDOFF" as const;
+
 export const PREREGISTRATION_HEADINGS = [
   "OBSERVATION",
   "ECONOMIC MECHANISM",
@@ -70,7 +73,7 @@ export type PreregistrationReviewCore = {
 };
 
 export type PreregistrationReview = PreregistrationReviewCore & {
-  scientific_lock_ready: boolean;
+  structural_lock_ready: boolean;
   blocking_reasons: string[];
   canonical_review_json: string;
   canonical_review_hash_sha256: string;
@@ -116,7 +119,7 @@ export async function compilePreregistrationReview(
   const digest = await sha256Hex(canonical);
   return {
     ...core,
-    scientific_lock_ready: blockingReasons.length === 0,
+    structural_lock_ready: blockingReasons.length === 0,
     blocking_reasons: blockingReasons,
     canonical_review_json: canonical,
     canonical_review_hash_sha256: digest,
@@ -131,11 +134,7 @@ export function parseScientificProtocol(body: string): Record<Heading, string> {
 
   const positions = PREREGISTRATION_HEADINGS.map((heading) => ({
     heading,
-    index: body.indexOf(`\n${heading}\n`) >= 0
-      ? body.indexOf(`\n${heading}\n`) + 1
-      : body.startsWith(`${heading}\n`)
-        ? 0
-        : -1,
+    index: sectionIndex(body, heading),
   }));
 
   if (positions.some(({ index }) => index < 0)) {
@@ -148,13 +147,23 @@ export function parseScientificProtocol(body: string): Record<Heading, string> {
     }
   }
 
+  const terminalIndex = sectionIndex(body, PREREGISTRATION_TERMINAL_HEADING);
+  if (
+    terminalIndex >= 0 &&
+    terminalIndex <= positions[positions.length - 1].index
+  ) {
+    throw new Error("PREREGISTRATION_SECTION_ORDER_INVALID");
+  }
+
   const result = {} as Record<Heading, string>;
   for (let index = 0; index < positions.length; index += 1) {
     const current = positions[index];
     const contentStart = current.index + current.heading.length + 1;
     const contentEnd = index + 1 < positions.length
       ? positions[index + 1].index - 1
-      : body.length;
+      : terminalIndex >= 0
+        ? terminalIndex - 1
+        : body.length;
     result[current.heading] = body.slice(contentStart, contentEnd).trim();
   }
   return result;
@@ -201,6 +210,13 @@ function readinessReasons(protocol: Record<Heading, string>): string[] {
     }
   }
   return reasons;
+}
+
+function sectionIndex(body: string, heading: string): number {
+  if (body.startsWith(`${heading}\n`)) return 0;
+  const marker = `\n${heading}\n`;
+  const index = body.indexOf(marker);
+  return index >= 0 ? index + 1 : -1;
 }
 
 function unresolved(owner: CanonicalBindingOwner): CanonicalBinding {
