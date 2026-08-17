@@ -65,6 +65,26 @@ for (const marker of [
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
 }
 
+const researchHtml = fs.readFileSync(routeFile("research"), "utf8");
+for (const marker of [
+  "DEMO MODE",
+  "SANITIZED FIXTURES",
+  "NOT LIVE",
+  "NO WRITES",
+  "Log in for Founder Mode",
+  "Cockpit",
+  "Intelligence",
+  "Hypotheses",
+  "Markets",
+  "Compare",
+  "Macro",
+  "Notebook",
+  "Data health",
+  "AUTHORITY NONE",
+]) {
+  if (!researchHtml.includes(marker)) throw new Error(`PUBLIC_DEMO_OUTPUT_MISSING:${marker}`);
+}
+
 const headers = fs.readFileSync(path.join(root, "_headers"), "utf8");
 for (const required of [
   "Content-Security-Policy:", "X-Content-Type-Options: nosniff", "X-Frame-Options: DENY",
@@ -73,11 +93,18 @@ for (const required of [
   if (!headers.includes(required)) throw new Error(`HEADER_POLICY_MISSING:${required}`);
 }
 
+const robots = fs.readFileSync(path.join(root, "robots.txt"), "utf8");
+if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || robots.includes("Disallow: /")) {
+  throw new Error("PUBLIC_ROBOTS_POLICY_INVALID");
+}
+
 console.log("STATIC_OUTPUT_INSPECTION=PASS");
 console.log("P1_3_VERIFIED_PROJECTION_RENDER=PASS");
 console.log("PUBLIC_ROUTE_COUNT=9");
 console.log("PUBLIC_SANITIZED_PRODUCT_SNAPSHOTS=PASS");
 console.log("PUBLIC_FOUNDER_LOGIN_RENDER=PASS");
+console.log("PUBLIC_RESEARCH_DEMO_RENDER=PASS");
+console.log("PUBLIC_CRAWL_POLICY=PASS");
 
 function allFiles(current) {
   const output = [];
