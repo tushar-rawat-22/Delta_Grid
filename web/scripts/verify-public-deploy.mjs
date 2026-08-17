@@ -48,7 +48,39 @@ if (Object.hasOwn(assets, "binding") || Object.hasOwn(assets, "run_worker_first"
   throw new Error("PUBLIC_ASSET_BINDING_FORBIDDEN");
 }
 
+const headers = fs.readFileSync("public/_headers", "utf8");
+const globalHeaders = headers.split(/\n\s*\n/u, 1)[0];
+const requiredSecurityHeaders = [
+  "X-Content-Type-Options: nosniff",
+  "X-Frame-Options: DENY",
+  "Referrer-Policy: no-referrer",
+  "Permissions-Policy:",
+  "Cross-Origin-Opener-Policy: same-origin",
+  "Cross-Origin-Resource-Policy: same-origin",
+  "Content-Security-Policy:",
+];
+
+for (const header of requiredSecurityHeaders) {
+  if (!globalHeaders.includes(header)) {
+    throw new Error(`PUBLIC_SECURITY_HEADER_MISSING:${header.split(":", 1)[0]}`);
+  }
+}
+
+if (/X-Robots-Tag:/iu.test(globalHeaders)) {
+  throw new Error("PUBLIC_GLOBAL_NOINDEX_FORBIDDEN");
+}
+
+const bootstrapNoindex = [
+  "https://deltagrid-observer.tushar142004.workers.dev/*",
+  "  X-Robots-Tag: noindex, nofollow",
+].join("\n");
+if (!headers.includes(bootstrapNoindex)) {
+  throw new Error("PUBLIC_BOOTSTRAP_NOINDEX_MISSING");
+}
+
 console.log("PUBLIC_DEPLOY_CONFIG=PASS");
 console.log("PUBLIC_WORKER=deltagrid-observer");
 console.log("PUBLIC_RUNTIME=STATIC_ASSETS_ONLY");
 console.log("PUBLIC_STATEFUL_BINDINGS=0");
+console.log("PUBLIC_SECURITY_HEADERS=PASS");
+console.log("PUBLIC_BOOTSTRAP_INDEXING=NOINDEX_ONLY_ON_WORKERS_DEV");
