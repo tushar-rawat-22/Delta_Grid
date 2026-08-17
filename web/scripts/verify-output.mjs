@@ -42,6 +42,13 @@ for (const file of allFiles(root)) {
   if (file.endsWith(".css") && externalCss.test(text)) throw new Error(`EXTERNAL_CSS_ASSET:${file}`);
 }
 
+for (const route of routes) {
+  const html = fs.readFileSync(routeFile(route), "utf8");
+  for (const marker of ["Public demo", "Open Demo", "Founder Log in", "Demo Mode", "Sanitized fixtures · no writes"]) {
+    if (!html.includes(marker)) throw new Error(`PUBLIC_SHELL_OUTPUT_MISSING:${marker}:/${route}`);
+  }
+}
+
 const evidenceHtml = fs.readFileSync(routeFile("evidence"), "utf8");
 for (const marker of [
   "Verified projection",
@@ -108,6 +115,7 @@ console.log("PUBLIC_SANITIZED_PRODUCT_SNAPSHOTS=PASS");
 console.log("PUBLIC_FOUNDER_LOGIN_RENDER=PASS");
 console.log("PUBLIC_RESEARCH_DEMO_RENDER=PASS");
 console.log("PUBLIC_DEMO_PRIMARY_ENTRY=PASS");
+console.log("PUBLIC_UNIFIED_SHELL_RENDER=PASS");
 console.log("PUBLIC_CRAWL_POLICY=PASS");
 
 function allFiles(current) {
