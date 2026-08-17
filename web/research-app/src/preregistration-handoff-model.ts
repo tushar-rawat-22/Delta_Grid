@@ -109,7 +109,7 @@ const REQUIREMENTS: CanonicalResolutionRequirement[] = [
 export async function compilePreregistrationHandoffManifest(
   review: PreregistrationReview,
 ): Promise<PreregistrationHandoffManifest> {
-  validateReview(review);
+  await validateReview(review);
   const core: PreregistrationHandoffCore = {
     schema_version: PREREGISTRATION_HANDOFF_SCHEMA,
     source_review: {
@@ -148,7 +148,7 @@ export async function compilePreregistrationHandoffManifest(
   };
 }
 
-function validateReview(review: PreregistrationReview): void {
+async function validateReview(review: PreregistrationReview): Promise<void> {
   if (!review.structural_lock_ready || review.blocking_reasons.length !== 0) {
     throw new Error("PREREGISTRATION_HANDOFF_STRUCTURAL_REVIEW_BLOCKED");
   }
@@ -164,9 +164,42 @@ function validateReview(review: PreregistrationReview): void {
   ) {
     throw new Error("PREREGISTRATION_HANDOFF_REVIEW_IDENTITY_INVALID");
   }
-  if (canonicalJson(JSON.parse(review.canonical_review_json)) !== review.canonical_review_json) {
+
+  let canonicalReview: unknown;
+  try {
+    canonicalReview = JSON.parse(review.canonical_review_json);
+  } catch {
     throw new Error("PREREGISTRATION_HANDOFF_REVIEW_CANONICAL_INVALID");
   }
+  if (canonicalJson(canonicalReview) !== review.canonical_review_json) {
+    throw new Error("PREREGISTRATION_HANDOFF_REVIEW_CANONICAL_INVALID");
+  }
+  if (await sha256Hex(review.canonical_review_json) !== review.canonical_review_hash_sha256) {
+    throw new Error("PREREGISTRATION_HANDOFF_REVIEW_HASH_MISMATCH");
+  }
+  if (!canonicalReview || typeof canonicalReview !== "object") {
+    throw new Error("PREREGISTRATION_HANDOFF_REVIEW_SOURCE_MISMATCH");
+  }
+  const core = canonicalReview as {
+    source_thesis?: { record_id?: unknown; revision?: unknown };
+    source_title?: unknown;
+    boundary?: unknown;
+    authority_effect?: unknown;
+    canonical_bindings?: unknown;
+    side_effects?: unknown;
+  };
+  if (
+    core.source_thesis?.record_id !== review.source_thesis.record_id ||
+    core.source_thesis?.revision !== review.source_thesis.revision ||
+    core.source_title !== review.source_title ||
+    core.boundary !== review.boundary ||
+    core.authority_effect !== review.authority_effect ||
+    canonicalJson(core.canonical_bindings) !== canonicalJson(review.canonical_bindings) ||
+    canonicalJson(core.side_effects) !== canonicalJson(review.side_effects)
+  ) {
+    throw new Error("PREREGISTRATION_HANDOFF_REVIEW_SOURCE_MISMATCH");
+  }
+
   const bindings = Object.values(review.canonical_bindings);
   if (
     bindings.some(
