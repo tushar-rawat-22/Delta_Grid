@@ -31,6 +31,7 @@ test("structurally complete review compiles to deterministic authority-zero hand
   assert.equal(first.handoff_status, "READY_FOR_TRUSTED_LOCAL_RESOLUTION");
   assert.equal(first.authority_effect, "NONE");
   assert.equal(first.boundary, "NON_RAB1_RESEARCH_ONLY");
+  assert.equal(first.source_review.canonical_review_json, review.canonical_review_json);
   assert.equal(first.canonical_handoff_hash_sha256, second.canonical_handoff_hash_sha256);
   assert.equal(first.handoff_id, second.handoff_id);
   assert.match(first.canonical_handoff_hash_sha256, /^[0-9a-f]{64}$/u);
@@ -88,7 +89,7 @@ test("handoff manifest cannot inherit resolved or browser-writable canonical bin
 
   await assert.rejects(
     compilePreregistrationHandoffManifest(unsafe),
-    /PREREGISTRATION_HANDOFF_CANONICAL_BINDING_INVALID/u,
+    /PREREGISTRATION_HANDOFF_REVIEW_SOURCE_MISMATCH|PREREGISTRATION_HANDOFF_CANONICAL_BINDING_INVALID/u,
   );
 });
 
@@ -104,6 +105,25 @@ test("handoff manifest cannot inherit a side effect", async () => {
 
   await assert.rejects(
     compilePreregistrationHandoffManifest(unsafe),
-    /PREREGISTRATION_HANDOFF_SIDE_EFFECT_INVALID/u,
+    /PREREGISTRATION_HANDOFF_REVIEW_SOURCE_MISMATCH|PREREGISTRATION_HANDOFF_SIDE_EFFECT_INVALID/u,
+  );
+});
+
+test("V2 producer independently rehashes the canonical review preimage", async () => {
+  const review = await compilePreregistrationReview({
+    record_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    revision: 1,
+    title: "Review rehash safety",
+    body: completeBody(),
+  });
+  const unsafe = structuredClone(review);
+  unsafe.canonical_review_json = unsafe.canonical_review_json.replace(
+    "Review rehash safety",
+    "Review rehash changed",
+  );
+
+  await assert.rejects(
+    compilePreregistrationHandoffManifest(unsafe),
+    /PREREGISTRATION_HANDOFF_REVIEW_HASH_MISMATCH/u,
   );
 });
