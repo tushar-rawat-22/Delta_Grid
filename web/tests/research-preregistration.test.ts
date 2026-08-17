@@ -7,6 +7,7 @@ import {
   PREREGISTRATION_AUTHORITY,
   PREREGISTRATION_BOUNDARY,
   PREREGISTRATION_HEADINGS,
+  PREREGISTRATION_TERMINAL_HEADING,
 } from "../research-app/src/preregistration-model.ts";
 
 const priority = {
@@ -19,7 +20,7 @@ const priority = {
   latest_observed_at: "2026-08-15T05:00:00.000Z",
 };
 
-test("seeded thesis is deliberately not lock-ready", async () => {
+test("seeded thesis is deliberately not structurally lock-ready", async () => {
   const seed = createHypothesisSeed(priority);
   const review = await compilePreregistrationReview({
     record_id: "11111111-1111-4111-8111-111111111111",
@@ -28,7 +29,7 @@ test("seeded thesis is deliberately not lock-ready", async () => {
     body: seed.body,
   });
 
-  assert.equal(review.scientific_lock_ready, false);
+  assert.equal(review.structural_lock_ready, false);
   assert.ok(review.blocking_reasons.length > 0);
   assert.equal(review.boundary, PREREGISTRATION_BOUNDARY);
   assert.equal(review.authority_effect, PREREGISTRATION_AUTHORITY);
@@ -43,7 +44,7 @@ test("seeded thesis is deliberately not lock-ready", async () => {
   });
 });
 
-test("complete scientific preregistration receives deterministic identity only", async () => {
+test("complete scientific sections receive deterministic identity only", async () => {
   const body = PREREGISTRATION_HEADINGS.map(
     (heading, index) => `${heading}\nFounder declaration ${index + 1}.`,
   ).join("\n\n");
@@ -58,7 +59,7 @@ test("complete scientific preregistration receives deterministic identity only",
   const first = await compilePreregistrationReview(input);
   const second = await compilePreregistrationReview(input);
 
-  assert.equal(first.scientific_lock_ready, true);
+  assert.equal(first.structural_lock_ready, true);
   assert.deepEqual(first.blocking_reasons, []);
   assert.equal(first.canonical_review_hash_sha256, second.canonical_review_hash_sha256);
   assert.equal(first.review_id, second.review_id);
@@ -72,6 +73,36 @@ test("complete scientific preregistration receives deterministic identity only",
     Object.values(first.canonical_bindings).every(
       (binding) => binding.status === "UNRESOLVED" && binding.browser_writable === false,
     ),
+  );
+});
+
+test("system handoff after next review is metadata, not founder protocol content", async () => {
+  const scientificBody = PREREGISTRATION_HEADINGS.map(
+    (heading, index) => `${heading}\nFounder declaration ${index + 1}.`,
+  ).join("\n\n");
+  const body = [
+    scientificBody,
+    "",
+    PREREGISTRATION_TERMINAL_HEADING,
+    "[System: canonical authority remains outside the notebook.]",
+  ].join("\n");
+
+  const review = await compilePreregistrationReview({
+    record_id: "44444444-4444-4444-8444-444444444444",
+    revision: 1,
+    title: "SOL causal mechanism",
+    body,
+  });
+
+  assert.equal(review.structural_lock_ready, true);
+  assert.deepEqual(review.blocking_reasons, []);
+  assert.equal(
+    review.scientific_protocol["NEXT REVIEW"],
+    "Founder declaration 10.",
+  );
+  assert.equal(
+    review.canonical_review_json.includes("canonical authority remains outside the notebook"),
+    false,
   );
 });
 
