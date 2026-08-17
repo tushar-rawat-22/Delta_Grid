@@ -58,8 +58,11 @@ for (const marker of [
   "NOT AUTHORIZED",
   "Verified projection",
   "A public view of a private research system.",
-  "Founder only",
-  "Log in",
+  "Public demo",
+  "Explore Demo Mode",
+  "Founder Log in",
+  "Eight working views. Publicly explorable, privately backed.",
+  "Explore all eight views",
   "no private or protected values",
 ]) {
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
@@ -104,6 +107,7 @@ console.log("PUBLIC_ROUTE_COUNT=9");
 console.log("PUBLIC_SANITIZED_PRODUCT_SNAPSHOTS=PASS");
 console.log("PUBLIC_FOUNDER_LOGIN_RENDER=PASS");
 console.log("PUBLIC_RESEARCH_DEMO_RENDER=PASS");
+console.log("PUBLIC_DEMO_PRIMARY_ENTRY=PASS");
 console.log("PUBLIC_CRAWL_POLICY=PASS");
 
 function allFiles(current) {
