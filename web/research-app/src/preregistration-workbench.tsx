@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { PreregistrationHandoffAction } from "./preregistration-handoff-action.tsx";
 import {
   compilePreregistrationReview,
   PREREGISTRATION_HEADINGS,
@@ -238,6 +239,8 @@ function ReviewResult({ review }: { review: PreregistrationReview }) {
         <strong>{review.review_id}</strong>
         <code>{review.canonical_review_hash_sha256}</code>
       </section>
+
+      {review.structural_lock_ready ? <PreregistrationHandoffAction review={review} /> : null}
 
       <p className="prereg-final-boundary">
         This review creates no authority. It does not persist a lock, reserve a trial, consume a permit,
