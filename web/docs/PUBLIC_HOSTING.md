@@ -1,26 +1,43 @@
 # Public hosting topology
 
-DeltaGrid has two deliberately separate Cloudflare Workers surfaces.
+DeltaGrid uses two existing Cloudflare Workers surfaces with one product-facing rule: the product is publicly observable, while private data and control remain authenticated.
 
-## Public observer
+## Public product shell
 
 `deltagrid-observer` is the public product surface. It is a nine-route Next.js static export served through Cloudflare Workers Static Assets from `web/out`.
+
+Anyone may open the site, navigate the public routes, inspect the project status and evidence model, see the configured research scope, review sanitized product views, and use the visible founder login entry point. Public views may use verified projection fields, public repository facts, and deterministic sanitized fixtures only.
 
 The public Worker must remain static-assets-only. It has no Worker entrypoint, D1, KV, R2, Durable Object, queue, service binding, scheduled trigger, runtime environment variable, credential, founder command path, research write path, protected evidence path, or trading/capital authority.
 
 The checked-in `web/wrangler.jsonc` is the deployment source of truth. `npm run verify:public-deploy` fails if a stateful or server-side runtime surface is added to that config without an explicit architectural change.
 
-Current bootstrap endpoint:
+Current public endpoint:
 
 - `https://deltagrid-observer.tushar142004.workers.dev`
 
-For a business-facing production launch, move the observer to a Cloudflare Custom Domain. The `workers.dev` endpoint remains useful for bootstrap and diagnostics but is not the intended long-term branded origin.
+A branded Cloudflare Custom Domain can replace the bootstrap `workers.dev` address later without changing the public/private authority model.
 
-## Founder gateway
+## Founder login and authenticated mode
 
-`deltagrid-founder-gateway` is a separate Access-protected Worker. It owns the founder control plane, founder research workspace, research API, machine API, D1 binding and scheduled provider collection.
+The public site exposes a visible login link to the existing `deltagrid-founder-gateway`. That gateway is reachable on the Internet but remains protected by the existing Cloudflare Access application before founder assets, APIs, D1-backed state or control surfaces are returned.
 
-The founder gateway is not a fallback origin for the public observer. Public traffic must not gain access to founder routes, D1, secrets or authenticated research assets through routing convenience or shared bindings.
+Unauthenticated visitors may reach the Access login flow. They must not receive founder data merely because the login endpoint itself is public. Only the exact allowed founder identity may pass the Access policy, and the Worker independently verifies the Access JWT and founder identity again.
+
+After successful founder authentication, the gateway may expose the real research workspace, founder control plane, research API, machine API, D1-backed records and scheduled-provider state within their existing authority boundaries.
+
+The intended product model is therefore:
+
+```text
+public visitor
+  -> public DeltaGrid shell / sanitized views
+  -> visible Log in
+  -> Cloudflare Access
+  -> exact founder identity
+  -> real founder workspace and private state
+```
+
+The public shell must never fetch private founder APIs, embed private values into static assets, or treat a public demo action as a real write. A public preview may reproduce the shape of a founder view only with deterministic sanitized fixtures.
 
 ## Release model
 
@@ -48,10 +65,11 @@ The repository also contains `.github/workflows/public-observer-release.yml` for
 
 After the first public release:
 
-1. attach a branded Cloudflare Custom Domain to `deltagrid-observer`;
-2. preserve the public/private Worker split;
-3. add uptime and synthetic route checks from outside Cloudflare;
-4. add deployment provenance to release records;
-5. keep rollback to a known Worker version available;
-6. enable only the minimum observability needed for each surface, with founder logs treated as sensitive operational data;
-7. never add research execution, protected evidence, exchange credentials, order paths or capital authority to the public Worker.
+1. make every major product capability observable through a sanitized public view or public explanation;
+2. keep the visible founder login connected to the existing Access-protected gateway;
+3. preserve the two-Worker authority split and do not create a second hosting stack;
+4. add uptime and synthetic route checks from outside Cloudflare;
+5. add deployment provenance to release records;
+6. keep rollback to a known Worker version available;
+7. enable only the minimum observability needed for each surface, with founder logs treated as sensitive operational data;
+8. never add research execution, protected evidence, exchange credentials, order paths or capital authority to the public Worker.
