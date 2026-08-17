@@ -4,7 +4,7 @@ import {
 } from "./preregistration-model.ts";
 
 export const PREREGISTRATION_HANDOFF_SCHEMA =
-  "DELTAGRID_FOUNDER_PREREGISTRATION_HANDOFF_V1" as const;
+  "DELTAGRID_FOUNDER_PREREGISTRATION_HANDOFF_V2" as const;
 
 export type CanonicalResolutionRequirement = {
   binding:
@@ -30,6 +30,7 @@ export type PreregistrationHandoffCore = {
   source_review: {
     review_id: string;
     review_hash_sha256: string;
+    canonical_review_json: string;
     record_id: string;
     revision: number;
     title: string;
@@ -114,6 +115,7 @@ export async function compilePreregistrationHandoffManifest(
     source_review: {
       review_id: review.review_id,
       review_hash_sha256: review.canonical_review_hash_sha256,
+      canonical_review_json: review.canonical_review_json,
       record_id: review.source_thesis.record_id,
       revision: review.source_thesis.revision,
       title: review.source_title,
@@ -161,6 +163,9 @@ function validateReview(review: PreregistrationReview): void {
     review.review_id !== `founder-prereg-${review.canonical_review_hash_sha256}`
   ) {
     throw new Error("PREREGISTRATION_HANDOFF_REVIEW_IDENTITY_INVALID");
+  }
+  if (canonicalJson(JSON.parse(review.canonical_review_json)) !== review.canonical_review_json) {
+    throw new Error("PREREGISTRATION_HANDOFF_REVIEW_CANONICAL_INVALID");
   }
   const bindings = Object.values(review.canonical_bindings);
   if (
