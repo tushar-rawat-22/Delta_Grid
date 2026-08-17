@@ -107,3 +107,34 @@ authorize Mission 104, or grant paper, live, exchange, order, allocation, or
 capital authority.
 
 The workbench remains `NON_RAB1_RESEARCH_ONLY` with authority effect `NONE`.
+
+## Founder preregistration compiler foundation
+
+The research app now contains a browser-safe preregistration compiler model for
+turning one saved THESIS revision into a deterministic scientific review
+identity. It parses the existing ten founder-authored research sections,
+rejects missing or out-of-order sections, reports unresolved founder
+placeholders, canonicalizes the review payload, and derives a SHA-256 identity.
+
+This compiler output is deliberately **not** a Mission 94 admission request, a
+Mission 101 dataset descriptor or permit, a Mission 102 execution
+specification, or a Mission 103 campaign/program protocol. Instead it records
+those canonical owners as unresolved, non-browser-writable bindings. Exact
+dataset selection remains owned by Mission 101 custody metadata; permit and
+finite authority remain owned by the Mission 101 private runtime; trial
+reservation remains owned by the Mission 94 ledger through Mission 101;
+executable family/variant identity remains owned by the sealed Mission 102
+registry; statistical and protected-stage identity remains owned by Mission
+103.
+
+A scientific review can be hash-ready only after the founder replaces all
+structured THESIS placeholders. Hash readiness does not persist anything,
+reserve a trial, consume a permit, authorize execution, open protected evidence,
+authorize Mission 104, or grant trading authority. New hypothesis drafts now
+include an explicit preregistration handoff statement so this boundary is
+visible before the founder writes a protocol.
+
+This is the first compiler layer only. No new D1 table, API write path,
+admission endpoint, permit endpoint, protected-evidence path, migration, or
+provider request is introduced. The boundary remains
+`NON_RAB1_RESEARCH_ONLY` with authority effect `NONE`.
