@@ -1,0 +1,212 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: rgba(8,10,14,.92);
+  backdrop-filter: blur(22px);
+}
+
+.public-nav-shell {
+  width: min(1240px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.public-nav-topline {
+  min-height: 4.15rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.public-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  text-decoration: none;
+  min-width: max-content;
+}
+
+.public-brand-mark {
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid #315c4f;
+  border-radius: .58rem;
+  color: var(--accent);
+  background: rgba(24,58,49,.35);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.public-brand-copy {
+  display: grid;
+  line-height: 1.05;
+}
+
+.public-brand-copy strong {
+  font-size: .98rem;
+  letter-spacing: -.025em;
+}
+
+.public-brand-copy small {
+  margin-top: .24rem;
+  color: #738094;
+  font-size: .57rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 750;
+}
+
+.public-mode {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-width: 0;
+  color: #94a0af;
+  font-size: .68rem;
+}
+
+.public-mode > span {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  color: #c9f7e6;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.public-mode i {
+  width: .43rem;
+  height: .43rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 .2rem rgba(167,243,208,.08);
+}
+
+.public-mode small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #748091;
+  font-size: .65rem;
+}
+
+.public-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.public-demo-button,
+.public-login-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  padding: .48rem .72rem;
+  border-radius: .58rem;
+  text-decoration: none;
+  font-size: .72rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.public-demo-button {
+  border: 1px solid #2d3a48;
+  background: #121821;
+  color: #d9e1ea;
+}
+
+.public-demo-button:hover,
+.public-demo-button:focus-visible {
+  border-color: #4a5c70;
+  background: #18202b;
+  outline: none;
+}
+
+.public-login-button {
+  gap: .45rem;
+  border: 1px solid #3b7461;
+  background: var(--accent);
+  color: #06130f;
+}
+
+.public-login-button:hover,
+.public-login-button:focus-visible {
+  filter: brightness(1.04);
+  outline: 2px solid rgba(167,243,208,.24);
+  outline-offset: 2px;
+}
+
+.public-route-row {
+  display: flex;
+  align-items: center;
+  gap: .15rem;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 0 0 .6rem;
+  scrollbar-width: none;
+}
+
+.public-route-row::-webkit-scrollbar { display: none; }
+
+.public-route-link {
+  position: relative;
+  flex: 0 0 auto;
+  padding: .48rem .62rem;
+  border-radius: .5rem;
+  color: #8490a0;
+  text-decoration: none;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.public-route-link:hover,
+.public-route-link:focus-visible {
+  color: #e8edf3;
+  background: rgba(255,255,255,.045);
+  outline: none;
+}
+
+.public-route-link.is-active {
+  color: #f4f7fa;
+  background: #151c25;
+}
+
+.public-route-link.is-active::after {
+  content: "";
+  position: absolute;
+  left: .62rem;
+  right: .62rem;
+  bottom: -.6rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+@media (max-width: 860px) {
+  .site-header { position: sticky; }
+  .public-nav-topline {
+    grid-template-columns: 1fr auto;
+    gap: .8rem;
+    padding: .7rem 0 .45rem;
+  }
+  .public-mode { grid-column: 1 / -1; grid-row: 2; }
+  .public-nav-actions { grid-column: 2; grid-row: 1; }
+}
+
+@media (max-width: 560px) {
+  .public-nav-shell { width: min(100% - 1rem, 1240px); }
+  .public-brand-copy small { display: none; }
+  .public-mode small { display: none; }
+  .public-demo-button { display: none; }
+  .public-login-button { padding-inline: .62rem; }
+  .public-route-row { margin-inline: -.1rem; padding-bottom: .55rem; }
+  .public-route-link { font-size: .7rem; padding-inline: .55rem; }
+}
