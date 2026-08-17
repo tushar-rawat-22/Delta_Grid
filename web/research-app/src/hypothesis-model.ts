@@ -85,6 +85,9 @@ export function createHypothesisSeed(
       "",
       "NEXT REVIEW",
       "[Founder: identify the evidence dependency or review date.]",
+      "",
+      "PREREGISTRATION HANDOFF",
+      "[System: a later compiler may hash-lock the founder-authored sections above. Exact datasets, permits, trial reservations, execution specifications, statistical programmes, protected stages, Mission 104, and trading authority remain outside this notebook record.]",
     ].join("\n"),
   };
 }
