@@ -39,10 +39,10 @@ export function ResearchLanding() {
       <section className="landing-hero">
         <div className="landing-copy">
           <p className="eyebrow">DeltaGrid Research Engine</p>
-          <h1>A private market research workspace.</h1>
-          <p className="lede">Delayed market data, macro releases, public-company facts, deterministic analytics, and revisioned research notes in one founder-only interface.</p>
+          <h1>A public view of a private research system.</h1>
+          <p className="lede">Explore the product, research scope, architecture, evidence model, and sanitized interface publicly. Founder login unlocks the live private workspace, revisioned research records, and authenticated controls.</p>
           <div className="landing-actions">
-            <a className="founder-login" href={FOUNDER_RESEARCH_URL}><span>Invite only</span>Founder access <b>↗</b></a>
+            <a className="founder-login" href={FOUNDER_RESEARCH_URL}><span>Founder only</span>Log in <b>↗</b></a>
             <Link className="text-link" href="/system">Public system status</Link>
           </div>
           <p className="landing-disclaimer">Research only. No brokerage connection, orders, paper trading, capital, or execution authority.</p>
@@ -65,21 +65,21 @@ export function ResearchLanding() {
       </section>
 
       <section className="landing-section compact-section">
-        <div className="section-heading"><p className="eyebrow">Workspace</p><h2>Six working views, one research record.</h2><p>Every displayed metric identifies its source, observation time, calculation window, and adjustment state.</p></div>
+        <div className="section-heading"><p className="eyebrow">Workspace</p><h2>Six working views. Publicly observable, privately backed.</h2><p>The public product shows the shape and purpose of each workspace without exposing founder records or authenticated API state.</p></div>
         <div className="feature-grid">{features.map(([title, body], index) => <article key={title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{title}</h3><p>{body}</p></article>)}</div>
       </section>
 
       <section className="landing-section snapshot-section compact-section">
-        <div className="section-heading"><p className="eyebrow">Interface</p><h2>Sanitized product views</h2><p>The previews use deterministic fixtures. Founder notes, private live state, and protected RAB-1 evidence are never used for public screenshots.</p></div>
+        <div className="section-heading"><p className="eyebrow">Public product preview</p><h2>Sanitized interface views</h2><p>The previews use deterministic fixtures. Founder notes, private live state, and protected RAB-1 evidence are never used for public screenshots.</p></div>
         <div className="snapshot-grid">{snapshots.map(([src, title, caption]) => <figure key={src}><div><Image src={src} alt={`Sanitized DeltaGrid ${title} product screenshot`} width={1440} height={900} /></div><figcaption><strong>{title}</strong><span>{caption}</span></figcaption></figure>)}</div>
       </section>
 
       <section className="landing-section security-section compact-section">
-        <div><p className="eyebrow">Access boundary</p><h2>One founder identity. MFA enforced.</h2></div>
-        <div className="security-list"><p><strong>Private route</strong><span>The existing Cloudflare Access application protects the founder hostname. The Worker separately validates the Access JWT and exact founder identity.</span></p><p><strong>Research isolation</strong><span>Research tables are scoped to the verified founder and labeled NON_RAB1_RESEARCH_ONLY with authority effect NONE.</span></p><p><strong>Execution closed</strong><span>No provider key reaches the browser, and no route can place, simulate, authorize, or fund an order.</span></p></div>
+        <div><p className="eyebrow">Access boundary</p><h2>Public shell. One founder identity for live mode.</h2></div>
+        <div className="security-list"><p><strong>Public login entry</strong><span>Anyone can follow the login link and reach the Cloudflare Access flow. Only the exact allowed founder identity can pass the policy and reach private workspace content.</span></p><p><strong>Defense in depth</strong><span>After Access succeeds, the Worker separately validates the Access JWT and exact founder identity before returning founder assets or API responses.</span></p><p><strong>Research isolation</strong><span>Founder research tables remain scoped to the verified founder and labeled NON_RAB1_RESEARCH_ONLY with authority effect NONE.</span></p><p><strong>Execution closed</strong><span>No provider key reaches the browser, and no public route can place, simulate, authorize, or fund an order.</span></p></div>
       </section>
 
-      <section className="landing-cta"><div><p className="eyebrow">Private workspace</p><h2>Invite only</h2><p>There is no public signup. The observer remains public and read-only; the research workspace remains founder-only.</p></div><a className="founder-login" href={FOUNDER_RESEARCH_URL}><span>Invite only</span>Open research engine <b>↗</b></a></section>
+      <section className="landing-cta"><div><p className="eyebrow">Authenticated founder mode</p><h2>Log in to unlock the real workspace</h2><p>The product remains publicly inspectable. Live private data, research records, writes, and founder controls require the exact founder identity.</p></div><a className="founder-login" href={FOUNDER_RESEARCH_URL}><span>Founder only</span>Log in <b>↗</b></a></section>
     </main>
   );
 }
