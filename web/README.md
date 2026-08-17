@@ -34,9 +34,9 @@ npm run install:locked-safe
 npm run check
 ```
 
-`npm run check` verifies dependency and lifecycle-script policy, public/founder source boundaries, D1 schema and transition guards, TypeScript, lint, unit tests, static output privacy and a founder Worker dry-run.
+`npm run check` verifies dependency and lifecycle-script policy, public/founder source boundaries, public deployment configuration, D1 schema and transition guards, TypeScript, lint, unit tests, static output privacy and a founder Worker dry-run.
 
-See [`docs/RESEARCH_ENGINE.md`](docs/RESEARCH_ENGINE.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/SECURITY_BOUNDARY.md`](docs/SECURITY_BOUNDARY.md).
+See [`docs/RESEARCH_ENGINE.md`](docs/RESEARCH_ENGINE.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/SECURITY_BOUNDARY.md`](docs/SECURITY_BOUNDARY.md) and [`docs/PUBLIC_HOSTING.md`](docs/PUBLIC_HOSTING.md).
 
 ## Authority boundary
 
