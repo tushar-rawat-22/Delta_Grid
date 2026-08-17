@@ -53,7 +53,15 @@ for (const marker of [
 }
 
 const overviewHtml = fs.readFileSync(routeFile(""), "utf8");
-for (const marker of ["Mission 104", "NOT AUTHORIZED", "Verified projection", "Invite only", "no private or protected values"]) {
+for (const marker of [
+  "Mission 104",
+  "NOT AUTHORIZED",
+  "Verified projection",
+  "A public view of a private research system.",
+  "Founder only",
+  "Log in",
+  "no private or protected values",
+]) {
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
 }
 
@@ -69,6 +77,7 @@ console.log("STATIC_OUTPUT_INSPECTION=PASS");
 console.log("P1_3_VERIFIED_PROJECTION_RENDER=PASS");
 console.log("PUBLIC_ROUTE_COUNT=9");
 console.log("PUBLIC_SANITIZED_PRODUCT_SNAPSHOTS=PASS");
+console.log("PUBLIC_FOUNDER_LOGIN_RENDER=PASS");
 
 function allFiles(current) {
   const output = [];
