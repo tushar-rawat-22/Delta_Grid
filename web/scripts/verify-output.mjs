@@ -93,12 +93,18 @@ for (const required of [
   if (!headers.includes(required)) throw new Error(`HEADER_POLICY_MISSING:${required}`);
 }
 
+const robots = fs.readFileSync(path.join(root, "robots.txt"), "utf8");
+if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || robots.includes("Disallow: /")) {
+  throw new Error("PUBLIC_ROBOTS_POLICY_INVALID");
+}
+
 console.log("STATIC_OUTPUT_INSPECTION=PASS");
 console.log("P1_3_VERIFIED_PROJECTION_RENDER=PASS");
 console.log("PUBLIC_ROUTE_COUNT=9");
 console.log("PUBLIC_SANITIZED_PRODUCT_SNAPSHOTS=PASS");
 console.log("PUBLIC_FOUNDER_LOGIN_RENDER=PASS");
 console.log("PUBLIC_RESEARCH_DEMO_RENDER=PASS");
+console.log("PUBLIC_CRAWL_POLICY=PASS");
 
 function allFiles(current) {
   const output = [];
