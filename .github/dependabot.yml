@@ -10,6 +10,10 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     rebase-strategy: "disabled"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     groups:
       actions-minor-patch:
         patterns:
@@ -27,6 +31,10 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     rebase-strategy: "disabled"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     groups:
       web-minor-patch:
         patterns:
