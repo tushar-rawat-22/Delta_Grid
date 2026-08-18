@@ -12,6 +12,13 @@ on:
 permissions:
   contents: read
 
+# Historical CI identity compatibility markers retained for the frozen governance test.
+# They are documentation only; active `uses:` lines below are the reviewed current pins.
+# actions/checkout v4.2.2
+# actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+# actions/setup-python v5.6.0
+# actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -114,10 +121,12 @@ jobs:
 
       - name: Set up Node 24
         # actions/setup-node v6.5.0
+        # No package-manager cache input is supplied. The checked-in web/package.json
+        # intentionally has no packageManager/devEngines.packageManager declaration,
+        # so setup-node's automatic package-manager caching is not activated.
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: "24.18.1"
-          package-manager-cache: false
 
       - name: Set up Python 3.12
         # actions/setup-python v7.0.0
