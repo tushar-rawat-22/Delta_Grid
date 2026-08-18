@@ -70,3 +70,22 @@ test("preregistration drawer refreshes saved THESIS records every time it opens"
   assert.match(source, /setReview\(null\);/u);
   assert.match(source, /next\.some\(\(record\) => record\.record_id === current\)/u);
 });
+
+test("record writes recover a stale integrity token once and surface explicit outcomes", () => {
+  const resilience = fs.readFileSync("research-app/src/research-write-resilience.tsx", "utf8");
+  const entry = fs.readFileSync("research-app/src/main.tsx", "utf8");
+
+  assert.match(resilience, /REQUEST_INTEGRITY_FAILED/u);
+  assert.match(resilience, /\/api\/research\/v1\/bootstrap/u);
+  assert.match(resilience, /headers\.set\("x-deltagrid-csrf", payload\.csrf_token\)/u);
+  assert.match(resilience, /Saved as revision/u);
+  assert.match(resilience, /REVISION_CONFLICT/u);
+  assert.match(resilience, /SERVICE_UNAVAILABLE/u);
+  assert.match(resilience, /typeof input === "string"/u);
+  assert.equal(resilience.includes("setInterval"), false);
+  assert.equal(resilience.includes("localStorage"), false);
+  assert.equal(resilience.includes("sessionStorage"), false);
+
+  assert.match(entry, /installResearchWriteResilience\(\)/u);
+  assert.match(entry, /<ResearchWriteFeedback \/>/u);
+});
