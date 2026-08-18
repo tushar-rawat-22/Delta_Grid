@@ -51,23 +51,25 @@ test("M101 binding planner compiles deterministic SOL/BTC Binance intent and exa
   assert.equal(left.source_handoff.revision, 2);
   assert.match(left.plan_id, /^m101-binding-plan-[0-9a-f]{64}$/u);
   assert.match(left.plan_hash_sha256, /^[0-9a-f]{64}$/u);
-  assert.equal(left.resolution_sequence.length, 10);
+  assert.equal(left.resolution_sequence.length, 11);
   assert.deepEqual(left.resolution_sequence.map((step: { action: string }) => step.action), [
+    "VERIFY_M101_CONTRACT_AND_CLOSED_RESULT_AUTHORITY",
     "CERTIFY_EXISTING_FORWARD_RELEASE",
-    "CREATE_EXACT_DEVELOPMENT_DATASET_DESCRIPTOR",
-    "INSPECT_PRIVATE_AUTHORITY_RUNTIME",
-    "INITIALIZE_PRIVATE_AUTHORITY_RUNTIME_IF_ABSENT",
     "VERIFY_STABLE_REGISTRY_FAMILY_AND_VARIANT_IDENTITY",
+    "INSPECT_PRIVATE_AUTHORITY_RUNTIME",
+    "CREATE_EXACT_DEVELOPMENT_DATASET_DESCRIPTOR",
+    "INITIALIZE_PRIVATE_AUTHORITY_RUNTIME_IF_ABSENT",
     "ISSUE_FINITE_DEVELOPMENT_PERMIT",
     "REGISTER_FINITE_DEVELOPMENT_BUDGET",
     "ADMIT_ONE_METADATA_ONLY_DEVELOPMENT_TRIAL",
     "PREPARE_AND_FREEZE_PRE_RESULT_PROGRAM_BINDINGS",
     "FOUNDER_ACTIVATE_EXACT_FROZEN_PROGRAM_BEFORE_RESULTS",
   ]);
-  assert.equal(left.resolution_sequence[2].read_only, true);
-  assert.equal(left.resolution_sequence[3].requires_explicit_acknowledgement, true);
+  assert.ok(left.resolution_sequence.slice(0, 4).every((step: { read_only: boolean; requires_explicit_acknowledgement: boolean }) => step.read_only === true && step.requires_explicit_acknowledgement === false));
+  assert.ok(left.resolution_sequence.slice(4).every((step: { read_only: boolean; requires_explicit_acknowledgement: boolean }) => step.read_only === false && step.requires_explicit_acknowledgement === true));
   assert.ok(left.resolution_sequence.every((step: { status: string; executable_from_planner: boolean }) => step.status === "NOT_EXECUTED" && step.executable_from_planner === false));
   assert.equal(left.stop_boundary, "PLAN_STOPS_BEFORE_RESULT_BEARING_M102_EXECUTION");
+  assert.ok(left.dependency_invariants.includes("ALL_READ_ONLY_ELIGIBILITY_CHECKS_PRECEDE_CANONICAL_WRITES"));
   assert.ok(left.dependency_invariants.includes("M102_STABLE_FAMILY_IDENTITY_PRECEDES_M101_PERMIT_ISSUANCE"));
   assert.ok(left.dependency_invariants.includes("M103_PRE_RESULT_PROGRAM_BINDS_EXACT_M94_M101_AND_STABLE_M102_IDENTITIES"));
   assert.equal(left.execution_boundary.authority_effect, "NONE");
@@ -107,5 +109,6 @@ test("package and documentation expose one bounded trusted-local planner surface
   assert.equal(pkg.scripts["plan:m101-binding"], "node scripts/plan-m101-binding.mjs");
   const docs = fs.readFileSync("docs/M101_BINDING_PLAN.md", "utf8");
   assert.match(docs, /planner cannot execute/u);
+  assert.match(docs, /read-only eligibility checks/u);
   assert.match(docs, /before result-bearing Mission 102 execution/u);
 });
