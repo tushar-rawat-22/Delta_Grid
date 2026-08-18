@@ -1,0 +1,52 @@
+name: DeltaGrid Live Boundary Watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-public-private-boundary-watch
+  cancel-in-progress: true
+
+jobs:
+  verify-live-boundary:
+    name: live-public-private-boundary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out monitored default branch
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Verify live public/private boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash web/scripts/verify-live-boundary.sh | tee "$RUNNER_TEMP/live-boundary.txt"
+
+      - name: Publish monitoring evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## DeltaGrid live public/private boundary"
+            echo
+            echo "Repository commit: \`${GITHUB_SHA}\`"
+            echo
+            echo "Scheduled checks verify the public observer, sanitized Demo Mode, security/robots policy, and anonymous Founder isolation."
+            echo
+            if [ -f "$RUNNER_TEMP/live-boundary.txt" ]; then
+              echo '```text'
+              cat "$RUNNER_TEMP/live-boundary.txt"
+              echo '```'
+            else
+              echo "The verifier did not produce an evidence file. Inspect the failed step logs."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
