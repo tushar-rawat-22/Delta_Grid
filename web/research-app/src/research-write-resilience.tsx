@@ -47,9 +47,12 @@ export function installResearchWriteResilience(): void {
       throw cause;
     }
 
+    const initialError = response.status === 403
+      ? await responseErrorCode(response.clone())
+      : null;
     if (
       response.status === 403 &&
-      (await responseErrorCode(response.clone())) === "REQUEST_INTEGRITY_FAILED" &&
+      initialError?.split("|", 1)[0] === "REQUEST_INTEGRITY_FAILED" &&
       typeof input === "string"
     ) {
       response = await retryWithFreshToken(nativeFetch, input, init, response);
