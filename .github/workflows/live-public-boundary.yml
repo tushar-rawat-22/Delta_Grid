@@ -1,6 +1,9 @@
 name: DeltaGrid Live Public Boundary
 
 on:
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
   schedule:
     - cron: "23 * * * *"
@@ -9,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: live-public-boundary
+  group: live-public-boundary-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -21,7 +24,7 @@ jobs:
       DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
       DELTAGRID_FOUNDER_URL: https://deltagrid-founder-gateway.tushar142004.workers.dev/research
     steps:
-      - name: Check out canonical repository
+      - name: Check out submitted repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
