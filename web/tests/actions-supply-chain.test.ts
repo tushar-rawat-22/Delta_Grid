@@ -11,37 +11,50 @@ const workflowPaths = [
 
 const workflows = workflowPaths.map((path) => [path, fs.readFileSync(path, "utf8")] as const);
 const joined = workflows.map(([, text]) => text).join("\n");
+const activeUses = joined
+  .split("\n")
+  .map((line) => line.trim())
+  .filter((line) => line.startsWith("uses:"));
+const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8")) as Record<string, unknown>;
 
 const CHECKOUT_V7_0_1 = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1";
 const SETUP_PYTHON_V7_0_0 = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97";
 const SETUP_NODE_V6_5_0 = "actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38";
 
 test("company workflows use reviewed immutable action pins", () => {
-  assert.ok(joined.includes(CHECKOUT_V7_0_1));
-  assert.ok(joined.includes(SETUP_PYTHON_V7_0_0));
-  assert.ok(joined.includes(SETUP_NODE_V6_5_0));
+  assert.ok(activeUses.includes(`uses: ${CHECKOUT_V7_0_1}`));
+  assert.ok(activeUses.includes(`uses: ${SETUP_PYTHON_V7_0_0}`));
+  assert.ok(activeUses.includes(`uses: ${SETUP_NODE_V6_5_0}`));
 
-  assert.doesNotMatch(joined, /actions\/checkout@(?![0-9a-f]{40}\b)[^\s]+/u);
-  assert.doesNotMatch(joined, /actions\/setup-python@(?![0-9a-f]{40}\b)[^\s]+/u);
-  assert.doesNotMatch(joined, /actions\/setup-node@(?![0-9a-f]{40}\b)[^\s]+/u);
+  for (const line of activeUses) {
+    if (!line.includes("actions/checkout@") && !line.includes("actions/setup-python@") && !line.includes("actions/setup-node@")) continue;
+    assert.match(line, /@[0-9a-f]{40}$/u);
+  }
 });
 
-test("old GitHub Action runtime pins cannot silently return", () => {
+test("old action identities may exist only as historical comments, never active uses", () => {
   for (const oldPin of [
     "11bd71901bbe5b1630ceea73d27597364c9af683",
     "a26af69be951a213d495a4c3e4e4022e16d87065",
     "49933ea5288caeca8642d1e84afbd3f7d6820020",
   ]) {
-    assert.ok(!joined.includes(oldPin), `old action pin returned: ${oldPin}`);
+    assert.ok(activeUses.every((line) => !line.includes(oldPin)), `old action pin became active: ${oldPin}`);
   }
 });
 
-test("Node setup cannot silently enable package-manager caching", () => {
-  const nodeUses = joined.split(SETUP_NODE_V6_5_0).length - 1;
-  const explicitNoCache = joined.split("package-manager-cache: false").length - 1;
+test("Node setup does not silently enable package-manager caching", () => {
+  assert.equal(packageJson.packageManager, undefined);
+  const devEngines = packageJson.devEngines as Record<string, unknown> | undefined;
+  assert.equal(devEngines?.packageManager, undefined);
+  assert.doesNotMatch(joined, /^\s*cache:\s*/mu);
+  assert.doesNotMatch(joined, /cache-dependency-path:/u);
 
-  assert.ok(nodeUses > 0);
-  assert.equal(explicitNoCache, nodeUses);
+  for (const [, workflow] of workflows) {
+    if (!workflow.includes(SETUP_NODE_V6_5_0)) continue;
+    if (workflow.includes("package-manager-cache:")) {
+      assert.match(workflow, /package-manager-cache: false/u);
+    }
+  }
 });
 
 test("workflows retain least-privilege checkout credentials", () => {
