@@ -61,6 +61,16 @@ npm run deploy:public
 
 The repository also contains `.github/workflows/public-observer-release.yml` for controlled production releases. It requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub secrets and an exact `release_sha` input. The Cloudflare token should be scoped only to the account and permissions needed to deploy this Worker.
 
+### Founder Gateway release
+
+`.github/workflows/founder-gateway-release.yml` is the corresponding exact-commit release path for the authenticated Worker. It is manual-only, requires the requested SHA to equal current `main`, installs the locked dependency graph, runs the complete web/founder gate and refuses to deploy if the remote D1 database has unapplied checked-in migrations.
+
+D1 migration application is deliberately not part of the Worker deployment workflow. A schema change is a separate production mutation that must be reviewed and applied independently before code depending on it is released. This prevents a routine code deployment from silently changing durable data structures.
+
+The release workflow needs only the Cloudflare deployment API token and account ID. Founder application secrets are not copied into GitHub Actions: Wrangler validates that the required secret bindings already exist on the deployed Worker and preserves secrets not supplied by the release configuration.
+
+After deployment the workflow records Cloudflare deployment/version state and runs the anonymous live-boundary verifier. A Founder Gateway release is therefore not considered complete merely because `wrangler deploy` returned success; anonymous isolation must still pass after the write.
+
 ## Unattended live-boundary verification
 
 `.github/workflows/live-public-boundary.yml` provides an independent external smoke check from GitHub-hosted infrastructure. It runs hourly and may also be dispatched manually. The workflow needs no Cloudflare token, founder credential, cookie, Access service token, D1 binding, or deployment permission.
@@ -79,7 +89,8 @@ After the first public release:
 2. keep the visible founder login connected to the existing Access-protected gateway;
 3. preserve the two-Worker authority split and do not create a second hosting stack;
 4. keep the external live-boundary workflow green and treat a failure as a release/security incident until explained;
-5. add deployment provenance to release records;
-6. keep rollback to a known Worker version available;
-7. enable only the minimum observability needed for each surface, with founder logs treated as sensitive operational data;
-8. never add research execution, protected evidence, exchange credentials, order paths or capital authority to the public Worker.
+5. use exact-commit GitHub release workflows so deployments can proceed without a developer laptop while remaining reviewable;
+6. keep schema migrations separate from Worker deploys and fail closed on pending migrations;
+7. keep rollback to a known Worker version available and preserve deployment/version provenance in release summaries;
+8. enable only the minimum observability needed for each surface, with founder logs treated as sensitive operational data;
+9. never add research execution, protected evidence, exchange credentials, order paths or capital authority to the public Worker.

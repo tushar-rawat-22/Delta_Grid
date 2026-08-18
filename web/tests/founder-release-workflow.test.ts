@@ -1,0 +1,54 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import test from "node:test";
+
+const workflow = fs.readFileSync("../.github/workflows/founder-gateway-release.yml", "utf8");
+
+test("founder release requires an exact current-main commit", () => {
+  assert.match(workflow, /release_sha:/u);
+  assert.match(workflow, /\^\[0-9a-f\]\{40\}\$/u);
+  assert.match(workflow, /git fetch --no-tags origin main/u);
+  assert.match(workflow, /git rev-parse FETCH_HEAD/u);
+  assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
+  assert.match(workflow, /persist-credentials: false/u);
+});
+
+test("founder release fails closed when remote D1 migrations are pending", () => {
+  assert.match(workflow, /wrangler d1 migrations list/u);
+  assert.match(workflow, /deltagrid-founder-system/u);
+  assert.match(workflow, /--remote/u);
+  assert.match(workflow, /No migrations to apply!/u);
+  assert.doesNotMatch(workflow, /d1 migrations apply/u);
+  assert.doesNotMatch(workflow, /d1 execute/u);
+});
+
+test("founder release deploys only after the full gate and checks anonymous isolation", () => {
+  const checkIndex = workflow.indexOf("npm run check");
+  const migrationIndex = workflow.indexOf("d1 migrations list");
+  const deployIndex = workflow.indexOf("wrangler deploy");
+  const liveIndex = workflow.indexOf("verify-live-boundary.sh");
+
+  assert.ok(checkIndex >= 0);
+  assert.ok(migrationIndex > checkIndex);
+  assert.ok(deployIndex > migrationIndex);
+  assert.ok(liveIndex > deployIndex);
+  assert.match(workflow, /--config wrangler\.founder\.jsonc/u);
+  assert.match(workflow, /--strict/u);
+  assert.match(workflow, /versions list/u);
+  assert.match(workflow, /--json/u);
+});
+
+test("founder release workflow does not import founder application secrets", () => {
+  assert.match(workflow, /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/u);
+  assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/u);
+
+  for (const forbidden of [
+    "DELTAGRID_FOUNDER_EMAIL",
+    "DELTAGRID_RESEARCH_CSRF_KEY",
+    "DELTAGRID_AGENT_HMAC_KEY",
+    "ALPHA_VANTAGE_API_KEY",
+    "FRED_API_KEY",
+  ]) {
+    assert.doesNotMatch(workflow, new RegExp(`${forbidden}:`));
+  }
+});

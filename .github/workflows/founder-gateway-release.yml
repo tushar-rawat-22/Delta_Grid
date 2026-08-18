@@ -1,0 +1,158 @@
+name: DeltaGrid Founder Gateway Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: Exact 40-character current main commit to deploy
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: founder-gateway-production
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: founder-gateway-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: founder-production
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      WRANGLER_SEND_METRICS: "false"
+      WRANGLER_SEND_ERROR_REPORTS: "false"
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      RELEASE_SHA: ${{ inputs.release_sha }}
+
+    steps:
+      - name: Validate requested release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]] || {
+            echo "release_sha must be an exact lowercase 40-character Git commit"
+            exit 1
+          }
+
+      - name: Check out exact requested commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.release_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Require requested commit to equal current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          git fetch --no-tags origin main
+          test "$(git rev-parse FETCH_HEAD)" = "$RELEASE_SHA" || {
+            echo "Refusing to deploy a commit that is not current main"
+            exit 1
+          }
+          test -z "$(git status --porcelain)"
+
+      - name: Set up Node 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24.18.1"
+
+      - name: Install locked web dependencies
+        working-directory: web
+        run: npm run install:locked-safe
+
+      - name: Audit release dependency graph
+        working-directory: web
+        run: npm audit --audit-level=low
+
+      - name: Run complete web and founder release gate
+        working-directory: web
+        run: npm run check
+
+      - name: Require remote D1 schema to be fully migrated
+        working-directory: web
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler d1 migrations list \
+            deltagrid-founder-system \
+            --remote \
+            --config wrangler.founder.jsonc \
+            | tee "$RUNNER_TEMP/founder-migrations.txt"
+          grep -Fq "No migrations to apply!" "$RUNNER_TEMP/founder-migrations.txt" || {
+            echo "Founder release blocked: unapplied D1 migrations exist or migration state could not be proven clean."
+            echo "Apply reviewed migrations separately before deploying Worker code."
+            exit 1
+          }
+
+      - name: Deploy exact Founder Gateway commit
+        working-directory: web
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler deploy \
+            --config wrangler.founder.jsonc \
+            --strict \
+            --message "DeltaGrid founder gateway ${RELEASE_SHA}"
+
+      - name: Record Cloudflare deployment state
+        working-directory: web
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler deployments status \
+            --config wrangler.founder.jsonc \
+            | tee "$RUNNER_TEMP/founder-deployment.txt"
+          ./node_modules/.bin/wrangler versions list \
+            --json \
+            --config wrangler.founder.jsonc \
+            > "$RUNNER_TEMP/founder-versions.json"
+
+      - name: Verify live public/private boundary after release
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash web/scripts/verify-live-boundary.sh | tee "$RUNNER_TEMP/live-boundary.txt"
+
+      - name: Publish release provenance summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## DeltaGrid Founder Gateway release"
+            echo
+            echo "Requested commit: \`$RELEASE_SHA\`"
+            echo
+            echo "Workflow run: \`${GITHUB_RUN_ID}\`"
+            echo
+            if [ -f "$RUNNER_TEMP/founder-migrations.txt" ]; then
+              echo "### Remote D1 migration preflight"
+              echo '```text'
+              cat "$RUNNER_TEMP/founder-migrations.txt"
+              echo '```'
+            fi
+            if [ -f "$RUNNER_TEMP/founder-deployment.txt" ]; then
+              echo "### Cloudflare deployment"
+              echo '```text'
+              cat "$RUNNER_TEMP/founder-deployment.txt"
+              echo '```'
+            fi
+            if [ -f "$RUNNER_TEMP/founder-versions.json" ]; then
+              echo "### Recent Worker versions"
+              echo '```json'
+              cat "$RUNNER_TEMP/founder-versions.json"
+              echo '```'
+            fi
+            if [ -f "$RUNNER_TEMP/live-boundary.txt" ]; then
+              echo "### Anonymous live-boundary verification"
+              echo '```text'
+              cat "$RUNNER_TEMP/live-boundary.txt"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
