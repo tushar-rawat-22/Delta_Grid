@@ -124,7 +124,7 @@ jobs:
         # No package-manager cache input is supplied. The checked-in web/package.json
         # intentionally has no packageManager/devEngines.packageManager declaration,
         # so setup-node's automatic package-manager caching is not activated.
-        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
         with:
           node-version: "24.18.1"
 
