@@ -5,7 +5,6 @@ import test from "node:test";
 const codeql = fs.readFileSync("../.github/workflows/codeql.yml", "utf8");
 const dependabot = fs.readFileSync("../.github/dependabot.yml", "utf8");
 
-const CODEQL_V4_37_3 = "e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81";
 const CHECKOUT_V7_0_1 = "3d3c42e5aac5ba805825da76410c181273ba90b1";
 
 test("CodeQL scans application, research Python, and GitHub Actions surfaces", () => {
@@ -16,13 +15,19 @@ test("CodeQL scans application, research Python, and GitHub Actions surfaces", (
   assert.match(codeql, /queries: security-extended/u);
 });
 
-test("CodeQL keeps least privilege and immutable action pins", () => {
+test("CodeQL keeps least privilege and immutable, internally consistent action pins", () => {
   assert.match(codeql, /permissions:\n  contents: read\n  security-events: write/u);
   assert.doesNotMatch(codeql, /pull_request_target/u);
   assert.doesNotMatch(codeql, /secrets\./u);
   assert.match(codeql, new RegExp(`actions/checkout@${CHECKOUT_V7_0_1}`));
-  assert.equal(codeql.split(`github/codeql-action/init@${CODEQL_V4_37_3}`).length - 1, 1);
-  assert.equal(codeql.split(`github/codeql-action/analyze@${CODEQL_V4_37_3}`).length - 1, 1);
+
+  const init = /github\/codeql-action\/init@([0-9a-f]{40})/u.exec(codeql);
+  const analyze = /github\/codeql-action\/analyze@([0-9a-f]{40})/u.exec(codeql);
+  assert.ok(init, "CodeQL init must use a full immutable SHA");
+  assert.ok(analyze, "CodeQL analyze must use a full immutable SHA");
+  assert.equal((codeql.match(/github\/codeql-action\/init@/gu) ?? []).length, 1);
+  assert.equal((codeql.match(/github\/codeql-action\/analyze@/gu) ?? []).length, 1);
+  assert.equal(init[1], analyze[1], "CodeQL init and analyze must use the same reviewed release commit");
 });
 
 test("CodeQL runs on review, main, manual dispatch, and a bounded weekly schedule", () => {
