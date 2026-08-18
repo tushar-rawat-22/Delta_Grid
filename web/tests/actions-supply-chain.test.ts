@@ -54,7 +54,7 @@ test("every Node setup step explicitly disables package-manager caching", () => 
     const setupBlocks = workflow.split(/(?=\n\s*- name: )/u).filter((block) => block.includes("uses: actions/setup-node@"));
     assert.ok(setupBlocks.length > 0, `${path} must expose its setup-node block`);
     for (const block of setupBlocks) {
-      assert.match(block, /package-manager-cache: false/u, `${path} must explicitly disable setup-node package caching`);
+      assert.match(block, /["']?package-manager-cache["']?: false/u, `${path} must explicitly disable setup-node package caching`);
     }
   }
 });
