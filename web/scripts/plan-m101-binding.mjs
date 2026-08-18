@@ -25,7 +25,6 @@ export function planM101BindingFromHandoff(inputPath) {
   if (typeof dataSection !== "string" || typeof budgetSection !== "string") {
     fail("M101_PLAN_PROTOCOL_SECTIONS_INVALID");
   }
-
   if (!dataSection.includes("Binance public spot OHLCV")) fail("M101_PLAN_PROVIDER_DECLARATION_UNSUPPORTED");
   if (!dataSection.includes("settled one-hour")) fail("M101_PLAN_INTERVAL_DECLARATION_UNSUPPORTED");
 
@@ -52,8 +51,10 @@ export function planM101BindingFromHandoff(inputPath) {
     budget_id: "UNRESOLVED_TRUSTED_LOCAL_FACT",
     fixed_trial_budget: "UNRESOLVED_TRUSTED_LOCAL_FACT",
     permit_expiry: "UNRESOLVED_TRUSTED_LOCAL_FACT",
+    m94_request_and_reservation_identity: "UNRESOLVED_TRUSTED_LOCAL_FACT",
+    m102_registry_snapshot_identity: "UNRESOLVED_TRUSTED_LOCAL_FACT",
     m102_family_variant_identity: "UNRESOLVED_TRUSTED_LOCAL_FACT",
-    m103_program_identity: "UNRESOLVED_TRUSTED_LOCAL_FACT",
+    m103_campaign_program_identity: "UNRESOLVED_TRUSTED_LOCAL_FACT",
   };
 
   const core = {
@@ -82,13 +83,23 @@ export function planM101BindingFromHandoff(inputPath) {
     resolution_sequence: [
       step(1, "M101_DATASET_DESCRIPTOR", "CERTIFY_EXISTING_FORWARD_RELEASE", true, false),
       step(2, "M101_DATASET_DESCRIPTOR", "CREATE_EXACT_DEVELOPMENT_DATASET_DESCRIPTOR", false, true),
-      step(3, "M101_DEVELOPMENT_PERMIT", "INITIALIZE_OR_INSPECT_PRIVATE_AUTHORITY_RUNTIME", false, true),
-      step(4, "M101_DEVELOPMENT_PERMIT", "ISSUE_FINITE_DEVELOPMENT_PERMIT", false, true),
-      step(5, "M94_TRIAL_LEDGER_VIA_M101", "REGISTER_FINITE_DEVELOPMENT_BUDGET", false, true),
-      step(6, "M102_SEALED_EXPERIMENT_REGISTRY", "VERIFY_SEALED_FAMILY_AND_VARIANT_IDENTITY", true, false),
-      step(7, "M103_PROGRAM_PROTOCOL", "VERIFY_PRE_RESULT_PROGRAM_IDENTITY", true, false),
+      step(3, "M101_DEVELOPMENT_PERMIT", "INSPECT_PRIVATE_AUTHORITY_RUNTIME", true, false),
+      step(4, "M101_DEVELOPMENT_PERMIT", "INITIALIZE_PRIVATE_AUTHORITY_RUNTIME_IF_ABSENT", false, true),
+      step(5, "M102_SEALED_EXPERIMENT_REGISTRY", "VERIFY_STABLE_REGISTRY_FAMILY_AND_VARIANT_IDENTITY", true, false),
+      step(6, "M101_DEVELOPMENT_PERMIT", "ISSUE_FINITE_DEVELOPMENT_PERMIT", false, true),
+      step(7, "M94_TRIAL_LEDGER_VIA_M101", "REGISTER_FINITE_DEVELOPMENT_BUDGET", false, true),
       step(8, "M94_TRIAL_LEDGER_VIA_M101", "ADMIT_ONE_METADATA_ONLY_DEVELOPMENT_TRIAL", false, true),
+      step(9, "M103_PROGRAM_PROTOCOL", "PREPARE_AND_FREEZE_PRE_RESULT_PROGRAM_BINDINGS", false, true),
+      step(10, "M103_PROGRAM_PROTOCOL", "FOUNDER_ACTIVATE_EXACT_FROZEN_PROGRAM_BEFORE_RESULTS", false, true),
     ],
+    dependency_invariants: [
+      "M102_STABLE_FAMILY_IDENTITY_PRECEDES_M101_PERMIT_ISSUANCE",
+      "M101_PERMIT_AND_M94_BUDGET_PRECEDE_METADATA_ONLY_ADMISSION",
+      "M101_ADMISSION_PRECEDES_RESULT_BEARING_M102_EXECUTION",
+      "M103_PRE_RESULT_PROGRAM_BINDS_EXACT_M94_M101_AND_STABLE_M102_IDENTITIES",
+      "M103_FOUNDER_ACTIVATION_PRECEDES_RESULT_BEARING_EXECUTION_AUTHORITY",
+    ],
+    stop_boundary: "PLAN_STOPS_BEFORE_RESULT_BEARING_M102_EXECUTION",
     execution_boundary: {
       planner_mode: "READ_ONLY_PREPARATION_ONLY",
       commands_executed: false,
@@ -100,6 +111,9 @@ export function planM101BindingFromHandoff(inputPath) {
       budget_registered: false,
       trial_reserved: false,
       development_admitted: false,
+      m103_campaign_admitted: false,
+      m103_program_frozen: false,
+      m103_program_activated: false,
       result_execution_authorized: false,
       protected_evidence_opened: false,
       mission104_authorized: false,
@@ -111,11 +125,7 @@ export function planM101BindingFromHandoff(inputPath) {
 
   const canonicalCore = canonicalJson(core);
   const planHash = sha256(canonicalCore);
-  return {
-    ...core,
-    plan_id: `m101-binding-plan-${planHash}`,
-    plan_hash_sha256: planHash,
-  };
+  return { ...core, plan_id: `m101-binding-plan-${planHash}`, plan_hash_sha256: planHash };
 }
 
 function exactLineValue(section, label) {
@@ -137,56 +147,28 @@ function step(order, owner, action, readOnly, requiresExplicitAcknowledgement) {
   };
 }
 
-function canonicalJson(value) {
-  return JSON.stringify(canonicalize(value));
-}
-
+function canonicalJson(value) { return JSON.stringify(canonicalize(value)); }
 function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
   if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value)
-        .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
-        .map(([key, nested]) => [key, canonicalize(nested)]),
-    );
+    return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0).map(([key, nested]) => [key, canonicalize(nested)]));
   }
-  if (
-    value === null ||
-    typeof value === "string" ||
-    typeof value === "boolean" ||
-    (typeof value === "number" && Number.isFinite(value))
-  ) return value;
+  if (value === null || typeof value === "string" || typeof value === "boolean" || (typeof value === "number" && Number.isFinite(value))) return value;
   fail("M101_PLAN_CANONICAL_VALUE_INVALID");
 }
-
-function sha256(value) {
-  return createHash("sha256").update(value, "utf8").digest("hex");
-}
-
-function fail(reason) {
-  const error = new Error(reason);
-  error.reason = reason;
-  throw error;
-}
-
+function sha256(value) { return createHash("sha256").update(value, "utf8").digest("hex"); }
+function fail(reason) { const error = new Error(reason); error.reason = reason; throw error; }
 function isMainModule() {
   if (!process.argv[1]) return false;
-  try {
-    return realpathSync.native(process.argv[1]) === fileURLToPath(import.meta.url);
-  } catch {
-    return false;
-  }
+  try { return realpathSync.native(process.argv[1]) === fileURLToPath(import.meta.url); } catch { return false; }
 }
 
 if (isMainModule()) {
   try {
     if (process.argv.length !== 3) fail("M101_PLAN_EXACTLY_ONE_HANDOFF_PATH_REQUIRED");
-    const result = planM101BindingFromHandoff(process.argv[2]);
-    process.stdout.write(`${canonicalJson(result)}\n`);
+    process.stdout.write(`${canonicalJson(planM101BindingFromHandoff(process.argv[2]))}\n`);
   } catch (error) {
-    const reason = error && typeof error === "object" && "reason" in error
-      ? String(error.reason)
-      : "M101_BINDING_PLAN_FAILED";
+    const reason = error && typeof error === "object" && "reason" in error ? String(error.reason) : "M101_BINDING_PLAN_FAILED";
     process.stderr.write(`${reason}\n`);
     process.exitCode = 2;
   }
