@@ -1,0 +1,53 @@
+name: DeltaGrid Live Public Boundary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-public-boundary
+  cancel-in-progress: true
+
+jobs:
+  verify-live-boundary:
+    name: verify-live-boundary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
+      DELTAGRID_FOUNDER_URL: https://deltagrid-founder-gateway.tushar142004.workers.dev/research
+    steps:
+      - name: Check out canonical repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify public availability and founder isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash web/scripts/verify-live-boundary.sh | tee "$RUNNER_TEMP/live-boundary.txt"
+
+      - name: Publish verification summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## DeltaGrid live public/private boundary"
+            echo
+            echo "Checked public observer: \`$DELTAGRID_PUBLIC_BASE\`"
+            echo
+            echo "Checked anonymous founder boundary: \`$DELTAGRID_FOUNDER_URL\`"
+            echo
+            if [ -f "$RUNNER_TEMP/live-boundary.txt" ]; then
+              echo '```text'
+              cat "$RUNNER_TEMP/live-boundary.txt"
+              echo '```'
+            else
+              echo "Verifier did not produce an output file. Inspect the failed verification step."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
