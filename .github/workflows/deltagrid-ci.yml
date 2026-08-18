@@ -121,12 +121,12 @@ jobs:
 
       - name: Set up Node 24
         # actions/setup-node v6.5.0
-        # No package-manager cache input is supplied. The checked-in web/package.json
-        # intentionally has no packageManager/devEngines.packageManager declaration,
-        # so setup-node's automatic package-manager caching is not activated.
+        # Keep package-manager caching explicitly disabled rather than relying on
+        # package metadata or action defaults that may change across action releases.
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
           node-version: "24.18.1"
+          "package-manager-cache": false
 
       - name: Set up Python 3.12
         # actions/setup-python v7.0.0

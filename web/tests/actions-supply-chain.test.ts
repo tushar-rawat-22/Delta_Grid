@@ -18,18 +18,17 @@ const activeUses = joined
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8")) as Record<string, unknown>;
 const dependabot = fs.readFileSync("../.github/dependabot.yml", "utf8");
 
-const CHECKOUT_V7_0_1 = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1";
-const SETUP_PYTHON_V7_0_0 = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97";
-const SETUP_NODE_V6_5_0 = "actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38";
+const REVIEWED_ACTIONS = ["actions/checkout", "actions/setup-python", "actions/setup-node"] as const;
 
-test("company workflows use reviewed immutable action pins", () => {
-  assert.ok(activeUses.includes(`uses: ${CHECKOUT_V7_0_1}`));
-  assert.ok(activeUses.includes(`uses: ${SETUP_PYTHON_V7_0_0}`));
-  assert.ok(activeUses.includes(`uses: ${SETUP_NODE_V6_5_0}`));
+test("company workflows use only reviewed actions with immutable full-SHA pins", () => {
+  for (const action of REVIEWED_ACTIONS) {
+    assert.ok(activeUses.some((line) => line.startsWith(`uses: ${action}@`)), `${action} must remain in the workflow set`);
+  }
 
   for (const line of activeUses) {
-    if (!line.includes("actions/checkout@") && !line.includes("actions/setup-python@") && !line.includes("actions/setup-node@")) continue;
-    assert.match(line, /@[0-9a-f]{40}$/u);
+    const match = /^uses: ([^@\s]+)@([0-9a-f]{40})$/u.exec(line);
+    assert.ok(match, `active action must use an immutable 40-character SHA: ${line}`);
+    assert.ok(REVIEWED_ACTIONS.includes(match[1] as (typeof REVIEWED_ACTIONS)[number]), `unreviewed action identity: ${match[1]}`);
   }
 });
 
@@ -43,17 +42,19 @@ test("old action identities may exist only as historical comments, never active 
   }
 });
 
-test("Node setup does not silently enable package-manager caching", () => {
+test("every Node setup step explicitly disables package-manager caching", () => {
   assert.equal(packageJson.packageManager, undefined);
   const devEngines = packageJson.devEngines as Record<string, unknown> | undefined;
   assert.equal(devEngines?.packageManager, undefined);
   assert.doesNotMatch(joined, /^\s*cache:\s*/mu);
   assert.doesNotMatch(joined, /cache-dependency-path:/u);
 
-  for (const [, workflow] of workflows) {
-    if (!workflow.includes(SETUP_NODE_V6_5_0)) continue;
-    if (workflow.includes("package-manager-cache:")) {
-      assert.match(workflow, /package-manager-cache: false/u);
+  for (const [path, workflow] of workflows) {
+    if (!workflow.includes("uses: actions/setup-node@")) continue;
+    const setupBlocks = workflow.split(/(?=\n\s*- name: )/u).filter((block) => block.includes("uses: actions/setup-node@"));
+    assert.ok(setupBlocks.length > 0, `${path} must expose its setup-node block`);
+    for (const block of setupBlocks) {
+      assert.match(block, /["']?package-manager-cache["']?: false/u, `${path} must explicitly disable setup-node package caching`);
     }
   }
 });
