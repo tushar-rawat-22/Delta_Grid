@@ -169,7 +169,9 @@ export function PreregistrationWorkbench() {
                     </button>
                   </section>
                 ) : (
-                  <p className="prereg-message">Save a THESIS record before compiling a preregistration review.</p>
+                  <p className="prereg-message">
+                    No saved THESIS exists yet. Close this panel, open Hypotheses, choose a Candidate question and click Draft thesis, then complete and Save record. You can also use Notebook → New record → Type THESIS.
+                  </p>
                 )}
 
                 {review ? <ReviewResult review={review} /> : null}
