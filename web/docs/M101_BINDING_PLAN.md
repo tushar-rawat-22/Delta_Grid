@@ -24,6 +24,12 @@ The preparation sequence follows the actual authority dependencies rather than t
 
 Mission 102 result-bearing execution is intentionally outside this plan. Mission 102 requires an already admitted Mission 101 trial. Mission 103 in turn freezes the complete inferential program around exact M94/M101 bindings and stable M102 identities before result inspection. The planner therefore stops before result-bearing Mission 102 execution rather than placing Mission 103 too early or pretending admission itself is execution authority.
 
+## Contract-drift guard
+
+`web/tests/m101-orchestration-contract.test.ts` independently compares the JavaScript planner vocabulary with the canonical Python Mission 101 and Mission 102 operator surfaces. It fails CI if a planned read-only action loses its backing operator, if a planned mutation loses its explicit acknowledgement contract, if read-only checks move behind the first write, or if the planner starts naming result-bearing Mission 102 execution.
+
+The drift guard is deliberately static. It reads committed source only; it does not invoke Python, open SQLite, access a private runtime, contact a provider, or execute a Mission command. This keeps cross-language orchestration validation available in GitHub CI without turning CI into an authority-bearing operator.
+
 The planner cannot execute any of those steps. Its output records `commands_executed: false`, `writes_performed: false`, no descriptor/runtime creation, no permit issue or consumption, no budget registration, no trial reservation/admission, no M103 campaign/program mutation, no result execution, no protected evidence opening, no Mission 104 authority, no trading authority and no capital authority.
 
 This separation lets GitHub-side engineering harden orchestration and dependency validation while private certified custody, permit and trial runtimes stay on the trusted local operator boundary.
