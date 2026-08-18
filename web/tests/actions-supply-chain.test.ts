@@ -16,6 +16,7 @@ const activeUses = joined
   .map((line) => line.trim())
   .filter((line) => line.startsWith("uses:"));
 const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8")) as Record<string, unknown>;
+const dependabot = fs.readFileSync("../.github/dependabot.yml", "utf8");
 
 const CHECKOUT_V7_0_1 = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1";
 const SETUP_PYTHON_V7_0_0 = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97";
@@ -63,4 +64,12 @@ test("workflows retain least-privilege checkout credentials", () => {
     assert.match(workflow, /permissions:\n\s+contents: read/u, `${path} must keep contents read-only`);
     assert.match(workflow, /persist-credentials: false/u, `${path} must disable persisted Git credentials`);
   }
+});
+
+test("Dependabot never opens unattended major-version upgrade PRs", () => {
+  const majorIgnore = /ignore:\n\s+- dependency-name: "\*"\n\s+update-types:\n\s+- "version-update:semver-major"/gu;
+  const matches = dependabot.match(majorIgnore) ?? [];
+  assert.equal(matches.length, 2, "github-actions and web npm must both ignore major updates");
+  assert.match(dependabot, /actions-minor-patch:[\s\S]*?update-types:\n\s+- "minor"\n\s+- "patch"/u);
+  assert.match(dependabot, /web-minor-patch:[\s\S]*?update-types:\n\s+- "minor"\n\s+- "patch"/u);
 });
