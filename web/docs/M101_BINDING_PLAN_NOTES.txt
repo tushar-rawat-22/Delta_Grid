@@ -1,0 +1,1 @@
+This planner derives only an authority-zero preparation plan from a verified V2 founder preregistration handoff. It does not create datasets, permits, budgets, admissions, results, protected-evidence openings, trading authority, or capital authority.
