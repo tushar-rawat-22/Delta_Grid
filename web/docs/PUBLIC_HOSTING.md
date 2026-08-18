@@ -61,6 +61,16 @@ npm run deploy:public
 
 The repository also contains `.github/workflows/public-observer-release.yml` for controlled production releases. It requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub secrets and an exact `release_sha` input. The Cloudflare token should be scoped only to the account and permissions needed to deploy this Worker.
 
+## Unattended live-boundary verification
+
+`.github/workflows/live-public-boundary.yml` provides an independent external smoke check from GitHub-hosted infrastructure. It runs hourly and may also be dispatched manually. The workflow needs no Cloudflare token, founder credential, cookie, Access service token, D1 binding, or deployment permission.
+
+Its verifier, `web/scripts/verify-live-boundary.sh`, checks the live system from an anonymous Internet client. It requires the public homepage, sanitized Research Demo, expected security headers and public robots policy to remain available. It also fails if known founder-only markers appear in public HTML, or if the anonymous founder workspace stops being denied or redirected to Cloudflare Access.
+
+This monitor is intentionally a boundary detector, not an authenticated Founder Mode test. It must never obtain credentials just to make the check more comprehensive: the security property being tested is that an anonymous observer cannot receive founder content.
+
+A branded domain can later replace the two default endpoint variables without changing the verification model. Until then, the `workers.dev` hostname remains subject to the existing hostname-specific `X-Robots-Tag: noindex, nofollow` requirement.
+
 ## Production hardening sequence
 
 After the first public release:
@@ -68,7 +78,7 @@ After the first public release:
 1. make every major product capability observable through a sanitized public view or public explanation;
 2. keep the visible founder login connected to the existing Access-protected gateway;
 3. preserve the two-Worker authority split and do not create a second hosting stack;
-4. add uptime and synthetic route checks from outside Cloudflare;
+4. keep the external live-boundary workflow green and treat a failure as a release/security incident until explained;
 5. add deployment provenance to release records;
 6. keep rollback to a known Worker version available;
 7. enable only the minimum observability needed for each surface, with founder logs treated as sensitive operational data;
