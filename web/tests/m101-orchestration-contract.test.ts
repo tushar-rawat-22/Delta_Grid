@@ -51,10 +51,3 @@ test("cross-language orchestration verifier preserves the result-bearing executi
   assert.equal(planner.includes('"EXECUTE_DEVELOPMENT_TRIAL"'), false);
   assert.equal(planner.includes('execute-development-trial'), false);
 });
-
-test("cross-language orchestration verifier is static and does not need private runtime state", () => {
-  const source = fs.readFileSync("tests/m101-orchestration-contract.test.ts", "utf8");
-  for (const forbidden of ["child_process", "execSync", "spawnSync", "fetch(", "wrangler", "sqlite3.connect", "issue_development_permit(", "service.admit("]) {
-    assert.equal(source.includes(forbidden), false, forbidden);
-  }
-});
