@@ -2,7 +2,7 @@ import { sha256Hex } from "./crypto.ts";
 import type { FounderIdentity } from "./auth.ts";
 
 const TOKEN_VERSION = "v1";
-const TOKEN_MAX_TTL_SECONDS = 8 * 60 * 60;
+const TOKEN_TTL_SECONDS = 15 * 60;
 const TOKEN_CLOCK_SKEW_SECONDS = 30;
 
 export type ResearchSecurityEnv = {
@@ -17,8 +17,8 @@ export async function issueResearchCsrf(identity: FounderIdentity, env: Research
   const nowSeconds = Math.floor(now / 1000);
   const accessExpiry = Number.isSafeInteger(identity.expiresAt) ? Number(identity.expiresAt) : null;
   const expires = Math.min(
-    nowSeconds + TOKEN_MAX_TTL_SECONDS,
-    accessExpiry ?? nowSeconds + TOKEN_MAX_TTL_SECONDS,
+    nowSeconds + TOKEN_TTL_SECONDS,
+    accessExpiry ?? nowSeconds + TOKEN_TTL_SECONDS,
   );
   const ownerId = await founderOwnerId(identity);
   const payload = `${TOKEN_VERSION}.${expires}.${ownerId}`;
@@ -39,7 +39,7 @@ export async function verifyResearchCsrf(
   if (
     !Number.isSafeInteger(expires) ||
     expires < nowSeconds ||
-    expires > nowSeconds + TOKEN_MAX_TTL_SECONDS + TOKEN_CLOCK_SKEW_SECONDS
+    expires > nowSeconds + TOKEN_TTL_SECONDS + TOKEN_CLOCK_SKEW_SECONDS
   ) return false;
   if (
     Number.isSafeInteger(identity.expiresAt) &&
