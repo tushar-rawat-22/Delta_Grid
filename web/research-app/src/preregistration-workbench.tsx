@@ -40,10 +40,11 @@ export function PreregistrationWorkbench() {
 
   async function openWorkbench() {
     setOpen(true);
-    if (loadState === "READY" || loadState === "LOADING") return;
+    if (loadState === "LOADING") return;
 
     setLoadState("LOADING");
     setError(null);
+    setReview(null);
     try {
       const response = await fetch("/api/research/v1/bootstrap", {
         credentials: "same-origin",
@@ -58,7 +59,11 @@ export function PreregistrationWorkbench() {
         (record) => record.record_type === "THESIS" && Boolean(record.record_id),
       );
       setTheses(next);
-      setSelectedId((current) => current || next[0]?.record_id || "");
+      setSelectedId((current) =>
+        next.some((record) => record.record_id === current)
+          ? current
+          : next[0]?.record_id || "",
+      );
       setLoadState("READY");
     } catch (cause) {
       setLoadState("FAILED");
