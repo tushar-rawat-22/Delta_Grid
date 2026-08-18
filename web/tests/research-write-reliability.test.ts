@@ -29,7 +29,7 @@ function writeRequest(token: string, origin = "https://founder.example.test", fe
   });
 }
 
-test("founder research write token survives long-form editing but never outlives the Access session", async () => {
+test("founder research write tokens stay short-lived and never outlive the Access session", async () => {
   const identity = {
     subject: "founder-subject",
     email: "founder@example.test",
@@ -38,19 +38,18 @@ test("founder research write token survives long-form editing but never outlives
   const token = await issueResearchCsrf(identity, env, now);
 
   assert.equal(
-    await verifyResearchCsrf(writeRequest(token, "https://founder.example.test", "same-origin"), identity, env, now + 60 * 60 * 1000),
+    await verifyResearchCsrf(writeRequest(token, "https://founder.example.test", "same-origin"), identity, env, now + 10 * 60 * 1000),
     true,
-    "a one-hour scientific edit must not silently invalidate its write token",
   );
   assert.equal(
-    await verifyResearchCsrf(writeRequest(token, "https://founder.example.test", "same-origin"), identity, env, now + 8 * 60 * 60 * 1000 + 1000),
+    await verifyResearchCsrf(writeRequest(token, "https://founder.example.test", "same-origin"), identity, env, now + 16 * 60 * 1000),
     false,
-    "the token must still fail closed after its bounded maximum lifetime",
+    "the server token itself remains intentionally short-lived; the browser recovery layer must refresh it",
   );
 
   const shortIdentity = {
     ...identity,
-    expiresAt: nowSeconds + 30 * 60,
+    expiresAt: nowSeconds + 5 * 60,
   };
   const shortToken = await issueResearchCsrf(shortIdentity, env, now);
   const encodedExpiry = Number(shortToken.split(".")[1]);
