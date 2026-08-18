@@ -89,6 +89,52 @@ jobs:
             --strict \
             --message "DeltaGrid public observer ${RELEASE_SHA}"
 
-      - name: Record production deployment status
+      - name: Record Cloudflare deployment state
         working-directory: web
-        run: ./node_modules/.bin/wrangler deployments status --config wrangler.jsonc
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler deployments status \
+            --config wrangler.jsonc \
+            | tee "$RUNNER_TEMP/public-deployment.txt"
+          ./node_modules/.bin/wrangler versions list \
+            --json \
+            --config wrangler.jsonc \
+            > "$RUNNER_TEMP/public-versions.json"
+
+      - name: Verify live public/private boundary after release
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash web/scripts/verify-live-boundary.sh | tee "$RUNNER_TEMP/live-boundary.txt"
+
+      - name: Publish release provenance summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## DeltaGrid Public Observer release"
+            echo
+            echo "Requested commit: \`$RELEASE_SHA\`"
+            echo
+            echo "Workflow run: \`${GITHUB_RUN_ID}\`"
+            echo
+            if [ -f "$RUNNER_TEMP/public-deployment.txt" ]; then
+              echo "### Cloudflare deployment"
+              echo '```text'
+              cat "$RUNNER_TEMP/public-deployment.txt"
+              echo '```'
+            fi
+            if [ -f "$RUNNER_TEMP/public-versions.json" ]; then
+              echo "### Recent Worker versions"
+              echo '```json'
+              cat "$RUNNER_TEMP/public-versions.json"
+              echo '```'
+            fi
+            if [ -f "$RUNNER_TEMP/live-boundary.txt" ]; then
+              echo "### Live public/private boundary"
+              echo '```text'
+              cat "$RUNNER_TEMP/live-boundary.txt"
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
