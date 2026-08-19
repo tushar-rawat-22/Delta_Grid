@@ -38,7 +38,7 @@ test("live verifier checks public availability and all anonymous private surface
   }
 
   assert.match(verifier, /verify_anonymous_denied/u);
-  assert.match(verifier, /cloudflareaccess\\\.com/u);
+  assert.ok(verifier.includes("cloudflareaccess\\.com"));
   assert.match(verifier, /401\|403/u);
   assert.match(verifier, /ANONYMOUS_PRIVATE_SURFACE_COUNT=4/u);
   assert.match(verifier, /DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS/u);
