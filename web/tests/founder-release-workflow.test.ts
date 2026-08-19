@@ -3,6 +3,7 @@ import fs from "node:fs";
 import test from "node:test";
 
 const workflow = fs.readFileSync("../.github/workflows/founder-gateway-release.yml", "utf8");
+const founderConfig = fs.readFileSync("wrangler.founder.jsonc", "utf8");
 
 test("founder release requires a main-dispatched exact current-main commit", () => {
   assert.match(workflow, /release_sha:/u);
@@ -27,9 +28,12 @@ test("Cloudflare production credentials are unavailable to founder build and tes
   assert.equal(accountBindings.length, 3);
 });
 
-test("founder release fails closed when remote D1 migrations are pending", () => {
+test("founder release checks remote D1 migrations through the configured binding", () => {
+  assert.match(founderConfig, /"binding": "DELTAGRID_SYSTEM_DB"/u);
+  assert.match(founderConfig, /"database_name": "deltagrid-founder-system"/u);
   assert.match(workflow, /wrangler d1 migrations list/u);
-  assert.match(workflow, /deltagrid-founder-system/u);
+  assert.match(workflow, /DELTAGRID_SYSTEM_DB/u);
+  assert.doesNotMatch(workflow, /d1 migrations list \\\n\s+deltagrid-founder-system/u);
   assert.match(workflow, /--remote/u);
   assert.match(workflow, /No migrations to apply!/u);
   assert.doesNotMatch(workflow, /d1 migrations apply/u);
