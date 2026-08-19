@@ -2,21 +2,21 @@ import fs from "node:fs";
 
 const expected = {
   dependencies: {
-    jose: "6.2.4",
-    next: "16.3.0",
+    jose: "6.2.9",
+    next: "16.3.1",
     react: "19.2.8",
     "react-dom": "19.2.8",
   },
   devDependencies: {
     "@types/node": "24.13.3",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "19.2.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
     "@vitejs/plugin-react": "6.0.5",
     eslint: "9.39.5",
-    "eslint-config-next": "16.3.0",
+    "eslint-config-next": "16.3.1",
     typescript: "6.0.3",
     vite: "8.2.1",
-    wrangler: "4.120.1",
+    wrangler: "4.123.0",
   },
 };
 
@@ -24,7 +24,7 @@ const expectedAllowScripts = {
   "esbuild@0.28.1": true,
   "fsevents@2.3.3": true,
   "unrs-resolver@1.12.2": true,
-  "workerd@1.20260804.1": true,
+  "workerd@1.20260811.1": true,
 };
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
