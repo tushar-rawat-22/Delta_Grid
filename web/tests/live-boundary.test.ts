@@ -22,6 +22,14 @@ test("live boundary workflow needs no deployment or founder credentials", () => 
   assert.doesNotMatch(verifier, /CF-Access-Client/u);
 });
 
+test("live monitor configures the private Worker as a base, not one privileged path", () => {
+  assert.match(
+    workflow,
+    /DELTAGRID_FOUNDER_BASE: https:\/\/deltagrid-founder-gateway\.tushar142004\.workers\.dev/u,
+  );
+  assert.doesNotMatch(workflow, /DELTAGRID_FOUNDER_URL:/u);
+});
+
 test("live verifier checks public availability and all anonymous private surfaces", () => {
   assert.match(verifier, /deltagrid-observer\.tushar142004\.workers\.dev/u);
   assert.match(verifier, /deltagrid-founder-gateway\.tushar142004\.workers\.dev/u);
