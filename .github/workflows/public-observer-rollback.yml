@@ -29,8 +29,6 @@ jobs:
       NEXT_TELEMETRY_DISABLED: "1"
       WRANGLER_SEND_METRICS: "false"
       WRANGLER_SEND_ERROR_REPORTS: "false"
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       TARGET_VERSION_ID: ${{ inputs.version_id }}
       ROLLBACK_CONFIRMATION: ${{ inputs.confirmation }}
 
@@ -85,6 +83,9 @@ jobs:
       - name: Verify target version exists before rollback
         working-directory: web
         shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
           ./node_modules/.bin/wrangler versions view "$TARGET_VERSION_ID" \
@@ -99,6 +100,9 @@ jobs:
       - name: Record pre-rollback deployment state
         working-directory: web
         shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
           ./node_modules/.bin/wrangler deployments status \
@@ -108,6 +112,9 @@ jobs:
       - name: Roll back public observer to exact Worker version
         working-directory: web
         shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
           ./node_modules/.bin/wrangler rollback "$TARGET_VERSION_ID" \
@@ -117,6 +124,9 @@ jobs:
       - name: Record post-rollback deployment state
         working-directory: web
         shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           set -euo pipefail
           ./node_modules/.bin/wrangler deployments status \
