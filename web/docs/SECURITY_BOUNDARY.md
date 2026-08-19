@@ -40,6 +40,9 @@ Compromise of the public observer must not provide a path to the founder Worker,
 
 - GitHub release jobs expose Cloudflare production credentials only to the individual Wrangler steps that require Cloudflare API access;
 - dependency installation, audits, compilation, tests, repository-boundary verification and anonymous live-boundary checks run without those credentials;
+- public and founder deployment jobs run only when the workflow dispatch itself targets `refs/heads/main`, preventing accidental execution of a stale or feature-branch workflow definition;
+- the requested deploy commit must independently equal current `main`; the dispatch-ref check and deploy-target check are separate invariants;
+- GitHub environment branch/tag protection remains the external control that should prevent a deliberately modified non-main workflow from receiving production environment access, because a repository-local guard cannot protect against a branch that removes its own guard;
 - public and founder deployment workflows use separate protected GitHub environments and separate concurrency locks;
 - founder application secrets are not imported into GitHub Actions; deployed Worker secret bindings remain at Cloudflare;
 - schema migration remains a separate reviewed operation and is never performed implicitly by a Worker release.

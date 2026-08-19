@@ -4,9 +4,10 @@ import test from "node:test";
 
 const workflow = fs.readFileSync("../.github/workflows/founder-gateway-release.yml", "utf8");
 
-test("founder release requires an exact current-main commit", () => {
+test("founder release requires a main-dispatched exact current-main commit", () => {
   assert.match(workflow, /release_sha:/u);
   assert.match(workflow, /\^\[0-9a-f\]\{40\}\$/u);
+  assert.match(workflow, /if: github\.ref == 'refs\/heads\/main'/u);
   assert.match(workflow, /git fetch --no-tags origin main/u);
   assert.match(workflow, /git rev-parse FETCH_HEAD/u);
   assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
