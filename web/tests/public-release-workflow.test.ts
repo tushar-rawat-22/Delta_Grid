@@ -7,6 +7,7 @@ const workflow = fs.readFileSync("../.github/workflows/public-observer-release.y
 test("public release remains exact-current-main and static-only preflighted", () => {
   assert.match(workflow, /release_sha:/u);
   assert.match(workflow, /\^\[0-9a-f\]\{40\}\$/u);
+  assert.match(workflow, /if: github\.ref == 'refs\/heads\/main'/u);
   assert.match(workflow, /git fetch --no-tags origin main/u);
   assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
   assert.match(workflow, /npm run check/u);
