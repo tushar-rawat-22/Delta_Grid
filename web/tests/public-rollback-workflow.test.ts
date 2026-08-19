@@ -4,12 +4,19 @@ import test from "node:test";
 
 const workflow = fs.readFileSync("../.github/workflows/public-observer-rollback.yml", "utf8");
 
-test("public rollback requires an exact version and explicit human confirmation", () => {
+test("public rollback requires main, an exact version and explicit human confirmation", () => {
+  assert.match(workflow, /test "\$GITHUB_REF" = "refs\/heads\/main"/u);
   assert.match(workflow, /version_id:/u);
   assert.match(workflow, /confirmation:/u);
   assert.match(workflow, /ROLLBACK_PUBLIC_OBSERVER/u);
   assert.match(workflow, /\^\[0-9a-f\]\{8\}-\[0-9a-f\]\{4\}-\[0-9a-f\]\{4\}-\[0-9a-f\]\{4\}-\[0-9a-f\]\{12\}\$/u);
   assert.match(workflow, /wrangler versions view "\$TARGET_VERSION_ID"/u);
+});
+
+test("public rollback pins its tooling to the immutable dispatched commit", () => {
+  assert.match(workflow, /ref: \$\{\{ github\.sha \}\}/u);
+  assert.match(workflow, /test "\$\(git rev-parse HEAD\)" = "\$GITHUB_SHA"/u);
+  assert.doesNotMatch(workflow, /ref: main/u);
 });
 
 test("public rollback shares the production concurrency lock and verifies isolation afterward", () => {
