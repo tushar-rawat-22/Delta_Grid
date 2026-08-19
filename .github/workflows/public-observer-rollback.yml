@@ -1,0 +1,173 @@
+name: DeltaGrid Public Observer Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_id:
+        description: Exact previously deployed Cloudflare Worker version ID
+        required: true
+        type: string
+      confirmation:
+        description: Type ROLLBACK_PUBLIC_OBSERVER to confirm the production rollback
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-observer-production
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    name: public-observer-rollback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: public-production
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      WRANGLER_SEND_METRICS: "false"
+      WRANGLER_SEND_ERROR_REPORTS: "false"
+      TARGET_VERSION_ID: ${{ inputs.version_id }}
+      ROLLBACK_CONFIRMATION: ${{ inputs.confirmation }}
+
+    steps:
+      - name: Validate rollback request
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main" || {
+            echo "Refusing rollback from any ref other than main"
+            exit 1
+          }
+          test "$ROLLBACK_CONFIRMATION" = "ROLLBACK_PUBLIC_OBSERVER" || {
+            echo "Refusing rollback without exact confirmation phrase"
+            exit 1
+          }
+          [[ "$TARGET_VERSION_ID" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]] || {
+            echo "version_id must be an exact lowercase Cloudflare Worker UUID"
+            exit 1
+          }
+
+      - name: Check out exact dispatched main tooling
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Verify checkout identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
+
+      - name: Set up Node 24
+        # actions/setup-node v6.5.0
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: "24.18.1"
+          "package-manager-cache": false
+
+      - name: Install locked web tooling
+        working-directory: web
+        run: npm run install:locked-safe
+
+      - name: Re-assert public static authority boundary
+        working-directory: web
+        run: npm run verify:public-deploy
+
+      - name: Verify target version exists before rollback
+        working-directory: web
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler versions view "$TARGET_VERSION_ID" \
+            --json \
+            --config wrangler.jsonc \
+            > "$RUNNER_TEMP/rollback-target.json"
+          grep -Fq "$TARGET_VERSION_ID" "$RUNNER_TEMP/rollback-target.json" || {
+            echo "Requested version was not returned by Cloudflare"
+            exit 1
+          }
+
+      - name: Record pre-rollback deployment state
+        working-directory: web
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler deployments status \
+            --config wrangler.jsonc \
+            | tee "$RUNNER_TEMP/pre-rollback-deployment.txt"
+
+      - name: Roll back public observer to exact Worker version
+        working-directory: web
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler rollback "$TARGET_VERSION_ID" \
+            --config wrangler.jsonc \
+            --message "DeltaGrid public observer rollback ${TARGET_VERSION_ID}"
+
+      - name: Record post-rollback deployment state
+        working-directory: web
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          ./node_modules/.bin/wrangler deployments status \
+            --config wrangler.jsonc \
+            | tee "$RUNNER_TEMP/post-rollback-deployment.txt"
+          ./node_modules/.bin/wrangler versions list \
+            --json \
+            --config wrangler.jsonc \
+            > "$RUNNER_TEMP/post-rollback-versions.json"
+
+      - name: Verify live public/private boundary after rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash web/scripts/verify-live-boundary.sh | tee "$RUNNER_TEMP/live-boundary.txt"
+
+      - name: Publish rollback provenance summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## DeltaGrid Public Observer rollback"
+            echo
+            echo "Requested Worker version: \`$TARGET_VERSION_ID\`"
+            echo
+            echo "Workflow source commit: \`$(git rev-parse HEAD 2>/dev/null || echo unavailable)\`"
+            echo
+            echo "Workflow run: \`${GITHUB_RUN_ID}\`"
+            echo
+            for item in \
+              "pre-rollback-deployment.txt:Pre-rollback deployment" \
+              "post-rollback-deployment.txt:Post-rollback deployment" \
+              "live-boundary.txt:Live public/private boundary"
+            do
+              file="${item%%:*}"
+              title="${item#*:}"
+              if [ -f "$RUNNER_TEMP/$file" ]; then
+                echo "### $title"
+                echo '```text'
+                cat "$RUNNER_TEMP/$file"
+                echo '```'
+              fi
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
