@@ -53,15 +53,17 @@ The planner is deliberately not an authority service. It cannot create a dataset
 
 The current safe ordering encoded by the planner is:
 
-1. certify the existing forward release read-only;
-2. verify the stable Mission 102 family/variant identity and inspect private authority state read-only;
-3. create the exact Mission 101 development descriptor only after the read-only prerequisites are proven;
-4. initialize the private authority runtime only if absent;
-5. issue the finite Mission 101 permit;
-6. register the finite Mission 94 development budget;
-7. perform one metadata-only Mission 101 admission/reservation;
-8. freeze and separately activate the exact pre-result Mission 103 program;
-9. stop before result-bearing Mission 102 execution unless a separate founder-authorized workflow explicitly reaches that boundary.
+1. read the controlling Mission 101 contract and confirm result-bearing authority remains closed;
+2. independently certify the existing forward-custody release read-only;
+3. inspect the stable Mission 102 registry/family/variant identity read-only;
+4. inspect the private Mission 101 authority runtime read-only;
+5. create the exact `REAL_MARKET_DEVELOPMENT` descriptor only after those read-only prerequisites are proven;
+6. initialize the private authority runtime only if inspection established that it is absent and the explicit acknowledgement is supplied;
+7. issue one finite Mission 101 development permit against the exact repository/dataset/release/family identity;
+8. register the finite Mission 94 development budget required for admission;
+9. reserve one metadata-only Mission 101 admission, establishing the exact M94 reservation/request and M101 permit-consumption chain;
+10. prepare and freeze the exact pre-result Mission 103 program using the now-existing M94/M101 bindings and stable M102 identities; and
+11. separately founder-activate that exact frozen program, then stop before result-bearing Mission 102 execution unless a separate founder-authorized workflow explicitly reaches that boundary.
 
 GitHub must never invent the private release, descriptor, permit, budget, reservation, runtime, or protected-evidence facts. Those remain trusted-local facts.
 
