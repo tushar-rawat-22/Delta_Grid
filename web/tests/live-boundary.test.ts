@@ -22,12 +22,38 @@ test("live boundary workflow needs no deployment or founder credentials", () => 
   assert.doesNotMatch(verifier, /CF-Access-Client/u);
 });
 
-test("live verifier checks public availability and anonymous founder isolation", () => {
+test("live monitor configures the private Worker as a base, not one privileged path", () => {
+  assert.match(
+    workflow,
+    /DELTAGRID_FOUNDER_BASE: https:\/\/deltagrid-founder-gateway\.tushar142004\.workers\.dev/u,
+  );
+  assert.doesNotMatch(workflow, /DELTAGRID_FOUNDER_URL:/u);
+});
+
+test("live verifier checks public availability and all anonymous private surfaces", () => {
   assert.match(verifier, /deltagrid-observer\.tushar142004\.workers\.dev/u);
-  assert.match(verifier, /deltagrid-founder-gateway\.tushar142004\.workers\.dev\/research/u);
+  assert.match(verifier, /deltagrid-founder-gateway\.tushar142004\.workers\.dev/u);
   assert.match(verifier, /PUBLIC_RESEARCH_DEMO=PASS/u);
   assert.match(verifier, /PUBLIC_PRIVATE_MARKER_SCAN=PASS/u);
-  assert.match(verifier, /FOUNDER_ACCESS_REDIRECT=PASS/u);
-  assert.match(verifier, /FOUNDER_ACCESS_DENIED_ANONYMOUS=PASS/u);
+
+  for (const privatePath of [
+    "/research",
+    "/founder",
+    "/api/research/v1/bootstrap",
+    "/agent/v1/status",
+  ]) {
+    assert.ok(verifier.includes(`$FOUNDER_BASE${privatePath}`), privatePath);
+  }
+
+  assert.match(verifier, /verify_anonymous_denied/u);
+  assert.ok(verifier.includes("cloudflareaccess\\.com"));
+  assert.match(verifier, /401\|403/u);
+  assert.match(verifier, /ANONYMOUS_PRIVATE_SURFACE_COUNT=4/u);
   assert.match(verifier, /DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS/u);
+});
+
+test("anonymous machine-path check is non-mutating and detects missing edge isolation", () => {
+  assert.match(verifier, /\$FOUNDER_BASE\/agent\/v1\/status/u);
+  assert.doesNotMatch(verifier, /--request\s+POST|\s-X\s+POST/u);
+  assert.doesNotMatch(verifier, /--data|--form/u);
 });

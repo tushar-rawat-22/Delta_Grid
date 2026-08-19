@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PUBLIC_BASE="${DELTAGRID_PUBLIC_BASE:-https://deltagrid-observer.tushar142004.workers.dev}"
-FOUNDER_URL="${DELTAGRID_FOUNDER_URL:-https://deltagrid-founder-gateway.tushar142004.workers.dev/research}"
+FOUNDER_BASE="${DELTAGRID_FOUNDER_BASE:-https://deltagrid-founder-gateway.tushar142004.workers.dev}"
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
@@ -37,6 +37,57 @@ require_header() {
     echo "FAIL: missing or invalid header: $label" >&2
     exit 1
   fi
+}
+
+verify_anonymous_denied() {
+  local label="$1"
+  local url="$2"
+  local stem="$3"
+  local upper_stem
+  local headers_raw="$TMP/${stem}.headers.raw"
+  local headers="$TMP/${stem}.headers"
+  local body="$TMP/${stem}.body"
+  local code
+
+  upper_stem="$(printf '%s' "$stem" | tr '[:lower:]' '[:upper:]')"
+
+  echo "=== $label ==="
+  code="$(request "$url" "$headers_raw" "$body")"
+  clean_headers "$headers_raw" > "$headers"
+
+  case "$code" in
+    301|302|303|307|308)
+      if ! grep -Eiq '^location:.*cloudflareaccess\.com' "$headers"; then
+        echo "FAIL: $label redirected somewhere other than Cloudflare Access" >&2
+        cat "$headers" >&2
+        exit 1
+      fi
+      echo "${upper_stem}_ACCESS_REDIRECT=PASS"
+      ;;
+    401|403)
+      echo "${upper_stem}_ACCESS_DENIED_ANONYMOUS=PASS"
+      ;;
+    *)
+      echo "FAIL: anonymous $label response HTTP=$code" >&2
+      exit 1
+      ;;
+  esac
+
+  for forbidden in \
+    "PRIVATE FOUNDER WORKSPACE" \
+    "Preregistration review" \
+    "Saved as revision" \
+    "Founder control plane" \
+    '"csrf_token"'
+  do
+    if grep -Fq "$forbidden" "$body"; then
+      echo "FAIL: founder content was exposed before authentication at $label: $forbidden" >&2
+      exit 1
+    fi
+  done
+
+  echo "${upper_stem}_ANONYMOUS_CONTENT_BOUNDARY=PASS"
+  echo "${upper_stem}_HTTP=$code"
 }
 
 echo "=== PUBLIC HOMEPAGE ==="
@@ -123,41 +174,25 @@ fi
 echo "ROBOTS_POLICY=PASS"
 
 
-echo "=== FOUNDER ANONYMOUS BOUNDARY ==="
-FOUNDER_CODE="$(request "$FOUNDER_URL" "$TMP/founder.headers.raw" "$TMP/founder.body")"
-clean_headers "$TMP/founder.headers.raw" > "$TMP/founder.headers"
+verify_anonymous_denied \
+  "FOUNDER RESEARCH WORKSPACE ANONYMOUS BOUNDARY" \
+  "$FOUNDER_BASE/research" \
+  "founder_research"
 
-case "$FOUNDER_CODE" in
-  301|302|303|307|308)
-    if ! grep -Eiq '^location:.*cloudflareaccess\.com' "$TMP/founder.headers"; then
-      echo "FAIL: founder route redirected somewhere other than Cloudflare Access" >&2
-      cat "$TMP/founder.headers" >&2
-      exit 1
-    fi
-    echo "FOUNDER_ACCESS_REDIRECT=PASS"
-    ;;
-  401|403)
-    echo "FOUNDER_ACCESS_DENIED_ANONYMOUS=PASS"
-    ;;
-  *)
-    echo "FAIL: anonymous founder response HTTP=$FOUNDER_CODE" >&2
-    exit 1
-    ;;
-esac
+verify_anonymous_denied \
+  "FOUNDER CONTROL PLANE ANONYMOUS BOUNDARY" \
+  "$FOUNDER_BASE/founder" \
+  "founder_control"
 
-for forbidden in \
-  "PRIVATE FOUNDER WORKSPACE" \
-  "Preregistration review" \
-  "Saved as revision" \
-  '"csrf_token"'
-do
-  if grep -Fq "$forbidden" "$TMP/founder.body"; then
-    echo "FAIL: founder content was exposed before authentication: $forbidden" >&2
-    exit 1
-  fi
-done
+verify_anonymous_denied \
+  "FOUNDER RESEARCH API ANONYMOUS BOUNDARY" \
+  "$FOUNDER_BASE/api/research/v1/bootstrap" \
+  "founder_research_api"
 
-echo "FOUNDER_ANONYMOUS_CONTENT_BOUNDARY=PASS"
+verify_anonymous_denied \
+  "MACHINE API ANONYMOUS BOUNDARY" \
+  "$FOUNDER_BASE/agent/v1/status" \
+  "machine_api"
 
 
 echo "=============================================="
@@ -165,5 +200,5 @@ echo "DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS"
 echo "PUBLIC_HOME_HTTP=$HOME_CODE"
 echo "PUBLIC_RESEARCH_HTTP=$RESEARCH_CODE"
 echo "ROBOTS_HTTP=$ROBOTS_CODE"
-echo "ANONYMOUS_FOUNDER_HTTP=$FOUNDER_CODE"
+echo "ANONYMOUS_PRIVATE_SURFACE_COUNT=4"
 echo "=============================================="
