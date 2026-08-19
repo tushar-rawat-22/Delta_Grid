@@ -6,6 +6,7 @@ const workflowPaths = [
   "../.github/workflows/deltagrid-ci.yml",
   "../.github/workflows/live-public-boundary.yml",
   "../.github/workflows/public-observer-release.yml",
+  "../.github/workflows/public-observer-rollback.yml",
   "../.github/workflows/founder-gateway-release.yml",
 ] as const;
 
