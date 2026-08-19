@@ -39,6 +39,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main" || {
+            echo "Refusing rollback from any ref other than main"
+            exit 1
+          }
           test "$ROLLBACK_CONFIRMATION" = "ROLLBACK_PUBLIC_OBSERVER" || {
             echo "Refusing rollback without exact confirmation phrase"
             exit 1
@@ -48,13 +52,20 @@ jobs:
             exit 1
           }
 
-      - name: Check out current main tooling
+      - name: Check out exact dispatched main tooling
         # actions/checkout v7.0.1
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: main
+          ref: ${{ github.sha }}
           fetch-depth: 1
           persist-credentials: false
+
+      - name: Verify checkout identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -z "$(git status --porcelain)"
 
       - name: Set up Node 24
         # actions/setup-node v6.5.0
@@ -131,7 +142,7 @@ jobs:
             echo
             echo "Requested Worker version: \`$TARGET_VERSION_ID\`"
             echo
-            echo "Workflow source main: \`$(git rev-parse HEAD 2>/dev/null || echo unavailable)\`"
+            echo "Workflow source commit: \`$(git rev-parse HEAD 2>/dev/null || echo unavailable)\`"
             echo
             echo "Workflow run: \`${GITHUB_RUN_ID}\`"
             echo
