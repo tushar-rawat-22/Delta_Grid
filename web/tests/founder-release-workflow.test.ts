@@ -31,10 +31,14 @@ test("Cloudflare production credentials are unavailable to founder build and tes
 test("founder release checks remote D1 migrations through the configured binding", () => {
   assert.match(founderConfig, /"binding": "DELTAGRID_SYSTEM_DB"/u);
   assert.match(founderConfig, /"database_name": "deltagrid-founder-system"/u);
-  assert.match(workflow, /wrangler d1 migrations list/u);
-  assert.match(workflow, /DELTAGRID_SYSTEM_DB/u);
-  assert.doesNotMatch(workflow, /d1 migrations list \\\n\s+deltagrid-founder-system/u);
-  assert.match(workflow, /--remote/u);
+
+  const commandStart = workflow.indexOf("wrangler d1 migrations list");
+  const remoteFlag = workflow.indexOf("--remote", commandStart);
+  assert.ok(commandStart >= 0 && remoteFlag > commandStart);
+  const migrationCommand = workflow.slice(commandStart, remoteFlag);
+  assert.match(migrationCommand, /DELTAGRID_SYSTEM_DB/u);
+  assert.doesNotMatch(migrationCommand, /deltagrid-founder-system/u);
+
   assert.match(workflow, /No migrations to apply!/u);
   assert.doesNotMatch(workflow, /d1 migrations apply/u);
   assert.doesNotMatch(workflow, /d1 execute/u);
