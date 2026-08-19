@@ -1,5 +1,6 @@
 # DeltaGrid web documentation
 
+- [Continuity handoff](CONTINUITY.md)
 - [Research Engine](RESEARCH_ENGINE.md)
 - [Architecture](ARCHITECTURE.md)
 - [Security boundary](SECURITY_BOUNDARY.md)
