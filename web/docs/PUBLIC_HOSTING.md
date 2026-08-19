@@ -61,6 +61,16 @@ npm run deploy:public
 
 The repository also contains `.github/workflows/public-observer-release.yml` for controlled production releases. It requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub secrets and an exact `release_sha` input. The Cloudflare token should be scoped only to the account and permissions needed to deploy this Worker.
 
+### Public Observer rollback
+
+`.github/workflows/public-observer-rollback.yml` is the manual emergency rollback path for the static public Worker. It accepts only an exact Cloudflare Worker version UUID and requires the separate confirmation phrase `ROLLBACK_PUBLIC_OBSERVER`. Release and rollback share the same `public-observer-production` concurrency group so they cannot mutate the Worker concurrently.
+
+The workflow checks out current `main` only for reviewed Wrangler tooling and the current boundary verifier. Before changing production it confirms the requested version exists in Cloudflare and reasserts that the repository still describes a static-only public Worker. It records the active deployment before the change, invokes `wrangler rollback` with the exact version ID and a non-interactive audit message, records the resulting deployment/version state, and then requires the anonymous public/private boundary check to pass.
+
+This is intentionally limited to `deltagrid-observer`. The Founder Gateway is not given a symmetric generic rollback workflow because it carries D1-backed state: rolling older application code over a newer durable schema can be incompatible even when Cloudflare can technically reactivate the Worker version. Founder rollback therefore remains a separately reviewed recovery decision rather than a one-input convenience action.
+
+A Worker rollback reactivates a previously uploaded artifact; it does not rebuild an old Git commit and does not revert external resources. A successful Cloudflare command is therefore not by itself proof of recovery—the live boundary test remains mandatory afterward.
+
 ### Founder Gateway release
 
 `.github/workflows/founder-gateway-release.yml` is the corresponding exact-commit release path for the authenticated Worker. It is manual-only, requires the requested SHA to equal current `main`, installs the locked dependency graph, runs the complete web/founder gate and refuses to deploy if the remote D1 database has unapplied checked-in migrations.
@@ -91,6 +101,6 @@ After the first public release:
 4. keep the external live-boundary workflow green and treat a failure as a release/security incident until explained;
 5. use exact-commit GitHub release workflows so deployments can proceed without a developer laptop while remaining reviewable;
 6. keep schema migrations separate from Worker deploys and fail closed on pending migrations;
-7. keep rollback to a known Worker version available and preserve deployment/version provenance in release summaries;
+7. keep the guarded public rollback path available, while requiring separate schema-aware review for any Founder Gateway rollback;
 8. enable only the minimum observability needed for each surface, with founder logs treated as sensitive operational data;
 9. never add research execution, protected evidence, exchange credentials, order paths or capital authority to the public Worker.
