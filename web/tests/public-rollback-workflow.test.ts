@@ -19,6 +19,19 @@ test("public rollback pins its tooling to the immutable dispatched commit", () =
   assert.doesNotMatch(workflow, /ref: main/u);
 });
 
+test("Cloudflare production credentials are unavailable to install and verification steps", () => {
+  const jobEnvStart = workflow.indexOf("    env:");
+  const stepsStart = workflow.indexOf("    steps:");
+  assert.ok(jobEnvStart >= 0 && stepsStart > jobEnvStart);
+  const jobEnv = workflow.slice(jobEnvStart, stepsStart);
+  assert.doesNotMatch(jobEnv, /CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID/u);
+
+  const tokenBindings = workflow.match(/CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/gu) ?? [];
+  const accountBindings = workflow.match(/CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/gu) ?? [];
+  assert.equal(tokenBindings.length, 4);
+  assert.equal(accountBindings.length, 4);
+});
+
 test("public rollback shares the production concurrency lock and verifies isolation afterward", () => {
   assert.match(workflow, /group: public-observer-production/u);
   const rollbackIndex = workflow.indexOf("wrangler rollback");
@@ -34,9 +47,6 @@ test("public rollback shares the production concurrency lock and verifies isolat
 });
 
 test("public rollback cannot acquire founder or research authority", () => {
-  assert.match(workflow, /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/u);
-  assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/u);
-
   for (const forbidden of [
     "DELTAGRID_FOUNDER_EMAIL",
     "DELTAGRID_RESEARCH_CSRF_KEY",
