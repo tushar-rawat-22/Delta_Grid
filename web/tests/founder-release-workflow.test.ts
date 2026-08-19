@@ -13,6 +13,19 @@ test("founder release requires an exact current-main commit", () => {
   assert.match(workflow, /persist-credentials: false/u);
 });
 
+test("Cloudflare production credentials are unavailable to founder build and test steps", () => {
+  const jobEnvStart = workflow.indexOf("    env:");
+  const stepsStart = workflow.indexOf("    steps:");
+  assert.ok(jobEnvStart >= 0 && stepsStart > jobEnvStart);
+  const jobEnv = workflow.slice(jobEnvStart, stepsStart);
+  assert.doesNotMatch(jobEnv, /CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID/u);
+
+  const tokenBindings = workflow.match(/CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/gu) ?? [];
+  const accountBindings = workflow.match(/CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/gu) ?? [];
+  assert.equal(tokenBindings.length, 3);
+  assert.equal(accountBindings.length, 3);
+});
+
 test("founder release fails closed when remote D1 migrations are pending", () => {
   assert.match(workflow, /wrangler d1 migrations list/u);
   assert.match(workflow, /deltagrid-founder-system/u);
@@ -39,9 +52,6 @@ test("founder release deploys only after the full gate and checks anonymous isol
 });
 
 test("founder release workflow does not import founder application secrets", () => {
-  assert.match(workflow, /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/u);
-  assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/u);
-
   for (const forbidden of [
     "DELTAGRID_FOUNDER_EMAIL",
     "DELTAGRID_RESEARCH_CSRF_KEY",
