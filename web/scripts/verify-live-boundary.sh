@@ -43,10 +43,13 @@ verify_anonymous_denied() {
   local label="$1"
   local url="$2"
   local stem="$3"
+  local upper_stem
   local headers_raw="$TMP/${stem}.headers.raw"
   local headers="$TMP/${stem}.headers"
   local body="$TMP/${stem}.body"
   local code
+
+  upper_stem="$(printf '%s' "$stem" | tr '[:lower:]' '[:upper:]')"
 
   echo "=== $label ==="
   code="$(request "$url" "$headers_raw" "$body")"
@@ -59,10 +62,10 @@ verify_anonymous_denied() {
         cat "$headers" >&2
         exit 1
       fi
-      echo "${stem^^}_ACCESS_REDIRECT=PASS"
+      echo "${upper_stem}_ACCESS_REDIRECT=PASS"
       ;;
     401|403)
-      echo "${stem^^}_ACCESS_DENIED_ANONYMOUS=PASS"
+      echo "${upper_stem}_ACCESS_DENIED_ANONYMOUS=PASS"
       ;;
     *)
       echo "FAIL: anonymous $label response HTTP=$code" >&2
@@ -83,8 +86,8 @@ verify_anonymous_denied() {
     fi
   done
 
-  echo "${stem^^}_ANONYMOUS_CONTENT_BOUNDARY=PASS"
-  echo "${stem^^}_HTTP=$code"
+  echo "${upper_stem}_ANONYMOUS_CONTENT_BOUNDARY=PASS"
+  echo "${upper_stem}_HTTP=$code"
 }
 
 echo "=== PUBLIC HOMEPAGE ==="
