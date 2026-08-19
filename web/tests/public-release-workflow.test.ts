@@ -15,6 +15,19 @@ test("public release remains exact-current-main and static-only preflighted", ()
   assert.match(workflow, /--strict/u);
 });
 
+test("Cloudflare production credentials are unavailable to public build and test steps", () => {
+  const jobEnvStart = workflow.indexOf("    env:");
+  const stepsStart = workflow.indexOf("    steps:");
+  assert.ok(jobEnvStart >= 0 && stepsStart > jobEnvStart);
+  const jobEnv = workflow.slice(jobEnvStart, stepsStart);
+  assert.doesNotMatch(jobEnv, /CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID/u);
+
+  const tokenBindings = workflow.match(/CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/gu) ?? [];
+  const accountBindings = workflow.match(/CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/gu) ?? [];
+  assert.equal(tokenBindings.length, 2);
+  assert.equal(accountBindings.length, 2);
+});
+
 test("public release records version provenance and checks the live isolation boundary", () => {
   const deployIndex = workflow.indexOf("wrangler deploy");
   const statusIndex = workflow.indexOf("deployments status");
@@ -31,9 +44,6 @@ test("public release records version provenance and checks the live isolation bo
 });
 
 test("public release does not gain founder application or state credentials", () => {
-  assert.match(workflow, /CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/u);
-  assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/u);
-
   for (const forbidden of [
     "DELTAGRID_FOUNDER_EMAIL",
     "DELTAGRID_RESEARCH_CSRF_KEY",

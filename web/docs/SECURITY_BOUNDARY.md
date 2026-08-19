@@ -36,6 +36,14 @@ Compromise of the public observer must not provide a path to the founder Worker,
 - no remote parameters, shell, code, URL, path, environment or plugin;
 - detailed output remains local; only status and SHA-256 hashes are returned.
 
+## Production release automation
+
+- GitHub release jobs expose Cloudflare production credentials only to the individual Wrangler steps that require Cloudflare API access;
+- dependency installation, audits, compilation, tests, repository-boundary verification and anonymous live-boundary checks run without those credentials;
+- public and founder deployment workflows use separate protected GitHub environments and separate concurrency locks;
+- founder application secrets are not imported into GitHub Actions; deployed Worker secret bindings remain at Cloudflare;
+- schema migration remains a separate reviewed operation and is never performed implicitly by a Worker release.
+
 ## Authority
 
 The fixed actions verify, capture already-approved public data, create backups, refresh local public projections or run approved tests. The research workspace may organize independent founder research, but it cannot authorize protected research, Mission 104, paper/live trading, credentials, orders, allocation or capital. Expected authority remains hard-coded to `NONE`.
