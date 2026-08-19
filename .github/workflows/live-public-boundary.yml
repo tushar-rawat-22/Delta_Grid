@@ -22,7 +22,7 @@ jobs:
     timeout-minutes: 5
     env:
       DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
-      DELTAGRID_FOUNDER_URL: https://deltagrid-founder-gateway.tushar142004.workers.dev/research
+      DELTAGRID_FOUNDER_BASE: https://deltagrid-founder-gateway.tushar142004.workers.dev
     steps:
       - name: Check out submitted repository
         # actions/checkout v7.0.1
@@ -45,7 +45,7 @@ jobs:
             echo
             echo "Checked public observer: \`$DELTAGRID_PUBLIC_BASE\`"
             echo
-            echo "Checked anonymous founder boundary: \`$DELTAGRID_FOUNDER_URL\`"
+            echo "Checked anonymous founder surfaces under: \`$DELTAGRID_FOUNDER_BASE\`"
             echo
             if [ -f "$RUNNER_TEMP/live-boundary.txt" ]; then
               echo '```text'
