@@ -86,7 +86,7 @@ jobs:
         run: |
           set -euo pipefail
           ./node_modules/.bin/wrangler d1 migrations list \
-            deltagrid-founder-system \
+            DELTAGRID_SYSTEM_DB \
             --remote \
             --config wrangler.founder.jsonc \
             | tee "$RUNNER_TEMP/founder-migrations.txt"

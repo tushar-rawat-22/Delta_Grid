@@ -44,6 +44,7 @@ Compromise of the public observer must not provide a path to the founder Worker,
 - the requested deploy commit must independently equal current `main`; the dispatch-ref check and deploy-target check are separate invariants;
 - GitHub environment branch/tag protection remains the external control that should prevent a deliberately modified non-main workflow from receiving production environment access, because a repository-local guard cannot protect against a branch that removes its own guard;
 - public and founder deployment workflows use separate protected GitHub environments and separate concurrency locks;
+- founder release preflight resolves the remote D1 database through the checked-in `DELTAGRID_SYSTEM_DB` binding rather than a duplicated database-name literal, so configuration identity remains the source of truth;
 - founder application secrets are not imported into GitHub Actions; deployed Worker secret bindings remain at Cloudflare;
 - schema migration remains a separate reviewed operation and is never performed implicitly by a Worker release.
 
