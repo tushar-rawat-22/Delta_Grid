@@ -25,7 +25,7 @@ The public site intentionally explains the system and exposes sanitized Demo Mod
 
 The external live-boundary workflow verifies the public homepage and sanitized research demo and anonymously probes the private `/research`, `/founder`, `/api/research/v1/bootstrap`, and `/agent/v1/status` surfaces. A failure is a release/security incident until explained.
 
-## Release and dependency posture
+## Release, dependency, and security-reporting posture
 
 Production releases are manual, exact-current-`main` releases. Public and founder deployment workflows:
 
@@ -42,6 +42,8 @@ The Founder Gateway additionally fails closed if reviewed D1 migrations remain u
 The public observer has a guarded exact-version rollback workflow because it is stateless/static. There is intentionally no generic Founder Gateway rollback: Cloudflare Worker rollback does not roll D1 state backward, so founder recovery must remain schema-aware.
 
 Dependabot is limited to reviewed minor/patch lines. Major dependency or GitHub Action changes are compatibility work, not unattended maintenance. Lifecycle-script-capable packages remain independently pinned by the package allowlist, the locked installer, and dependency verification.
+
+`SECURITY.md` is the public vulnerability-reporting entry point. Reports should be handled privately, without encouraging destructive testing, founder-data access, or testing against exchanges, brokers, credentials, or capital. A confirmed report follows the normal branch, test, CI, review, and guarded-release path rather than bypassing it as an emergency shortcut.
 
 ## Founder research and M101 bridge
 
