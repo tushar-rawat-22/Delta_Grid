@@ -5,4 +5,5 @@
 - [Architecture](ARCHITECTURE.md)
 - [Security boundary](SECURITY_BOUNDARY.md)
 - [Public hosting](PUBLIC_HOSTING.md)
+- [Public design direction](PUBLIC_DESIGN.md)
 - [M101 handoff binding plan](M101_BINDING_PLAN.md)
