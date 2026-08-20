@@ -23,7 +23,7 @@ DeltaGrid currently uses two separate Cloudflare Worker surfaces:
 
 The public site intentionally explains the system and exposes sanitized Demo Mode. There is no public signup. Anonymous access to the real research workspace, founder control plane, research API, and machine API must remain denied or redirected to Cloudflare Access.
 
-The external live-boundary workflow verifies the public homepage and sanitized research demo and anonymously probes the private `/research`, `/founder`, `/api/research/v1/bootstrap`, and `/agent/v1/status` surfaces. A failure is a release/security incident until explained.
+The external live-boundary workflow verifies the public homepage and sanitized research demo and anonymously probes the private `/research`, `/founder`, `/api/research/v1/bootstrap`, and `/agent/v1/status` surfaces. It runs for pull requests, every hour, manual dispatches, and now every push to `main`, so the exact merged commit gets an immediate post-merge public/private boundary check instead of waiting for the next scheduled probe. A failure is a release/security incident until explained.
 
 ## Release, dependency, and security-reporting posture
 
