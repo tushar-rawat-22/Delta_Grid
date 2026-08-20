@@ -29,6 +29,22 @@ test("Cloudflare production credentials are unavailable to public build and test
   assert.equal(accountBindings.length, 2);
 });
 
+test("public release proves the deployed observer is the requested commit before boundary checks", () => {
+  const markerIndex = workflow.indexOf("Bind public build to requested release");
+  const deployIndex = workflow.indexOf("wrangler deploy");
+  const identityIndex = workflow.indexOf("Prove exact release is live");
+  const liveIndex = workflow.indexOf("verify-live-boundary.sh");
+
+  assert.ok(markerIndex >= 0);
+  assert.ok(deployIndex > markerIndex);
+  assert.ok(identityIndex > deployIndex);
+  assert.ok(liveIndex > identityIndex);
+  assert.match(workflow, /out\/deltagrid-release\.json/u);
+  assert.match(workflow, /deltagrid-release\.json/u);
+  assert.match(workflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
+  assert.match(workflow, /deployed public observer does not report requested release SHA/u);
+});
+
 test("public release records version provenance and checks the live isolation boundary", () => {
   const deployIndex = workflow.indexOf("wrangler deploy");
   const statusIndex = workflow.indexOf("deployments status");
@@ -42,6 +58,7 @@ test("public release records version provenance and checks the live isolation bo
   assert.match(workflow, /--json/u);
   assert.match(workflow, /GITHUB_STEP_SUMMARY/u);
   assert.match(workflow, /Requested commit/u);
+  assert.match(workflow, /Live release identity/u);
 });
 
 test("public release does not gain founder application or state credentials", () => {
