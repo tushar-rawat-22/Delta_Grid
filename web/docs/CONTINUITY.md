@@ -37,7 +37,7 @@ Production releases are manual, exact-current-`main` releases. Public and founde
 - expose Cloudflare credentials only to Wrangler steps that require Cloudflare API access;
 - record deployment/version provenance and run the anonymous live-boundary verifier after deployment.
 
-The public observer release additionally writes the exact requested commit into a static `deltagrid-release.json` asset immediately before deployment. After Wrangler returns, the workflow polls the live observer until that asset reports the requested SHA, and only then runs the public/private boundary verifier. This distinguishes "deployment command succeeded" from "the exact reviewed build is actually serving" without adding application state, credentials, or research authority.
+The public observer release additionally writes the exact requested commit into a static `deltagrid-release.json` asset immediately before deployment. After Wrangler returns, the workflow polls a cache-busted URL for that marker with an explicit no-cache request until the live observer reports the requested SHA, and only then runs the public/private boundary verifier. This avoids treating a stale cached marker as deployment proof while still distinguishing "deployment command succeeded" from "the exact reviewed build is actually serving" without adding application state, credentials, or research authority.
 
 The Founder Gateway additionally fails closed if reviewed D1 migrations remain unapplied. Schema migration is a separate operation and is never performed implicitly by a Worker release.
 

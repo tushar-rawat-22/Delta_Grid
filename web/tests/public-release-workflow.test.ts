@@ -40,7 +40,8 @@ test("public release proves the deployed observer is the requested commit before
   assert.ok(identityIndex > deployIndex);
   assert.ok(liveIndex > identityIndex);
   assert.match(workflow, /out\/deltagrid-release\.json/u);
-  assert.match(workflow, /deltagrid-release\.json/u);
+  assert.match(workflow, /deltagrid-release\.json\?release_sha=\$RELEASE_SHA/u);
+  assert.match(workflow, /Cache-Control: no-cache/u);
   assert.match(workflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
   assert.match(workflow, /deployed public observer does not report requested release SHA/u);
 });
