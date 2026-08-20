@@ -125,9 +125,11 @@ jobs:
           set -euo pipefail
           expected="{\"release_sha\":\"$RELEASE_SHA\"}"
           live=""
+          release_url="$DELTAGRID_PUBLIC_BASE/deltagrid-release.json?release_sha=$RELEASE_SHA"
           for attempt in $(seq 1 12); do
             live="$(curl --silent --show-error --connect-timeout 10 --max-time 20 \
-              "$DELTAGRID_PUBLIC_BASE/deltagrid-release.json" || true)"
+              --header 'Cache-Control: no-cache' \
+              "$release_url" || true)"
             if [ "$live" = "$expected" ]; then
               printf '%s\n' "$live" | tee "$RUNNER_TEMP/public-release-identity.json"
               echo "PUBLIC_RELEASE_IDENTITY=PASS"
