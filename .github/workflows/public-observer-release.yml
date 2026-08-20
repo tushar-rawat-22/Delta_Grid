@@ -27,6 +27,7 @@ jobs:
       WRANGLER_SEND_METRICS: "false"
       WRANGLER_SEND_ERROR_REPORTS: "false"
       RELEASE_SHA: ${{ inputs.release_sha }}
+      DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
 
     steps:
       - name: Validate requested release identity
@@ -81,6 +82,14 @@ jobs:
         working-directory: web
         run: npm run verify:public-deploy
 
+      - name: Bind public build to requested release
+        working-directory: web
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '{"release_sha":"%s"}\n' "$RELEASE_SHA" > out/deltagrid-release.json
+          test "$(cat out/deltagrid-release.json)" = "{\"release_sha\":\"$RELEASE_SHA\"}"
+
       - name: Deploy exact public observer commit
         working-directory: web
         shell: bash
@@ -110,6 +119,29 @@ jobs:
             --config wrangler.jsonc \
             > "$RUNNER_TEMP/public-versions.json"
 
+      - name: Prove exact release is live
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="{\"release_sha\":\"$RELEASE_SHA\"}"
+          live=""
+          for attempt in $(seq 1 12); do
+            live="$(curl --silent --show-error --connect-timeout 10 --max-time 20 \
+              "$DELTAGRID_PUBLIC_BASE/deltagrid-release.json" || true)"
+            if [ "$live" = "$expected" ]; then
+              printf '%s\n' "$live" | tee "$RUNNER_TEMP/public-release-identity.json"
+              echo "PUBLIC_RELEASE_IDENTITY=PASS"
+              break
+            fi
+            if [ "$attempt" -eq 12 ]; then
+              echo "FAIL: deployed public observer does not report requested release SHA" >&2
+              echo "expected=$expected" >&2
+              echo "observed=$live" >&2
+              exit 1
+            fi
+            sleep 5
+          done
+
       - name: Verify live public/private boundary after release
         shell: bash
         run: |
@@ -127,6 +159,12 @@ jobs:
             echo
             echo "Workflow run: \`${GITHUB_RUN_ID}\`"
             echo
+            if [ -f "$RUNNER_TEMP/public-release-identity.json" ]; then
+              echo "### Live release identity"
+              echo '```json'
+              cat "$RUNNER_TEMP/public-release-identity.json"
+              echo '```'
+            fi
             if [ -f "$RUNNER_TEMP/public-deployment.txt" ]; then
               echo "### Cloudflare deployment"
               echo '```text'
