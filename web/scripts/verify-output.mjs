@@ -61,16 +61,17 @@ for (const marker of [
 
 const overviewHtml = fs.readFileSync(routeFile(""), "utf8");
 for (const marker of [
+  "DELTAGRID / PUBLIC RESEARCH OBSERVER",
+  "Research first. Authority separate.",
   "Mission 104",
   "NOT AUTHORIZED",
-  "Verified projection",
-  "A public view of a private research system.",
-  "Public demo",
-  "Explore Demo Mode",
-  "Founder Log in",
-  "Eight working views. Publicly explorable, privately backed.",
-  "Explore all eight views",
-  "no private or protected values",
+  "NO PRIVATE OR PROTECTED VALUES",
+  "Open public demo",
+  "Founder access",
+  "Public inputs remain bounded and inspectable.",
+  "Public observer outside. Founder system inside.",
+  "NO BROKER CONNECTION",
+  "NO PAPER/LIVE TRADING",
 ]) {
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
 }
