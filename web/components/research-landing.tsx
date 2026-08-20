@@ -15,7 +15,7 @@ const authority = [
   ["M101", "DATA / ADMISSION AUTHORITY", "GATED"],
   ["M102", "EXPERIMENT ENGINE", "GATED"],
   ["M103", "PRE-RESULT GOVERNANCE", "PREPARED"],
-  ["M104", "CAPITAL AUTHORITY", "NOT AUTHORIZED"],
+  ["Mission 104", "CAPITAL AUTHORITY", "NOT AUTHORIZED"],
 ] as const;
 
 const dataContract = [
@@ -80,7 +80,7 @@ export function ResearchLanding() {
               </div>
             ))}
           </div>
-          <div className={styles.statusFoot}><strong>M104 NOT AUTHORIZED</strong><span>NO PRIVATE OR PROTECTED VALUES</span></div>
+          <div className={styles.statusFoot}><strong>Mission 104 NOT AUTHORIZED</strong><span>NO PRIVATE OR PROTECTED VALUES</span></div>
         </div>
       </section>
 
