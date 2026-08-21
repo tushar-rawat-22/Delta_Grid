@@ -98,12 +98,12 @@ if [ "$HOME_CODE" != "200" ]; then
   exit 1
 fi
 for marker in \
-  "A public view of a private research system." \
-  "Explore Demo Mode" \
-  "Founder Log in"
+  "Mission 104" \
+  "NOT AUTHORIZED" \
+  "Founder"
 do
-  if ! grep -Fq "$marker" "$TMP/home.body"; then
-    echo "FAIL: public homepage marker missing: $marker" >&2
+  if ! grep -Fqi "$marker" "$TMP/home.body"; then
+    echo "FAIL: public homepage semantic marker missing: $marker" >&2
     exit 1
   fi
 done
