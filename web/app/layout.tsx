@@ -20,7 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <header className="site-header">
           <PublicSiteNav />
         </header>
-        <div id="main-content">{children}</div>
+        <div id="main-content" tabIndex={-1}>{children}</div>
         <footer className="site-footer">
           <p>Public Demo Mode uses sanitized deterministic fixtures. Live founder data, authenticated APIs and write controls require Founder Mode. Website state never creates DeltaGrid authority.</p>
         </footer>
