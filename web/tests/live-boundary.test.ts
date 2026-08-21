@@ -13,6 +13,19 @@ test("live public boundary monitor is scheduled and manually runnable", () => {
   assert.match(workflow, /bash web\/scripts\/verify-live-boundary\.sh/u);
 });
 
+test("scheduled monitor also detects public production drift from current main", () => {
+  assert.match(
+    workflow,
+    /if: github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_dispatch'/u,
+  );
+  assert.match(workflow, /name: verify-production-parity/u);
+  assert.match(workflow, /ref: main/u);
+  assert.match(workflow, /deltagrid-release\.json\?production_parity=\$expected_sha/u);
+  assert.match(workflow, /Cache-Control: no-cache/u);
+  assert.match(workflow, /public observer is not serving current main/u);
+  assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=PASS/u);
+});
+
 test("live boundary workflow needs no deployment or founder credentials", () => {
   assert.doesNotMatch(workflow, /secrets\./u);
   assert.doesNotMatch(workflow, /CLOUDFLARE_API_TOKEN/u);
