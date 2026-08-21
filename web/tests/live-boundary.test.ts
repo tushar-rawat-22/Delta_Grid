@@ -65,6 +65,16 @@ test("live verifier checks public availability and all anonymous private surface
   assert.match(verifier, /DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS/u);
 });
 
+test("public homepage verification follows stable authority semantics, not old marketing copy", () => {
+  for (const marker of ["Mission 104", "NOT AUTHORIZED", "Founder"]) {
+    assert.ok(verifier.includes(`\"${marker}\"`), marker);
+  }
+
+  assert.doesNotMatch(verifier, /A public view of a private research system\./u);
+  assert.doesNotMatch(verifier, /Explore Demo Mode/u);
+  assert.match(verifier, /grep -Fqi/u);
+});
+
 test("anonymous machine-path check is non-mutating and detects missing edge isolation", () => {
   assert.match(verifier, /\$FOUNDER_BASE\/agent\/v1\/status/u);
   assert.doesNotMatch(verifier, /--request\s+POST|\s-X\s+POST/u);
