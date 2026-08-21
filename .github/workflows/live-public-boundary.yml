@@ -58,3 +58,60 @@ jobs:
               echo "Verifier did not produce an output file. Inspect the failed verification step."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+
+  verify-production-parity:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    name: verify-production-parity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
+    steps:
+      - name: Check out current main
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Require live observer to report current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_sha="$(git rev-parse HEAD)"
+          expected="{\"release_sha\":\"$expected_sha\"}"
+          release_url="$DELTAGRID_PUBLIC_BASE/deltagrid-release.json?production_parity=$expected_sha"
+          observed="$(curl --silent --show-error --fail \
+            --connect-timeout 10 --max-time 20 \
+            --header 'Cache-Control: no-cache' \
+            "$release_url")"
+          printf '%s\n' "$expected_sha" > "$RUNNER_TEMP/expected-main-sha.txt"
+          printf '%s\n' "$observed" > "$RUNNER_TEMP/live-release-identity.json"
+          if [ "$observed" != "$expected" ]; then
+            echo "FAIL: public observer is not serving current main" >&2
+            echo "expected=$expected" >&2
+            echo "observed=$observed" >&2
+            exit 1
+          fi
+          echo "PUBLIC_PRODUCTION_PARITY=PASS"
+
+      - name: Publish production parity summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## DeltaGrid public production parity"
+            echo
+            if [ -f "$RUNNER_TEMP/expected-main-sha.txt" ]; then
+              echo "Current main: \`$(cat "$RUNNER_TEMP/expected-main-sha.txt")\`"
+              echo
+            fi
+            if [ -f "$RUNNER_TEMP/live-release-identity.json" ]; then
+              echo "Live release marker:"
+              echo '```json'
+              cat "$RUNNER_TEMP/live-release-identity.json"
+              echo '```'
+            else
+              echo "Live release marker could not be read."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
