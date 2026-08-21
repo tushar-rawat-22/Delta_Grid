@@ -23,7 +23,9 @@ DeltaGrid currently uses two separate Cloudflare Worker surfaces:
 
 The public site intentionally explains the system and exposes sanitized Demo Mode. There is no public signup. Anonymous access to the real research workspace, founder control plane, research API, and machine API must remain denied or redirected to Cloudflare Access.
 
-The external live-boundary workflow verifies the public homepage and sanitized research demo and anonymously probes the private `/research`, `/founder`, `/api/research/v1/bootstrap`, and `/agent/v1/status` surfaces. It runs for pull requests, every hour, manual dispatches, and now every push to `main`, so the exact merged commit gets an immediate post-merge public/private boundary check instead of waiting for the next scheduled probe. A failure is a release/security incident until explained.
+The external live-boundary workflow verifies the public homepage and sanitized research demo and anonymously probes the private `/research`, `/founder`, `/api/research/v1/bootstrap`, and `/agent/v1/status` surfaces. It runs for pull requests, every hour, manual dispatches, and every push to `main`, so the exact merged commit gets an immediate post-merge public/private boundary check instead of waiting for the next scheduled probe. A failure is a release/security incident until explained.
+
+Scheduled and manual live-boundary runs also compare the public observer's cache-busted `deltagrid-release.json` marker with the repository's current `main`. This is deliberately not enforced on pull requests or pushes: public releases are manual, so a short source-versus-production gap after a merge is expected. Persistent drift at the next scheduled probe is an operational signal that the public release is stale or the release marker cannot be trusted.
 
 ## Release, dependency, and security-reporting posture
 
