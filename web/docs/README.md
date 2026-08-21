@@ -1,5 +1,6 @@
 # DeltaGrid web documentation
 
+- [Public review guide](PUBLIC_REVIEW.md)
 - [Continuity handoff](CONTINUITY.md)
 - [Research Engine](RESEARCH_ENGINE.md)
 - [Architecture](ARCHITECTURE.md)
