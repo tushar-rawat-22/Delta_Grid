@@ -210,3 +210,9 @@
   .public-route-row { margin-inline: -.1rem; padding-bottom: .55rem; }
   .public-route-link { font-size: .7rem; padding-inline: .55rem; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .snapshot-grid img { transition: none; }
+  .snapshot-grid figure:hover img { transform: none; }
+}
