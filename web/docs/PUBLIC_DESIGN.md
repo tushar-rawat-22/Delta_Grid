@@ -6,4 +6,6 @@ The design uses dense tables, status bands, timestamps, small labels, restrained
 
 The landing page explains the system through four things a technical visitor can verify quickly: configured research coverage, bounded public data inputs, current authority boundaries, and sanitized workspace previews. The public observer remains static and separate from the authenticated founder gateway.
 
+Dense does not mean hostile to keyboard or assistive-technology users. The public shell keeps a visible-on-focus skip link, a focusable content target, labelled navigation, active-page semantics, and decorative marks hidden from screen readers. These are regression-tested because a terminal-like visual treatment is not an excuse to make the interface harder to navigate.
+
 This visual rule is part of the product boundary. Future redesigns should preserve the same principle even if the typography or layout changes: information density is useful, decoration is secondary, and state must never be fabricated to make the system appear more mature than it is.
