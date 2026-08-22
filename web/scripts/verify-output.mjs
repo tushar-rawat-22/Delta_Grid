@@ -2,24 +2,60 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = "out";
-if (!fs.existsSync(root)) throw new Error("STATIC_OUTPUT_MISSING");
+try {
+  fs.readdirSync(root);
+} catch (error) {
+  if (error?.code === "ENOENT") throw new Error("STATIC_OUTPUT_MISSING");
+  throw error;
+}
 
 const routes = ["", "markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
-function routeFile(route) {
-  if (route === "") return path.join(root, "index.html");
-  const flat = path.join(root, `${route}.html`);
-  if (fs.existsSync(flat)) return flat;
-  return path.join(root, route, "index.html");
+
+function readRoute(route) {
+  const candidates = route === ""
+    ? [path.join(root, "index.html")]
+    : [path.join(root, `${route}.html`), path.join(root, route, "index.html")];
+
+  for (const file of candidates) {
+    try {
+      return { file, text: fs.readFileSync(file, "utf8") };
+    } catch (error) {
+      if (error?.code === "ENOENT") continue;
+      throw error;
+    }
+  }
+
+  throw new Error(`STATIC_ROUTE_MISSING:/${route}`);
 }
-function routeExists(route) {
-  return fs.existsSync(routeFile(route));
+
+function readRequiredText(file, missingCode) {
+  try {
+    return fs.readFileSync(file, "utf8");
+  } catch (error) {
+    if (error?.code === "ENOENT") throw new Error(missingCode);
+    throw error;
+  }
 }
-for (const route of routes) if (!routeExists(route)) throw new Error(`STATIC_ROUTE_MISSING:/${route}`);
-if (!fs.existsSync(path.join(root, "404.html"))) throw new Error("STATIC_404_MISSING");
-if (!fs.existsSync(path.join(root, "_headers"))) throw new Error("STATIC_HEADERS_MISSING");
-if (!fs.existsSync(path.join(root, "robots.txt"))) throw new Error("ROBOTS_MISSING");
+
+function readRequiredBytes(file, missingCode) {
+  try {
+    return fs.readFileSync(file);
+  } catch (error) {
+    if (error?.code === "ENOENT") throw new Error(missingCode);
+    throw error;
+  }
+}
+
+const routeOutput = new Map(routes.map((route) => [route, readRoute(route)]));
+readRequiredText(path.join(root, "404.html"), "STATIC_404_MISSING");
+const headers = readRequiredText(path.join(root, "_headers"), "STATIC_HEADERS_MISSING");
+const robots = readRequiredText(path.join(root, "robots.txt"), "ROBOTS_MISSING");
+
 for (const snapshot of ["research-cockpit.png", "asset-dossier.png", "compare-macro.png"]) {
-  const bytes = fs.readFileSync(path.join(root, "snapshots", snapshot));
+  const bytes = readRequiredBytes(
+    path.join(root, "snapshots", snapshot),
+    `SANITIZED_SNAPSHOT_INVALID:${snapshot}`,
+  );
   if (bytes.length < 10_000 || bytes.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
     throw new Error(`SANITIZED_SNAPSHOT_INVALID:${snapshot}`);
   }
@@ -43,13 +79,13 @@ for (const file of allFiles(root)) {
 }
 
 for (const route of routes) {
-  const html = fs.readFileSync(routeFile(route), "utf8");
+  const html = routeOutput.get(route).text;
   for (const marker of ["Public demo", "Open Demo", "Founder Log in", "Demo Mode", "Sanitized fixtures · no writes"]) {
     if (!html.includes(marker)) throw new Error(`PUBLIC_SHELL_OUTPUT_MISSING:${marker}:/${route}`);
   }
 }
 
-const evidenceHtml = fs.readFileSync(routeFile("evidence"), "utf8");
+const evidenceHtml = routeOutput.get("evidence").text;
 for (const marker of [
   "Verified projection",
   "d94441f2f32fd8edc7b416beecd88b2b087d01a9",
@@ -59,7 +95,7 @@ for (const marker of [
   if (!evidenceHtml.includes(marker)) throw new Error(`P1_3_EVIDENCE_OUTPUT_MISSING:${marker}`);
 }
 
-const overviewHtml = fs.readFileSync(routeFile(""), "utf8");
+const overviewHtml = routeOutput.get("").text;
 for (const marker of [
   "DELTAGRID / PUBLIC RESEARCH OBSERVER",
   "Research first. Authority separate.",
@@ -76,7 +112,7 @@ for (const marker of [
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
 }
 
-const researchHtml = fs.readFileSync(routeFile("research"), "utf8");
+const researchHtml = routeOutput.get("research").text;
 for (const marker of [
   "DEMO MODE",
   "SANITIZED FIXTURES",
@@ -96,7 +132,6 @@ for (const marker of [
   if (!researchHtml.includes(marker)) throw new Error(`PUBLIC_DEMO_OUTPUT_MISSING:${marker}`);
 }
 
-const headers = fs.readFileSync(path.join(root, "_headers"), "utf8");
 for (const required of [
   "Content-Security-Policy:", "X-Content-Type-Options: nosniff", "X-Frame-Options: DENY",
   "Referrer-Policy: no-referrer", "Permissions-Policy:", "X-Robots-Tag: noindex, nofollow",
@@ -104,7 +139,6 @@ for (const required of [
   if (!headers.includes(required)) throw new Error(`HEADER_POLICY_MISSING:${required}`);
 }
 
-const robots = fs.readFileSync(path.join(root, "robots.txt"), "utf8");
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /") || robots.includes("Disallow: /")) {
   throw new Error("PUBLIC_ROBOTS_POLICY_INVALID");
 }
