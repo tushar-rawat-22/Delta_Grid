@@ -10,6 +10,8 @@ Dense does not mean hostile to keyboard or assistive-technology users. The publi
 
 Motion is treated the same way. Smooth scrolling and screenshot hover movement are minor presentation details, not product state, so the public shell disables them when the operating system requests reduced motion. A quant interface should feel precise because the information is precise, not because it forces animation on every visitor.
 
+The public metadata follows the same rule as the visible interface. Canonical and social-preview metadata identify DeltaGrid as a quantitative research system and point back to the public observer; they must not introduce profitability, execution, or autonomous-trading claims that the product itself does not support. This keeps links shared from a resume, GitHub profile, or technical review consistent with the actual system boundary instead of turning metadata into marketing copy.
+
 The live public-boundary monitor should verify durable product semantics rather than freeze a particular headline or CTA. It checks stable authority markers such as Mission 104 remaining not authorized and the presence of founder separation, while security headers, sanitized demo markers, forbidden private markers, and anonymous founder-surface denial remain independently enforced. This lets the public copy evolve without silently weakening the boundary monitor or making a legitimate redesign look like an incident.
 
 This visual rule is part of the product boundary. Future redesigns should preserve the same principle even if the typography or layout changes: information density is useful, decoration is secondary, and state must never be fabricated to make the system appear more mature than it is.
