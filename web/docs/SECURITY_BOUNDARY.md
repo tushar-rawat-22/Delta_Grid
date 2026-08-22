@@ -6,7 +6,8 @@ Compromise of the public observer must not provide a path to the founder Worker,
 
 - static admitted projection only;
 - no database, auth, API, Server Action, private runtime, provider credential, analytics or command path;
-- output and source leak scans before deployment.
+- output and source leak scans before deployment;
+- static-output verification reads build artifacts directly rather than using check-then-open filesystem sequences, so CI does not rely on a separate existence check remaining true before inspection.
 
 ## Founder human boundary
 
