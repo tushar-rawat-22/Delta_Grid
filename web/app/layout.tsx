@@ -3,12 +3,25 @@ import { PublicSiteNav } from "../components/public-site-nav";
 import "./globals.css";
 import "./public-shell.css";
 
+const PUBLIC_DESCRIPTION = "Publicly inspectable quantitative research system with sanitized product views and an authenticated founder workspace.";
+
 export const metadata: Metadata = {
   title: {
     default: "DeltaGrid Research Engine",
     template: "%s · DeltaGrid",
   },
-  description: "Publicly inspectable quantitative research system with sanitized product views and an authenticated founder workspace.",
+  description: PUBLIC_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: "DeltaGrid",
+    title: "DeltaGrid Research Engine",
+    description: PUBLIC_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: "DeltaGrid Research Engine",
+    description: PUBLIC_DESCRIPTION,
+  },
   robots: { index: true, follow: true },
 };
 
