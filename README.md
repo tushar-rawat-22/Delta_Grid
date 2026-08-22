@@ -10,6 +10,15 @@ DeltaGrid is a single-user quantitative research system built to answer a harder
 
 I built the project around falsification. A failed hypothesis stays in the record. A passing software test is not treated as evidence of alpha. A component being implemented does not give it permission to trade.
 
+## Public observer
+
+The hosted observer is a read-only public view of the project’s research and control architecture. It contains sanitized public/demo material only; founder research records, protected evidence, credentials, private runtime state, and trading authority stay outside the public build.
+
+- **Live observer:** https://deltagrid-observer.tushar142004.workers.dev
+- **Fast technical review:** [web/docs/PUBLIC_REVIEW.md](web/docs/PUBLIC_REVIEW.md)
+
+The public site is useful for reviewing the system, but it does not change the status above: there is still no validated alpha, no selected candidate, and no paper/live trading or capital authority.
+
 ## Current status
 
 | Boundary | Current state |
