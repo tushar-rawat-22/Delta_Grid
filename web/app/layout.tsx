@@ -3,20 +3,16 @@ import { PublicSiteNav } from "../components/public-site-nav";
 import "./globals.css";
 import "./public-shell.css";
 
-const PUBLIC_OBSERVER_URL = "https://deltagrid-observer.tushar142004.workers.dev";
 const PUBLIC_DESCRIPTION = "Publicly inspectable quantitative research system with sanitized product views and an authenticated founder workspace.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(PUBLIC_OBSERVER_URL),
   title: {
     default: "DeltaGrid Research Engine",
     template: "%s · DeltaGrid",
   },
   description: PUBLIC_DESCRIPTION,
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: "/",
     siteName: "DeltaGrid",
     title: "DeltaGrid Research Engine",
     description: PUBLIC_DESCRIPTION,
