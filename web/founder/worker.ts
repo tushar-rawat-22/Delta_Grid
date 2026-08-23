@@ -16,7 +16,7 @@ import {
   claimCommand,
   completeCommand,
   expireStaleCommands,
-  insertCommand,
+  insertCommandWithSecurityEvent,
   insertEvidenceEnvelope,
   insertProviderHealth,
   insertSecurityEvent,
@@ -134,7 +134,7 @@ async function handleCommandCreation(
   const fetchSite = request.headers.get("sec-fetch-site");
   const contentType = request.headers.get("content-type")?.split(";", 1)[0]?.trim().toLowerCase();
   if (origin !== url.origin || (fetchSite !== "same-origin" && fetchSite !== "none")) {
-    await insertSecurityEvent(db, "COMMAND_CREATE", "FOUNDER", "DENY", "ORIGIN_CHECK_FAILED");
+    await recordSecurityEventBestEffort(db, "COMMAND_CREATE", "FOUNDER", "DENY", "ORIGIN_CHECK_FAILED");
     return textResponse("Forbidden", 403);
   }
   if (contentType !== "application/x-www-form-urlencoded") return textResponse("Unsupported Media Type", 415);
@@ -144,7 +144,7 @@ async function handleCommandCreation(
   const action = form.get("action") ?? "";
   const confirmation = form.get("confirmation") ?? "";
   if (!isActionId(action) || confirmation !== `REQUEST ${action}` || [...form.keys()].some((key) => !["action", "confirmation"].includes(key))) {
-    await insertSecurityEvent(db, "COMMAND_CREATE", "FOUNDER", "DENY", "COMMAND_VALIDATION_FAILED");
+    await recordSecurityEventBestEffort(db, "COMMAND_CREATE", "FOUNDER", "DENY", "COMMAND_VALIDATION_FAILED");
     return textResponse("Invalid command request", 400);
   }
 
@@ -173,10 +173,9 @@ async function handleCommandCreation(
     integrity_proof: await commandIntegrityProof(base, signingKey),
   };
   try {
-    await insertCommand(db, command);
-    await insertSecurityEvent(db, "COMMAND_CREATE", "FOUNDER", "ALLOW", "FIXED_ACTION_ACCEPTED");
+    await insertCommandWithSecurityEvent(db, command);
   } catch {
-    await insertSecurityEvent(db, "COMMAND_CREATE", "FOUNDER", "ERROR", "COMMAND_INSERT_FAILED");
+    await recordSecurityEventBestEffort(db, "COMMAND_CREATE", "FOUNDER", "ERROR", "COMMAND_QUEUE_FAILED");
     return textResponse("Command could not be queued", 503);
   }
   return new Response(null, {
@@ -201,11 +200,7 @@ async function handleAgentRoute(
     const reason = error instanceof Error && /^AGENT_[A-Z0-9_]+$/u.test(error.message)
       ? error.message
       : "AGENT_AUTHENTICATION_FAILED";
-    try {
-      await insertSecurityEvent(db, "AGENT_AUTHENTICATION", "AGENT", "DENY", reason);
-    } catch {
-      // Authentication remains fail-closed even if its audit write is unavailable.
-    }
+    await recordSecurityEventBestEffort(db, "AGENT_AUTHENTICATION", "AGENT", "DENY", reason);
     return jsonResponse({ error: "AGENT_AUTHENTICATION_FAILED" }, 403);
   }
   const url = new URL(request.url);
@@ -259,7 +254,7 @@ async function handleAgentRoute(
     const completed = await completeCommand(db, receipt);
     return completed ? jsonResponse({ status: receipt.status }, 200) : jsonResponse({ error: "COMMAND_COMPLETION_REJECTED" }, 409);
   } catch {
-    await insertSecurityEvent(db, "AGENT_REQUEST", "AGENT", "ERROR", "AGENT_ROUTE_FAILURE");
+    await recordSecurityEventBestEffort(db, "AGENT_REQUEST", "AGENT", "ERROR", "AGENT_ROUTE_FAILURE");
     return jsonResponse({ error: "SERVICE_UNAVAILABLE" }, 503);
   }
 }
@@ -471,6 +466,20 @@ function requiredSigningKey(env: FounderSystemEnv): string {
   const value = env.DELTAGRID_AGENT_HMAC_KEY;
   if (!value || value.length < 32) throw new Error("COMMAND_SIGNING_KEY_INVALID");
   return value;
+}
+
+async function recordSecurityEventBestEffort(
+  db: D1DatabaseLike,
+  eventType: string,
+  actorKind: "FOUNDER" | "AGENT" | "SYSTEM",
+  outcome: "ALLOW" | "DENY" | "ERROR",
+  reasonCode: string,
+): Promise<void> {
+  try {
+    await insertSecurityEvent(db, eventType, actorKind, outcome, reasonCode);
+  } catch {
+    console.error(JSON.stringify({ event: "security_audit_write_failed", event_type: eventType, outcome, reason_code: reasonCode }));
+  }
 }
 
 async function handleResearchAsset(request: Request, env: FounderSystemEnv): Promise<Response> {
