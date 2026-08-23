@@ -1,17 +1,13 @@
-# Public design direction
+# Public UI
 
-The public DeltaGrid surface should read like research infrastructure, not a generic AI or fintech landing page.
+The public site is a read-only window into DeltaGrid. It should feel closer to an internal research tool than a product launch page.
 
-The design uses dense tables, status bands, timestamps, small labels, restrained borders, and a limited state palette. Decorative gradients, oversized marketing cards, fake terminal output, and invented trading metrics are deliberately avoided. Public numbers must come from configured public scope or deterministic demo fixtures; the site must never imply live positions, P&L, alpha, AUM, execution, or capital authority that do not exist.
+The useful things to show are the things that are actually true: current research status, configured coverage, provider limits, authority state, and a few sanitized workspace views. If a number would only be there to make the page look more impressive, leave it out. We do not publish invented P&L, Sharpe ratios, positions, AUM, "AI confidence", or pretend that research software has trading authority.
 
-The landing page explains the system through four things a technical visitor can verify quickly: configured research coverage, bounded public data inputs, current authority boundaries, and sanitized workspace previews. The public observer remains static and separate from the authenticated founder gateway.
+Keep the layout plain. Tables and short status rows are preferred to feature cards. Monospace is useful for codes, timestamps, and state; it should not take over the whole page. Colour should identify state or focus, not decorate empty space. Avoid giant slogans, glow effects, gradients, fake terminals, and repeated badges saying the same thing.
 
-Dense does not mean hostile to keyboard or assistive-technology users. The public shell keeps a visible-on-focus skip link, a focusable content target, labelled navigation, active-page semantics, and decorative marks hidden from screen readers. These are regression-tested because a terminal-like visual treatment is not an excuse to make the interface harder to navigate.
+The public and founder systems are separate. The public build contains sanitized fixtures and public material only. Founder records, authenticated API state, credentials, protected evidence, and private runtime state do not belong in it.
 
-Motion is treated the same way. Smooth scrolling and screenshot hover movement are minor presentation details, not product state, so the public shell disables them when the operating system requests reduced motion. A quant interface should feel precise because the information is precise, not because it forces animation on every visitor.
+Accessibility is part of the layout, not a separate pass at the end. Keep the skip link, labelled navigation, visible keyboard focus, and reduced-motion handling. A dense interface still has to be usable.
 
-Public metadata follows the same rule as the visible interface. Titles, descriptions, and social-preview metadata identify DeltaGrid as a quantitative research system without adding profitability, execution, or autonomous-trading claims that the product itself does not support. The static observer deliberately avoids absolute canonical or Open Graph URLs because generated HTML must not gain new external references just to improve link previews. The GitHub profile and review guide already provide the stable public entry point.
-
-The live public-boundary monitor should verify durable product semantics rather than freeze a particular headline or CTA. It checks stable authority markers such as Mission 104 remaining not authorized and the presence of founder separation, while security headers, sanitized demo markers, forbidden private markers, and anonymous founder-surface denial remain independently enforced. This lets the public copy evolve without silently weakening the boundary monitor or making a legitimate redesign look like an incident.
-
-This visual rule is part of the product boundary. Future redesigns should preserve the same principle even if the typography or layout changes: information density is useful, decoration is secondary, and state must never be fabricated to make the system appear more mature than it is.
+Tests should protect facts and boundaries rather than wording. Copy can change. `Mission 104` remaining not authorized, the absence of private markers, the static-output policy, and anonymous denial at Founder Gateway surfaces are the things that matter.

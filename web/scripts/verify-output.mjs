@@ -97,17 +97,18 @@ for (const marker of [
 
 const overviewHtml = routeOutput.get("").text;
 for (const marker of [
-  "DELTAGRID / PUBLIC RESEARCH OBSERVER",
-  "Research first. Authority separate.",
+  "DeltaGrid / public research observer",
+  "Research system status",
+  "No validated alpha",
+  "None selected",
   "Mission 104",
   "NOT AUTHORIZED",
-  "NO PRIVATE OR PROTECTED VALUES",
-  "Open public demo",
+  "Open demo",
   "Founder access",
-  "Public inputs remain bounded and inspectable.",
-  "Public observer outside. Founder system inside.",
-  "NO BROKER CONNECTION",
-  "NO PAPER/LIVE TRADING",
+  "Public data inputs",
+  "Public / founder boundary",
+  "No broker connection",
+  "No paper/live trading",
 ]) {
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
 }
