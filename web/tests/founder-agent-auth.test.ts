@@ -42,20 +42,31 @@ class NonceDb implements D1DatabaseLike {
   async batch<T>(): Promise<D1ResultLike<T>[]> { return []; }
 }
 
-async function fixture() {
+type FixtureOptions = {
+  tokenType?: string;
+  subject?: string;
+  omitIssuedAt?: boolean;
+  omitExpiration?: boolean;
+};
+
+async function fixture(options: FixtureOptions = {}) {
   const pair = await generateKeyPair("RS256");
   const jwk = await exportJWK(pair.publicKey);
   jwk.kid = "agent-unit-key";
   jwk.alg = "RS256";
   const keySet = createLocalJWKSet({ keys: [jwk] } as JSONWebKeySet);
   const now = Math.floor(Date.now() / 1000);
-  const token = await new SignJWT({ common_name: "unit-agent.access" })
+  let signer = new SignJWT({
+    common_name: "unit-agent.access",
+    type: options.tokenType ?? "app",
+  })
     .setProtectedHeader({ alg: "RS256", kid: "agent-unit-key" })
     .setIssuer(teamDomain)
     .setAudience(audience)
-    .setIssuedAt(now)
-    .setExpirationTime(now + 300)
-    .sign(pair.privateKey);
+    .setSubject(options.subject ?? "");
+  if (!options.omitIssuedAt) signer = signer.setIssuedAt(now);
+  if (!options.omitExpiration) signer = signer.setExpirationTime(now + 300);
+  const token = await signer.sign(pair.privateKey);
   return { keySet, token };
 }
 
@@ -79,24 +90,69 @@ async function signedRequest(token: string, nonce = "0".repeat(32), signatureOve
   });
 }
 
+const env = () => ({
+  DELTAGRID_ACCESS_TEAM_DOMAIN: teamDomain,
+  DELTAGRID_AGENT_ACCESS_AUD: audience,
+  DELTAGRID_AGENT_HMAC_KEY: hmacKey,
+  DELTAGRID_SYSTEM_DB: new NonceDb(),
+});
+
 test("agent requires both Access service identity and signed one-use request", async () => {
   const { keySet, token } = await fixture();
   const db = new NonceDb();
-  const env = {
+  const request = await signedRequest(token);
+  const body = await request.clone().text();
+  const identity = await verifyAgentRequest(request, body, {
     DELTAGRID_ACCESS_TEAM_DOMAIN: teamDomain,
     DELTAGRID_AGENT_ACCESS_AUD: audience,
     DELTAGRID_AGENT_HMAC_KEY: hmacKey,
     DELTAGRID_SYSTEM_DB: db,
-  };
-  const request = await signedRequest(token);
-  const body = await request.clone().text();
-  const identity = await verifyAgentRequest(request, body, env, keySet);
+  }, keySet);
   assert.equal(identity.commonName, "unit-agent.access");
   assert.equal(identity.agentId, "unit-agent");
 
   const replay = await signedRequest(token);
   const replayBody = await replay.clone().text();
-  await assert.rejects(() => verifyAgentRequest(replay, replayBody, env, keySet), /AGENT_NONCE_REPLAY/u);
+  await assert.rejects(() => verifyAgentRequest(replay, replayBody, {
+    DELTAGRID_ACCESS_TEAM_DOMAIN: teamDomain,
+    DELTAGRID_AGENT_ACCESS_AUD: audience,
+    DELTAGRID_AGENT_HMAC_KEY: hmacKey,
+    DELTAGRID_SYSTEM_DB: db,
+  }, keySet), /AGENT_NONCE_REPLAY/u);
+});
+
+test("agent accepts only a complete Access service application token", async () => {
+  const wrongType = await fixture({ tokenType: "org" });
+  let request = await signedRequest(wrongType.token, "2".repeat(32));
+  let body = await request.clone().text();
+  await assert.rejects(
+    () => verifyAgentRequest(request, body, env(), wrongType.keySet),
+    /AGENT_ACCESS_TOKEN_TYPE_INVALID/u,
+  );
+
+  const identitySubject = await fixture({ subject: "human-subject" });
+  request = await signedRequest(identitySubject.token, "3".repeat(32));
+  body = await request.clone().text();
+  await assert.rejects(
+    () => verifyAgentRequest(request, body, env(), identitySubject.keySet),
+    /AGENT_SERVICE_SUBJECT_INVALID/u,
+  );
+
+  const noIssuedAt = await fixture({ omitIssuedAt: true });
+  request = await signedRequest(noIssuedAt.token, "4".repeat(32));
+  body = await request.clone().text();
+  await assert.rejects(
+    () => verifyAgentRequest(request, body, env(), noIssuedAt.keySet),
+    /AGENT_ACCESS_ISSUED_AT_INVALID/u,
+  );
+
+  const noExpiration = await fixture({ omitExpiration: true });
+  request = await signedRequest(noExpiration.token, "5".repeat(32));
+  body = await request.clone().text();
+  await assert.rejects(
+    () => verifyAgentRequest(request, body, env(), noExpiration.keySet),
+    /AGENT_ACCESS_EXPIRY_INVALID/u,
+  );
 });
 
 test("agent rejects invalid request HMAC", async () => {
@@ -104,12 +160,7 @@ test("agent rejects invalid request HMAC", async () => {
   const request = await signedRequest(token, "1".repeat(32), "f".repeat(64));
   const body = await request.clone().text();
   await assert.rejects(
-    () => verifyAgentRequest(request, body, {
-      DELTAGRID_ACCESS_TEAM_DOMAIN: teamDomain,
-      DELTAGRID_AGENT_ACCESS_AUD: audience,
-      DELTAGRID_AGENT_HMAC_KEY: hmacKey,
-      DELTAGRID_SYSTEM_DB: new NonceDb(),
-    }, keySet),
+    () => verifyAgentRequest(request, body, env(), keySet),
     /AGENT_SIGNATURE_INVALID/u,
   );
 });
