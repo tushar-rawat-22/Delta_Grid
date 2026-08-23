@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 
-REQUIREMENTS = Path(__file__).resolve().parents[1] / "requirements.txt"
+CI_REQUIREMENTS = Path(__file__).resolve().parents[1] / "ci-requirements.txt"
 _NAME_NORMALIZER = re.compile(r"[-_.]+")
 
 
@@ -31,8 +31,8 @@ def _parse_exact_pins(lines: list[str]) -> dict[str, str]:
     return pins
 
 
-def test_offchain_requirements_are_exact_pins() -> None:
-    pins = _parse_exact_pins(REQUIREMENTS.read_text(encoding="utf-8").splitlines())
+def test_offchain_ci_requirements_are_exact_pins() -> None:
+    pins = _parse_exact_pins(CI_REQUIREMENTS.read_text(encoding="utf-8").splitlines())
     assert pins["pytest"] == "9.1.1"
     for transitive in ("greenlet", "iniconfig", "packaging", "pluggy", "pygments"):
         assert transitive in pins
@@ -42,7 +42,7 @@ def test_ci_environment_matches_offchain_lock() -> None:
     if os.environ.get("GITHUB_ACTIONS") != "true":
         return
 
-    locked = _parse_exact_pins(REQUIREMENTS.read_text(encoding="utf-8").splitlines())
+    locked = _parse_exact_pins(CI_REQUIREMENTS.read_text(encoding="utf-8").splitlines())
     freeze = subprocess.run(
         [sys.executable, "-m", "pip", "freeze"],
         check=True,
@@ -53,5 +53,5 @@ def test_ci_environment_matches_offchain_lock() -> None:
 
     assert installed == locked, (
         "GitHub Actions installed a different Python dependency graph than "
-        "offchain/requirements.txt"
+        "offchain/ci-requirements.txt"
     )
