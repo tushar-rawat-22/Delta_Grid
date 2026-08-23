@@ -176,20 +176,30 @@ export async function claimCommand(
   authorityState: string,
   now: string,
 ): Promise<CommandRecord | null> {
-  const candidate = await db.prepare(
-    `SELECT command_id FROM founder_command_requests
-      WHERE status = 'REQUESTED' AND expires_at > ?
+  const existing = await db.prepare(
+    `SELECT * FROM founder_command_requests
+      WHERE status = 'CLAIMED' AND claimed_by = ? AND expires_at > ?
         AND expected_core_commit = ? AND expected_authority_state = ?
-      ORDER BY requested_at ASC LIMIT 1`,
-  ).bind(now, coreCommit, authorityState).first<{ command_id: string }>();
-  if (!candidate) return null;
+      ORDER BY claimed_at ASC LIMIT 1`,
+  ).bind(agentId, now, coreCommit, authorityState).first<CommandRecord>();
+  if (existing) return existing;
 
   const result = await db.prepare(
     `UPDATE founder_command_requests
       SET status = 'CLAIMED', claimed_at = ?, claimed_by = ?
-      WHERE command_id = ? AND status = 'REQUESTED' AND expires_at > ?
+      WHERE command_id = (
+        SELECT command_id FROM founder_command_requests
+        WHERE status = 'REQUESTED' AND expires_at > ?
+          AND expected_core_commit = ? AND expected_authority_state = ?
+        ORDER BY requested_at ASC LIMIT 1
+      )
+      AND status = 'REQUESTED'
+      AND NOT EXISTS (
+        SELECT 1 FROM founder_command_requests
+        WHERE status IN ('CLAIMED', 'EXECUTING')
+      )
       RETURNING *`,
-  ).bind(now, agentId, candidate.command_id, now).run<CommandRecord>();
+  ).bind(now, agentId, now, coreCommit, authorityState).run<CommandRecord>();
   return result.success ? (result.results?.[0] ?? null) : null;
 }
 
