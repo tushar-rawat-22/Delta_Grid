@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import fcntl
 import hashlib
 import hmac
 import json
@@ -13,7 +14,7 @@ import secrets
 import subprocess
 import sys
 import time
-from typing import Any
+from typing import Any, Iterator
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -94,6 +95,47 @@ def keychain_secret(name: str) -> str:
     if result.returncode != 0 or not value:
         raise AgentError(f"KEYCHAIN_{name.upper()}_MISSING")
     return value
+
+
+class AgentLock:
+    """Process-scoped lock that prevents overlapping local command consumers."""
+
+    def __init__(self) -> None:
+        self.handle = None
+
+    def __enter__(self) -> "AgentLock":
+        root = Path.home() / ".deltagrid" / "operator"
+        root.mkdir(parents=True, exist_ok=True, mode=0o700)
+        if root.is_symlink() or (root.stat().st_mode & 0o777) & 0o077:
+            raise AgentError("AGENT_LOCK_DIRECTORY_INVALID")
+        path = root / "founder-agent.lock"
+        flags = os.O_RDWR | os.O_CREAT
+        if hasattr(os, "O_NOFOLLOW"):
+            flags |= os.O_NOFOLLOW
+        try:
+            descriptor = os.open(path, flags, 0o600)
+        except OSError:
+            raise AgentError("AGENT_LOCK_OPEN_FAILED") from None
+        if (os.fstat(descriptor).st_mode & 0o777) & 0o077:
+            os.close(descriptor)
+            raise AgentError("AGENT_LOCK_PERMISSIONS_INVALID")
+        self.handle = os.fdopen(descriptor, "a+b")
+        try:
+            fcntl.flock(self.handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            self.handle.close()
+            self.handle = None
+            raise AgentError("AGENT_ALREADY_RUNNING") from None
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        if self.handle is None:
+            return
+        try:
+            fcntl.flock(self.handle.fileno(), fcntl.LOCK_UN)
+        finally:
+            self.handle.close()
+            self.handle = None
 
 
 def signed_request(
@@ -349,12 +391,23 @@ def pending_completion(path: Path) -> dict[str, Any]:
 
 def archive_pending_receipt(config: dict[str, Any], path: Path) -> None:
     pending, history = receipt_directories(config)
-    if path.parent != pending or path.is_symlink():
+    if path.parent != pending or not path.is_file() or path.is_symlink():
         raise AgentError("PENDING_RECEIPT_INVALID")
     destination = history / path.name
-    if destination.exists():
-        raise AgentError("RECEIPT_HISTORY_CONFLICT")
-    os.replace(path, destination)
+    try:
+        os.link(path, destination, follow_symlinks=False)
+    except FileExistsError:
+        try:
+            if destination.is_file() and not destination.is_symlink() and os.path.samefile(path, destination):
+                os.unlink(path)
+                return
+        except OSError:
+            pass
+        raise AgentError("RECEIPT_HISTORY_CONFLICT") from None
+    try:
+        os.unlink(path)
+    except OSError:
+        raise AgentError("RECEIPT_ARCHIVE_INCOMPLETE") from None
 
 
 def reconcile_pending_completions(config: dict[str, Any], credentials: dict[str, str]) -> None:
@@ -383,6 +436,7 @@ def run_once(config_path: Path) -> dict[str, str]:
         "/agent/v1/claim",
         {"authority_state": AUTHORITY_STATE, "core_commit": core_commit},
         credentials,
+        transport_retries=2,
     )
     command = response.get("command")
     if command is None:
@@ -447,7 +501,8 @@ def main() -> int:
     )
     arguments = parser.parse_args()
     try:
-        result = run_once(arguments.config)
+        with AgentLock():
+            result = run_once(arguments.config)
     except (AgentError, json.JSONDecodeError, OSError, subprocess.SubprocessError):
         print('{"status":"FAILED_CLOSED"}')
         return 1
