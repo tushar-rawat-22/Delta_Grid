@@ -55,19 +55,31 @@ class FakeStatement implements D1StatementLike {
 
 class FakeDb implements D1DatabaseLike {
   writes: string[] = [];
+  batchCalls = 0;
 
   prepare(query: string): D1StatementLike {
     return new FakeStatement(query, this.writes);
   }
 
   async batch<T>(statements: D1StatementLike[]): Promise<D1ResultLike<T>[]> {
+    this.batchCalls += 1;
     return Promise.all(statements.map((statement) => statement.run<T>()));
   }
 }
 
-function testEnv(): FounderSystemEnv & { DELTAGRID_SYSTEM_DB: FakeDb } {
+class FailingCommandAuditDb extends FakeDb {
+  override async batch<T>(_statements: D1StatementLike[]): Promise<D1ResultLike<T>[]> {
+    this.batchCalls += 1;
+    return [
+      { success: true, results: [], meta: { changes: 1 } },
+      { success: false, results: [], meta: { changes: 0 } },
+    ];
+  }
+}
+
+function testEnv(db: FakeDb = new FakeDb()): FounderSystemEnv & { DELTAGRID_SYSTEM_DB: FakeDb } {
   return {
-    DELTAGRID_SYSTEM_DB: new FakeDb(),
+    DELTAGRID_SYSTEM_DB: db,
     DELTAGRID_CORE_COMMIT: "d94441f2f32fd8edc7b416beecd88b2b087d01a9",
     DELTAGRID_AUTHORITY_STATE: "NONE",
     DELTAGRID_AGENT_HMAC_KEY: "k".repeat(64),
@@ -161,7 +173,9 @@ test("fixed action request requires same-origin form and exact confirmation", as
   }), env);
   assert.equal(accepted.status, 303);
   assert.equal(accepted.headers.get("location"), "/founder/actions");
+  assert.equal(env.DELTAGRID_SYSTEM_DB.batchCalls, 1);
   assert.ok(env.DELTAGRID_SYSTEM_DB.writes.some((query) => query.includes("founder_command_requests")));
+  assert.ok(env.DELTAGRID_SYSTEM_DB.writes.some((query) => query.includes("founder_security_events")));
 
   const rejected = await handle(new Request("https://founder.example.test/founder/actions", {
     method: "POST",
@@ -173,6 +187,25 @@ test("fixed action request requires same-origin form and exact confirmation", as
     body: new URLSearchParams({ action, confirmation: `REQUEST ${action}` }),
   }), testEnv());
   assert.equal(rejected.status, 403);
+});
+
+test("command creation fails closed when the atomic command-audit batch is incomplete", async () => {
+  const handle = createFounderHandler(accept);
+  const db = new FailingCommandAuditDb();
+  const action = ACTION_IDS[0];
+  const response = await handle(new Request("https://founder.example.test/founder/actions", {
+    method: "POST",
+    headers: {
+      origin: "https://founder.example.test",
+      "sec-fetch-site": "same-origin",
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ action, confirmation: `REQUEST ${action}` }),
+  }), testEnv(db));
+  assert.equal(response.status, 503);
+  assert.equal(db.batchCalls, 1);
+  assert.ok(db.writes.some((query) => query.includes("founder_security_events")));
+  assert.ok(!db.writes.some((query) => query.includes("founder_command_requests")));
 });
 
 test("agent endpoint is POST-only and independently authenticated", async () => {
