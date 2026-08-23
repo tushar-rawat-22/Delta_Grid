@@ -13,6 +13,18 @@ test("live public boundary monitor is scheduled and manually runnable", () => {
   assert.match(workflow, /bash web\/scripts\/verify-live-boundary\.sh/u);
 });
 
+test("live boundary concurrency keeps different trigger classes independent", () => {
+  assert.match(
+    workflow,
+    /group: live-public-boundary-\$\{\{ github\.event_name \}\}-\$\{\{ github\.event\.pull_request\.number \|\| github\.ref \}\}/u,
+  );
+  assert.match(workflow, /cancel-in-progress: true/u);
+  assert.doesNotMatch(
+    workflow,
+    /group: live-public-boundary-\$\{\{ github\.event\.pull_request\.number \|\| github\.ref \}\}/u,
+  );
+});
+
 test("scheduled monitor also detects public production drift from current main", () => {
   assert.match(
     workflow,
