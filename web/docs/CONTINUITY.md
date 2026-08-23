@@ -47,7 +47,7 @@ The public observer has a guarded exact-version rollback workflow because it is 
 
 Dependabot is limited to reviewed minor/patch lines. Major dependency or GitHub Action changes are compatibility work, not unattended maintenance. Lifecycle-script-capable packages remain independently pinned by the package allowlist, the locked installer, and dependency verification.
 
-The off-chain Python CI graph is also exact-pinned, including the test runner and its transitive packages. `offchain/tests/test_requirements_lock.py` rejects range pins and, on GitHub Actions, compares the installed `pip freeze` graph with `offchain/requirements.txt`. A dependency refresh should therefore be a reviewed lock change rather than an implicit resolver update during an unrelated PR.
+The historical `offchain/requirements.txt` declaration remains frozen because Mission-era regression tests use it as part of the recorded research baseline. GitHub Actions installs the separate exact-pinned `offchain/ci-requirements.txt` graph instead. `offchain/tests/test_requirements_lock.py` rejects range pins in that CI lock and, on GitHub Actions, compares the installed `pip freeze` graph with it. This lets CI dependencies receive explicit reviewed maintenance without rewriting the historical mission dependency declaration or allowing silent resolver drift during unrelated pull requests.
 
 `SECURITY.md` is the public vulnerability-reporting entry point. Reports should be handled privately, without encouraging destructive testing, founder-data access, or testing against exchanges, brokers, credentials, or capital. A confirmed report follows the normal branch, test, CI, review, and guarded-release path rather than bypassing it as an emergency shortcut.
 
