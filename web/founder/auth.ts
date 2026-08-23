@@ -67,12 +67,20 @@ export async function verifyFounderRequest(
 }
 
 function validateFounderClaims(payload: JWTPayload, expectedEmail: string): FounderIdentity {
+  if (payload.type !== "app") throw new Error("FOUNDER_ACCESS_TOKEN_TYPE_INVALID");
+
   const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
   if (!email || email !== expectedEmail) throw new Error("FOUNDER_ACCESS_IDENTITY_MISMATCH");
 
+  const subject = typeof payload.sub === "string" ? payload.sub.trim() : "";
+  if (!subject) throw new Error("FOUNDER_ACCESS_SUBJECT_INVALID");
+  if (!Number.isSafeInteger(payload.iat)) throw new Error("FOUNDER_ACCESS_ISSUED_AT_INVALID");
+  if (!Number.isSafeInteger(payload.exp)) throw new Error("FOUNDER_ACCESS_EXPIRY_INVALID");
+  if ((payload.exp as number) <= (payload.iat as number)) throw new Error("FOUNDER_ACCESS_LIFETIME_INVALID");
+
   return {
-    subject: typeof payload.sub === "string" && payload.sub ? payload.sub : null,
+    subject,
     email,
-    expiresAt: typeof payload.exp === "number" ? payload.exp : null,
+    expiresAt: payload.exp as number,
   };
 }
