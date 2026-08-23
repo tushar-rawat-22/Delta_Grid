@@ -12,10 +12,10 @@ const coverage = [
 ] as const;
 
 const authority = [
-  ["M101", "DATA / ADMISSION AUTHORITY", "GATED"],
-  ["M102", "EXPERIMENT ENGINE", "GATED"],
-  ["M103", "PRE-RESULT GOVERNANCE", "PREPARED"],
-  ["Mission 104", "CAPITAL AUTHORITY", "NOT AUTHORIZED"],
+  ["M101", "Data and admission", "Gated"],
+  ["M102", "Experiment engine", "Gated"],
+  ["M103", "Pre-result programme", "Prepared"],
+  ["Mission 104", "Capital authority", "NOT AUTHORIZED"],
 ] as const;
 
 const dataContract = [
@@ -26,7 +26,7 @@ const dataContract = [
   ["Treasury Fiscal Data", "Daily check", "Latest Debt to the Penny"],
 ] as const;
 
-const features = [
+const workspace = [
   ["Cockpit", "Watchlist, collection freshness, work queue, catalysts, revisions."],
   ["Intelligence", "Breadth, risk pressure, relationships, macro changes, candidate questions."],
   ["Hypotheses", "Thesis records, falsification logic, finite budgets, preregistration handoff."],
@@ -46,58 +46,70 @@ const snapshots = [
 export function ResearchLanding() {
   return (
     <main className={styles.shell}>
-      <div className={styles.topbar}>
-        <strong>DELTAGRID / PUBLIC RESEARCH OBSERVER</strong>
-        <span>SYSTEM BOUNDARY: HEALTHY</span>
+      <header className={styles.header}>
+        <div>
+          <p className={styles.eyebrow}>DeltaGrid / public research observer</p>
+          <h1>Research system status</h1>
+          <p className={styles.intro}>
+            Read-only view of the project&apos;s research scope, data sources, controls, and sanitized workspace.
+            The private Founder system is separate from this build.
+          </p>
+        </div>
+        <nav className={styles.links} aria-label="Research observer links">
+          <Link href="/research">Open demo</Link>
+          <a href={FOUNDER_RESEARCH_URL}>Founder access ↗</a>
+        </nav>
+      </header>
+
+      <section className={styles.statusBlock} aria-labelledby="research-state-title">
+        <h2 id="research-state-title">Current research state</h2>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <tbody>
+              <tr><th scope="row">Research result</th><td>No validated alpha</td></tr>
+              <tr><th scope="row">Selected candidate</th><td>None selected</td></tr>
+              <tr><th scope="row">Paper / live trading</th><td>Disabled</td></tr>
+              <tr><th scope="row">Mission 104</th><td>NOT AUTHORIZED</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p className={styles.note}>No broker connection. No paper/live trading. No capital authority.</p>
+      </section>
+
+      <div className={styles.split}>
+        <section aria-labelledby="coverage-title">
+          <h2 id="coverage-title">Configured coverage</h2>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <thead><tr><th>Area</th><th>Count</th><th>Scope</th></tr></thead>
+              <tbody>
+                {coverage.map(([label, value, note]) => (
+                  <tr key={label}><td>{label}</td><td>{value}</td><td>{note}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section aria-labelledby="authority-title">
+          <h2 id="authority-title">Authority</h2>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <thead><tr><th>Stage</th><th>Purpose</th><th>State</th></tr></thead>
+              <tbody>
+                {authority.map(([code, label, state]) => (
+                  <tr key={code}><td>{code}</td><td>{label}</td><td>{state}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.kicker}>Quantitative research infrastructure</p>
-          <h1>Research first. Authority separate.</h1>
-          <p>
-            DeltaGrid is a falsification-led market research system built around reproducible data,
-            explicit evidence, deterministic controls, and hard separation between research capability
-            and trading authority.
-          </p>
-          <div className={styles.actions}>
-            <Link className={styles.action} href="/research">Open public demo →</Link>
-            <a className={styles.secondaryAction} href={FOUNDER_RESEARCH_URL}>Founder access ↗</a>
-          </div>
-          <p className={styles.disclaimer}>
-            RESEARCH ONLY // NO BROKER CONNECTION // NO ORDERS // NO PAPER/LIVE TRADING // NO CAPITAL AUTHORITY
-          </p>
-        </div>
-
-        <div className={styles.status} aria-label="Configured public research scope">
-          <div className={styles.statusHead}><span>CONFIGURED SCOPE</span><span>PUBLIC / SANITIZED</span></div>
-          <div className={styles.metricGrid}>
-            {coverage.map(([label, value, note]) => (
-              <div className={styles.metric} key={label}>
-                <span>{label}</span>
-                <strong>{value}</strong>
-                <small>{note}</small>
-              </div>
-            ))}
-          </div>
-          <div className={styles.statusFoot}><strong>Mission 104 NOT AUTHORIZED</strong><span>NO PRIVATE OR PROTECTED VALUES</span></div>
-        </div>
-      </section>
-
-      <section className={styles.band} aria-label="Research authority state">
-        {authority.map(([code, label, state]) => (
-          <div key={code}>
-            <span>{code} / {label}</span>
-            <strong>{state}</strong>
-          </div>
-        ))}
-      </section>
-
-      <section className={styles.section}>
-        <div className={styles.panel}>
-          <p className={styles.sectionLabel}>DATA CONTRACT</p>
-          <h2>Public inputs remain bounded and inspectable.</h2>
-          <p>Missing, stale, malformed, or quota-limited responses stay explicit. The system does not manufacture a current value.</p>
+      <section className={styles.section} aria-labelledby="inputs-title">
+        <div className={styles.sectionHeading}>
+          <h2 id="inputs-title">Public data inputs</h2>
+          <p>Provider limits and stale or missing values stay visible rather than being filled in.</p>
         </div>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -111,35 +123,52 @@ export function ResearchLanding() {
         </div>
       </section>
 
-      <section className={styles.workspace} aria-label="Public research workspace views">
-        {features.map(([title, body], index) => (
-          <article key={title}>
-            <code>{String(index + 1).padStart(2, "0")}</code>
-            <h3>{title}</h3>
-            <p>{body}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className={styles.previews} aria-label="Sanitized product previews">
-        {snapshots.map(([src, title, caption]) => (
-          <figure className={styles.preview} key={src}>
-            <Image src={src} alt={`Sanitized DeltaGrid ${title} product screenshot`} width={1440} height={900} />
-            <figcaption><strong>{title}</strong><span>{caption}</span></figcaption>
-          </figure>
-        ))}
-      </section>
-
-      <section className={styles.boundary}>
-        <div className={styles.boundaryLead}>
-          <p className={styles.sectionLabel}>ACCESS / AUTHORITY BOUNDARY</p>
-          <h2>Public observer outside. Founder system inside.</h2>
+      <section className={styles.section} aria-labelledby="workspace-title">
+        <div className={styles.sectionHeading}>
+          <h2 id="workspace-title">Workspace</h2>
+          <p>Demo Mode uses sanitized fixtures. Founder records and authenticated API state are not shipped in the public bundle.</p>
         </div>
-        <div className={styles.boundaryRows}>
-          <p><strong>PUBLIC SURFACE</strong><span>Static observer and deterministic Demo Mode. No private research records or authenticated API state are included in the public build.</span></p>
-          <p><strong>FOUNDER GATEWAY</strong><span>Cloudflare Access is the outer gate; the Worker independently validates the Access JWT and exact founder identity.</span></p>
-          <p><strong>RESEARCH STATE</strong><span>Founder research records remain scoped to the verified founder and retain authority effect NONE unless a separate trusted-local workflow grants a narrower capability.</span></p>
-          <p><strong>EXECUTION</strong><span>No public route can place, simulate, authorize, or fund an order. Provider secrets do not reach the browser.</span></p>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead><tr><th>View</th><th>What it is for</th></tr></thead>
+            <tbody>
+              {workspace.map(([title, body]) => (
+                <tr key={title}><td>{title}</td><td>{body}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="preview-title">
+        <div className={styles.sectionHeading}>
+          <h2 id="preview-title">Sanitized interface</h2>
+          <p>These screenshots are deterministic demo material, not private Founder state.</p>
+        </div>
+        <div className={styles.previews}>
+          {snapshots.map(([src, title, caption]) => (
+            <figure className={styles.preview} key={src}>
+              <Image src={src} alt={`Sanitized DeltaGrid ${title} product screenshot`} width={1440} height={900} />
+              <figcaption><strong>{title}</strong><span>{caption}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section} aria-labelledby="boundary-title">
+        <div className={styles.sectionHeading}>
+          <h2 id="boundary-title">Public / founder boundary</h2>
+          <p>The public observer is useful for review, but it has no path into private research or execution.</p>
+        </div>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <tbody>
+              <tr><th scope="row">Public surface</th><td>Static observer and deterministic Demo Mode only.</td></tr>
+              <tr><th scope="row">Founder Gateway</th><td>Cloudflare Access plus independent Worker identity validation.</td></tr>
+              <tr><th scope="row">Research state</th><td>Private Founder records stay outside the public build and retain authority effect NONE unless a separate trusted-local workflow grants a narrower capability.</td></tr>
+              <tr><th scope="row">Execution</th><td>No public route can place, simulate, authorize, or fund an order. Provider secrets do not reach the browser.</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </main>
