@@ -8,6 +8,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[2]
+HISTORICAL_REQUIREMENTS = ROOT / "offchain" / "requirements.txt"
 CI_REQUIREMENTS = ROOT / "offchain" / "ci-requirements.txt"
 CI_WORKFLOW = ROOT / ".github" / "workflows" / "deltagrid-ci.yml"
 _NAME_NORMALIZER = re.compile(r"[-_.]+")
@@ -33,11 +34,43 @@ def _parse_exact_pins(lines: list[str]) -> dict[str, str]:
     return pins
 
 
+def _parse_historical_exact_pins(lines: list[str]) -> dict[str, str]:
+    pins: dict[str, str] = {}
+    for raw in lines:
+        line = raw.strip()
+        if not line or line.startswith("#") or "==" not in line:
+            continue
+        assert line.count("==") == 1, f"invalid historical exact dependency pin: {line}"
+        name, version = line.split("==", 1)
+        assert name and version, f"invalid historical exact dependency pin: {line}"
+        canonical = _canonical_name(name)
+        assert canonical not in pins, f"duplicate historical dependency pin: {name}"
+        pins[canonical] = version
+    return pins
+
+
 def test_offchain_ci_requirements_are_exact_pins() -> None:
     pins = _parse_exact_pins(CI_REQUIREMENTS.read_text(encoding="utf-8").splitlines())
     assert pins["pytest"] == "9.1.1"
     for transitive in ("greenlet", "iniconfig", "packaging", "pluggy", "pygments"):
         assert transitive in pins
+
+
+def test_ci_lock_preserves_frozen_historical_runtime_pins() -> None:
+    historical = _parse_historical_exact_pins(
+        HISTORICAL_REQUIREMENTS.read_text(encoding="utf-8").splitlines()
+    )
+    locked = _parse_exact_pins(CI_REQUIREMENTS.read_text(encoding="utf-8").splitlines())
+
+    missing = sorted(set(historical) - set(locked))
+    changed = sorted(
+        name
+        for name, version in historical.items()
+        if locked.get(name) is not None and locked[name] != version
+    )
+
+    assert not missing, f"CI lock dropped frozen historical dependencies: {missing}"
+    assert not changed, f"CI lock changed frozen historical dependency versions: {changed}"
 
 
 def test_ci_workflow_installs_only_the_exact_ci_lock() -> None:
