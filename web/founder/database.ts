@@ -59,8 +59,11 @@ export type ProviderHealthInput = {
   detailCode: string;
 };
 
-export async function insertCommand(db: D1DatabaseLike, command: CommandInsert): Promise<void> {
-  const result = await db.prepare(
+type SecurityActorKind = "FOUNDER" | "AGENT" | "SYSTEM";
+type SecurityOutcome = "ALLOW" | "DENY" | "ERROR";
+
+function commandInsertStatement(db: D1DatabaseLike, command: CommandInsert): D1StatementLike {
+  return db.prepare(
     `INSERT INTO founder_command_requests (
       command_id, schema_version, requested_action_id, founder_user_id,
       requested_at, expires_at, one_use_nonce, expected_core_commit,
@@ -81,8 +84,39 @@ export async function insertCommand(db: D1DatabaseLike, command: CommandInsert):
     command.parameter_hash,
     command.canonical_request_hash,
     command.integrity_proof,
-  ).run();
-  if (!result.success || result.meta?.changes !== 1) throw new Error("COMMAND_INSERT_FAILED");
+  );
+}
+
+function securityEventStatement(
+  db: D1DatabaseLike,
+  eventType: string,
+  actorKind: SecurityActorKind,
+  outcome: SecurityOutcome,
+  reasonCode: string,
+): D1StatementLike {
+  return db.prepare(
+    `INSERT INTO founder_security_events
+      (event_id, occurred_at, event_type, actor_kind, outcome, reason_code)
+      VALUES (?, ?, ?, ?, ?, ?)`,
+  ).bind(crypto.randomUUID(), new Date().toISOString(), eventType, actorKind, outcome, reasonCode);
+}
+
+export async function insertCommand(db: D1DatabaseLike, command: CommandInsert): Promise<void> {
+  const result = await commandInsertStatement(db, command).run();
+  if (!result.success || !changedExactlyOne(result)) throw new Error("COMMAND_INSERT_FAILED");
+}
+
+export async function insertCommandWithSecurityEvent(
+  db: D1DatabaseLike,
+  command: CommandInsert,
+): Promise<void> {
+  const results = await db.batch([
+    commandInsertStatement(db, command),
+    securityEventStatement(db, "COMMAND_CREATE", "FOUNDER", "ALLOW", "FIXED_ACTION_ACCEPTED"),
+  ]);
+  if (results.length !== 2 || results.some((result) => !result.success || !changedExactlyOne(result))) {
+    throw new Error("COMMAND_AUDIT_BATCH_FAILED");
+  }
 }
 
 export async function listRecentCommands(db: D1DatabaseLike, limit = 20): Promise<CommandRecord[]> {
@@ -279,15 +313,12 @@ export async function insertProviderHealth(
 export async function insertSecurityEvent(
   db: D1DatabaseLike,
   eventType: string,
-  actorKind: "FOUNDER" | "AGENT" | "SYSTEM",
-  outcome: "ALLOW" | "DENY" | "ERROR",
+  actorKind: SecurityActorKind,
+  outcome: SecurityOutcome,
   reasonCode: string,
 ): Promise<void> {
-  await db.prepare(
-    `INSERT INTO founder_security_events
-      (event_id, occurred_at, event_type, actor_kind, outcome, reason_code)
-      VALUES (?, ?, ?, ?, ?, ?)`,
-  ).bind(crypto.randomUUID(), new Date().toISOString(), eventType, actorKind, outcome, reasonCode).run();
+  const result = await securityEventStatement(db, eventType, actorKind, outcome, reasonCode).run();
+  if (!result.success || !changedExactlyOne(result)) throw new Error("SECURITY_EVENT_INSERT_FAILED");
 }
 
 export function assertActionId(value: string): ActionId {
