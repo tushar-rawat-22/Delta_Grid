@@ -15,7 +15,7 @@ const authority = [
   ["M101", "Data and admission", "Gated"],
   ["M102", "Experiment engine", "Gated"],
   ["M103", "Pre-result programme", "Prepared"],
-  ["Mission 104", "Capital authority", "NOT AUTHORIZED"],
+  ["Mission 104", "Candidate observation", "NOT AUTHORIZED"],
 ] as const;
 
 const dataContract = [
