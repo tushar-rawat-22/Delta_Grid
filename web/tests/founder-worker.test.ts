@@ -68,7 +68,7 @@ class FakeDb implements D1DatabaseLike {
 }
 
 class FailingCommandAuditDb extends FakeDb {
-  override async batch<T>(_statements: D1StatementLike[]): Promise<D1ResultLike<T>[]> {
+  override async batch<T>(): Promise<D1ResultLike<T>[]> {
     this.batchCalls += 1;
     return [
       { success: true, results: [], meta: { changes: 1 } },
