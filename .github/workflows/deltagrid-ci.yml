@@ -80,8 +80,8 @@ jobs:
               ;;
           esac
 
-      - name: Install declared dependencies
-        run: python -m pip install --disable-pip-version-check -r offchain/requirements.txt
+      - name: Install exact CI dependency graph
+        run: python -m pip install --disable-pip-version-check -r offchain/ci-requirements.txt
 
       - name: Print environment diagnostics
         run: |
