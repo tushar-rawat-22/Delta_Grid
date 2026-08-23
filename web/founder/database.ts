@@ -35,6 +35,17 @@ export type ReceiptInput = {
   localReceiptSha256: string;
 };
 
+type StoredReceipt = {
+  agent_id: string;
+  terminal_status: ReceiptInput["status"];
+  terminal_code: string;
+  started_at: string;
+  completed_at: string;
+  duration_ms: number;
+  output_sha256: string;
+  local_receipt_sha256: string;
+};
+
 export type EvidenceEnvelopeInput = {
   envelopeId: string;
   providerId: string;
@@ -193,10 +204,23 @@ export async function startCommand(
       WHERE command_id = ? AND status = 'CLAIMED' AND claimed_by = ? AND expires_at > ?
       RETURNING command_id`,
   ).bind(now, commandId, agentId, now).run<{ command_id: string }>();
-  return result.success && changedExactlyOne(result);
+  if (result.success && changedExactlyOne(result)) return true;
+
+  const existing = await db.prepare(
+    `SELECT command_id FROM founder_command_requests
+      WHERE command_id = ? AND status = 'EXECUTING' AND claimed_by = ? AND expires_at > ?`,
+  ).bind(commandId, agentId, now).first<{ command_id: string }>();
+  return existing?.command_id === commandId;
 }
 
 export async function completeCommand(db: D1DatabaseLike, receipt: ReceiptInput): Promise<boolean> {
+  const existing = await db.prepare(
+    `SELECT agent_id, terminal_status, terminal_code, started_at, completed_at,
+      duration_ms, output_sha256, local_receipt_sha256
+    FROM founder_command_receipts WHERE command_id = ?`,
+  ).bind(receipt.commandId).first<StoredReceipt>();
+  if (existing) return storedReceiptMatches(existing, receipt);
+
   const receiptId = crypto.randomUUID();
   const statements = [
     db.prepare(
@@ -230,7 +254,18 @@ export async function completeCommand(db: D1DatabaseLike, receipt: ReceiptInput)
     ),
   ];
   const results = await db.batch(statements);
-  return results.every((result) => result.success) && results.every(changedExactlyOne);
+  return results.length === 2 && results.every((result) => result.success) && results.every(changedExactlyOne);
+}
+
+function storedReceiptMatches(stored: StoredReceipt, receipt: ReceiptInput): boolean {
+  return stored.agent_id === receipt.agentId
+    && stored.terminal_status === receipt.status
+    && stored.terminal_code === receipt.terminalCode
+    && stored.started_at === receipt.startedAt
+    && stored.completed_at === receipt.completedAt
+    && stored.duration_ms === receipt.durationMs
+    && stored.output_sha256 === receipt.outputSha256
+    && stored.local_receipt_sha256 === receipt.localReceiptSha256;
 }
 
 function changedExactlyOne(result: D1ResultLike): boolean {
