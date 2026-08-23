@@ -36,6 +36,12 @@ export async function verifyAgentRequest(
     audience,
     algorithms: ["RS256"],
   });
+  if (payload.type !== "app") throw new Error("AGENT_ACCESS_TOKEN_TYPE_INVALID");
+  if (payload.sub !== "") throw new Error("AGENT_SERVICE_SUBJECT_INVALID");
+  if (!Number.isSafeInteger(payload.iat)) throw new Error("AGENT_ACCESS_ISSUED_AT_INVALID");
+  if (!Number.isSafeInteger(payload.exp)) throw new Error("AGENT_ACCESS_EXPIRY_INVALID");
+  if ((payload.exp as number) <= (payload.iat as number)) throw new Error("AGENT_ACCESS_LIFETIME_INVALID");
+
   const commonName = typeof payload.common_name === "string" ? payload.common_name : "";
   if (!/^[A-Za-z0-9-]+\.access$/u.test(commonName)) throw new Error("AGENT_SERVICE_IDENTITY_INVALID");
 
