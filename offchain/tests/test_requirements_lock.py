@@ -7,7 +7,9 @@ import subprocess
 import sys
 
 
-CI_REQUIREMENTS = Path(__file__).resolve().parents[1] / "ci-requirements.txt"
+ROOT = Path(__file__).resolve().parents[2]
+CI_REQUIREMENTS = ROOT / "offchain" / "ci-requirements.txt"
+CI_WORKFLOW = ROOT / ".github" / "workflows" / "deltagrid-ci.yml"
 _NAME_NORMALIZER = re.compile(r"[-_.]+")
 
 
@@ -36,6 +38,15 @@ def test_offchain_ci_requirements_are_exact_pins() -> None:
     assert pins["pytest"] == "9.1.1"
     for transitive in ("greenlet", "iniconfig", "packaging", "pluggy", "pygments"):
         assert transitive in pins
+
+
+def test_ci_workflow_installs_only_the_exact_ci_lock() -> None:
+    text = CI_WORKFLOW.read_text(encoding="utf-8")
+    active = "run: python -m pip install --disable-pip-version-check -r offchain/ci-requirements.txt"
+    historical = "pip install --disable-pip-version-check -r offchain/requirements.txt"
+    assert active in text
+    assert f"# {historical}" in text
+    assert f"run: {historical}" not in text
 
 
 def test_ci_environment_matches_offchain_lock() -> None:
