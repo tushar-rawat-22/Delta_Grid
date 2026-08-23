@@ -124,31 +124,33 @@ test("agent requires both Access service identity and signed one-use request", a
 test("agent accepts only a complete Access service application token", async () => {
   const wrongType = await fixture({ tokenType: "org" });
   let request = await signedRequest(wrongType.token, "2".repeat(32));
+  let body = await request.clone().text();
   await assert.rejects(
-    () => verifyAgentRequest(request, request.clone().text() as never, env(), wrongType.keySet),
+    () => verifyAgentRequest(request, body, env(), wrongType.keySet),
+    /AGENT_ACCESS_TOKEN_TYPE_INVALID/u,
   );
 
   const identitySubject = await fixture({ subject: "human-subject" });
   request = await signedRequest(identitySubject.token, "3".repeat(32));
-  const identityBody = await request.clone().text();
+  body = await request.clone().text();
   await assert.rejects(
-    () => verifyAgentRequest(request, identityBody, env(), identitySubject.keySet),
+    () => verifyAgentRequest(request, body, env(), identitySubject.keySet),
     /AGENT_SERVICE_SUBJECT_INVALID/u,
   );
 
   const noIssuedAt = await fixture({ omitIssuedAt: true });
   request = await signedRequest(noIssuedAt.token, "4".repeat(32));
-  const noIssuedAtBody = await request.clone().text();
+  body = await request.clone().text();
   await assert.rejects(
-    () => verifyAgentRequest(request, noIssuedAtBody, env(), noIssuedAt.keySet),
+    () => verifyAgentRequest(request, body, env(), noIssuedAt.keySet),
     /AGENT_ACCESS_ISSUED_AT_INVALID/u,
   );
 
   const noExpiration = await fixture({ omitExpiration: true });
   request = await signedRequest(noExpiration.token, "5".repeat(32));
-  const noExpirationBody = await request.clone().text();
+  body = await request.clone().text();
   await assert.rejects(
-    () => verifyAgentRequest(request, noExpirationBody, env(), noExpiration.keySet),
+    () => verifyAgentRequest(request, body, env(), noExpiration.keySet),
     /AGENT_ACCESS_EXPIRY_INVALID/u,
   );
 });
