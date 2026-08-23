@@ -10,4 +10,8 @@ Transport acknowledgement is not treated as proof that a database write did or d
 
 The first completion still updates the command and inserts its receipt in one D1 batch. D1 executes batched statements transactionally, so the command cannot become terminal without the corresponding receipt being inserted by that batch.
 
+The local agent mirrors that rule rather than retrying every request indiscriminately. Start calls get a small bounded retry window because the server can acknowledge an already-started command safely. Completion records are first written to a private `pending-completions` directory with exclusive creation and an fsync. Pending completions are reconciled before the agent asks for new work, and a receipt moves to immutable local history only after the server acknowledges the exact terminal record. A network outage therefore leaves durable local evidence to retry on the next poll instead of silently losing the completion.
+
+Claim, evidence and provider-status requests are not given the same blind retry policy. Their replay semantics are different, so a timeout remains an explicit failure until that path has its own safe reconciliation rule.
+
 These retry rules do not expand the action registry and do not create research, trading or capital authority. Their only purpose is to make an uncertain network acknowledgement safe to repeat without creating a second state transition.

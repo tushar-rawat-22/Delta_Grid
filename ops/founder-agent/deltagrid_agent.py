@@ -103,35 +103,45 @@ def signed_request(
     credentials: dict[str, str],
     *,
     timeout: int = 30,
+    transport_retries: int = 0,
 ) -> dict[str, Any]:
+    if transport_retries < 0 or transport_retries > 3:
+        raise AgentError("REMOTE_RETRY_POLICY_INVALID")
     body = canonical_json(payload).encode("utf-8")
-    timestamp = str(int(time.time()))
-    nonce = secrets.token_hex(16)
     body_hash = hashlib.sha256(body).hexdigest()
-    message = f"POST\n{path}\n{timestamp}\n{nonce}\n{body_hash}"
-    signature = hmac_hex(credentials["hmac_key"], message)
-    request = Request(
-        f"{endpoint.rstrip('/')}{path}",
-        data=body,
-        method="POST",
-        headers={
-            "content-type": "application/json",
-            "user-agent": "DeltaGrid-Founder-Agent/1.0",
-            "cf-access-client-id": credentials["access_client_id"],
-            "cf-access-client-secret": credentials["access_client_secret"],
-            "x-dg-agent-id": AGENT_ID,
-            "x-dg-timestamp": timestamp,
-            "x-dg-nonce": nonce,
-            "x-dg-signature": signature,
-        },
-    )
-    try:
-        with urlopen(request, timeout=timeout) as response:  # noqa: S310 - endpoint is locally pinned config
-            raw = response.read(32_768)
-    except HTTPError as error:
-        raise AgentError(f"REMOTE_HTTP_{error.code}") from None
-    except (URLError, TimeoutError):
-        raise AgentError("REMOTE_UNAVAILABLE") from None
+    raw: bytes | None = None
+    for attempt in range(transport_retries + 1):
+        timestamp = str(int(time.time()))
+        nonce = secrets.token_hex(16)
+        message = f"POST\n{path}\n{timestamp}\n{nonce}\n{body_hash}"
+        signature = hmac_hex(credentials["hmac_key"], message)
+        request = Request(
+            f"{endpoint.rstrip('/')}{path}",
+            data=body,
+            method="POST",
+            headers={
+                "content-type": "application/json",
+                "user-agent": "DeltaGrid-Founder-Agent/1.0",
+                "cf-access-client-id": credentials["access_client_id"],
+                "cf-access-client-secret": credentials["access_client_secret"],
+                "x-dg-agent-id": AGENT_ID,
+                "x-dg-timestamp": timestamp,
+                "x-dg-nonce": nonce,
+                "x-dg-signature": signature,
+            },
+        )
+        try:
+            with urlopen(request, timeout=timeout) as response:  # noqa: S310 - endpoint is locally pinned config
+                raw = response.read(32_768)
+            break
+        except HTTPError as error:
+            raise AgentError(f"REMOTE_HTTP_{error.code}") from None
+        except (URLError, TimeoutError):
+            if attempt >= transport_retries:
+                raise AgentError("REMOTE_UNAVAILABLE") from None
+            time.sleep(0.2 * (attempt + 1))
+    if raw is None:
+        raise AgentError("REMOTE_UNAVAILABLE")
     try:
         value = json.loads(raw)
     except json.JSONDecodeError:
@@ -274,23 +284,99 @@ def run_action(action: str, config: dict[str, Any]) -> tuple[str, str, int, str]
     return TERMINAL_SUCCESS, "ACTION_COMPLETED", duration, hashlib.sha256(b"".join(outputs)).hexdigest()
 
 
-def write_local_receipt(config: dict[str, Any], receipt: dict[str, Any]) -> str:
-    history = Path(config["projection_root"]).parent / "operator" / "history"
-    history.mkdir(parents=True, exist_ok=True, mode=0o700)
+def receipt_directories(config: dict[str, Any]) -> tuple[Path, Path]:
+    operator = Path(config["projection_root"]).parent / "operator"
+    pending = operator / "pending-completions"
+    history = operator / "history"
+    for directory in (pending, history):
+        if directory.exists() and directory.is_symlink():
+            raise AgentError("AGENT_RECEIPT_DIRECTORY_INVALID")
+        directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+    return pending, history
+
+
+def write_pending_receipt(config: dict[str, Any], receipt: dict[str, Any]) -> tuple[str, Path]:
+    pending, _history = receipt_directories(config)
     raw = (canonical_json(receipt) + "\n").encode("utf-8")
     digest = hashlib.sha256(raw).hexdigest()
-    destination = history / f"{receipt['command_id']}.json"
+    destination = pending / f"{receipt['command_id']}.json"
     descriptor = os.open(destination, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(descriptor, "wb") as handle:
         handle.write(raw)
         handle.flush()
         os.fsync(handle.fileno())
-    return digest
+    return digest, destination
+
+
+def pending_completion(path: Path) -> dict[str, Any]:
+    if not path.is_file() or path.is_symlink() or path.stat().st_size > 8192:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    raw = path.read_bytes()
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError:
+        raise AgentError("PENDING_RECEIPT_INVALID") from None
+    required = {
+        "agent_id", "command_id", "requested_action_id", "status", "terminal_code",
+        "started_at", "completed_at", "duration_ms", "output_sha256", "authority_state",
+    }
+    if not isinstance(value, dict) or set(value) != required:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    if value["agent_id"] != AGENT_ID or value["authority_state"] != AUTHORITY_STATE:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    if value["command_id"] != path.stem or value["requested_action_id"] not in ACTION_IDS:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    if value["status"] not in {TERMINAL_SUCCESS, TERMINAL_FAILURE, TERMINAL_REJECTED}:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    if not isinstance(value["duration_ms"], int) or not 0 <= value["duration_ms"] <= 86_400_000:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    if not isinstance(value["output_sha256"], str) or len(value["output_sha256"]) != 64:
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    for field in ("terminal_code", "started_at", "completed_at"):
+        if not isinstance(value[field], str) or not value[field]:
+            raise AgentError("PENDING_RECEIPT_INVALID")
+    return {
+        "command_id": value["command_id"],
+        "status": value["status"],
+        "terminal_code": value["terminal_code"],
+        "started_at": value["started_at"],
+        "completed_at": value["completed_at"],
+        "duration_ms": value["duration_ms"],
+        "output_sha256": value["output_sha256"],
+        "local_receipt_sha256": hashlib.sha256(raw).hexdigest(),
+    }
+
+
+def archive_pending_receipt(config: dict[str, Any], path: Path) -> None:
+    pending, history = receipt_directories(config)
+    if path.parent != pending or path.is_symlink():
+        raise AgentError("PENDING_RECEIPT_INVALID")
+    destination = history / path.name
+    if destination.exists():
+        raise AgentError("RECEIPT_HISTORY_CONFLICT")
+    os.replace(path, destination)
+
+
+def reconcile_pending_completions(config: dict[str, Any], credentials: dict[str, str]) -> None:
+    pending, _history = receipt_directories(config)
+    for path in sorted(pending.glob("*.json")):
+        completion = pending_completion(path)
+        remote = signed_request(
+            config["endpoint"],
+            "/agent/v1/complete",
+            completion,
+            credentials,
+            transport_retries=2,
+        )
+        if remote.get("status") != completion["status"]:
+            raise AgentError("COMMAND_RECEIPT_REJECTED")
+        archive_pending_receipt(config, path)
 
 
 def run_once(config_path: Path) -> dict[str, str]:
     config = load_config(config_path)
     credentials = {name: keychain_secret(name) for name in KEYCHAIN_SERVICES}
+    reconcile_pending_completions(config, credentials)
     core_commit = git_output(Path(config["core_root"]), "rev-parse", "HEAD")
     response = signed_request(
         config["endpoint"],
@@ -314,7 +400,11 @@ def run_once(config_path: Path) -> dict[str, str]:
         duration_ms = 0
 
     start_response = signed_request(
-        config["endpoint"], "/agent/v1/start", {"command_id": command["command_id"]}, credentials
+        config["endpoint"],
+        "/agent/v1/start",
+        {"command_id": command["command_id"]},
+        credentials,
+        transport_retries=2,
     )
     if start_response.get("status") != "EXECUTING":
         return {"status": "REJECTED_LOCALLY", "code": "COMMAND_START_REJECTED"}
@@ -343,20 +433,8 @@ def run_once(config_path: Path) -> dict[str, str]:
         "output_sha256": output_sha,
         "authority_state": AUTHORITY_STATE,
     }
-    local_hash = write_local_receipt(config, local)
-    completion = {
-        "command_id": command["command_id"],
-        "status": status,
-        "terminal_code": code,
-        "started_at": started_at,
-        "completed_at": completed_at,
-        "duration_ms": duration_ms,
-        "output_sha256": output_sha,
-        "local_receipt_sha256": local_hash,
-    }
-    remote = signed_request(config["endpoint"], "/agent/v1/complete", completion, credentials)
-    if remote.get("status") != status:
-        raise AgentError("COMMAND_RECEIPT_REJECTED")
+    _local_hash, _pending_path = write_pending_receipt(config, local)
+    reconcile_pending_completions(config, credentials)
     return {"status": status, "code": code}
 
 
