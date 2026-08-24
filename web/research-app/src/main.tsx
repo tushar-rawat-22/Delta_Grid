@@ -9,6 +9,7 @@ import {
 import "./styles.css";
 import "./preregistration-workbench.css";
 import "./research-write-resilience.css";
+import "./executive-workspace.css";
 
 installResearchWriteResilience();
 

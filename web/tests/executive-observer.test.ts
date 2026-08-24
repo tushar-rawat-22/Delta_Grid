@@ -9,7 +9,7 @@ const roadmap = JSON.parse(roadmapSource) as {
   delivery_mode: string;
   software_complete_target: string;
   fixed_rules: string[];
-  lanes: Array<{ id: string; state: string; options?: string[]; selection_rule: string }>;
+  lanes: Array<{ id: string; state: string; options?: string[]; selection_rule?: string; evidence?: string }>;
   replan_triggers: Array<{ trigger: string; action: string }>;
 };
 
@@ -41,11 +41,18 @@ test("delivery roadmap remains re-plannable without weakening fixed safety rules
   assert.ok(roadmap.fixed_rules.some((rule) => rule.includes("last green main")));
   assert.ok(roadmap.replan_triggers.length >= 3);
 
-  const uiLane = roadmap.lanes.find((lane) => lane.id === "executive-observer-ui");
-  assert.ok(uiLane);
-  assert.equal(uiLane.state, "ACTIVE");
-  assert.ok((uiLane.options?.length ?? 0) >= 2);
-  assert.match(uiLane.selection_rule, /least decorative/i);
+  const observerLane = roadmap.lanes.find((lane) => lane.id === "executive-observer-ui");
+  assert.ok(observerLane);
+  assert.equal(observerLane.state, "SHIPPED");
+  assert.match(observerLane.evidence ?? "", /PR #89/);
+  assert.ok((observerLane.options?.length ?? 0) >= 2);
+  assert.match(observerLane.selection_rule ?? "", /least decorative/i);
+
+  const workspaceLane = roadmap.lanes.find((lane) => lane.id === "executive-research-workspace");
+  assert.ok(workspaceLane);
+  assert.equal(workspaceLane.state, "ACTIVE");
+  assert.ok((workspaceLane.options?.length ?? 0) >= 2);
+  assert.match(workspaceLane.selection_rule ?? "", /reversible presentation-only option/i);
 });
 
 test("delivery roadmap cannot schedule paper or live execution under current authority", () => {
@@ -56,5 +63,5 @@ test("delivery roadmap cannot schedule paper or live execution under current aut
 
   const readinessLane = roadmap.lanes.find((lane) => lane.id === "supported-readiness-operator-flow");
   assert.ok(readinessLane);
-  assert.match(readinessLane.selection_rule, /do not invoke or rewrite paper\/live execution engines/i);
+  assert.match(readinessLane.selection_rule ?? "", /do not invoke or rewrite paper\/live execution engines/i);
 });
