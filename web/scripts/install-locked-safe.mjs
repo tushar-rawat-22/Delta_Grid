@@ -6,7 +6,7 @@ const approvedInstallScripts = new Map([
   ["esbuild", "0.28.1"],
   ["fsevents", "2.3.3"],
   ["unrs-resolver", "1.12.2"],
-  ["workerd", "1.20260811.1"],
+  ["workerd", "1.20260820.1"],
 ]);
 const optionalOnThisPlatform = new Set(["fsevents"]);
 
