@@ -11,12 +11,12 @@ const expected = {
     "@types/node": "24.13.3",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
-    "@vitejs/plugin-react": "6.0.5",
+    "@vitejs/plugin-react": "6.1.0",
     eslint: "9.39.5",
     "eslint-config-next": "16.3.1",
     typescript: "6.0.3",
-    vite: "8.2.1",
-    wrangler: "4.123.0",
+    vite: "8.2.2",
+    wrangler: "4.125.0",
   },
 };
 
@@ -24,7 +24,7 @@ const expectedAllowScripts = {
   "esbuild@0.28.1": true,
   "fsevents@2.3.3": true,
   "unrs-resolver@1.12.2": true,
-  "workerd@1.20260811.1": true,
+  "workerd@1.20260820.1": true,
 };
 
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
