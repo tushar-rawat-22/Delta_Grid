@@ -2,13 +2,20 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
-const approvedInstallScripts = new Map([
-  ["esbuild", "0.28.1"],
-  ["fsevents", "2.3.3"],
-  ["unrs-resolver", "1.12.2"],
-  ["workerd", "1.20260820.1"],
-]);
-const optionalOnThisPlatform = new Set(["fsevents"]);
+const policy = JSON.parse(
+  fs.readFileSync(new URL("./dependency-policy.json", import.meta.url), "utf8"),
+);
+const installScripts = policy.installScripts ?? [];
+const installScriptNames = installScripts.map(({ name }) => name);
+if (new Set(installScriptNames).size !== installScriptNames.length) {
+  throw new Error("DEPENDENCY_POLICY_DUPLICATE:installScripts:name");
+}
+const approvedInstallScripts = new Map(
+  installScripts.map(({ name, version }) => [name, version]),
+);
+const optionalOnThisPlatform = new Set(
+  installScripts.filter(({ optional }) => optional === true).map(({ name }) => name),
+);
 
 function run(command, args) {
   const result = spawnSync(command, args, {

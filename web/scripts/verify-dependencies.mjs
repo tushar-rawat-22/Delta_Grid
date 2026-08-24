@@ -1,40 +1,36 @@
 import fs from "node:fs";
 
-const expected = {
-  dependencies: {
-    jose: "6.2.9",
-    next: "16.3.1",
-    react: "19.2.8",
-    "react-dom": "19.2.8",
-  },
-  devDependencies: {
-    "@types/node": "24.13.3",
-    "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.4",
-    "@vitejs/plugin-react": "6.1.0",
-    eslint: "9.39.5",
-    "eslint-config-next": "16.3.1",
-    typescript: "6.0.3",
-    vite: "8.2.2",
-    wrangler: "4.125.0",
-  },
-};
-
-const expectedAllowScripts = {
-  "esbuild@0.28.1": true,
-  "fsevents@2.3.3": true,
-  "unrs-resolver@1.12.2": true,
-  "workerd@1.20260820.1": true,
-};
-
+const policy = JSON.parse(
+  fs.readFileSync(new URL("./dependency-policy.json", import.meta.url), "utf8"),
+);
 const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-for (const section of Object.keys(expected)) {
-  const actual = pkg[section] ?? {};
-  const wanted = expected[section];
-  if (JSON.stringify(actual) !== JSON.stringify(wanted)) {
-    throw new Error(`DEPENDENCY_SET_MISMATCH:${section}`);
+
+function sortedKeys(value) {
+  return Object.keys(value ?? {}).sort();
+}
+
+function assertUnique(values, label) {
+  if (new Set(values).size !== values.length) {
+    throw new Error(`DEPENDENCY_POLICY_DUPLICATE:${label}`);
   }
 }
+
+for (const [section, allowedNames] of Object.entries(policy.directDependencies ?? {})) {
+  assertUnique(allowedNames, section);
+  const actualNames = sortedKeys(pkg[section]);
+  const expectedNames = [...allowedNames].sort();
+  if (JSON.stringify(actualNames) !== JSON.stringify(expectedNames)) {
+    throw new Error(
+      `DEPENDENCY_NAME_SET_MISMATCH:${section}:expected=${expectedNames.join(",")}:actual=${actualNames.join(",")}`,
+    );
+  }
+}
+
+const installScripts = policy.installScripts ?? [];
+assertUnique(installScripts.map(({ name }) => name), "installScripts:name");
+const expectedAllowScripts = Object.fromEntries(
+  installScripts.map(({ name, version }) => [`${name}@${version}`, true]),
+);
 if (JSON.stringify(pkg.allowScripts ?? {}) !== JSON.stringify(expectedAllowScripts)) {
   throw new Error("INSTALL_SCRIPT_POLICY_MISMATCH");
 }
@@ -58,8 +54,8 @@ if (fs.existsSync("package-lock.json")) {
   if (lock.lockfileVersion !== 3) throw new Error("LOCKFILE_VERSION_INVALID");
   const root = lock.packages?.[""];
   if (!root) throw new Error("LOCKFILE_ROOT_MISSING");
-  for (const section of Object.keys(expected)) {
-    if (JSON.stringify(root[section] ?? {}) !== JSON.stringify(expected[section])) {
+  for (const section of Object.keys(policy.directDependencies ?? {})) {
+    if (JSON.stringify(root[section] ?? {}) !== JSON.stringify(pkg[section] ?? {})) {
       throw new Error(`LOCKFILE_ROOT_MISMATCH:${section}`);
     }
   }
