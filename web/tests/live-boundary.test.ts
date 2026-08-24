@@ -46,7 +46,11 @@ test("scheduled production parity reports drift without converting expected manu
 });
 
 test("manual release still hard-fails unless the exact deployed SHA is live", () => {
-  assert.match(releaseWorkflow, /printf '\{\"release_sha\":\"%s\"\}\\n' "\$RELEASE_SHA" > out\/deltagrid-release\.json/u);
+  assert.ok(
+    releaseWorkflow.includes(
+      `printf '{"release_sha":"%s"}\\n' "$RELEASE_SHA" > out/deltagrid-release.json`,
+    ),
+  );
   assert.match(releaseWorkflow, /Prove exact release is live/u);
   assert.match(releaseWorkflow, /FAIL: deployed public observer does not report requested release SHA/u);
   assert.match(releaseWorkflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
