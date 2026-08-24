@@ -5,17 +5,36 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const verifyScript = path.resolve("scripts/verify-dependencies.mjs");
-const baselinePackage = JSON.parse(fs.readFileSync("package.json", "utf8")) as Record<string, any>;
+type PackageFixture = {
+  dependencies: Record<string, string>;
+  devDependencies: Record<string, string>;
+  allowScripts: Record<string, boolean>;
+  [key: string]: unknown;
+};
 
-function lockFor(pkg: Record<string, any>) {
-  const packages: Record<string, any> = {
+type LockEntry = {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  version?: string;
+  hasInstallScript?: boolean;
+};
+
+type LockFixture = {
+  lockfileVersion: number;
+  packages: Record<string, LockEntry>;
+};
+
+const verifyScript = path.resolve("scripts/verify-dependencies.mjs");
+const baselinePackage = JSON.parse(fs.readFileSync("package.json", "utf8")) as PackageFixture;
+
+function lockFor(pkg: PackageFixture): LockFixture {
+  const packages: Record<string, LockEntry> = {
     "": {
-      dependencies: pkg.dependencies,
-      devDependencies: pkg.devDependencies,
+      dependencies: { ...pkg.dependencies },
+      devDependencies: { ...pkg.devDependencies },
     },
   };
-  for (const spec of Object.keys(pkg.allowScripts ?? {})) {
+  for (const spec of Object.keys(pkg.allowScripts)) {
     const separator = spec.lastIndexOf("@");
     const name = spec.slice(0, separator);
     const version = spec.slice(separator + 1);
@@ -24,8 +43,14 @@ function lockFor(pkg: Record<string, any>) {
   return { lockfileVersion: 3, packages };
 }
 
+function rootEntry(lock: LockFixture): LockEntry {
+  const root = lock.packages[""];
+  assert.ok(root);
+  return root;
+}
+
 function runVerifier(
-  mutate: (pkg: Record<string, any>, lock: Record<string, any>) => void = () => {},
+  mutate: (pkg: PackageFixture, lock: LockFixture) => void = () => {},
 ) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "deltagrid-dependency-policy-"));
   try {
@@ -46,7 +71,9 @@ function runVerifier(
 test("a reviewed direct version bump does not require a second hard-coded version edit", () => {
   const result = runVerifier((pkg, lock) => {
     pkg.dependencies.jose = "999.0.1";
-    lock.packages[""].dependencies.jose = "999.0.1";
+    const root = rootEntry(lock);
+    assert.ok(root.dependencies);
+    root.dependencies.jose = "999.0.1";
   });
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /DEPENDENCY_POLICY=PASS/u);
@@ -55,7 +82,9 @@ test("a reviewed direct version bump does not require a second hard-coded versio
 test("a new direct dependency still fails closed", () => {
   const result = runVerifier((pkg, lock) => {
     pkg.dependencies["unreviewed-package"] = "1.0.0";
-    lock.packages[""].dependencies["unreviewed-package"] = "1.0.0";
+    const root = rootEntry(lock);
+    assert.ok(root.dependencies);
+    root.dependencies["unreviewed-package"] = "1.0.0";
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /DEPENDENCY_NAME_SET_MISMATCH:dependencies/u);
@@ -75,7 +104,9 @@ test("an unapproved install script still fails closed", () => {
 test("non-exact direct dependency versions remain forbidden", () => {
   const result = runVerifier((pkg, lock) => {
     pkg.dependencies.jose = "^6.2.9";
-    lock.packages[""].dependencies.jose = "^6.2.9";
+    const root = rootEntry(lock);
+    assert.ok(root.dependencies);
+    root.dependencies.jose = "^6.2.9";
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /NON_EXACT_DIRECT_DEPENDENCY:jose/u);
