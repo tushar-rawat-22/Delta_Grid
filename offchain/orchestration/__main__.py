@@ -8,6 +8,7 @@ import sys
 from typing import Any
 
 from offchain.research.admission import canonical_json
+from offchain.safety.operational_readiness_inspector import inspect_operational_readiness
 
 from .ledger import WorkflowLedger
 from .models import OrchestrationError
@@ -57,6 +58,14 @@ def _parser() -> argparse.ArgumentParser:
     status = commands.add_parser("status")
     status.add_argument("--database", required=True)
     status.add_argument("--run-id")
+    status.add_argument(
+        "--operational-readiness",
+        action="store_true",
+        help=(
+            "Inspect persisted paper/risk/capital/kill-switch evidence read-only "
+            "instead of opening an orchestration ledger."
+        ),
+    )
 
     cancel = commands.add_parser("cancel")
     cancel.add_argument("--database", required=True)
@@ -90,6 +99,13 @@ def _run(arguments: argparse.Namespace) -> Any:
             "metadata": ledger.metadata,
             "status": "INITIALIZED",
         }
+    if arguments.command == "status" and arguments.operational_readiness:
+        if arguments.run_id is not None:
+            raise OrchestrationError(
+                "WORKFLOW_INPUT_INVALID",
+                "--run-id cannot be combined with --operational-readiness",
+            )
+        return inspect_operational_readiness(arguments.database)
     ledger = WorkflowLedger(arguments.database)
     service = WorkflowOrchestrator(ledger)
     if arguments.command == "create-observation-run":
