@@ -36,6 +36,7 @@ def test_one_trial_has_no_search_inflation() -> None:
     )
     assert report.status == "COMPLETE"
     assert report.diagnostic_only is True
+    assert report.serial_dependence_adjusted is False
     assert report.expected_max_period_sharpe == pytest.approx(0.0)
     assert report.deflated_sharpe_ratio == pytest.approx(
         report.probabilistic_sharpe_ratio
@@ -61,6 +62,7 @@ def test_report_exposes_non_normality_and_serial_dependence_inputs() -> None:
         trial_period_sharpes=[0.05, 0.08, 0.12, 0.15],
         periods_per_year=365,
     )
+    assert report.serial_dependence_adjusted is False
     assert report.skewness is not None and math.isfinite(report.skewness)
     assert report.kurtosis is not None and math.isfinite(report.kurtosis)
     assert report.lag1_autocorrelation is not None
@@ -78,6 +80,7 @@ def test_insufficient_and_zero_variance_inputs_are_not_overstated() -> None:
         periods_per_year=365,
     )
     assert short.status == "INSUFFICIENT_OBSERVATIONS"
+    assert short.serial_dependence_adjusted is False
     assert short.probabilistic_sharpe_ratio is None
     assert short.deflated_sharpe_ratio is None
 
@@ -87,6 +90,7 @@ def test_insufficient_and_zero_variance_inputs_are_not_overstated() -> None:
         periods_per_year=365,
     )
     assert flat.status == "ZERO_VARIANCE_RETURNS"
+    assert flat.serial_dependence_adjusted is False
     assert flat.period_sharpe is None
     assert flat.deflated_sharpe_ratio is None
 
