@@ -50,9 +50,14 @@ test("delivery roadmap remains re-plannable without weakening fixed safety rules
 
   const workspaceLane = roadmap.lanes.find((lane) => lane.id === "executive-research-workspace");
   assert.ok(workspaceLane);
-  assert.equal(workspaceLane.state, "ACTIVE");
+  assert.equal(workspaceLane.state, "SHIPPED");
+  assert.match(workspaceLane.evidence ?? "", /PR #90/);
   assert.ok((workspaceLane.options?.length ?? 0) >= 2);
   assert.match(workspaceLane.selection_rule ?? "", /reversible presentation-only option/i);
+
+  const readinessLane = roadmap.lanes.find((lane) => lane.id === "supported-readiness-operator-flow");
+  assert.ok(readinessLane);
+  assert.equal(readinessLane.state, "ACTIVE");
 });
 
 test("delivery roadmap cannot schedule paper or live execution under current authority", () => {
