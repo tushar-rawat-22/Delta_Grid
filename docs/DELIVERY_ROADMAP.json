@@ -5,7 +5,7 @@
   "software_complete_target": "2026-09-07",
   "definition_of_software_complete": [
     "current research and governance state can be inspected from one operator flow",
-    "paper-only operation has one deterministic release verdict",
+    "paper-readiness state has one deterministic non-authorizing release verdict",
     "risk and drawdown controls fail closed",
     "operator-facing public and founder interfaces have a coherent executive information hierarchy",
     "deployment health and revision provenance are independently checkable",
@@ -15,7 +15,7 @@
     "production stays on the last green main while branch work is tested",
     "CI, CodeQL, or live-boundary security failures block merge",
     "UI and delivery work cannot expand research, exchange, order, credential, paper/live trading, Mission 104, or capital authority",
-    "exchange adapters, broker integrations, credentials, and capital activation remain out of scope unless the founder explicitly changes authority in a future decision",
+    "exchange adapters, broker integrations, credentials, paper/live execution, and capital activation remain out of scope unless the founder explicitly changes authority in a future decision",
     "a failed research hypothesis is recorded; the roadmap does not create rescue tuning",
     "new architecture must remove a release blocker or replace a weaker existing mechanism"
   ],
@@ -24,9 +24,9 @@
       "id": "operational-release-gate",
       "state": "SHIPPED",
       "target": "2026-08-24",
-      "exit_condition": "one fail-closed verdict covers paper sandbox, institutional risk, capital-readiness-for-paper, and drawdown kill-switch state",
+      "exit_condition": "one fail-closed verdict covers paper sandbox, institutional risk, capital-readiness-for-paper, and drawdown kill-switch state without granting authority",
       "evidence": "PR #88 / main f4414b80522efccb81c784605384a27249f90f75",
-      "next": "bind the gate into the supported operator flow without adding authority"
+      "next": "surface the existing verdict through a read-only operator flow without running paper/live components or adding authority"
     },
     {
       "id": "executive-observer-ui",
@@ -41,16 +41,16 @@
       "selection_rule": "prefer the least decorative option that makes status, risk, evidence, and next decision legible in under 30 seconds"
     },
     {
-      "id": "supported-paper-operator-flow",
+      "id": "supported-readiness-operator-flow",
       "state": "NEXT",
       "target": "2026-08-29",
-      "exit_condition": "one supported command or founder action can inspect prerequisites, run only authorized paper components, and return the operational release verdict with durable evidence",
+      "exit_condition": "one supported command or founder action can inspect prerequisites and return the non-authorizing operational readiness verdict with durable evidence without starting paper/live components",
       "options": [
-        "thin adapter over existing Mission 63-67 modules",
-        "read-only orchestration if historical write interfaces cannot be safely reused",
-        "retire stale historical entry points only when current replacements are verified"
+        "read-only adapter over existing readiness and risk state",
+        "read-only orchestration over historical modules when their state can be inspected without invoking execution paths",
+        "retire stale historical entry points only when current read-only replacements are verified"
       ],
-      "selection_rule": "reuse verified components; do not rewrite paper, risk, or kill-switch engines unless an invariant cannot be preserved"
+      "selection_rule": "reuse verified state and verdicts; do not invoke or rewrite paper/live execution engines under current authority"
     },
     {
       "id": "deployment-provenance",
@@ -68,7 +68,7 @@
       "id": "operator-release-candidate",
       "state": "PLANNED",
       "target": "2026-09-03",
-      "exit_condition": "fresh-clone/operator verification, paper release gate, documentation, backup/recovery, and public/founder boundary checks pass together",
+      "exit_condition": "fresh-clone/operator verification, non-authorizing readiness gate, documentation, backup/recovery, and public/founder boundary checks pass together",
       "options": [
         "single release checklist backed by machine checks",
         "signed release manifest if provenance needs a stronger artifact"
@@ -79,8 +79,8 @@
       "id": "software-v1",
       "state": "PLANNED",
       "target": "2026-09-07",
-      "exit_condition": "DeltaGrid is usable for automated research, backtesting, forward/shadow observation, and durable paper operation without unfinished operator-critical paths",
-      "selection_rule": "ship the smallest complete operating system; defer non-blocking features"
+      "exit_condition": "DeltaGrid is usable for authorized research, backtesting, forward/shadow observation, deterministic readiness inspection, and durable evidence review without unfinished operator-critical paths",
+      "selection_rule": "ship the smallest complete operating system inside current authority; defer non-blocking features"
     }
   ],
   "replan_triggers": [
