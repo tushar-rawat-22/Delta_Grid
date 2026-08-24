@@ -30,15 +30,28 @@
     },
     {
       "id": "executive-observer-ui",
-      "state": "ACTIVE",
+      "state": "SHIPPED",
       "target": "2026-08-26",
       "exit_condition": "public observer reads like a quantitative research control surface rather than a marketing landing page; durable research-state markers remain visible",
+      "evidence": "PR #89 / main 8f09220fc8c39e1d36e34bd12ba6b3324a753ea9",
       "options": [
         "dense executive console with tables and status tape",
         "terminal-style workspace only if density cannot remain readable",
         "split public review site and founder cockpit if one information architecture becomes too compromised"
       ],
       "selection_rule": "prefer the least decorative option that makes status, risk, evidence, and next decision legible in under 30 seconds"
+    },
+    {
+      "id": "executive-research-workspace",
+      "state": "ACTIVE",
+      "target": "2026-08-26",
+      "exit_condition": "founder research workspace uses restrained executive hierarchy, dense tabular review, semantic state colour, accessible focus, and reduced decorative chrome without changing research APIs or authority",
+      "options": [
+        "presentation-only override over proven React behavior",
+        "targeted component restructuring if hierarchy cannot be fixed in presentation alone",
+        "full information-architecture rewrite only if the existing view model prevents fast review"
+      ],
+      "selection_rule": "start with the reversible presentation-only option; escalate only when a specific operator task remains materially harder"
     },
     {
       "id": "supported-readiness-operator-flow",
@@ -99,6 +112,10 @@
     {
       "trigger": "a proposed feature cannot name a release blocker it removes",
       "action": "defer it until after software v1"
+    },
+    {
+      "trigger": "presentation-only UI changes cannot make an operator task legible without hiding or duplicating evidence",
+      "action": "escalate that view to targeted component restructuring while preserving the same data and authority contracts"
     }
   ]
 }
