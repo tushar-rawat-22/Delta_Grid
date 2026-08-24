@@ -150,9 +150,7 @@ def build_search_adjusted_sharpe_report(
     periods_per_year: int,
 ) -> SearchAdjustedSharpeReport:
     """Build PSR/DSR diagnostics without changing research admission decisions."""
-    if isinstance(periods_per_year, bool) or periods_per_year <= 0:
-        raise ValueError("periods_per_year must be a positive integer")
-    if int(periods_per_year) != periods_per_year:
+    if type(periods_per_year) is not int or periods_per_year <= 0:
         raise ValueError("periods_per_year must be a positive integer")
 
     clean_returns = _finite(returns, label="returns")
@@ -164,7 +162,7 @@ def build_search_adjusted_sharpe_report(
         "diagnostic_only": True,
         "serial_dependence_adjusted": False,
         "observations": len(clean_returns),
-        "periods_per_year": int(periods_per_year),
+        "periods_per_year": periods_per_year,
         "trial_count": len(trials),
     }
     trial_sharpe_std = statistics.stdev(trials) if len(trials) > 1 else 0.0
@@ -222,7 +220,7 @@ def build_search_adjusted_sharpe_report(
         status="COMPLETE",
         **common,
         period_sharpe=period_sharpe,
-        annualized_sharpe=period_sharpe * math.sqrt(int(periods_per_year)),
+        annualized_sharpe=period_sharpe * math.sqrt(periods_per_year),
         skewness=skewness,
         kurtosis=kurtosis,
         lag1_autocorrelation=_lag1_autocorrelation(clean_returns),
