@@ -15,8 +15,9 @@ const programme = [
   ["M101", "Data custody and admission", "GATED", "Metadata / permit boundary"],
   ["M102", "Development experiment engine", "GATED", "Exact admitted trials only"],
   ["M103", "Programme statistics and protected stages", "PREPARED", "Independent progression controls"],
-  ["M104", "Candidate observation", "NOT AUTHORIZED", "Requires a qualified holdout result"],
 ] as const;
+
+const mission104Authority = ["Mission 104", "Candidate observation", "NOT AUTHORIZED"] as const;
 
 const coverage = [
   ["Markets", "8", "3 crypto · 3 equities · 2 ETFs"],
@@ -104,6 +105,12 @@ export function ResearchLanding() {
                     <td className={styles.mutedCell}>{constraint}</td>
                   </tr>
                 ))}
+                <tr>
+                  <td className={styles.code}>{mission104Authority[0]}</td>
+                  <td>{mission104Authority[1]}</td>
+                  <td><State value={mission104Authority[2]} /></td>
+                  <td className={styles.mutedCell}>Requires a qualified holdout result</td>
+                </tr>
               </tbody>
             </table>
           </div>
