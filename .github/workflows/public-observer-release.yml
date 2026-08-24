@@ -7,6 +7,13 @@ on:
         description: Exact 40-character main commit to deploy
         required: true
         type: string
+  workflow_run:
+    workflows:
+      - DeltaGrid CI
+    types:
+      - completed
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -17,7 +24,12 @@ concurrency:
 
 jobs:
   release:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
     name: public-observer-release
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -26,7 +38,8 @@ jobs:
       NEXT_TELEMETRY_DISABLED: "1"
       WRANGLER_SEND_METRICS: "false"
       WRANGLER_SEND_ERROR_REPORTS: "false"
-      RELEASE_SHA: ${{ inputs.release_sha }}
+      RELEASE_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.release_sha || github.event.workflow_run.head_sha }}
+      RELEASE_TRIGGER: ${{ github.event_name }}
       DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
 
     steps:
@@ -43,23 +56,33 @@ jobs:
         # actions/checkout v7.0.1
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ inputs.release_sha }}
+          ref: ${{ env.RELEASE_SHA }}
           fetch-depth: 0
           persist-credentials: false
 
       - name: Require requested commit to equal current main
+        id: current
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
           git fetch --no-tags origin main
-          test "$(git rev-parse FETCH_HEAD)" = "$RELEASE_SHA" || {
-            echo "Refusing to deploy a commit that is not current main"
+          current_main="$(git rev-parse FETCH_HEAD)"
+          if [ "$current_main" != "$RELEASE_SHA" ]; then
+            if [ "$RELEASE_TRIGGER" = "workflow_run" ]; then
+              echo "deploy=false" >> "$GITHUB_OUTPUT"
+              echo "AUTO_RELEASE_STALE=SKIP"
+              echo "Requested $RELEASE_SHA but current main is $current_main; a newer green-main release will supersede this run."
+              exit 0
+            fi
+            echo "Refusing to deploy a commit that is not current main" >&2
             exit 1
-          }
+          fi
           test -z "$(git status --porcelain)"
+          echo "deploy=true" >> "$GITHUB_OUTPUT"
 
       - name: Set up Node 24
+        if: steps.current.outputs.deploy == 'true'
         # actions/setup-node v6.5.0
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with:
@@ -67,22 +90,27 @@ jobs:
           package-manager-cache: false
 
       - name: Install locked web dependencies
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         run: npm run install:locked-safe
 
       - name: Audit release dependency graph
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         run: npm audit --audit-level=low
 
       - name: Run complete web and founder release gate
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         run: npm run check
 
       - name: Re-assert static public deployment boundary
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         run: npm run verify:public-deploy
 
       - name: Bind public build to requested release
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         shell: bash
         run: |
@@ -91,6 +119,7 @@ jobs:
           test "$(cat out/deltagrid-release.json)" = "{\"release_sha\":\"$RELEASE_SHA\"}"
 
       - name: Deploy exact public observer commit
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         shell: bash
         env:
@@ -104,6 +133,7 @@ jobs:
             --message "DeltaGrid public observer ${RELEASE_SHA}"
 
       - name: Record Cloudflare deployment state
+        if: steps.current.outputs.deploy == 'true'
         working-directory: web
         shell: bash
         env:
@@ -120,6 +150,7 @@ jobs:
             > "$RUNNER_TEMP/public-versions.json"
 
       - name: Prove exact release is live
+        if: steps.current.outputs.deploy == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -145,6 +176,7 @@ jobs:
           done
 
       - name: Verify live public/private boundary after release
+        if: steps.current.outputs.deploy == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -159,8 +191,14 @@ jobs:
             echo
             echo "Requested commit: \`$RELEASE_SHA\`"
             echo
+            echo "Trigger: \`$RELEASE_TRIGGER\`"
+            echo
             echo "Workflow run: \`${GITHUB_RUN_ID}\`"
             echo
+            if [ "${{ steps.current.outputs.deploy }}" != "true" ]; then
+              echo "Deployment: \`SKIPPED_STALE_AUTO_RELEASE\`"
+              echo
+            fi
             if [ -f "$RUNNER_TEMP/public-release-identity.json" ]; then
               echo "### Live release identity"
               echo '```json'
