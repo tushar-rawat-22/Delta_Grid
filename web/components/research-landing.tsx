@@ -1,21 +1,28 @@
-import Image from "next/image";
 import Link from "next/link";
 import styles from "./research-landing.module.css";
 
 const FOUNDER_RESEARCH_URL = "https://deltagrid-founder-gateway.tushar142004.workers.dev/research";
 
+const statusTape = [
+  ["Research result", "No validated alpha", "blocked"],
+  ["Selected candidate", "None selected", "neutral"],
+  ["Paper / live", "Disabled", "blocked"],
+  ["Capital", "Blocked", "blocked"],
+] as const;
+
+const programme = [
+  ["RAB-1", "Prospective research programme", "LOCKED", "No result opened"],
+  ["M101", "Data custody and admission", "GATED", "Metadata / permit boundary"],
+  ["M102", "Development experiment engine", "GATED", "Exact admitted trials only"],
+  ["M103", "Programme statistics and protected stages", "PREPARED", "Independent progression controls"],
+  ["M104", "Candidate observation", "NOT AUTHORIZED", "Requires a qualified holdout result"],
+] as const;
+
 const coverage = [
   ["Markets", "8", "3 crypto · 3 equities · 2 ETFs"],
   ["Macro series", "9", "8 FRED · US Treasury debt"],
   ["Company mappings", "3", "AAPL · MSFT · NVDA"],
-  ["Record types", "7", "Notes through tasks"],
-] as const;
-
-const authority = [
-  ["M101", "Data and admission", "Gated"],
-  ["M102", "Experiment engine", "Gated"],
-  ["M103", "Pre-result programme", "Prepared"],
-  ["Mission 104", "Candidate observation", "NOT AUTHORIZED"],
+  ["Record types", "7", "Notes · theses · evidence · journals · catalysts · risks · tasks"],
 ] as const;
 
 const dataContract = [
@@ -26,147 +33,168 @@ const dataContract = [
   ["Treasury Fiscal Data", "Daily check", "Latest Debt to the Penny"],
 ] as const;
 
-const workspace = [
-  ["Cockpit", "Watchlist, collection freshness, work queue, catalysts, revisions."],
-  ["Intelligence", "Breadth, risk pressure, relationships, macro changes, candidate questions."],
-  ["Hypotheses", "Thesis records, falsification logic, finite budgets, preregistration handoff."],
-  ["Markets", "Timestamped histories, deterministic metrics, risk summaries, asset dossiers."],
-  ["Compare", "Normalized performance, correlation, beta, volatility, drawdown."],
-  ["Macro", "Inflation, employment, rates, yields, spreads, GDP, dollar, federal debt."],
-  ["Notebook", "Notes, theses, evidence, journals, catalysts, risks, tasks, revisions."],
-  ["Data health", "Provider status, cadence, quota state, rights, explicit failures."],
+const workbench = [
+  ["Research", "/research", "Sanitized research cockpit and deterministic Demo Mode."],
+  ["Markets", "/markets", "Timestamped histories, metrics, risk summaries, and asset dossiers."],
+  ["Evidence", "/evidence", "Publicly projected evidence and provenance records."],
+  ["Risk", "/risk", "Current public risk and authority posture."],
+  ["System", "/system", "Control architecture, boundaries, and operating state."],
+  ["Missions", "/missions", "Implemented stages and explicitly closed future authority."],
 ] as const;
 
-const snapshots = [
-  ["/snapshots/research-cockpit.png", "Research cockpit", "Watchlist, work queue, catalysts, collection health."],
-  ["/snapshots/asset-dossier.png", "Asset dossier", "Observed prices, deterministic metrics, facts, thesis structure."],
-  ["/snapshots/compare-macro.png", "Compare / macro", "Aligned series and timestamped economic context."],
+const boundary = [
+  ["Public surface", "Static observer and deterministic sanitized Demo Mode."],
+  ["Founder gateway", "Cloudflare Access plus independent Worker identity validation."],
+  ["Private research", "Founder records, protected evidence, and private runtime state are not shipped in the public bundle."],
+  ["Execution", "No public route can place, authorize, simulate, or fund an order. Provider secrets do not reach the browser."],
 ] as const;
+
+function State({ value }: { value: string }) {
+  const tone = value === "NOT AUTHORIZED" || value === "GATED" ? styles.stateBlocked : value === "PREPARED" || value === "LOCKED" ? styles.stateWatch : styles.stateNeutral;
+  return <span className={`${styles.state} ${tone}`}>{value}</span>;
+}
 
 export function ResearchLanding() {
   return (
     <main className={styles.shell}>
-      <header className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>DeltaGrid / public research observer</p>
-          <h1>Research system status</h1>
-          <p className={styles.intro}>
-            Read-only view of the project&apos;s research scope, data sources, controls, and sanitized workspace.
-            The private Founder system is separate from this build.
+      <header className={styles.masthead}>
+        <div className={styles.identity}>
+          <p className={styles.kicker}>DeltaGrid / public research observer</p>
+          <h1>Research control</h1>
+          <p>
+            Read-only status for research scope, evidence boundaries, and sanitized system views.
+            Private founder state is separate.
           </p>
         </div>
-        <nav className={styles.links} aria-label="Research observer links">
-          <Link href="/research">Open demo</Link>
+        <div className={styles.actions}>
+          <Link href="/research">Demo workspace</Link>
           <a href={FOUNDER_RESEARCH_URL}>Founder access ↗</a>
-        </nav>
+        </div>
       </header>
 
-      <section className={styles.statusBlock} aria-labelledby="research-state-title">
-        <h2 id="research-state-title">Current research state</h2>
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <tbody>
-              <tr><th scope="row">Research result</th><td>No validated alpha</td></tr>
-              <tr><th scope="row">Selected candidate</th><td>None selected</td></tr>
-              <tr><th scope="row">Paper / live trading</th><td>Disabled</td></tr>
-              <tr><th scope="row">Mission 104</th><td>NOT AUTHORIZED</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p className={styles.note}>No broker connection. No paper/live trading. No capital authority.</p>
+      <section className={styles.statusTape} aria-label="Current DeltaGrid status">
+        {statusTape.map(([label, value, tone]) => (
+          <div className={styles.statusCell} key={label}>
+            <span>{label}</span>
+            <strong className={tone === "blocked" ? styles.valueBlocked : styles.valueNeutral}>{value}</strong>
+          </div>
+        ))}
       </section>
 
-      <div className={styles.split}>
-        <section aria-labelledby="coverage-title">
-          <h2 id="coverage-title">Configured coverage</h2>
+      <div className={styles.executiveGrid}>
+        <section className={styles.primaryPanel} aria-labelledby="programme-title">
+          <div className={styles.panelHeading}>
+            <div>
+              <p className={styles.sectionCode}>01 / PROGRAMME</p>
+              <h2 id="programme-title">Research progression</h2>
+            </div>
+            <p>Capability and authority remain separate. A built component does not grant the next stage.</p>
+          </div>
           <div className={styles.tableWrap}>
             <table className={styles.table}>
-              <thead><tr><th>Area</th><th>Count</th><th>Scope</th></tr></thead>
+              <thead>
+                <tr><th>Stage</th><th>Mandate</th><th>State</th><th>Constraint</th></tr>
+              </thead>
               <tbody>
-                {coverage.map(([label, value, note]) => (
-                  <tr key={label}><td>{label}</td><td>{value}</td><td>{note}</td></tr>
+                {programme.map(([stage, mandate, state, constraint]) => (
+                  <tr key={stage}>
+                    <td className={styles.code}>{stage}</td>
+                    <td>{mandate}</td>
+                    <td><State value={state} /></td>
+                    <td className={styles.mutedCell}>{constraint}</td>
+                  </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </section>
 
-        <section aria-labelledby="authority-title">
-          <h2 id="authority-title">Authority</h2>
+        <aside className={styles.sidePanel} aria-labelledby="posture-title">
+          <p className={styles.sectionCode}>02 / POSTURE</p>
+          <h2 id="posture-title">Control posture</h2>
+          <dl className={styles.controlList}>
+            <div><dt>Broker connection</dt><dd>None</dd></div>
+            <div><dt>Exchange credentials</dt><dd>Not authorized</dd></div>
+            <div><dt>Orders</dt><dd>Not authorized</dd></div>
+            <div><dt>Portfolio allocation</dt><dd>Not authorized</dd></div>
+            <div><dt>Public write path</dt><dd>None</dd></div>
+          </dl>
+          <p className={styles.controlNote}>Public website state has authority effect NONE.</p>
+        </aside>
+      </div>
+
+      <section className={styles.section} aria-labelledby="coverage-title">
+        <div className={styles.panelHeading}>
+          <div>
+            <p className={styles.sectionCode}>03 / COVERAGE</p>
+            <h2 id="coverage-title">Configured research surface</h2>
+          </div>
+          <p>Counts describe the sanitized workspace configuration, not an investment universe or an authorization to collect new protected data.</p>
+        </div>
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead><tr><th>Area</th><th>Count</th><th>Scope</th></tr></thead>
+            <tbody>
+              {coverage.map(([label, count, scope]) => (
+                <tr key={label}><td>{label}</td><td className={styles.numeric}>{count}</td><td className={styles.mutedCell}>{scope}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div className={styles.twoColumn}>
+        <section className={styles.section} aria-labelledby="inputs-title">
+          <div className={styles.panelHeading}>
+            <div>
+              <p className={styles.sectionCode}>04 / DATA</p>
+              <h2 id="inputs-title">Public inputs</h2>
+            </div>
+          </div>
           <div className={styles.tableWrap}>
             <table className={styles.table}>
-              <thead><tr><th>Stage</th><th>Purpose</th><th>State</th></tr></thead>
+              <thead><tr><th>Provider</th><th>Cadence</th><th>Bound</th></tr></thead>
               <tbody>
-                {authority.map(([code, label, state]) => (
-                  <tr key={code}><td>{code}</td><td>{label}</td><td>{state}</td></tr>
+                {dataContract.map(([provider, cadence, bound]) => (
+                  <tr key={provider}><td>{provider}</td><td>{cadence}</td><td className={styles.mutedCell}>{bound}</td></tr>
                 ))}
               </tbody>
             </table>
+          </div>
+          <p className={styles.footnote}>Stale and missing values remain explicit rather than being silently filled.</p>
+        </section>
+
+        <section className={styles.section} aria-labelledby="workbench-title">
+          <div className={styles.panelHeading}>
+            <div>
+              <p className={styles.sectionCode}>05 / WORKBENCH</p>
+              <h2 id="workbench-title">Review surfaces</h2>
+            </div>
+          </div>
+          <div className={styles.routeList}>
+            {workbench.map(([label, href, description]) => (
+              <Link href={href} key={href} className={styles.routeRow}>
+                <strong>{label}</strong><span>{description}</span><i aria-hidden="true">→</i>
+              </Link>
+            ))}
           </div>
         </section>
       </div>
 
-      <section className={styles.section} aria-labelledby="inputs-title">
-        <div className={styles.sectionHeading}>
-          <h2 id="inputs-title">Public data inputs</h2>
-          <p>Provider limits and stale or missing values stay visible rather than being filled in.</p>
-        </div>
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead><tr><th>Provider</th><th>Collection</th><th>Bounded response</th></tr></thead>
-            <tbody>
-              {dataContract.map(([provider, cadence, limit]) => (
-                <tr key={provider}><td>{provider}</td><td>{cadence}</td><td>{limit}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="workspace-title">
-        <div className={styles.sectionHeading}>
-          <h2 id="workspace-title">Workspace</h2>
-          <p>Demo Mode uses sanitized fixtures. Founder records and authenticated API state are not shipped in the public bundle.</p>
-        </div>
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead><tr><th>View</th><th>What it is for</th></tr></thead>
-            <tbody>
-              {workspace.map(([title, body]) => (
-                <tr key={title}><td>{title}</td><td>{body}</td></tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="preview-title">
-        <div className={styles.sectionHeading}>
-          <h2 id="preview-title">Sanitized interface</h2>
-          <p>These screenshots are deterministic demo material, not private Founder state.</p>
-        </div>
-        <div className={styles.previews}>
-          {snapshots.map(([src, title, caption]) => (
-            <figure className={styles.preview} key={src}>
-              <Image src={src} alt={`Sanitized DeltaGrid ${title} product screenshot`} width={1440} height={900} />
-              <figcaption><strong>{title}</strong><span>{caption}</span></figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
       <section className={styles.section} aria-labelledby="boundary-title">
-        <div className={styles.sectionHeading}>
-          <h2 id="boundary-title">Public / founder boundary</h2>
-          <p>The public observer is useful for review, but it has no path into private research or execution.</p>
+        <div className={styles.panelHeading}>
+          <div>
+            <p className={styles.sectionCode}>06 / BOUNDARY</p>
+            <h2 id="boundary-title">Public / founder separation</h2>
+          </div>
+          <p>The observer is for inspection. It is not an execution console.</p>
         </div>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
             <tbody>
-              <tr><th scope="row">Public surface</th><td>Static observer and deterministic Demo Mode only.</td></tr>
-              <tr><th scope="row">Founder Gateway</th><td>Cloudflare Access plus independent Worker identity validation.</td></tr>
-              <tr><th scope="row">Research state</th><td>Private Founder records stay outside the public build and retain authority effect NONE unless a separate trusted-local workflow grants a narrower capability.</td></tr>
-              <tr><th scope="row">Execution</th><td>No public route can place, simulate, authorize, or fund an order. Provider secrets do not reach the browser.</td></tr>
+              {boundary.map(([label, value]) => (
+                <tr key={label}><th scope="row">{label}</th><td>{value}</td></tr>
+              ))}
             </tbody>
           </table>
         </div>
