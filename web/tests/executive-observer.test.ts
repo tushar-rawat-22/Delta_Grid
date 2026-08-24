@@ -4,9 +4,8 @@ import test from "node:test";
 
 const landing = readFileSync(new URL("../components/research-landing.tsx", import.meta.url), "utf8");
 const shell = readFileSync(new URL("../app/public-shell.css", import.meta.url), "utf8");
-const roadmap = JSON.parse(
-  readFileSync(new URL("../../docs/DELIVERY_ROADMAP.json", import.meta.url), "utf8"),
-) as {
+const roadmapSource = readFileSync(new URL("../../docs/DELIVERY_ROADMAP.json", import.meta.url), "utf8");
+const roadmap = JSON.parse(roadmapSource) as {
   delivery_mode: string;
   software_complete_target: string;
   fixed_rules: string[];
@@ -47,4 +46,15 @@ test("delivery roadmap remains re-plannable without weakening fixed safety rules
   assert.equal(uiLane.state, "ACTIVE");
   assert.ok((uiLane.options?.length ?? 0) >= 2);
   assert.match(uiLane.selection_rule, /least decorative/i);
+});
+
+test("delivery roadmap cannot schedule paper or live execution under current authority", () => {
+  assert.doesNotMatch(roadmapSource, /supported-paper-operator-flow/i);
+  assert.doesNotMatch(roadmapSource, /durable paper operation/i);
+  assert.doesNotMatch(roadmapSource, /run only authorized paper components/i);
+  assert.ok(roadmap.fixed_rules.some((rule) => rule.includes("paper/live execution") && rule.includes("out of scope")));
+
+  const readinessLane = roadmap.lanes.find((lane) => lane.id === "supported-readiness-operator-flow");
+  assert.ok(readinessLane);
+  assert.match(readinessLane.selection_rule, /do not invoke or rewrite paper\/live execution engines/i);
 });
