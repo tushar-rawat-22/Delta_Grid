@@ -12,7 +12,6 @@ capital authority.
 
 from __future__ import annotations
 
-import argparse
 from dataclasses import asdict, dataclass
 import json
 from pathlib import Path
@@ -253,26 +252,3 @@ def _build_output(
         "capital_deployment_allowed": False,
         "database_mode": "READ_ONLY_QUERY_ONLY",
     }
-
-
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description="Inspect DeltaGrid persisted operational readiness without running paper/live machinery."
-    )
-    parser.add_argument("--db", default="offchain/deltagrid.db")
-    parser.add_argument(
-        "--require-ready",
-        action="store_true",
-        help="return exit status 2 when the inspected release verdict is blocked",
-    )
-    args = parser.parse_args(argv)
-
-    result = inspect_operational_readiness(args.db)
-    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
-    if args.require_ready and not result["release"]["ready_for_extended_paper"]:
-        return 2
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
