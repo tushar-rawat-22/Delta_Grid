@@ -108,11 +108,17 @@ def test_invalid_inputs_fail_closed() -> None:
             trial_period_sharpes=[],
             periods_per_year=365,
         )
+
+
+@pytest.mark.parametrize("periods_per_year", [0, True, 365.0, "365"])
+def test_periods_per_year_must_be_a_strict_positive_integer(
+    periods_per_year: object,
+) -> None:
     with pytest.raises(ValueError, match="positive integer"):
         build_search_adjusted_sharpe_report(
             RETURNS,
             trial_period_sharpes=[0.1],
-            periods_per_year=0,
+            periods_per_year=periods_per_year,  # type: ignore[arg-type]
         )
 
 
