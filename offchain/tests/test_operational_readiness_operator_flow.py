@@ -107,5 +107,6 @@ def test_readiness_status_rejects_orchestration_run_selector(capsys) -> None:
     assert returncode == 2
     assert captured.out == ""
     assert payload["reason_token"] == "WORKFLOW_INPUT_INVALID"
-    assert "--run-id cannot be combined" in payload["explanation"]
+    assert payload["explanation"] == "The supplied Mission 97 input is invalid."
+    assert "run-1" not in captured.err
     assert set(payload) == {"explanation", "reason_token"}
