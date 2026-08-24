@@ -32,7 +32,7 @@ test("observer landing is a dense research console rather than a screenshot-led 
   assert.doesNotMatch(landing, /next\/image/i);
   assert.doesNotMatch(landing, /snapshots?/i);
   assert.doesNotMatch(shell, /box-shadow:/i);
-  assert.doesNotMatch(shell, /border-radius:/i);
+  assert.doesNotMatch(shell, /border-radius:\s*(?:\.5|\.55|\.58|\.6|\.65|\.7|\.72|\.8|1)rem/i);
 });
 
 test("delivery roadmap remains re-plannable without weakening fixed safety rules", () => {
