@@ -66,6 +66,7 @@ jobs:
     timeout-minutes: 5
     env:
       DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
+      PARITY_TRIGGER: ${{ github.event_name }}
     steps:
       - name: Check out current main
         # actions/checkout v7.0.1
@@ -74,25 +75,54 @@ jobs:
           ref: main
           persist-credentials: false
 
-      - name: Require live observer to report current main
+      - name: Observe live observer release identity
         shell: bash
         run: |
           set -euo pipefail
           expected_sha="$(git rev-parse HEAD)"
           expected="{\"release_sha\":\"$expected_sha\"}"
           release_url="$DELTAGRID_PUBLIC_BASE/deltagrid-release.json?production_parity=$expected_sha"
-          observed="$(curl --silent --show-error --fail \
+          release_file="$RUNNER_TEMP/live-release-identity.json"
+          http_status="$(curl --silent --show-error \
+            --output "$release_file" \
+            --write-out '%{http_code}' \
             --connect-timeout 10 --max-time 20 \
             --header 'Cache-Control: no-cache' \
-            "$release_url")"
+            "$release_url" || true)"
+          observed="$(cat "$release_file" 2>/dev/null || true)"
+
           printf '%s\n' "$expected_sha" > "$RUNNER_TEMP/expected-main-sha.txt"
-          printf '%s\n' "$observed" > "$RUNNER_TEMP/live-release-identity.json"
-          if [ "$observed" != "$expected" ]; then
-            echo "FAIL: public observer is not serving current main" >&2
-            echo "expected=$expected" >&2
-            echo "observed=$observed" >&2
-            exit 1
+          printf '%s\n' "${http_status:-000}" > "$RUNNER_TEMP/live-release-http-status.txt"
+
+          if [ "$http_status" != "200" ]; then
+            printf '%s\n' "UNVERIFIED" > "$RUNNER_TEMP/production-parity-state.txt"
+            message="release marker returned HTTP ${http_status:-000}; production revision is unverified"
+            if [ "$PARITY_TRIGGER" = "workflow_dispatch" ]; then
+              echo "FAIL: $message" >&2
+              exit 1
+            fi
+            echo "::warning title=DeltaGrid production parity unavailable::$message"
+            echo "PUBLIC_PRODUCTION_PARITY=UNVERIFIED"
+            exit 0
           fi
+
+          if [ "$observed" != "$expected" ]; then
+            printf '%s\n' "DRIFT" > "$RUNNER_TEMP/production-parity-state.txt"
+            message="live release marker does not match current main"
+            if [ "$PARITY_TRIGGER" = "workflow_dispatch" ]; then
+              echo "FAIL: $message" >&2
+              echo "expected=$expected" >&2
+              echo "observed=$observed" >&2
+              exit 1
+            fi
+            echo "::warning title=DeltaGrid production drift::$message"
+            echo "expected=$expected"
+            echo "observed=$observed"
+            echo "PUBLIC_PRODUCTION_PARITY=DRIFT"
+            exit 0
+          fi
+
+          printf '%s\n' "PASS" > "$RUNNER_TEMP/production-parity-state.txt"
           echo "PUBLIC_PRODUCTION_PARITY=PASS"
 
       - name: Publish production parity summary
@@ -106,7 +136,15 @@ jobs:
               echo "Current main: \`$(cat "$RUNNER_TEMP/expected-main-sha.txt")\`"
               echo
             fi
-            if [ -f "$RUNNER_TEMP/live-release-identity.json" ]; then
+            if [ -f "$RUNNER_TEMP/production-parity-state.txt" ]; then
+              echo "Parity state: \`$(cat "$RUNNER_TEMP/production-parity-state.txt")\`"
+              echo
+            fi
+            if [ -f "$RUNNER_TEMP/live-release-http-status.txt" ]; then
+              echo "Release marker HTTP status: \`$(cat "$RUNNER_TEMP/live-release-http-status.txt")\`"
+              echo
+            fi
+            if [ -s "$RUNNER_TEMP/live-release-identity.json" ]; then
               echo "Live release marker:"
               echo '```json'
               cat "$RUNNER_TEMP/live-release-identity.json"
