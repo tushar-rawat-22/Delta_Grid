@@ -4,16 +4,40 @@ import test from "node:test";
 
 const workflow = fs.readFileSync("../.github/workflows/public-observer-release.yml", "utf8");
 
+test("automatic public release runs only after successful main push CI", () => {
+  assert.match(workflow, /workflow_run:/u);
+  assert.match(workflow, /- DeltaGrid CI/u);
+  assert.match(workflow, /- completed/u);
+  assert.match(workflow, /branches:\n\s+- main/u);
+  assert.ok(workflow.includes("github.event.workflow_run.conclusion == 'success'"));
+  assert.ok(workflow.includes("github.event.workflow_run.event == 'push'"));
+  assert.ok(workflow.includes("github.event.workflow_run.head_branch == 'main'"));
+  assert.ok(workflow.includes("github.event.workflow_run.head_sha"));
+  assert.match(workflow, /environment: public-production/u);
+  assert.match(workflow, /group: public-observer-production/u);
+  assert.match(workflow, /cancel-in-progress: false/u);
+});
+
 test("public release remains exact-current-main and static-only preflighted", () => {
   assert.match(workflow, /release_sha:/u);
   assert.match(workflow, /\^\[0-9a-f\]\{40\}\$/u);
-  assert.match(workflow, /if: github\.ref == 'refs\/heads\/main'/u);
   assert.match(workflow, /git fetch --no-tags origin main/u);
   assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
   assert.match(workflow, /npm run check/u);
   assert.match(workflow, /npm run verify:public-deploy/u);
   assert.match(workflow, /--config wrangler\.jsonc/u);
   assert.match(workflow, /--strict/u);
+});
+
+test("superseded automatic releases skip before build or deployment while manual stale requests fail closed", () => {
+  assert.match(workflow, /RELEASE_TRIGGER: \$\{\{ github\.event_name \}\}/u);
+  assert.match(workflow, /AUTO_RELEASE_STALE=SKIP/u);
+  assert.ok(workflow.includes('echo "deploy=false" >> "$GITHUB_OUTPUT"'));
+  assert.ok(workflow.includes('if [ "$RELEASE_TRIGGER" = "workflow_run" ]; then'));
+  assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
+
+  const guardedSteps = workflow.match(/if: steps\.current\.outputs\.deploy == 'true'/gu) ?? [];
+  assert.equal(guardedSteps.length, 10);
 });
 
 test("Cloudflare production credentials are unavailable to public build and test steps", () => {
