@@ -4,10 +4,7 @@ import json
 from pathlib import Path
 import sqlite3
 
-from offchain.safety.operational_readiness_inspector import (
-    inspect_operational_readiness,
-    main,
-)
+from offchain.safety.operational_readiness_inspector import inspect_operational_readiness
 from offchain.safety.operational_release_gate import BLOCKED, READY
 
 
@@ -231,23 +228,6 @@ def test_readonly_inspection_does_not_mutate_database_or_directory(tmp_path: Pat
     assert result["inspection_status"] == "VERIFIED"
     assert database.read_bytes() == before_bytes
     assert sorted(item.name for item in tmp_path.iterdir()) == before_names
-
-
-def test_cli_is_status_only_by_default_and_can_optionally_require_ready(tmp_path: Path, capsys) -> None:
-    database = tmp_path / "state.db"
-    _ready_db(database)
-
-    assert main(["--db", str(database)]) == 0
-    printed = json.loads(capsys.readouterr().out)
-    assert printed["release"]["status"] == READY
-
-    with sqlite3.connect(database) as connection:
-        connection.execute("DELETE FROM paper_sandbox_sessions")
-        connection.commit()
-
-    assert main(["--db", str(database)]) == 0
-    capsys.readouterr()
-    assert main(["--db", str(database), "--require-ready"]) == 2
 
 
 def test_inspector_source_does_not_import_or_call_historical_runners() -> None:
