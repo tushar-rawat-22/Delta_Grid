@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "updated_on": "2026-08-24",
+  "delivery_mode": "CONVERGENCE",
+  "software_complete_target": "2026-09-07",
+  "definition_of_software_complete": [
+    "current research and governance state can be inspected from one operator flow",
+    "paper-readiness state has one deterministic non-authorizing release verdict",
+    "risk and drawdown controls fail closed",
+    "operator-facing public and founder interfaces have a coherent executive information hierarchy",
+    "deployment health and revision provenance are independently checkable",
+    "routine dependency maintenance does not create avoidable CI failures"
+  ],
+  "fixed_rules": [
+    "production stays on the last green main while branch work is tested",
+    "CI, CodeQL, or live-boundary security failures block merge",
+    "UI and delivery work cannot expand research, exchange, order, credential, paper/live trading, Mission 104, or capital authority",
+    "exchange adapters, broker integrations, credentials, paper/live execution, and capital activation remain out of scope unless the founder explicitly changes authority in a future decision",
+    "a failed research hypothesis is recorded; the roadmap does not create rescue tuning",
+    "new architecture must remove a release blocker or replace a weaker existing mechanism"
+  ],
+  "lanes": [
+    {
+      "id": "operational-release-gate",
+      "state": "SHIPPED",
+      "target": "2026-08-24",
+      "exit_condition": "one fail-closed verdict covers paper sandbox, institutional risk, capital-readiness-for-paper, and drawdown kill-switch state without granting authority",
+      "evidence": "PR #88 / main f4414b80522efccb81c784605384a27249f90f75",
+      "next": "surface the existing verdict through a read-only operator flow without running paper/live components or adding authority"
+    },
+    {
+      "id": "executive-observer-ui",
+      "state": "ACTIVE",
+      "target": "2026-08-26",
+      "exit_condition": "public observer reads like a quantitative research control surface rather than a marketing landing page; durable research-state markers remain visible",
+      "options": [
+        "dense executive console with tables and status tape",
+        "terminal-style workspace only if density cannot remain readable",
+        "split public review site and founder cockpit if one information architecture becomes too compromised"
+      ],
+      "selection_rule": "prefer the least decorative option that makes status, risk, evidence, and next decision legible in under 30 seconds"
+    },
+    {
+      "id": "supported-readiness-operator-flow",
+      "state": "NEXT",
+      "target": "2026-08-29",
+      "exit_condition": "one supported command or founder action can inspect prerequisites and return the non-authorizing operational readiness verdict with durable evidence without starting paper/live components",
+      "options": [
+        "read-only adapter over existing readiness and risk state",
+        "read-only orchestration over historical modules when their state can be inspected without invoking execution paths",
+        "retire stale historical entry points only when current read-only replacements are verified"
+      ],
+      "selection_rule": "reuse verified state and verdicts; do not invoke or rewrite paper/live execution engines under current authority"
+    },
+    {
+      "id": "deployment-provenance",
+      "state": "ACTIVE",
+      "target": "2026-08-30",
+      "exit_condition": "scheduled or manual production parity can bind the live observer to an exact main revision without interfering with PR boundary checks",
+      "options": [
+        "existing production-parity workflow with stronger surfaced revision evidence",
+        "immutable deployment marker emitted by the worker build",
+        "both, if the marker remains independently verifiable"
+      ],
+      "selection_rule": "prefer independent evidence over application self-reporting"
+    },
+    {
+      "id": "operator-release-candidate",
+      "state": "PLANNED",
+      "target": "2026-09-03",
+      "exit_condition": "fresh-clone/operator verification, non-authorizing readiness gate, documentation, backup/recovery, and public/founder boundary checks pass together",
+      "options": [
+        "single release checklist backed by machine checks",
+        "signed release manifest if provenance needs a stronger artifact"
+      ],
+      "selection_rule": "a human-readable release verdict must be derivable from machine evidence"
+    },
+    {
+      "id": "software-v1",
+      "state": "PLANNED",
+      "target": "2026-09-07",
+      "exit_condition": "DeltaGrid is usable for authorized research, backtesting, forward/shadow observation, deterministic readiness inspection, and durable evidence review without unfinished operator-critical paths",
+      "selection_rule": "ship the smallest complete operating system inside current authority; defer non-blocking features"
+    }
+  ],
+  "replan_triggers": [
+    {
+      "trigger": "a lane misses its target by more than 48 hours",
+      "action": "drop or defer non-blocking work and choose the shortest safe option listed for that lane"
+    },
+    {
+      "trigger": "a new security or authority flaw is verified",
+      "action": "promote remediation above UI and feature work"
+    },
+    {
+      "trigger": "an existing verified subsystem already solves the planned work",
+      "action": "integrate it instead of building a duplicate"
+    },
+    {
+      "trigger": "a proposed feature cannot name a release blocker it removes",
+      "action": "defer it until after software v1"
+    }
+  ]
+}
