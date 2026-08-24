@@ -1,0 +1,40 @@
+{
+  "directDependencies": {
+    "dependencies": [
+      "jose",
+      "next",
+      "react",
+      "react-dom"
+    ],
+    "devDependencies": [
+      "@types/node",
+      "@types/react",
+      "@types/react-dom",
+      "@vitejs/plugin-react",
+      "eslint",
+      "eslint-config-next",
+      "typescript",
+      "vite",
+      "wrangler"
+    ]
+  },
+  "installScripts": [
+    {
+      "name": "esbuild",
+      "version": "0.28.1"
+    },
+    {
+      "name": "fsevents",
+      "version": "2.3.3",
+      "optional": true
+    },
+    {
+      "name": "unrs-resolver",
+      "version": "1.12.2"
+    },
+    {
+      "name": "workerd",
+      "version": "1.20260820.1"
+    }
+  ]
+}
