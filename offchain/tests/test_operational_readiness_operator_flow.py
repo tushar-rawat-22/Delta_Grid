@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from offchain.orchestration.__main__ import _parser, main
+from offchain.safety.operational_release_gate import BLOCKED, READY
 from offchain.tests.test_operational_readiness_inspector import _ready_db
 
 
@@ -51,7 +52,7 @@ def test_readiness_status_returns_verified_non_authorizing_json_without_mutation
     assert returncode == 0
     assert captured.err == ""
     assert payload["inspection_status"] == "VERIFIED"
-    assert payload["release"]["status"] == "READY_FOR_EXTENDED_PAPER"
+    assert payload["release"]["status"] == READY
     assert payload["release"]["ready_for_extended_paper"] is True
     assert payload["authority_effect"] == "NONE"
     assert payload["live_trading_allowed"] is False
@@ -83,7 +84,7 @@ def test_readiness_status_treats_missing_evidence_as_blocked_state_not_cli_failu
     assert captured.err == ""
     assert database.exists() is False
     assert payload["inspection_status"] == "BLOCKED"
-    assert payload["release"]["status"] == "BLOCKED"
+    assert payload["release"]["status"] == BLOCKED
     assert payload["release"]["ready_for_extended_paper"] is False
     assert "DATABASE_MISSING_OR_INVALID" in payload["inspector_blockers"]
     assert payload["authority_effect"] == "NONE"
