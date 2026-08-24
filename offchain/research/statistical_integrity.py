@@ -16,6 +16,7 @@ class SearchAdjustedSharpeReport:
 
     status: str
     diagnostic_only: bool
+    serial_dependence_adjusted: bool
     observations: int
     periods_per_year: int
     trial_count: int
@@ -161,6 +162,7 @@ def build_search_adjusted_sharpe_report(
 
     common = {
         "diagnostic_only": True,
+        "serial_dependence_adjusted": False,
         "observations": len(clean_returns),
         "periods_per_year": int(periods_per_year),
         "trial_count": len(trials),
