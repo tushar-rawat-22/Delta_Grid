@@ -3,7 +3,6 @@
   "updated_on": "2026-08-24",
   "delivery_mode": "CONVERGENCE",
   "software_complete_target": "2026-09-07",
-  "pilot_infrastructure_target": "2026-09-21",
   "definition_of_software_complete": [
     "current research and governance state can be inspected from one operator flow",
     "paper-only operation has one deterministic release verdict",
@@ -15,7 +14,8 @@
   "fixed_rules": [
     "production stays on the last green main while branch work is tested",
     "CI, CodeQL, or live-boundary security failures block merge",
-    "UI work cannot expand research, exchange, order, credential, or capital authority",
+    "UI and delivery work cannot expand research, exchange, order, credential, paper/live trading, Mission 104, or capital authority",
+    "exchange adapters, broker integrations, credentials, and capital activation remain out of scope unless the founder explicitly changes authority in a future decision",
     "a failed research hypothesis is recorded; the roadmap does not create rescue tuning",
     "new architecture must remove a release blocker or replace a weaker existing mechanism"
   ],
@@ -81,18 +81,6 @@
       "target": "2026-09-07",
       "exit_condition": "DeltaGrid is usable for automated research, backtesting, forward/shadow observation, and durable paper operation without unfinished operator-critical paths",
       "selection_rule": "ship the smallest complete operating system; defer non-blocking features"
-    },
-    {
-      "id": "exchange-isolation",
-      "state": "OPTIONAL_AFTER_V1",
-      "target": "2026-09-21",
-      "exit_condition": "an exchange adapter can be tested with credentials isolated, pre-trade limits, reconciliation, and emergency shutdown while real-capital activation remains manual and separately governed",
-      "options": [
-        "exchange testnet/sandbox where behavior is representative",
-        "local exchange emulator for failure injection",
-        "tiny-capital adapter remains absent if paper evidence does not justify building it"
-      ],
-      "selection_rule": "do not connect real credentials merely to satisfy a calendar date"
     }
   ],
   "replan_triggers": [
