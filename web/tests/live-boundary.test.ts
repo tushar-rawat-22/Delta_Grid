@@ -3,6 +3,7 @@ import fs from "node:fs";
 import test from "node:test";
 
 const workflow = fs.readFileSync("../.github/workflows/live-public-boundary.yml", "utf8");
+const releaseWorkflow = fs.readFileSync("../.github/workflows/public-observer-release.yml", "utf8");
 const verifier = fs.readFileSync("scripts/verify-live-boundary.sh", "utf8");
 
 test("live public boundary monitor is scheduled and manually runnable", () => {
@@ -25,17 +26,34 @@ test("live boundary concurrency keeps different trigger classes independent", ()
   );
 });
 
-test("scheduled monitor also detects public production drift from current main", () => {
+test("scheduled production parity reports drift without converting expected manual-release lag into hourly failure mail", () => {
   assert.match(
     workflow,
     /if: github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_dispatch'/u,
   );
   assert.match(workflow, /name: verify-production-parity/u);
   assert.match(workflow, /ref: main/u);
+  assert.match(workflow, /PARITY_TRIGGER: \$\{\{ github\.event_name \}\}/u);
   assert.match(workflow, /deltagrid-release\.json\?production_parity=\$expected_sha/u);
+  assert.match(workflow, /--write-out '%\{http_code\}'/u);
   assert.match(workflow, /Cache-Control: no-cache/u);
-  assert.match(workflow, /public observer is not serving current main/u);
+  assert.match(workflow, /production parity unavailable/u);
+  assert.match(workflow, /production drift/u);
+  assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=UNVERIFIED/u);
+  assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=DRIFT/u);
   assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=PASS/u);
+  assert.match(workflow, /if \[ "\$PARITY_TRIGGER" = "workflow_dispatch" \]; then/u);
+});
+
+test("manual release still hard-fails unless the exact deployed SHA is live", () => {
+  assert.ok(
+    releaseWorkflow.includes(
+      `printf '{"release_sha":"%s"}\\n' "$RELEASE_SHA" > out/deltagrid-release.json`,
+    ),
+  );
+  assert.match(releaseWorkflow, /Prove exact release is live/u);
+  assert.match(releaseWorkflow, /FAIL: deployed public observer does not report requested release SHA/u);
+  assert.match(releaseWorkflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
 });
 
 test("live boundary workflow needs no deployment or founder credentials", () => {
