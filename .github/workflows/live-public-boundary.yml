@@ -66,7 +66,6 @@ jobs:
     timeout-minutes: 5
     env:
       DELTAGRID_PUBLIC_BASE: https://deltagrid-observer.tushar142004.workers.dev
-      PARITY_TRIGGER: ${{ github.event_name }}
     steps:
       - name: Check out current main
         # actions/checkout v7.0.1
@@ -97,29 +96,19 @@ jobs:
           if [ "$http_status" != "200" ]; then
             printf '%s\n' "UNVERIFIED" > "$RUNNER_TEMP/production-parity-state.txt"
             message="release marker returned HTTP ${http_status:-000}; production revision is unverified"
-            if [ "$PARITY_TRIGGER" = "workflow_dispatch" ]; then
-              echo "FAIL: $message" >&2
-              exit 1
-            fi
-            echo "::warning title=DeltaGrid production parity unavailable::$message"
-            echo "PUBLIC_PRODUCTION_PARITY=UNVERIFIED"
-            exit 0
+            echo "FAIL: $message" >&2
+            echo "PUBLIC_PRODUCTION_PARITY=UNVERIFIED" >&2
+            exit 1
           fi
 
           if [ "$observed" != "$expected" ]; then
             printf '%s\n' "DRIFT" > "$RUNNER_TEMP/production-parity-state.txt"
             message="live release marker does not match current main"
-            if [ "$PARITY_TRIGGER" = "workflow_dispatch" ]; then
-              echo "FAIL: $message" >&2
-              echo "expected=$expected" >&2
-              echo "observed=$observed" >&2
-              exit 1
-            fi
-            echo "::warning title=DeltaGrid production drift::$message"
-            echo "expected=$expected"
-            echo "observed=$observed"
-            echo "PUBLIC_PRODUCTION_PARITY=DRIFT"
-            exit 0
+            echo "FAIL: $message" >&2
+            echo "expected=$expected" >&2
+            echo "observed=$observed" >&2
+            echo "PUBLIC_PRODUCTION_PARITY=DRIFT" >&2
+            exit 1
           fi
 
           printf '%s\n' "PASS" > "$RUNNER_TEMP/production-parity-state.txt"
