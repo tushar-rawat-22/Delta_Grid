@@ -26,23 +26,23 @@ test("live boundary concurrency keeps different trigger classes independent", ()
   );
 });
 
-test("scheduled production parity reports drift without converting expected manual-release lag into hourly failure mail", () => {
+test("scheduled and manual production parity fail closed on missing or stale release identity", () => {
   assert.match(
     workflow,
     /if: github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_dispatch'/u,
   );
   assert.match(workflow, /name: verify-production-parity/u);
   assert.match(workflow, /ref: main/u);
-  assert.match(workflow, /PARITY_TRIGGER: \$\{\{ github\.event_name \}\}/u);
   assert.match(workflow, /deltagrid-release\.json\?production_parity=\$expected_sha/u);
   assert.match(workflow, /--write-out '%\{http_code\}'/u);
   assert.match(workflow, /Cache-Control: no-cache/u);
-  assert.match(workflow, /production parity unavailable/u);
-  assert.match(workflow, /production drift/u);
+  assert.match(workflow, /FAIL: \$message/u);
   assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=UNVERIFIED/u);
   assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=DRIFT/u);
   assert.match(workflow, /PUBLIC_PRODUCTION_PARITY=PASS/u);
-  assert.match(workflow, /if \[ "\$PARITY_TRIGGER" = "workflow_dispatch" \]; then/u);
+  assert.doesNotMatch(workflow, /PARITY_TRIGGER:/u);
+  assert.doesNotMatch(workflow, /::warning title=DeltaGrid production parity unavailable/u);
+  assert.doesNotMatch(workflow, /::warning title=DeltaGrid production drift/u);
 });
 
 test("manual release still hard-fails unless the exact deployed SHA is live", () => {
