@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_on": "2026-08-24",
+  "updated_on": "2026-08-29",
   "delivery_mode": "CONVERGENCE",
   "software_complete_target": "2026-09-07",
   "definition_of_software_complete": [
@@ -17,7 +17,8 @@
     "UI and delivery work cannot expand research, exchange, order, credential, paper/live trading, Mission 104, or capital authority",
     "exchange adapters, broker integrations, credentials, paper/live execution, and capital activation remain out of scope unless the founder explicitly changes authority in a future decision",
     "a failed research hypothesis is recorded; the roadmap does not create rescue tuning",
-    "new architecture must remove a release blocker or replace a weaker existing mechanism"
+    "new architecture must remove a release blocker or replace a weaker existing mechanism",
+    "temporary founder unavailability never idles unrelated safe work; park manual blockers and continue independent lanes"
   ],
   "lanes": [
     {
@@ -56,21 +57,20 @@
     },
     {
       "id": "supported-readiness-operator-flow",
-      "state": "ACTIVE",
+      "state": "SHIPPED",
       "target": "2026-08-29",
       "exit_condition": "one supported command or founder action can inspect prerequisites and return the non-authorizing operational readiness verdict with durable evidence without starting paper/live components",
-      "options": [
-        "read-only adapter over existing readiness and risk state",
-        "read-only orchestration over historical modules when their state can be inspected without invoking execution paths",
-        "retire stale historical entry points only when current read-only replacements are verified"
-      ],
+      "evidence": "PR #95 / main 5345117bbdd8ad5fae7a10cf426dd42640d102b2",
+      "next": "feed the supported readiness verdict into operator release-candidate verification without adding execution authority",
       "selection_rule": "reuse verified state and verdicts; do not invoke or rewrite paper/live execution engines under current authority"
     },
     {
       "id": "deployment-provenance",
-      "state": "ACTIVE",
+      "state": "BLOCKED_EXTERNAL",
       "target": "2026-08-30",
       "exit_condition": "scheduled or manual production parity can bind the live observer to an exact main revision without interfering with PR boundary checks",
+      "blocker": "GitHub public-production lacks usable CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID; the public site remains reachable but the exact deployed SHA is unverified",
+      "parallel_work_rule": "continue operator-release-candidate and product-quality work while external configuration is pending",
       "options": [
         "existing production-parity workflow with stronger surfaced revision evidence",
         "immutable deployment marker emitted by the worker build",
@@ -80,9 +80,10 @@
     },
     {
       "id": "operator-release-candidate",
-      "state": "PLANNED",
+      "state": "ACTIVE",
       "target": "2026-09-03",
       "exit_condition": "fresh-clone/operator verification, non-authorizing readiness gate, documentation, backup/recovery, and public/founder boundary checks pass together",
+      "current_focus": "assemble one machine-backed release verdict from fresh-clone checks, read-only operational readiness, documentation/continuity, backup/recovery evidence, and the live public/private boundary; keep deployment provenance as an explicit blocker until external credentials are configured",
       "options": [
         "single release checklist backed by machine checks",
         "signed release manifest if provenance needs a stronger artifact"

@@ -39,6 +39,7 @@ test("delivery roadmap remains re-plannable without weakening fixed safety rules
   assert.equal(roadmap.software_complete_target, "2026-09-07");
   assert.ok(roadmap.fixed_rules.some((rule) => rule.includes("security") && rule.includes("block")));
   assert.ok(roadmap.fixed_rules.some((rule) => rule.includes("last green main")));
+  assert.ok(roadmap.fixed_rules.some((rule) => rule.includes("founder unavailability") && rule.includes("continue independent lanes")));
   assert.ok(roadmap.replan_triggers.length >= 3);
 
   const observerLane = roadmap.lanes.find((lane) => lane.id === "executive-observer-ui");
@@ -57,7 +58,16 @@ test("delivery roadmap remains re-plannable without weakening fixed safety rules
 
   const readinessLane = roadmap.lanes.find((lane) => lane.id === "supported-readiness-operator-flow");
   assert.ok(readinessLane);
-  assert.equal(readinessLane.state, "ACTIVE");
+  assert.equal(readinessLane.state, "SHIPPED");
+  assert.match(readinessLane.evidence ?? "", /PR #95/);
+
+  const provenanceLane = roadmap.lanes.find((lane) => lane.id === "deployment-provenance");
+  assert.ok(provenanceLane);
+  assert.equal(provenanceLane.state, "BLOCKED_EXTERNAL");
+
+  const releaseCandidateLane = roadmap.lanes.find((lane) => lane.id === "operator-release-candidate");
+  assert.ok(releaseCandidateLane);
+  assert.equal(releaseCandidateLane.state, "ACTIVE");
 });
 
 test("delivery roadmap cannot schedule paper or live execution under current authority", () => {
