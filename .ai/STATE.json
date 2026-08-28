@@ -1,11 +1,12 @@
 {
-  "schema_version": 1,
-  "snapshot_time_utc": "2026-08-28T22:16:57Z",
+  "schema_version": 2,
+  "snapshot_time_utc": "2026-08-28T22:24:30Z",
   "snapshot_warning": "VOLATILE_SNAPSHOT_REVERIFY_BEFORE_USE",
   "repository": {
     "full_name": "tushar-rawat-22/Delta_Grid",
     "default_branch": "main",
-    "main_head_at_snapshot": "73689d3dcb4f5837bc5ae33e3ae9d5ac43be5494"
+    "verified_main_head_before_snapshot_commit": "fed742338a1e14d36f8b99fdae6e9b3b8088ba41",
+    "current_main_resolution_rule": "FETCH_CURRENT_MAIN_HEAD; THIS FILE MUST NOT CLAIM ITS OWN COMMIT IS CURRENT MAIN"
   },
   "founder_availability": {
     "state": "TEMPORARILY_UNAVAILABLE_FOR_MANUAL_INTERVENTION",
@@ -78,6 +79,11 @@
       "pr": 98,
       "main_commit": "73689d3dcb4f5837bc5ae33e3ae9d5ac43be5494",
       "summary": "advance convergence state after the supported readiness flow shipped"
+    },
+    {
+      "pr": 100,
+      "main_commit": "fed742338a1e14d36f8b99fdae6e9b3b8088ba41",
+      "summary": "refresh volatile AI continuity evidence after PR #98"
     }
   ],
   "research_and_authority_at_snapshot": {
