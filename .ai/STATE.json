@@ -1,11 +1,16 @@
 {
   "schema_version": 1,
-  "snapshot_time_utc": "2026-08-28T19:10:00Z",
+  "snapshot_time_utc": "2026-08-28T19:33:00Z",
   "snapshot_warning": "VOLATILE_SNAPSHOT_REVERIFY_BEFORE_USE",
   "repository": {
     "full_name": "tushar-rawat-22/Delta_Grid",
     "default_branch": "main",
-    "main_head_at_snapshot": "b232cfa6d6731cf110fc1653a824626339b8e4e2"
+    "main_head_at_snapshot": "71a18cac56b3bee62758a8e36e303211b406b160"
+  },
+  "founder_availability": {
+    "state": "TEMPORARILY_UNAVAILABLE_FOR_MANUAL_INTERVENTION",
+    "operating_rule": "DO_NOT_IDLE_UNRELATED_SAFE_WORK",
+    "manual_blocker_rule": "RECORD_ONCE_CONTINUE_OTHER_LANES_AND_RESUME_WHEN_FOUNDER_CONFIRMS"
   },
   "product_direction": {
     "current": "SHOWABLE_AND_USABLE_LIVE_PROJECT",
@@ -35,16 +40,23 @@
   },
   "release_blocker": {
     "state": "EXTERNAL_CONFIGURATION_REQUIRED",
-    "latest_confirmed_date_utc": "2026-08-27",
+    "latest_confirmed_date_utc": "2026-08-28",
     "workflow": "DeltaGrid Public Observer Release",
-    "release_sha": "b232cfa6d6731cf110fc1653a824626339b8e4e2",
+    "release_sha": "71a18cac56b3bee62758a8e36e303211b406b160",
     "failed_step": "Deploy exact public observer commit",
     "confirmed_empty_environment_values": [
       "CLOUDFLARE_API_TOKEN",
       "CLOUDFLARE_ACCOUNT_ID"
     ],
     "required_human_action": "ADD_SCOPED_CLOUDFLARE_DEPLOYMENT_CREDENTIALS_TO_GITHUB_PUBLIC_PRODUCTION_ENVIRONMENT",
-    "secret_handling_rule": "NEVER_COMMIT_OR_PASTE_SECRET_VALUES_IN_CHAT_OR_REPOSITORY"
+    "secret_handling_rule": "NEVER_COMMIT_OR_PASTE_SECRET_VALUES_IN_CHAT_OR_REPOSITORY",
+    "parallel_work_rule": "DO_NOT_WAIT; CONTINUE RELEASE_CANDIDATE PRODUCT RESEARCH RELIABILITY UI AND DOCUMENTATION WORK"
+  },
+  "delivery": {
+    "supported_readiness_operator_flow": "SHIPPED_PR_95",
+    "deployment_provenance": "BLOCKED_EXTERNAL",
+    "operator_release_candidate": "ACTIVE",
+    "software_v1_target": "2026-09-07"
   },
   "recent_shipped_work": [
     {
@@ -56,6 +68,11 @@
       "pr": 96,
       "main_commit": "b232cfa6d6731cf110fc1653a824626339b8e4e2",
       "summary": "scheduled production parity fails closed on missing or stale release identity"
+    },
+    {
+      "pr": 97,
+      "main_commit": "71a18cac56b3bee62758a8e36e303211b406b160",
+      "summary": "public product architecture documentation and AI continuity bootstrap"
     }
   ],
   "research_and_authority_at_snapshot": {
