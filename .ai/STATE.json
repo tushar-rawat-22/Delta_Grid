@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "snapshot_time_utc": "2026-08-28T19:10:00Z",
+  "snapshot_warning": "VOLATILE_SNAPSHOT_REVERIFY_BEFORE_USE",
+  "repository": {
+    "full_name": "tushar-rawat-22/Delta_Grid",
+    "default_branch": "main",
+    "main_head_at_snapshot": "b232cfa6d6731cf110fc1653a824626339b8e4e2"
+  },
+  "product_direction": {
+    "current": "SHOWABLE_AND_USABLE_LIVE_PROJECT",
+    "sequence": [
+      "SHOWABLE_USABLE_PUBLIC_PROJECT",
+      "CONTINUOUS_IMPROVEMENT_WHILE_LIVE",
+      "MATURE_FOUNDER_OPERATING_SYSTEM",
+      "PRODUCTION_SAAS_ARCHITECTURE_WHEN_JUSTIFIED"
+    ],
+    "public_demo_rule": "MIRROR_SAFE_ADMIN_INFORMATION_ARCHITECTURE_WITHOUT_WRITE_OR_AUTHORITY"
+  },
+  "public_surface": {
+    "observer_url": "https://deltagrid-observer.tushar142004.workers.dev",
+    "founder_gateway_url": "https://deltagrid-founder-gateway.tushar142004.workers.dev",
+    "latest_observed_boundary_date_utc": "2026-08-28",
+    "public_home": "PASS_HTTP_200",
+    "public_research_demo": "PASS_HTTP_200",
+    "anonymous_founder_surfaces": "PASS_BLOCKED_OR_REDIRECTED",
+    "live_public_private_boundary": "PASS"
+  },
+  "production_provenance": {
+    "state": "UNVERIFIED",
+    "latest_observed_marker_status": "HTTP_404",
+    "latest_observed_marker_date_utc": "2026-08-28",
+    "meaning": "PUBLIC_SITE_IS_REACHABLE_BUT_EXACT_DEPLOYED_MAIN_SHA_IS_NOT_PROVEN",
+    "security_interpretation": "NOT_EVIDENCE_OF_BREACH_OR_AUTHORITY_LEAK"
+  },
+  "release_blocker": {
+    "state": "EXTERNAL_CONFIGURATION_REQUIRED",
+    "latest_confirmed_date_utc": "2026-08-27",
+    "workflow": "DeltaGrid Public Observer Release",
+    "release_sha": "b232cfa6d6731cf110fc1653a824626339b8e4e2",
+    "failed_step": "Deploy exact public observer commit",
+    "confirmed_empty_environment_values": [
+      "CLOUDFLARE_API_TOKEN",
+      "CLOUDFLARE_ACCOUNT_ID"
+    ],
+    "required_human_action": "ADD_SCOPED_CLOUDFLARE_DEPLOYMENT_CREDENTIALS_TO_GITHUB_PUBLIC_PRODUCTION_ENVIRONMENT",
+    "secret_handling_rule": "NEVER_COMMIT_OR_PASTE_SECRET_VALUES_IN_CHAT_OR_REPOSITORY"
+  },
+  "recent_shipped_work": [
+    {
+      "pr": 95,
+      "main_commit": "5345117bbdd8ad5fae7a10cf426dd42640d102b2",
+      "summary": "read-only operational readiness status flow"
+    },
+    {
+      "pr": 96,
+      "main_commit": "b232cfa6d6731cf110fc1653a824626339b8e4e2",
+      "summary": "scheduled production parity fails closed on missing or stale release identity"
+    }
+  ],
+  "research_and_authority_at_snapshot": {
+    "validated_profitable_strategy": false,
+    "selected_candidate": false,
+    "paper_trading_authorized": false,
+    "live_trading_authorized": false,
+    "exchange_credential_access_authorized": false,
+    "orders_authorized": false,
+    "capital_deployment_authorized": false
+  },
+  "documentation": {
+    "human_public_start": [
+      "README.md",
+      "web/docs/PRODUCT_ARCHITECTURE.md",
+      "web/docs/PUBLIC_REVIEW.md",
+      "docs/README.md"
+    ],
+    "ai_continuity_start": [
+      ".ai/CONTINUITY.md",
+      ".ai/STATE.json"
+    ],
+    "current_policy_files": [
+      "docs/RESEARCH_POLICY.md",
+      "docs/RISK_POLICY.md",
+      "docs/SAFETY_INVARIANTS.md",
+      "docs/DELTAGRID_FINAL_FREEZE.md",
+      "docs/M104_READINESS_LOCK.md"
+    ]
+  },
+  "verification_protocol": [
+    "FETCH_CURRENT_MAIN_HEAD",
+    "FETCH_OPEN_PULL_REQUESTS",
+    "CHECK_DELTAGRID_CI",
+    "CHECK_CODEQL",
+    "CHECK_LIVE_PUBLIC_PRIVATE_BOUNDARY",
+    "CHECK_PRODUCTION_PARITY_SEPARATELY",
+    "READ_RELEVANT_CONTROLLING_POLICY_BEFORE_MUTATION"
+  ]
+}
