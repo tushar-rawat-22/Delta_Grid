@@ -9,6 +9,7 @@ import {
   demoHealth,
   demoHypotheses,
   demoMarketSeries,
+  demoOperatorWorkflow,
   demoSystemBoundary,
 } from "../lib/public-demo-data.ts";
 
@@ -35,6 +36,15 @@ test("public demo fixtures contain no live-market or founder authority claim", (
   }
 });
 
+test("public operator workflow explains gates without granting authority", () => {
+  const byLane = new Map(demoOperatorWorkflow.map((item) => [item.lane, item]));
+  assert.equal(byLane.get("Research intake")?.state, "DEMO");
+  assert.equal(byLane.get("Dataset custody")?.state, "SANITIZED");
+  assert.equal(byLane.get("Trial execution")?.state, "NOT AUTHORIZED");
+  assert.equal(byLane.get("Candidate decision")?.state, "NO RESULT");
+  assert.equal(byLane.get("Protected stage")?.state, "CLOSED");
+});
+
 test("public system boundary stays fail-closed", () => {
   const byLayer = new Map(demoSystemBoundary.map((item) => [item.layer, item.state]));
   assert.equal(byLayer.get("Public observer"), "SANITIZED");
@@ -52,5 +62,6 @@ test("public demo component has no private network or write surface", () => {
   }
   assert.match(source, /DEMO MODE/u);
   assert.match(source, /Log in for Founder Mode/u);
+  assert.match(source, /Operator workflow/u);
   assert.match(source, /MERGED ≠ CI-GREEN ≠ DEPLOYED/u);
 });
