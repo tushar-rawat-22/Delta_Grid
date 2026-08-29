@@ -9,6 +9,7 @@ import {
   demoHealth,
   demoHypotheses,
   demoMarketSeries,
+  demoSystemBoundary,
 } from "../lib/public-demo-data.ts";
 
 test("public research demo is deterministic, sanitized and non-authorizing", () => {
@@ -16,10 +17,10 @@ test("public research demo is deterministic, sanitized and non-authorizing", () 
   assert.equal(PUBLIC_DEMO_IDENTITY.mode, "DEMO_MODE");
   assert.equal(PUBLIC_DEMO_IDENTITY.provenance, "DEMO_FIXTURE");
   assert.equal(PUBLIC_DEMO_IDENTITY.authority_effect, "NONE");
-  assert.equal(DEMO_NAV.length, 9);
+  assert.equal(DEMO_NAV.length, 10);
   assert.deepEqual(
     DEMO_NAV.map((item) => item.label),
-    ["Cockpit", "Intelligence", "Hypotheses", "Research gates", "Markets", "Compare", "Macro", "Notebook", "Data health"],
+    ["Cockpit", "Intelligence", "Hypotheses", "Research gates", "Markets", "Compare", "Macro", "Notebook", "Data health", "System boundary"],
   );
 });
 
@@ -34,6 +35,16 @@ test("public demo fixtures contain no live-market or founder authority claim", (
   }
 });
 
+test("public system boundary stays fail-closed", () => {
+  const byLayer = new Map(demoSystemBoundary.map((item) => [item.layer, item.state]));
+  assert.equal(byLayer.get("Public observer"), "SANITIZED");
+  assert.equal(byLayer.get("Founder gateway"), "ACCESS CONTROLLED");
+  assert.equal(byLayer.get("Founder APIs"), "DENIED ANONYMOUSLY");
+  assert.equal(byLayer.get("Release provenance"), "UNVERIFIED");
+  assert.equal(byLayer.get("Research authority"), "NONE");
+  assert.equal(byLayer.get("Public interactions"), "READ ONLY");
+});
+
 test("public demo component has no private network or write surface", () => {
   const source = fs.readFileSync("components/public-research-demo.tsx", "utf8");
   for (const forbidden of ["fetch(", "XMLHttpRequest", "WebSocket(", "/api/research/v1/", "csrf_token", "method: \"POST\"", "method: 'POST'"]) {
@@ -41,4 +52,5 @@ test("public demo component has no private network or write surface", () => {
   }
   assert.match(source, /DEMO MODE/u);
   assert.match(source, /Log in for Founder Mode/u);
+  assert.match(source, /MERGED ≠ CI-GREEN ≠ DEPLOYED/u);
 });

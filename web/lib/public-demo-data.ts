@@ -7,7 +7,8 @@ export type DemoView =
   | "compare"
   | "macro"
   | "notebook"
-  | "health";
+  | "health"
+  | "system";
 
 export const PUBLIC_DEMO_IDENTITY = {
   mode: "DEMO_MODE",
@@ -27,6 +28,7 @@ export const DEMO_NAV: ReadonlyArray<{ id: DemoView; label: string; glyph: strin
   { id: "macro", label: "Macro", glyph: "◎" },
   { id: "notebook", label: "Notebook", glyph: "✎" },
   { id: "health", label: "Data health", glyph: "◆" },
+  { id: "system", label: "System boundary", glyph: "▣" },
 ] as const;
 
 export const demoResearchGates = [
@@ -45,6 +47,15 @@ export const demoTrialLedger = [
   { field: "Dataset binding", value: "Fixture checksum", status: "SANITIZED" },
   { field: "Execution binding", value: "None", status: "NOT AUTHORIZED" },
   { field: "Accounting ledger", value: "No cash-flow records", status: "UNAVAILABLE" },
+] as const;
+
+export const demoSystemBoundary = [
+  { layer: "Public observer", state: "SANITIZED", detail: "Unauthenticated review surface. Deterministic fixtures only; no founder records or write path." },
+  { layer: "Founder gateway", state: "ACCESS CONTROLLED", detail: "Private authenticated workspace boundary. The observer does not proxy or mirror private runtime payloads." },
+  { layer: "Founder APIs", state: "DENIED ANONYMOUSLY", detail: "Private API capability remains outside the public observer and requires the intended founder identity boundary." },
+  { layer: "Release provenance", state: "UNVERIFIED", detail: "A tested Git revision is not presented as deployed until the live release marker proves the exact production revision." },
+  { layer: "Research authority", state: "NONE", detail: "Software visibility does not grant admission, protected opening, paper/live trading, credentials, orders or capital authority." },
+  { layer: "Public interactions", state: "READ ONLY", detail: "Navigation and simulated workflow states are inspectable; executable founder actions remain disabled or unavailable." },
 ] as const;
 
 export const demoWatchlist = [
@@ -130,7 +141,9 @@ export function assertPublicDemoInvariants(): void {
   if (PUBLIC_DEMO_IDENTITY.mode !== "DEMO_MODE") throw new Error("PUBLIC_DEMO_MODE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.provenance !== "DEMO_FIXTURE") throw new Error("PUBLIC_DEMO_PROVENANCE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.authority_effect !== "NONE") throw new Error("PUBLIC_DEMO_AUTHORITY_INVALID");
-  if (DEMO_NAV.length !== 9) throw new Error("PUBLIC_DEMO_NAV_INVALID");
+  if (DEMO_NAV.length !== 10) throw new Error("PUBLIC_DEMO_NAV_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical gate" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
+  if (demoSystemBoundary.some((item) => item.layer === "Release provenance" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_RELEASE_PROVENANCE_INVALID");
+  if (demoSystemBoundary.some((item) => item.layer === "Public interactions" && item.state !== "READ ONLY")) throw new Error("PUBLIC_DEMO_WRITE_BOUNDARY_INVALID");
 }
