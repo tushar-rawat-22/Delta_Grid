@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   DEMO_NAV,
   PUBLIC_DEMO_IDENTITY,
+  demoDatasetCustody,
   demoHealth,
   demoHypotheses,
   demoIntelligence,
@@ -167,7 +168,14 @@ function Notebook() {
 }
 
 function DataHealth() {
-  return <div className={styles.stack}><section className={styles.metricGrid}><Metric label="Configured demo sources" value={String(demoHealth.length)} note="Provider categories" /><Metric label="Healthy" value={String(demoHealth.filter((item) => item.status === "HEALTHY").length)} note="Fixture status" /><Metric label="Degraded" value={String(demoHealth.filter((item) => item.status === "DEGRADED").length)} note="Explicit failure state" /><Metric label="Credentials exposed" value="0" note="Public boundary" /></section><Panel title="Provider health" eyebrow="Fail-closed status model" meta="Synthetic diagnostics"><div className={styles.healthTable}>{demoHealth.map((item) => <div key={item.provider}><span className={item.status === "HEALTHY" ? styles.healthGood : styles.healthWarn}>● {item.status}</span><strong>{item.provider}</strong><small>{item.scope}</small><small>{item.freshness}</small><em>{item.rights}</em></div>)}</div></Panel></div>;
+  return <div className={styles.stack}>
+    <section className={styles.metricGrid}><Metric label="Configured demo sources" value={String(demoHealth.length)} note="Provider categories" /><Metric label="Healthy" value={String(demoHealth.filter((item) => item.status === "HEALTHY").length)} note="Fixture status" /><Metric label="Degraded" value={String(demoHealth.filter((item) => item.status === "DEGRADED").length)} note="Explicit failure state" /><Metric label="Credentials exposed" value="0" note="Public boundary" /></section>
+    <Panel title="Provider health" eyebrow="Fail-closed status model" meta="Synthetic diagnostics"><div className={styles.healthTable}>{demoHealth.map((item) => <div key={item.provider}><span className={item.status === "HEALTHY" ? styles.healthGood : styles.healthWarn}>● {item.status}</span><strong>{item.provider}</strong><small>{item.scope}</small><small>{item.freshness}</small><em>{item.rights}</em></div>)}</div></Panel>
+    <Panel title="Dataset custody" eyebrow="Identity, chronology, rights and evidence chain" meta="Sanitized deterministic bindings">
+      <div className={styles.notebookTable}><div className={styles.tableHead}><span>Binding</span><span>Value</span><span>State</span><span>Evidence</span></div>{demoDatasetCustody.map((item) => <div key={item.binding}><strong>{item.binding}</strong><span>{item.value}</span><span>{item.state}</span><small>{item.evidence}</small></div>)}</div>
+    </Panel>
+    <div className={styles.notice}><strong>NO PRIVATE CUSTODY MATERIAL</strong><span>The observer demonstrates the evidence-chain model without exposing founder dataset metadata, provider payloads, production checksums, credentials or private operating receipts.</span></div>
+  </div>;
 }
 
 function SystemBoundary() {
