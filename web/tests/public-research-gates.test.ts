@@ -7,7 +7,7 @@ import {
   assertPublicDemoInvariants,
   demoResearchGates,
   demoTrialLedger,
-} from "../lib/public-demo-data";
+} from "../lib/public-demo-data.ts";
 
 test("public research demo exposes the founder research gate hierarchy without authority", () => {
   assert.doesNotThrow(() => assertPublicDemoInvariants());
