@@ -2,6 +2,7 @@ export type DemoView =
   | "cockpit"
   | "intelligence"
   | "hypotheses"
+  | "gates"
   | "markets"
   | "compare"
   | "macro"
@@ -20,11 +21,30 @@ export const DEMO_NAV: ReadonlyArray<{ id: DemoView; label: string; glyph: strin
   { id: "cockpit", label: "Cockpit", glyph: "⌂" },
   { id: "intelligence", label: "Intelligence", glyph: "◈" },
   { id: "hypotheses", label: "Hypotheses", glyph: "◇" },
+  { id: "gates", label: "Research gates", glyph: "⊢" },
   { id: "markets", label: "Markets", glyph: "◫" },
   { id: "compare", label: "Compare", glyph: "⇄" },
   { id: "macro", label: "Macro", glyph: "◎" },
   { id: "notebook", label: "Notebook", glyph: "✎" },
   { id: "health", label: "Data health", glyph: "◆" },
+] as const;
+
+export const demoResearchGates = [
+  { stage: "Strategy specification", state: "DEMO", detail: "Structured hypothesis and falsification fields are visible; no founder record is loaded." },
+  { stage: "Dataset custody", state: "SANITIZED", detail: "Shows checksum/provenance concepts only. Private provider payloads and market values stay absent." },
+  { stage: "Admission", state: "CLOSED", detail: "No canonical permit or protected-stage authorization is present in Demo Mode." },
+  { stage: "Trial reservation", state: "UNAVAILABLE", detail: "Append-only trial identity and finite-budget concepts are illustrated without persistence." },
+  { stage: "Execution / accounting", state: "NOT AUTHORIZED", detail: "No paper/live engine, orders, capital, broker or exchange action can run from the observer." },
+  { stage: "Statistical gate", state: "NO RESULT", detail: "No validated profitable strategy and no selected candidate are claimed." },
+  { stage: "Protected opening", state: "CLOSED", detail: "RAB-1 / Mission 104 authority remains unopened under current governance." },
+] as const;
+
+export const demoTrialLedger = [
+  { field: "Trial identity", value: "DEMO-TRIAL-000", status: "SIMULATED" },
+  { field: "Variant budget", value: "Finite example", status: "DEMO" },
+  { field: "Dataset binding", value: "Fixture checksum", status: "SANITIZED" },
+  { field: "Execution binding", value: "None", status: "NOT AUTHORIZED" },
+  { field: "Accounting ledger", value: "No cash-flow records", status: "UNAVAILABLE" },
 ] as const;
 
 export const demoWatchlist = [
@@ -110,5 +130,7 @@ export function assertPublicDemoInvariants(): void {
   if (PUBLIC_DEMO_IDENTITY.mode !== "DEMO_MODE") throw new Error("PUBLIC_DEMO_MODE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.provenance !== "DEMO_FIXTURE") throw new Error("PUBLIC_DEMO_PROVENANCE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.authority_effect !== "NONE") throw new Error("PUBLIC_DEMO_AUTHORITY_INVALID");
-  if (DEMO_NAV.length !== 8) throw new Error("PUBLIC_DEMO_NAV_INVALID");
+  if (DEMO_NAV.length !== 9) throw new Error("PUBLIC_DEMO_NAV_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Statistical gate" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
 }

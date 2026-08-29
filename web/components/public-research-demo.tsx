@@ -10,7 +10,9 @@ import {
   demoMacro,
   demoMarketSeries,
   demoNotebook,
+  demoResearchGates,
   demoTasks,
+  demoTrialLedger,
   demoWatchlist,
   type DemoView,
 } from "../lib/public-demo-data";
@@ -50,6 +52,7 @@ export function PublicResearchDemo() {
           {view === "cockpit" ? <Cockpit /> : null}
           {view === "intelligence" ? <Intelligence /> : null}
           {view === "hypotheses" ? <Hypotheses /> : null}
+          {view === "gates" ? <ResearchGates /> : null}
           {view === "markets" ? <Markets /> : null}
           {view === "compare" ? <Compare /> : null}
           {view === "macro" ? <Macro /> : null}
@@ -107,6 +110,24 @@ function Hypotheses() {
   return <div className={styles.stack}>
     <div className={styles.notice}><strong>PREREGISTRATION PREVIEW</strong><span>Scientific intent can be reviewed publicly; canonical dataset, permit, execution and statistical bindings remain unresolved here.</span></div>
     <div className={styles.hypothesisGrid}>{demoHypotheses.map((item) => <article key={item.id}><div className={styles.hypothesisTop}><span>{item.status}</span><small>{item.id} · REV {item.revision}</small></div><h2>{item.title}</h2><dl><div><dt>Mechanism</dt><dd>{item.mechanism}</dd></div><div><dt>Falsification</dt><dd>{item.falsification}</dd></div><div><dt>Finite budget</dt><dd>{item.budget}</dd></div><div><dt>Canonical handoff</dt><dd>{item.bindings}</dd></div></dl></article>)}</div>
+  </div>;
+}
+
+function ResearchGates() {
+  return <div className={styles.stack}>
+    <section className={styles.metricGrid}>
+      <Metric label="Validated alpha" value="NONE" note="Truthful current state" />
+      <Metric label="Selected candidate" value="NONE" note="No promotion claim" />
+      <Metric label="Protected opening" value="CLOSED" note="RAB-1 / M104 unchanged" />
+      <Metric label="Execution authority" value="NONE" note="No paper/live/capital action" />
+    </section>
+    <Panel title="Research admission path" eyebrow="Founder workflow concepts" meta="Sanitized read-only model">
+      <div className={styles.cardList}>{demoResearchGates.map((gate) => <article key={gate.stage}><span>{gate.state}</span><strong>{gate.stage}</strong><p>{gate.detail}</p></article>)}</div>
+    </Panel>
+    <Panel title="Trial and accounting preview" eyebrow="Finite deterministic fixture" meta="No persistence or writes">
+      <div className={styles.notebookTable}><div className={styles.tableHead}><span>Binding</span><span>Value</span><span>Status</span><span>Effect</span></div>{demoTrialLedger.map((item) => <div key={item.field}><strong>{item.field}</strong><span>{item.value}</span><span>{item.status}</span><small>NONE</small></div>)}</div>
+    </Panel>
+    <div className={styles.notice}><strong>FAIL-CLOSED DEMO</strong><span>Admission, trial reservation, protected opening, execution and accounting remain illustrative only. The public observer cannot create permits, consume budgets, open protected stages, place orders or move capital.</span></div>
   </div>;
 }
 

@@ -16,10 +16,10 @@ test("public research demo is deterministic, sanitized and non-authorizing", () 
   assert.equal(PUBLIC_DEMO_IDENTITY.mode, "DEMO_MODE");
   assert.equal(PUBLIC_DEMO_IDENTITY.provenance, "DEMO_FIXTURE");
   assert.equal(PUBLIC_DEMO_IDENTITY.authority_effect, "NONE");
-  assert.equal(DEMO_NAV.length, 8);
+  assert.equal(DEMO_NAV.length, 9);
   assert.deepEqual(
     DEMO_NAV.map((item) => item.label),
-    ["Cockpit", "Intelligence", "Hypotheses", "Markets", "Compare", "Macro", "Notebook", "Data health"],
+    ["Cockpit", "Intelligence", "Hypotheses", "Research gates", "Markets", "Compare", "Macro", "Notebook", "Data health"],
   );
 });
 
