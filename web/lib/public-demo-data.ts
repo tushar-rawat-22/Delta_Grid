@@ -49,6 +49,14 @@ export const demoTrialLedger = [
   { field: "Accounting ledger", value: "No cash-flow records", status: "UNAVAILABLE" },
 ] as const;
 
+export const demoDatasetCustody = [
+  { binding: "Dataset identity", value: "DEMO-DATASET-001", state: "SANITIZED", evidence: "Deterministic fixture identity only; no founder dataset metadata." },
+  { binding: "Content digest", value: "Demo digest placeholder", state: "SIMULATED", evidence: "Shows immutable-content binding without publishing a private or production checksum." },
+  { binding: "Chronology", value: "Monotonic fixture timestamps", state: "VERIFIED DEMO", evidence: "Ordering is checked only inside the synthetic fixture set." },
+  { binding: "Source rights", value: "DEMO_ONLY", state: "RESTRICTED", evidence: "No private provider payload, credential or redistributed vendor value is present." },
+  { binding: "Custody receipt", value: "Unavailable publicly", state: "UNAVAILABLE", evidence: "Private operating receipts remain outside public Git and the observer." },
+] as const;
+
 export const demoOperatorWorkflow = [
   { lane: "Research intake", gate: "Specification", state: "DEMO", next: "Review mechanism, falsification and finite budget" },
   { lane: "Dataset custody", gate: "Provenance", state: "SANITIZED", next: "Verify checksum and chronology bindings" },
@@ -152,6 +160,8 @@ export function assertPublicDemoInvariants(): void {
   if (DEMO_NAV.length !== 10) throw new Error("PUBLIC_DEMO_NAV_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical gate" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
+  if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
+  if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Protected stage" && item.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_OPERATOR_PROTECTED_STAGE_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Release provenance" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_RELEASE_PROVENANCE_INVALID");
