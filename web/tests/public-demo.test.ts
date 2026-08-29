@@ -6,6 +6,7 @@ import {
   DEMO_NAV,
   PUBLIC_DEMO_IDENTITY,
   assertPublicDemoInvariants,
+  demoDatasetCustody,
   demoHealth,
   demoHypotheses,
   demoMarketSeries,
@@ -30,10 +31,20 @@ test("public demo fixtures contain no live-market or founder authority claim", (
   assert.ok(demoHypotheses.every((item) => item.id.startsWith("DEMO-HYP-")));
   assert.ok(demoHealth.every((item) => item.rights === "DEMO_ONLY"));
 
-  const fixtureText = JSON.stringify({ demoMarketSeries, demoHypotheses, demoHealth }).toLowerCase();
+  const fixtureText = JSON.stringify({ demoMarketSeries, demoHypotheses, demoHealth, demoDatasetCustody }).toLowerCase();
   for (const forbidden of ["live price", "validated profitable", "selected candidate", "paper trading authorized", "live trading authorized"]) {
     assert.equal(fixtureText.includes(forbidden), false, forbidden);
   }
+});
+
+test("public dataset custody exposes the evidence model without private material", () => {
+  const byBinding = new Map(demoDatasetCustody.map((item) => [item.binding, item]));
+  assert.equal(byBinding.get("Dataset identity")?.state, "SANITIZED");
+  assert.equal(byBinding.get("Content digest")?.state, "SIMULATED");
+  assert.equal(byBinding.get("Chronology")?.state, "VERIFIED DEMO");
+  assert.equal(byBinding.get("Source rights")?.value, "DEMO_ONLY");
+  assert.equal(byBinding.get("Custody receipt")?.state, "UNAVAILABLE");
+  assert.equal(JSON.stringify(demoDatasetCustody).includes("CLOUDFLARE"), false);
 });
 
 test("public operator workflow explains gates without granting authority", () => {
@@ -63,5 +74,7 @@ test("public demo component has no private network or write surface", () => {
   assert.match(source, /DEMO MODE/u);
   assert.match(source, /Log in for Founder Mode/u);
   assert.match(source, /Operator workflow/u);
+  assert.match(source, /Dataset custody/u);
+  assert.match(source, /NO PRIVATE CUSTODY MATERIAL/u);
   assert.match(source, /MERGED ≠ CI-GREEN ≠ DEPLOYED/u);
 });
