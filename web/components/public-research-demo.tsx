@@ -10,6 +10,7 @@ import {
   demoMacro,
   demoMarketSeries,
   demoNotebook,
+  demoOperatorWorkflow,
   demoResearchGates,
   demoSystemBoundary,
   demoTasks,
@@ -89,6 +90,9 @@ function Cockpit() {
         <div className={styles.taskList}>{demoTasks.map((task) => <article key={task.title}><span>{task.type}</span><strong>{task.title}</strong><small>{task.status} · {task.due}</small></article>)}</div>
       </Panel>
     </div>
+    <Panel title="Operator workflow" eyebrow="Why each lane can or cannot advance" meta="Sanitized decision queue">
+      <div className={styles.notebookTable}><div className={styles.tableHead}><span>Lane</span><span>Gate</span><span>State</span><span>Next safe action</span></div>{demoOperatorWorkflow.map((item) => <div key={item.lane}><strong>{item.lane}</strong><span>{item.gate}</span><span>{item.state}</span><small>{item.next}</small></div>)}</div>
+    </Panel>
   </div>;
 }
 

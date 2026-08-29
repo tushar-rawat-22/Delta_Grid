@@ -49,6 +49,14 @@ export const demoTrialLedger = [
   { field: "Accounting ledger", value: "No cash-flow records", status: "UNAVAILABLE" },
 ] as const;
 
+export const demoOperatorWorkflow = [
+  { lane: "Research intake", gate: "Specification", state: "DEMO", next: "Review mechanism, falsification and finite budget" },
+  { lane: "Dataset custody", gate: "Provenance", state: "SANITIZED", next: "Verify checksum and chronology bindings" },
+  { lane: "Trial execution", gate: "Admission + authority", state: "NOT AUTHORIZED", next: "No execution until canonical gates authorize it" },
+  { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Do not promote a candidate without qualifying evidence" },
+  { lane: "Protected stage", gate: "RAB-1 / M104", state: "CLOSED", next: "Founder authorization remains absent" },
+] as const;
+
 export const demoSystemBoundary = [
   { layer: "Public observer", state: "SANITIZED", detail: "Unauthenticated review surface. Deterministic fixtures only; no founder records or write path." },
   { layer: "Founder gateway", state: "ACCESS CONTROLLED", detail: "Private authenticated workspace boundary. The observer does not proxy or mirror private runtime payloads." },
@@ -144,6 +152,8 @@ export function assertPublicDemoInvariants(): void {
   if (DEMO_NAV.length !== 10) throw new Error("PUBLIC_DEMO_NAV_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical gate" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
+  if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
+  if (demoOperatorWorkflow.some((item) => item.lane === "Protected stage" && item.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_OPERATOR_PROTECTED_STAGE_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Release provenance" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_RELEASE_PROVENANCE_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Public interactions" && item.state !== "READ ONLY")) throw new Error("PUBLIC_DEMO_WRITE_BOUNDARY_INVALID");
 }
