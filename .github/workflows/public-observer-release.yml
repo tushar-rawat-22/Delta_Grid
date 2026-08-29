@@ -81,6 +81,14 @@ jobs:
           test -z "$(git status --porcelain)"
           echo "deploy=true" >> "$GITHUB_OUTPUT"
 
+      - name: Preflight public production deployment configuration
+        if: steps.current.outputs.deploy == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: bash web/scripts/verify-public-deploy-env.sh
+
       - name: Set up Node 24
         if: steps.current.outputs.deploy == 'true'
         # actions/setup-node v6.5.0
