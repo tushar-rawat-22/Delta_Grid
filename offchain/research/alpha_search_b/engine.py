@@ -394,7 +394,7 @@ def metrics(simulation: Simulation) -> dict[str, Any]:
 
 def holm_adjust(p_values: Mapping[str, float]) -> dict[str, float]:
     ordered = sorted(p_values, key=lambda key: (p_values[key], key))
-    adjusted: dict[str, float] = {}; running = 0.0; size = len(ordered)
+    adjusted: dict[str,float] = {}; running = 0.0; size = len(ordered)
     for index, key in enumerate(ordered):
         running = max(running, min(1.0, (size-index)*p_values[key]))
         adjusted[key] = running
