@@ -37,20 +37,29 @@ test("superseded automatic releases skip before build or deployment while manual
   assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
 
   const guardedSteps = workflow.match(/if: steps\.current\.outputs\.deploy == 'true'/gu) ?? [];
-  assert.equal(guardedSteps.length, 10);
+  assert.equal(guardedSteps.length, 11);
 });
 
-test("Cloudflare production credentials are unavailable to public build and test steps", () => {
+test("Cloudflare production credentials are scoped to preflight and Cloudflare CLI steps", () => {
   const jobEnvStart = workflow.indexOf("    env:");
   const stepsStart = workflow.indexOf("    steps:");
   assert.ok(jobEnvStart >= 0 && stepsStart > jobEnvStart);
   const jobEnv = workflow.slice(jobEnvStart, stepsStart);
   assert.doesNotMatch(jobEnv, /CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID/u);
 
+  const preflightIndex = workflow.indexOf("Preflight public production deployment configuration");
+  const nodeIndex = workflow.indexOf("Set up Node 24");
+  const deployIndex = workflow.indexOf("Deploy exact public observer commit");
+  assert.ok(preflightIndex >= 0 && nodeIndex > preflightIndex && deployIndex > nodeIndex);
+  assert.match(workflow.slice(preflightIndex, nodeIndex), /verify-public-deploy-env\.sh/u);
+
+  const buildAndTestSection = workflow.slice(nodeIndex, deployIndex);
+  assert.doesNotMatch(buildAndTestSection, /CLOUDFLARE_API_TOKEN|CLOUDFLARE_ACCOUNT_ID/u);
+
   const tokenBindings = workflow.match(/CLOUDFLARE_API_TOKEN: \$\{\{ secrets\.CLOUDFLARE_API_TOKEN \}\}/gu) ?? [];
   const accountBindings = workflow.match(/CLOUDFLARE_ACCOUNT_ID: \$\{\{ secrets\.CLOUDFLARE_ACCOUNT_ID \}\}/gu) ?? [];
-  assert.equal(tokenBindings.length, 2);
-  assert.equal(accountBindings.length, 2);
+  assert.equal(tokenBindings.length, 3);
+  assert.equal(accountBindings.length, 3);
 });
 
 test("public release proves the deployed observer is the requested commit before boundary checks", () => {
