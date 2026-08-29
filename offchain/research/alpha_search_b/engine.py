@@ -112,7 +112,7 @@ def slow_rolling_comparison(
         history = history[np.isfinite(history)]
         if positive_only:
             history = history[history > 0]
-            required = min(minimum, MIN_POSITIVE_GAPS)
+            required = MIN_POSITIVE_GAPS
         else:
             required = minimum
         if len(history) < required or not np.isfinite(raw[index]):
