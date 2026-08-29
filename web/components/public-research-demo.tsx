@@ -11,6 +11,7 @@ import {
   demoMarketSeries,
   demoNotebook,
   demoResearchGates,
+  demoSystemBoundary,
   demoTasks,
   demoTrialLedger,
   demoWatchlist,
@@ -58,6 +59,7 @@ export function PublicResearchDemo() {
           {view === "macro" ? <Macro /> : null}
           {view === "notebook" ? <Notebook /> : null}
           {view === "health" ? <DataHealth /> : null}
+          {view === "system" ? <SystemBoundary /> : null}
         </div>
       </section>
 
@@ -162,6 +164,21 @@ function Notebook() {
 
 function DataHealth() {
   return <div className={styles.stack}><section className={styles.metricGrid}><Metric label="Configured demo sources" value={String(demoHealth.length)} note="Provider categories" /><Metric label="Healthy" value={String(demoHealth.filter((item) => item.status === "HEALTHY").length)} note="Fixture status" /><Metric label="Degraded" value={String(demoHealth.filter((item) => item.status === "DEGRADED").length)} note="Explicit failure state" /><Metric label="Credentials exposed" value="0" note="Public boundary" /></section><Panel title="Provider health" eyebrow="Fail-closed status model" meta="Synthetic diagnostics"><div className={styles.healthTable}>{demoHealth.map((item) => <div key={item.provider}><span className={item.status === "HEALTHY" ? styles.healthGood : styles.healthWarn}>● {item.status}</span><strong>{item.provider}</strong><small>{item.scope}</small><small>{item.freshness}</small><em>{item.rights}</em></div>)}</div></Panel></div>;
+}
+
+function SystemBoundary() {
+  return <div className={styles.stack}>
+    <section className={styles.metricGrid}>
+      <Metric label="Public surface" value="SANITIZED" note="Deterministic fixtures" />
+      <Metric label="Founder surface" value="ACCESS CONTROLLED" note="Private authenticated boundary" />
+      <Metric label="Release provenance" value="UNVERIFIED" note="No deployed-revision claim" />
+      <Metric label="Public authority" value="NONE" note="Read-only observer" />
+    </section>
+    <Panel title="Public / founder boundary" eyebrow="Deployment and authority model" meta="Fail-closed representation">
+      <div className={styles.cardList}>{demoSystemBoundary.map((item) => <article key={item.layer}><span>{item.state}</span><strong>{item.layer}</strong><p>{item.detail}</p></article>)}</div>
+    </Panel>
+    <div className={styles.notice}><strong>MERGED ≠ CI-GREEN ≠ DEPLOYED</strong><span>The observer treats source revision, verification and production provenance as separate facts. Private capability remains private even when its workflow concepts are demonstrated publicly.</span></div>
+  </div>;
 }
 
 function MiniSeries() {
