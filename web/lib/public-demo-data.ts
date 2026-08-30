@@ -3,6 +3,7 @@ export type DemoView =
   | "intelligence"
   | "hypotheses"
   | "gates"
+  | "trials"
   | "markets"
   | "compare"
   | "macro"
@@ -23,6 +24,7 @@ export const DEMO_NAV: ReadonlyArray<{ id: DemoView; label: string; glyph: strin
   { id: "intelligence", label: "Intelligence", glyph: "◈" },
   { id: "hypotheses", label: "Hypotheses", glyph: "◇" },
   { id: "gates", label: "Research gates", glyph: "⊢" },
+  { id: "trials", label: "Trial ledger", glyph: "≣" },
   { id: "markets", label: "Markets", glyph: "◫" },
   { id: "compare", label: "Compare", glyph: "⇄" },
   { id: "macro", label: "Macro", glyph: "◎" },
@@ -157,7 +159,7 @@ export function assertPublicDemoInvariants(): void {
   if (PUBLIC_DEMO_IDENTITY.mode !== "DEMO_MODE") throw new Error("PUBLIC_DEMO_MODE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.provenance !== "DEMO_FIXTURE") throw new Error("PUBLIC_DEMO_PROVENANCE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.authority_effect !== "NONE") throw new Error("PUBLIC_DEMO_AUTHORITY_INVALID");
-  if (DEMO_NAV.length !== 10) throw new Error("PUBLIC_DEMO_NAV_INVALID");
+  if (DEMO_NAV.length !== 11) throw new Error("PUBLIC_DEMO_NAV_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical gate" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");

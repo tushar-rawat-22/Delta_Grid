@@ -12,6 +12,7 @@ import {
   demoMarketSeries,
   demoOperatorWorkflow,
   demoSystemBoundary,
+  demoTrialLedger,
 } from "../lib/public-demo-data.ts";
 
 test("public research demo is deterministic, sanitized and non-authorizing", () => {
@@ -19,10 +20,10 @@ test("public research demo is deterministic, sanitized and non-authorizing", () 
   assert.equal(PUBLIC_DEMO_IDENTITY.mode, "DEMO_MODE");
   assert.equal(PUBLIC_DEMO_IDENTITY.provenance, "DEMO_FIXTURE");
   assert.equal(PUBLIC_DEMO_IDENTITY.authority_effect, "NONE");
-  assert.equal(DEMO_NAV.length, 10);
+  assert.equal(DEMO_NAV.length, 11);
   assert.deepEqual(
     DEMO_NAV.map((item) => item.label),
-    ["Cockpit", "Intelligence", "Hypotheses", "Research gates", "Markets", "Compare", "Macro", "Notebook", "Data health", "System boundary"],
+    ["Cockpit", "Intelligence", "Hypotheses", "Research gates", "Trial ledger", "Markets", "Compare", "Macro", "Notebook", "Data health", "System boundary"],
   );
 });
 
@@ -31,10 +32,20 @@ test("public demo fixtures contain no live-market or founder authority claim", (
   assert.ok(demoHypotheses.every((item) => item.id.startsWith("DEMO-HYP-")));
   assert.ok(demoHealth.every((item) => item.rights === "DEMO_ONLY"));
 
-  const fixtureText = JSON.stringify({ demoMarketSeries, demoHypotheses, demoHealth, demoDatasetCustody }).toLowerCase();
+  const fixtureText = JSON.stringify({ demoMarketSeries, demoHypotheses, demoHealth, demoDatasetCustody, demoTrialLedger }).toLowerCase();
   for (const forbidden of ["live price", "validated profitable", "selected candidate", "paper trading authorized", "live trading authorized"]) {
     assert.equal(fixtureText.includes(forbidden), false, forbidden);
   }
+});
+
+test("public trial ledger exposes workflow bindings without execution or accounting authority", () => {
+  const byField = new Map(demoTrialLedger.map((item) => [item.field, item]));
+  assert.equal(byField.get("Trial identity")?.status, "SIMULATED");
+  assert.equal(byField.get("Dataset binding")?.status, "SANITIZED");
+  assert.equal(byField.get("Execution binding")?.value, "None");
+  assert.equal(byField.get("Execution binding")?.status, "NOT AUTHORIZED");
+  assert.equal(byField.get("Accounting ledger")?.value, "No cash-flow records");
+  assert.equal(byField.get("Accounting ledger")?.status, "UNAVAILABLE");
 });
 
 test("public dataset custody exposes the evidence model without private material", () => {
@@ -74,6 +85,8 @@ test("public demo component has no private network or write surface", () => {
   assert.match(source, /DEMO MODE/u);
   assert.match(source, /Log in for Founder Mode/u);
   assert.match(source, /Operator workflow/u);
+  assert.match(source, /Trial ledger/u);
+  assert.match(source, /NO EXECUTION OR ACCOUNTING SIDE EFFECTS/u);
   assert.match(source, /Dataset custody/u);
   assert.match(source, /NO PRIVATE CUSTODY MATERIAL/u);
   assert.match(source, /MERGED ≠ CI-GREEN ≠ DEPLOYED/u);
