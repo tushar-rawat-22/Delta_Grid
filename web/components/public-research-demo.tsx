@@ -209,7 +209,23 @@ function DataHealth() {
     <Panel title="Dataset custody" eyebrow="Identity, chronology, rights and evidence chain" meta="Sanitized deterministic bindings">
       <div className={styles.notebookTable}><div className={styles.tableHead}><span>Binding</span><span>Value</span><span>State</span><span>Evidence</span></div>{demoDatasetCustody.map((item) => <div key={item.binding}><strong>{item.binding}</strong><span>{item.value}</span><span>{item.state}</span><small>{item.evidence}</small></div>)}</div>
     </Panel>
-    <div className={styles.notice}><strong>NO PRIVATE CUSTODY MATERIAL</strong><span>The observer demonstrates the evidence-chain model without exposing founder dataset metadata, provider payloads, production checksums, credentials or private operating receipts.</span></div>
+    <div className={styles.twoColumn}>
+      <Panel title="Custody review" eyebrow="What a reviewer can verify" meta="Sanitized evidence model">
+        <div className={styles.cardList}>
+          <article><span>SANITIZED</span><strong>Identity + immutable binding</strong><p>A deterministic dataset identity and placeholder digest show where content-addressed custody belongs without publishing a production checksum.</p></article>
+          <article><span>VERIFIED DEMO</span><strong>Chronology discipline</strong><p>Fixture timestamps demonstrate monotonic ordering checks; this is not proof that a private canonical dataset passed certification.</p></article>
+          <article><span>RESTRICTED</span><strong>Source rights boundary</strong><p>The public surface exposes rights posture, not provider credentials, private payloads, licensed rows or redistributed vendor values.</p></article>
+        </div>
+      </Panel>
+      <Panel title="Research handoff" eyebrow="Why custody does not open research" meta="Fail closed">
+        <div className={styles.cardList}>
+          <article><span>UNAVAILABLE</span><strong>Private custody receipt</strong><p>Operating receipts, private paths, production fingerprints and protected split material remain outside public Git and the observer.</p></article>
+          <article><span>CLOSED</span><strong>Admission remains separate</strong><p>Visible custody concepts do not create a canonical dataset binding, admission decision, permit or protected-stage opening.</p></article>
+          <article><span>NOT AUTHORIZED</span><strong>Execution remains absent</strong><p>Dataset review cannot reserve a trial, execute research, access validation or holdout rows, place an order or move capital.</p></article>
+        </div>
+      </Panel>
+    </div>
+    <div className={styles.notice}><strong>CUSTODY METADATA IS NOT RESEARCH AUTHORITY</strong><span>The observer demonstrates source identity, immutable binding, chronology, rights and handoff concepts without exposing founder dataset metadata, provider payloads, production checksums, credentials, private operating receipts or protected rows.</span></div>
   </div>;
 }
 
