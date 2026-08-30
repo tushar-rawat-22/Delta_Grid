@@ -37,6 +37,10 @@ export const demoResearchGates = [
   { stage: "Strategy specification", state: "DEMO", detail: "Structured hypothesis and falsification fields are visible; no founder record is loaded." },
   { stage: "Dataset custody", state: "SANITIZED", detail: "Shows checksum/provenance concepts only. Private provider payloads and market values stay absent." },
   { stage: "Admission", state: "CLOSED", detail: "No canonical permit or protected-stage authorization is present in Demo Mode." },
+  { stage: "Admission · repository", state: "UNAVAILABLE", detail: "Founder admission binds an exact repository commit and clean-state assertion. Demo Mode does not expose or bind a private worktree." },
+  { stage: "Admission · dataset / split", state: "SANITIZED", detail: "The observer shows fixture identity and custody concepts only; protected, validation and holdout data remain unavailable and unopened." },
+  { stage: "Admission · budget / control", state: "DEMO", detail: "Finite trial numbering and non-executing control concepts can be reviewed without reserving a real trial or consuming a canonical budget." },
+  { stage: "Admission · decision", state: "CLOSED", detail: "No canonical admission decision, decision hash or permit exists here. Preflight visibility does not authorize execution or protected research." },
   { stage: "Trial reservation", state: "UNAVAILABLE", detail: "Append-only trial identity and finite-budget concepts are illustrated without persistence." },
   { stage: "Execution / accounting", state: "NOT AUTHORIZED", detail: "No paper/live engine, orders, capital, broker or exchange action can run from the observer." },
   { stage: "Statistical programme", state: "NO RESULT", detail: "No qualifying statistical result is available for promotion; the observer does not synthesize significance, alpha or profitability." },
@@ -172,6 +176,8 @@ export function assertPublicDemoInvariants(): void {
   if (PUBLIC_DEMO_IDENTITY.provenance !== "DEMO_FIXTURE") throw new Error("PUBLIC_DEMO_PROVENANCE_INVALID");
   if (PUBLIC_DEMO_IDENTITY.authority_effect !== "NONE") throw new Error("PUBLIC_DEMO_AUTHORITY_INVALID");
   if (DEMO_NAV.length !== 11) throw new Error("PUBLIC_DEMO_NAV_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Admission · decision" && gate.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_ADMISSION_DECISION_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Admission · repository" && gate.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_ADMISSION_REPOSITORY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical programme" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Multiplicity review" && gate.state !== "REQUIRED")) throw new Error("PUBLIC_DEMO_MULTIPLICITY_INVALID");
