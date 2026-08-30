@@ -56,6 +56,7 @@ export function PublicResearchDemo() {
           {view === "intelligence" ? <Intelligence /> : null}
           {view === "hypotheses" ? <Hypotheses /> : null}
           {view === "gates" ? <ResearchGates /> : null}
+          {view === "trials" ? <TrialLedger /> : null}
           {view === "markets" ? <Markets /> : null}
           {view === "compare" ? <Compare /> : null}
           {view === "macro" ? <Macro /> : null}
@@ -135,6 +136,35 @@ function ResearchGates() {
       <div className={styles.notebookTable}><div className={styles.tableHead}><span>Binding</span><span>Value</span><span>Status</span><span>Effect</span></div>{demoTrialLedger.map((item) => <div key={item.field}><strong>{item.field}</strong><span>{item.value}</span><span>{item.status}</span><small>NONE</small></div>)}</div>
     </Panel>
     <div className={styles.notice}><strong>FAIL-CLOSED DEMO</strong><span>Admission, trial reservation, protected opening, execution and accounting remain illustrative only. The public observer cannot create permits, consume budgets, open protected stages, place orders or move capital.</span></div>
+  </div>;
+}
+
+function TrialLedger() {
+  return <div className={styles.stack}>
+    <section className={styles.metricGrid}>
+      <Metric label="Trial identity" value="DEMO-TRIAL-000" note="Synthetic reservation" />
+      <Metric label="Execution binding" value="NONE" note="No runnable engine binding" />
+      <Metric label="Cash-flow records" value="0" note="No simulated P&L presented" />
+      <Metric label="Authority effect" value="NONE" note="Read-only demonstration" />
+    </section>
+    <Panel title="Trial ledger" eyebrow="Reservation, dataset and accounting bindings" meta="Deterministic fixture only">
+      <div className={styles.notebookTable}><div className={styles.tableHead}><span>Binding</span><span>Value</span><span>Status</span><span>Authority effect</span></div>{demoTrialLedger.map((item) => <div key={item.field}><strong>{item.field}</strong><span>{item.value}</span><span>{item.status}</span><small>NONE</small></div>)}</div>
+    </Panel>
+    <div className={styles.twoColumn}>
+      <Panel title="Execution boundary" eyebrow="What the observer cannot do" meta="Fail closed">
+        <div className={styles.cardList}>
+          <article><span>NOT AUTHORIZED</span><strong>Paper / live execution</strong><p>No broker, exchange, order, credential, allocation or capital action exists on this surface.</p></article>
+          <article><span>UNAVAILABLE</span><strong>Private accounting records</strong><p>Founder cash-flow ledgers, operating receipts and private execution evidence are not mirrored publicly.</p></article>
+        </div>
+      </Panel>
+      <Panel title="Reproduction model" eyebrow="What a reviewer can inspect" meta="Sanitized">
+        <div className={styles.cardList}>
+          <article><span>SIMULATED</span><strong>Stable trial identity</strong><p>The interface shows where finite-budget reservation and dataset binding belong without creating persistence.</p></article>
+          <article><span>NO RESULT</span><strong>Candidate outcome</strong><p>No trial result is promoted into validated alpha or a selected candidate in Demo Mode.</p></article>
+        </div>
+      </Panel>
+    </div>
+    <div className={styles.notice}><strong>NO EXECUTION OR ACCOUNTING SIDE EFFECTS</strong><span>This workspace demonstrates the founder trial ledger hierarchy only. It cannot reserve a real trial, consume a permit, write an accounting record, execute an order or move capital.</span></div>
   </div>;
 }
 
