@@ -36,3 +36,11 @@ test("trial preview remains synthetic and cannot imply persistence or execution"
   assert.equal(demoTrialLedger.find((entry) => entry.field === "Execution binding")?.value, "None");
   assert.equal(demoTrialLedger.find((entry) => entry.field === "Accounting ledger")?.value, "No cash-flow records");
 });
+
+test("trial preview exposes reproducibility requirements without claiming a canonical replay", () => {
+  assert.equal(demoTrialLedger.find((entry) => entry.field === "Code binding")?.status, "SANITIZED");
+  assert.equal(demoTrialLedger.find((entry) => entry.field === "Configuration binding")?.status, "LOCKED DEMO");
+  assert.equal(demoTrialLedger.find((entry) => entry.field === "Environment fingerprint")?.status, "UNAVAILABLE");
+  assert.equal(demoTrialLedger.find((entry) => entry.field === "Replay artifact")?.value, "No canonical replay artifact");
+  assert.equal(demoTrialLedger.find((entry) => entry.field === "Replay artifact")?.status, "UNAVAILABLE");
+});

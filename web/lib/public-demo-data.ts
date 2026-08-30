@@ -66,6 +66,10 @@ export const demoTrialLedger = [
   { field: "Trial identity", value: "DEMO-TRIAL-000", status: "SIMULATED" },
   { field: "Variant budget", value: "Finite example", status: "DEMO" },
   { field: "Dataset binding", value: "Fixture checksum", status: "SANITIZED" },
+  { field: "Code binding", value: "Deterministic demo revision", status: "SANITIZED" },
+  { field: "Configuration binding", value: "Locked demo specification", status: "LOCKED DEMO" },
+  { field: "Environment fingerprint", value: "Not projected publicly", status: "UNAVAILABLE" },
+  { field: "Replay artifact", value: "No canonical replay artifact", status: "UNAVAILABLE" },
   { field: "Execution binding", value: "None", status: "NOT AUTHORIZED" },
   { field: "Accounting ledger", value: "No cash-flow records", status: "UNAVAILABLE" },
 ] as const;
@@ -194,6 +198,10 @@ export function assertPublicDemoInvariants(): void {
   if (demoResearchGates.some((gate) => gate.stage === "Protected opening" && gate.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_PROTECTED_OPENING_INVALID");
   if (demoStrategySpecification.some((item) => item.field === "Execution authority" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_STRATEGY_AUTHORITY_INVALID");
   if (demoStrategySpecification.some((item) => item.field === "Dataset binding" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_STRATEGY_DATASET_BINDING_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Code binding" && item.status !== "SANITIZED")) throw new Error("PUBLIC_DEMO_REPLAY_CODE_BINDING_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Configuration binding" && item.status !== "LOCKED DEMO")) throw new Error("PUBLIC_DEMO_REPLAY_CONFIG_BINDING_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Environment fingerprint" && item.status !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_REPLAY_ENVIRONMENT_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Replay artifact" && item.status !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_REPLAY_ARTIFACT_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
