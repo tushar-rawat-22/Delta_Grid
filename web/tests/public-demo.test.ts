@@ -11,6 +11,7 @@ import {
   demoHypotheses,
   demoMarketSeries,
   demoOperatorWorkflow,
+  demoStrategySpecification,
   demoSystemBoundary,
   demoTrialLedger,
 } from "../lib/public-demo-data.ts";
@@ -32,10 +33,20 @@ test("public demo fixtures contain no live-market or founder authority claim", (
   assert.ok(demoHypotheses.every((item) => item.id.startsWith("DEMO-HYP-")));
   assert.ok(demoHealth.every((item) => item.rights === "DEMO_ONLY"));
 
-  const fixtureText = JSON.stringify({ demoMarketSeries, demoHypotheses, demoHealth, demoDatasetCustody, demoTrialLedger }).toLowerCase();
+  const fixtureText = JSON.stringify({ demoMarketSeries, demoHypotheses, demoHealth, demoDatasetCustody, demoTrialLedger, demoStrategySpecification }).toLowerCase();
   for (const forbidden of ["live price", "validated profitable", "selected candidate", "paper trading authorized", "live trading authorized"]) {
     assert.equal(fixtureText.includes(forbidden), false, forbidden);
   }
+});
+
+test("public strategy specification exposes contract depth without research authority", () => {
+  const byField = new Map(demoStrategySpecification.map((item) => [item.field, item]));
+  assert.equal(byField.get("Research question")?.state, "DEMO");
+  assert.equal(byField.get("Falsification rule")?.state, "LOCKED DEMO");
+  assert.equal(byField.get("Search budget")?.state, "FINITE");
+  assert.equal(byField.get("Dataset binding")?.state, "UNAVAILABLE");
+  assert.equal(byField.get("Execution authority")?.value, "None");
+  assert.equal(byField.get("Execution authority")?.state, "NOT AUTHORIZED");
 });
 
 test("public trial ledger exposes workflow bindings without execution or accounting authority", () => {
@@ -85,6 +96,8 @@ test("public demo component has no private network or write surface", () => {
   assert.match(source, /DEMO MODE/u);
   assert.match(source, /Log in for Founder Mode/u);
   assert.match(source, /Operator workflow/u);
+  assert.match(source, /Strategy specification/u);
+  assert.match(source, /SPECIFICATION IS NOT AUTHORIZATION/u);
   assert.match(source, /Trial ledger/u);
   assert.match(source, /NO EXECUTION OR ACCOUNTING SIDE EFFECTS/u);
   assert.match(source, /Dataset custody/u);

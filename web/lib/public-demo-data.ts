@@ -46,6 +46,15 @@ export const demoResearchGates = [
   { stage: "Protected opening", state: "CLOSED", detail: "RAB-1 / Mission 104 authority remains unopened under current governance." },
 ] as const;
 
+export const demoStrategySpecification = [
+  { field: "Research question", value: "Does a synthetic dispersion shock precede normalized volatility compression?", state: "DEMO", why: "Frames a falsifiable question without converting an observation into a signal." },
+  { field: "Mechanism", value: "Predeclared fictional mean-reversion mechanism", state: "SANITIZED", why: "Explains the causal story that must survive evidence rather than being inferred after results." },
+  { field: "Falsification rule", value: "Reject outside the fixed demo horizon", state: "LOCKED DEMO", why: "Makes failure observable before any trial result exists." },
+  { field: "Search budget", value: "6 finite demo variants", state: "FINITE", why: "Bounds researcher degrees of freedom and feeds multiplicity review." },
+  { field: "Dataset binding", value: "Unresolved until custody handoff", state: "UNAVAILABLE", why: "Prevents the public fixture from pretending a private canonical dataset is attached." },
+  { field: "Execution authority", value: "None", state: "NOT AUTHORIZED", why: "A complete specification still cannot reserve a real trial, execute, trade or move capital." },
+] as const;
+
 export const demoTrialLedger = [
   { field: "Trial identity", value: "DEMO-TRIAL-000", status: "SIMULATED" },
   { field: "Variant budget", value: "Finite example", status: "DEMO" },
@@ -168,6 +177,8 @@ export function assertPublicDemoInvariants(): void {
   if (demoResearchGates.some((gate) => gate.stage === "Multiplicity review" && gate.state !== "REQUIRED")) throw new Error("PUBLIC_DEMO_MULTIPLICITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Robustness review" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ROBUSTNESS_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Candidate decision" && gate.state !== "NONE")) throw new Error("PUBLIC_DEMO_CANDIDATE_INVALID");
+  if (demoStrategySpecification.some((item) => item.field === "Execution authority" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_STRATEGY_AUTHORITY_INVALID");
+  if (demoStrategySpecification.some((item) => item.field === "Dataset binding" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_STRATEGY_DATASET_BINDING_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
