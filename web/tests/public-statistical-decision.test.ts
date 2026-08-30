@@ -22,16 +22,12 @@ test("candidate workflow requires statistical evidence before promotion", () => 
   assert.match(candidateLane?.next ?? "", /qualifying evidence/u);
 });
 
-test("statistical demo text does not claim alpha, profitability or authorization", () => {
-  const text = JSON.stringify({ demoResearchGates, demoOperatorWorkflow }).toLowerCase();
+test("statistical demo keeps candidate, execution and protected stages fail-closed", () => {
+  const candidateGate = demoResearchGates.find((gate) => gate.stage === "Candidate decision");
+  const executionGate = demoResearchGates.find((gate) => gate.stage === "Execution / accounting");
+  const protectedGate = demoResearchGates.find((gate) => gate.stage === "Protected opening");
 
-  for (const forbidden of [
-    "validated profitable strategy",
-    "selected candidate",
-    "paper trading authorized",
-    "live trading authorized",
-    "protected opening authorized",
-  ]) {
-    assert.equal(text.includes(forbidden), false, forbidden);
-  }
+  assert.equal(candidateGate?.state, "NONE");
+  assert.equal(executionGate?.state, "NOT AUTHORIZED");
+  assert.equal(protectedGate?.state, "CLOSED");
 });
