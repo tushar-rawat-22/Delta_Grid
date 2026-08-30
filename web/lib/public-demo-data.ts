@@ -39,7 +39,10 @@ export const demoResearchGates = [
   { stage: "Admission", state: "CLOSED", detail: "No canonical permit or protected-stage authorization is present in Demo Mode." },
   { stage: "Trial reservation", state: "UNAVAILABLE", detail: "Append-only trial identity and finite-budget concepts are illustrated without persistence." },
   { stage: "Execution / accounting", state: "NOT AUTHORIZED", detail: "No paper/live engine, orders, capital, broker or exchange action can run from the observer." },
-  { stage: "Statistical gate", state: "NO RESULT", detail: "No validated profitable strategy and no selected candidate are claimed." },
+  { stage: "Statistical programme", state: "NO RESULT", detail: "No qualifying statistical result is available for promotion; the observer does not synthesize significance, alpha or profitability." },
+  { stage: "Multiplicity review", state: "REQUIRED", detail: "A candidate decision must account for the declared finite search budget and multiple testing before any promotion claim." },
+  { stage: "Robustness review", state: "NO RESULT", detail: "No protected split, sensitivity or robustness evidence is exposed or implied by deterministic demo fixtures." },
+  { stage: "Candidate decision", state: "NONE", detail: "No strategy is selected. Software capability and green CI do not constitute research evidence or candidate admission." },
   { stage: "Protected opening", state: "CLOSED", detail: "RAB-1 / Mission 104 authority remains unopened under current governance." },
 ] as const;
 
@@ -63,7 +66,7 @@ export const demoOperatorWorkflow = [
   { lane: "Research intake", gate: "Specification", state: "DEMO", next: "Review mechanism, falsification and finite budget" },
   { lane: "Dataset custody", gate: "Provenance", state: "SANITIZED", next: "Verify checksum and chronology bindings" },
   { lane: "Trial execution", gate: "Admission + authority", state: "NOT AUTHORIZED", next: "No execution until canonical gates authorize it" },
-  { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Do not promote a candidate without qualifying evidence" },
+  { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Require multiplicity, robustness and qualifying evidence before promotion" },
   { lane: "Protected stage", gate: "RAB-1 / M104", state: "CLOSED", next: "Founder authorization remains absent" },
 ] as const;
 
@@ -161,7 +164,10 @@ export function assertPublicDemoInvariants(): void {
   if (PUBLIC_DEMO_IDENTITY.authority_effect !== "NONE") throw new Error("PUBLIC_DEMO_AUTHORITY_INVALID");
   if (DEMO_NAV.length !== 11) throw new Error("PUBLIC_DEMO_NAV_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
-  if (demoResearchGates.some((gate) => gate.stage === "Statistical gate" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Statistical programme" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Multiplicity review" && gate.state !== "REQUIRED")) throw new Error("PUBLIC_DEMO_MULTIPLICITY_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Robustness review" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ROBUSTNESS_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Candidate decision" && gate.state !== "NONE")) throw new Error("PUBLIC_DEMO_CANDIDATE_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");

@@ -15,7 +15,7 @@ test("public research demo exposes the founder research gate hierarchy without a
   assert.ok(DEMO_NAV.some((item) => item.id === "gates" && item.label === "Research gates"));
 
   const execution = demoResearchGates.find((gate) => gate.stage === "Execution / accounting");
-  const statistics = demoResearchGates.find((gate) => gate.stage === "Statistical gate");
+  const statistics = demoResearchGates.find((gate) => gate.stage === "Statistical programme");
   const protectedOpening = demoResearchGates.find((gate) => gate.stage === "Protected opening");
 
   assert.equal(execution?.state, "NOT AUTHORIZED");
