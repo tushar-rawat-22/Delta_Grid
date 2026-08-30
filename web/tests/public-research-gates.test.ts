@@ -16,10 +16,16 @@ test("public research demo exposes the founder research gate hierarchy without a
 
   const execution = demoResearchGates.find((gate) => gate.stage === "Execution / accounting");
   const statistics = demoResearchGates.find((gate) => gate.stage === "Statistical programme");
+  const protectedCandidate = demoResearchGates.find((gate) => gate.stage === "Protected opening · candidate");
+  const protectedEvidence = demoResearchGates.find((gate) => gate.stage === "Protected opening · evidence");
+  const protectedAuthorization = demoResearchGates.find((gate) => gate.stage === "Protected opening · authorization");
   const protectedOpening = demoResearchGates.find((gate) => gate.stage === "Protected opening");
 
   assert.equal(execution?.state, "NOT AUTHORIZED");
   assert.equal(statistics?.state, "NO RESULT");
+  assert.equal(protectedCandidate?.state, "NONE");
+  assert.equal(protectedEvidence?.state, "UNAVAILABLE");
+  assert.equal(protectedAuthorization?.state, "ABSENT");
   assert.equal(protectedOpening?.state, "CLOSED");
 });
 

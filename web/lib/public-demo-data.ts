@@ -47,6 +47,9 @@ export const demoResearchGates = [
   { stage: "Multiplicity review", state: "REQUIRED", detail: "A candidate decision must account for the declared finite search budget and multiple testing before any promotion claim." },
   { stage: "Robustness review", state: "NO RESULT", detail: "No protected split, sensitivity or robustness evidence is exposed or implied by deterministic demo fixtures." },
   { stage: "Candidate decision", state: "NONE", detail: "No strategy is selected. Software capability and green CI do not constitute research evidence or candidate admission." },
+  { stage: "Protected opening · candidate", state: "NONE", detail: "A protected stage cannot open without a selected candidate. Current research state has no selected strategy to promote." },
+  { stage: "Protected opening · evidence", state: "UNAVAILABLE", detail: "Validation, holdout and other protected evidence remain unopened and are never projected into the public observer." },
+  { stage: "Protected opening · authorization", state: "ABSENT", detail: "No founder instruction authorizes RAB-1 / Mission 104 protected opening, permit use, paper/live execution or capital action." },
   { stage: "Protected opening", state: "CLOSED", detail: "RAB-1 / Mission 104 authority remains unopened under current governance." },
 ] as const;
 
@@ -185,6 +188,10 @@ export function assertPublicDemoInvariants(): void {
   if (demoResearchGates.some((gate) => gate.stage === "Multiplicity review" && gate.state !== "REQUIRED")) throw new Error("PUBLIC_DEMO_MULTIPLICITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Robustness review" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ROBUSTNESS_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Candidate decision" && gate.state !== "NONE")) throw new Error("PUBLIC_DEMO_CANDIDATE_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Protected opening · candidate" && gate.state !== "NONE")) throw new Error("PUBLIC_DEMO_PROTECTED_CANDIDATE_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Protected opening · evidence" && gate.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_PROTECTED_EVIDENCE_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Protected opening · authorization" && gate.state !== "ABSENT")) throw new Error("PUBLIC_DEMO_PROTECTED_AUTHORIZATION_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Protected opening" && gate.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_PROTECTED_OPENING_INVALID");
   if (demoStrategySpecification.some((item) => item.field === "Execution authority" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_STRATEGY_AUTHORITY_INVALID");
   if (demoStrategySpecification.some((item) => item.field === "Dataset binding" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_STRATEGY_DATASET_BINDING_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
