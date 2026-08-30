@@ -13,6 +13,7 @@ import {
   demoNotebook,
   demoOperatorWorkflow,
   demoResearchGates,
+  demoStrategySpecification,
   demoSystemBoundary,
   demoTasks,
   demoTrialLedger,
@@ -118,6 +119,10 @@ function Hypotheses() {
   return <div className={styles.stack}>
     <div className={styles.notice}><strong>PREREGISTRATION PREVIEW</strong><span>Scientific intent can be reviewed publicly; canonical dataset, permit, execution and statistical bindings remain unresolved here.</span></div>
     <div className={styles.hypothesisGrid}>{demoHypotheses.map((item) => <article key={item.id}><div className={styles.hypothesisTop}><span>{item.status}</span><small>{item.id} · REV {item.revision}</small></div><h2>{item.title}</h2><dl><div><dt>Mechanism</dt><dd>{item.mechanism}</dd></div><div><dt>Falsification</dt><dd>{item.falsification}</dd></div><div><dt>Finite budget</dt><dd>{item.budget}</dd></div><div><dt>Canonical handoff</dt><dd>{item.bindings}</dd></div></dl></article>)}</div>
+    <Panel title="Strategy specification" eyebrow="Idea → falsifiable research contract" meta="Sanitized read-only preview">
+      <div className={styles.notebookTable}><div className={styles.tableHead}><span>Field</span><span>Value</span><span>State</span><span>Why it exists</span></div>{demoStrategySpecification.map((item) => <div key={item.field}><strong>{item.field}</strong><span>{item.value}</span><span>{item.state}</span><small>{item.why}</small></div>)}</div>
+    </Panel>
+    <div className={styles.notice}><strong>SPECIFICATION IS NOT AUTHORIZATION</strong><span>A well-formed research contract can explain mechanism, falsification and search budget without creating a dataset binding, permit, trial reservation, protected opening, execution right or capital authority.</span></div>
   </div>;
 }
 
