@@ -101,6 +101,9 @@ test("public demo component has no private network or write surface", () => {
   assert.match(source, /Trial ledger/u);
   assert.match(source, /NO EXECUTION OR ACCOUNTING SIDE EFFECTS/u);
   assert.match(source, /Dataset custody/u);
-  assert.match(source, /NO PRIVATE CUSTODY MATERIAL/u);
+  assert.match(source, /CUSTODY METADATA IS NOT RESEARCH AUTHORITY/u);
+  assert.match(source, /Private custody receipt/u);
+  assert.match(source, /Admission remains separate/u);
+  assert.match(source, /Execution remains absent/u);
   assert.match(source, /MERGED ≠ CI-GREEN ≠ DEPLOYED/u);
 });
