@@ -76,6 +76,10 @@ test("public operator workflow explains gates without granting authority", () =>
   assert.equal(byLane.get("Trial execution")?.state, "NOT AUTHORIZED");
   assert.equal(byLane.get("Candidate decision")?.state, "NO RESULT");
   assert.equal(byLane.get("Protected stage")?.state, "CLOSED");
+  assert.equal(byLane.get("Public release")?.state, "UNVERIFIED");
+  assert.match(byLane.get("Public release")?.next ?? "", /production reports the exact revision/u);
+  assert.equal(byLane.get("Founder gateway")?.state, "ACCESS CONTROLLED");
+  assert.match(byLane.get("Founder gateway")?.next ?? "", /anonymous founder APIs denied/u);
 });
 
 test("public system boundary stays fail-closed", () => {

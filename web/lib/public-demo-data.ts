@@ -81,6 +81,8 @@ export const demoOperatorWorkflow = [
   { lane: "Trial execution", gate: "Admission + authority", state: "NOT AUTHORIZED", next: "No execution until canonical gates authorize it" },
   { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Require multiplicity, robustness and qualifying evidence before promotion" },
   { lane: "Protected stage", gate: "RAB-1 / M104", state: "CLOSED", next: "Founder authorization remains absent" },
+  { lane: "Public release", gate: "Exact revision + live marker", state: "UNVERIFIED", next: "Treat merge and green CI as insufficient until production reports the exact revision" },
+  { lane: "Founder gateway", gate: "Authenticated identity boundary", state: "ACCESS CONTROLLED", next: "Keep anonymous founder APIs denied; use the private gateway only after intended authentication" },
 ] as const;
 
 export const demoSystemBoundary = [
@@ -189,6 +191,8 @@ export function assertPublicDemoInvariants(): void {
   if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Protected stage" && item.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_OPERATOR_PROTECTED_STAGE_INVALID");
+  if (demoOperatorWorkflow.some((item) => item.lane === "Public release" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_OPERATOR_RELEASE_INVALID");
+  if (demoOperatorWorkflow.some((item) => item.lane === "Founder gateway" && item.state !== "ACCESS CONTROLLED")) throw new Error("PUBLIC_DEMO_OPERATOR_FOUNDER_BOUNDARY_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Release provenance" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_RELEASE_PROVENANCE_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Public interactions" && item.state !== "READ ONLY")) throw new Error("PUBLIC_DEMO_WRITE_BOUNDARY_INVALID");
 }
