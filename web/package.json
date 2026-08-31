@@ -10,7 +10,7 @@
     "esbuild@0.28.1": true,
     "fsevents@2.3.3": true,
     "unrs-resolver@1.12.2": true,
-    "workerd@1.20260820.1": true
+    "workerd@1.20260826.1": true
   },
   "scripts": {
     "install:locked-safe": "node scripts/install-locked-safe.mjs",
@@ -37,20 +37,20 @@
     "preview": "wrangler dev --local"
   },
   "dependencies": {
-    "jose": "6.2.9",
-    "next": "16.3.1",
+    "jose": "6.2.10",
+    "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@types/node": "24.13.3",
     "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.4",
-    "@vitejs/plugin-react": "6.1.0",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.1",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.3.3",
     "typescript": "6.0.3",
     "vite": "8.2.2",
-    "wrangler": "4.125.0"
+    "wrangler": "4.127.0"
   }
 }
