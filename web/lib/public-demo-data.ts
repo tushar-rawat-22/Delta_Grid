@@ -77,7 +77,13 @@ export const demoTrialLedger = [
   { field: "Environment fingerprint", value: "Not projected publicly", status: "UNAVAILABLE" },
   { field: "Replay artifact", value: "No canonical replay artifact", status: "UNAVAILABLE" },
   { field: "Execution binding", value: "None", status: "NOT AUTHORIZED" },
+  { field: "Order-intent boundary", value: "No executable order intent", status: "NOT AUTHORIZED" },
+  { field: "Fill model", value: "Deterministic mechanics only", status: "LOCKED DEMO" },
+  { field: "Cost treatment", value: "Fees, slippage and financing schema only", status: "LOCKED DEMO" },
+  { field: "Position lifecycle", value: "No positions opened or closed", status: "NO RESULT" },
+  { field: "Cash-flow ledger", value: "No cash-flow entries", status: "NO RESULT" },
   { field: "Accounting ledger", value: "No cash-flow records", status: "UNAVAILABLE" },
+  { field: "Reconciliation", value: "No execution receipts to reconcile", status: "UNAVAILABLE" },
 ] as const;
 
 export const demoDatasetCustody = [
@@ -215,6 +221,12 @@ export function assertPublicDemoInvariants(): void {
   if (demoTrialLedger.some((item) => item.field === "Configuration binding" && item.status !== "LOCKED DEMO")) throw new Error("PUBLIC_DEMO_REPLAY_CONFIG_BINDING_INVALID");
   if (demoTrialLedger.some((item) => item.field === "Environment fingerprint" && item.status !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_REPLAY_ENVIRONMENT_INVALID");
   if (demoTrialLedger.some((item) => item.field === "Replay artifact" && item.status !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_REPLAY_ARTIFACT_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Order-intent boundary" && item.status !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_ORDER_INTENT_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Fill model" && item.status !== "LOCKED DEMO")) throw new Error("PUBLIC_DEMO_FILL_MODEL_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Cost treatment" && item.status !== "LOCKED DEMO")) throw new Error("PUBLIC_DEMO_EXECUTION_COSTS_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Position lifecycle" && item.status !== "NO RESULT")) throw new Error("PUBLIC_DEMO_POSITION_LIFECYCLE_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Cash-flow ledger" && item.status !== "NO RESULT")) throw new Error("PUBLIC_DEMO_CASH_FLOW_INVALID");
+  if (demoTrialLedger.some((item) => item.field === "Reconciliation" && item.status !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_RECONCILIATION_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
