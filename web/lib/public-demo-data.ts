@@ -42,6 +42,9 @@ export const demoResearchGates = [
   { stage: "Admission · budget / control", state: "DEMO", detail: "Finite trial numbering and non-executing control concepts can be reviewed without reserving a real trial or consuming a canonical budget." },
   { stage: "Admission · decision", state: "CLOSED", detail: "No canonical admission decision, decision hash or permit exists here. Preflight visibility does not authorize execution or protected research." },
   { stage: "Trial reservation", state: "UNAVAILABLE", detail: "Append-only trial identity and finite-budget concepts are illustrated without persistence." },
+  { stage: "Result bundle verification", state: "UNAVAILABLE", detail: "Founder research requires a canonical result bundle to pass identity, schema and integrity checks before application. Demo Mode loads no private result bundle." },
+  { stage: "Deterministic engine application", state: "SIMULATED", detail: "The observer shows where a verified bundle would enter the deterministic application service without mutating founder registry, controls, evidence or runtime state." },
+  { stage: "Engine decision output", state: "NO RESULT", detail: "No canonical result bundle is applied here, so the observer does not synthesize P&L, alpha, promotion or candidate state." },
   { stage: "Execution / accounting", state: "NOT AUTHORIZED", detail: "No paper/live engine, orders, capital, broker or exchange action can run from the observer." },
   { stage: "Statistical programme", state: "NO RESULT", detail: "No qualifying statistical result is available for promotion; the observer does not synthesize significance, alpha or profitability." },
   { stage: "Multiplicity review", state: "REQUIRED", detail: "A candidate decision must account for the declared finite search budget and multiple testing before any promotion claim." },
@@ -86,6 +89,7 @@ export const demoOperatorWorkflow = [
   { lane: "Research intake", gate: "Specification", state: "DEMO", next: "Review mechanism, falsification and finite budget" },
   { lane: "Dataset custody", gate: "Provenance", state: "SANITIZED", next: "Verify checksum and chronology bindings" },
   { lane: "Trial execution", gate: "Admission + authority", state: "NOT AUTHORIZED", next: "No execution until canonical gates authorize it" },
+  { lane: "Research engine", gate: "Verified result bundle", state: "NO RESULT", next: "Require a canonical verified bundle before deterministic state application" },
   { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Require multiplicity, robustness and qualifying evidence before promotion" },
   { lane: "Protected stage", gate: "RAB-1 / M104", state: "CLOSED", next: "Founder authorization remains absent" },
   { lane: "Public release", gate: "Exact revision + live marker", state: "UNVERIFIED", next: "Treat merge and green CI as insufficient until production reports the exact revision" },
@@ -187,6 +191,9 @@ export function assertPublicDemoInvariants(): void {
   if (DEMO_NAV.length !== 11) throw new Error("PUBLIC_DEMO_NAV_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Admission · decision" && gate.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_ADMISSION_DECISION_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Admission · repository" && gate.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_ADMISSION_REPOSITORY_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Result bundle verification" && gate.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_RESULT_BUNDLE_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Deterministic engine application" && gate.state !== "SIMULATED")) throw new Error("PUBLIC_DEMO_ENGINE_APPLICATION_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Engine decision output" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ENGINE_RESULT_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical programme" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Multiplicity review" && gate.state !== "REQUIRED")) throw new Error("PUBLIC_DEMO_MULTIPLICITY_INVALID");
@@ -205,6 +212,7 @@ export function assertPublicDemoInvariants(): void {
   if (demoDatasetCustody.some((item) => item.binding === "Custody receipt" && item.state !== "UNAVAILABLE")) throw new Error("PUBLIC_DEMO_CUSTODY_RECEIPT_INVALID");
   if (demoDatasetCustody.some((item) => item.binding === "Source rights" && item.value !== "DEMO_ONLY")) throw new Error("PUBLIC_DEMO_CUSTODY_RIGHTS_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Trial execution" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_OPERATOR_EXECUTION_INVALID");
+  if (demoOperatorWorkflow.some((item) => item.lane === "Research engine" && item.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_OPERATOR_ENGINE_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Protected stage" && item.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_OPERATOR_PROTECTED_STAGE_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Public release" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_OPERATOR_RELEASE_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Founder gateway" && item.state !== "ACCESS CONTROLLED")) throw new Error("PUBLIC_DEMO_OPERATOR_FOUNDER_BOUNDARY_INVALID");
