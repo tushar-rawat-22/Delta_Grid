@@ -37,20 +37,20 @@
     "preview": "wrangler dev --local"
   },
   "dependencies": {
-    "jose": "6.2.9",
-    "next": "16.3.1",
+    "jose": "6.2.10",
+    "next": "16.3.3",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@types/node": "24.13.3",
     "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.4",
-    "@vitejs/plugin-react": "6.1.0",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.1",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.3.3",
     "typescript": "6.0.3",
     "vite": "8.2.2",
-    "wrangler": "4.125.0"
+    "wrangler": "4.127.0"
   }
 }
