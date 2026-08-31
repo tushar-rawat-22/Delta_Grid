@@ -107,6 +107,13 @@ export const demoOperatorWorkflow = [
 
 export const demoSystemBoundary = [
   { layer: "Public observer", state: "SANITIZED", detail: "Unauthenticated review surface. Deterministic fixtures only; no founder records or write path." },
+  { layer: "Research specification", state: "SANITIZED", detail: "Visitors can inspect the founder research-intake structure using deterministic hypotheses and falsification fields; no founder submission is loaded." },
+  { layer: "Dataset custody", state: "SANITIZED", detail: "Checksum, chronology, provenance and rights concepts are visible without private provider payloads, production values or custody receipts." },
+  { layer: "Admission / permits", state: "NOT AUTHORIZED", detail: "Gate structure is visible, but the observer cannot reserve trials, issue or consume permits, mutate controls or open protected research." },
+  { layer: "Research engine", state: "NO RESULT", detail: "Result-bundle verification and deterministic application concepts are inspectable; no private bundle is loaded and no canonical result is produced." },
+  { layer: "Statistical decision", state: "NO RESULT", detail: "Estimand, uncertainty, cost, multiplicity and robustness requirements are visible without synthesizing statistical evidence, alpha or profitability." },
+  { layer: "Candidate / protected stage", state: "CLOSED", detail: "No candidate is selected and RAB-1 / Mission 104 remains unopened; protected evidence is unavailable publicly." },
+  { layer: "Execution / accounting", state: "NOT AUTHORIZED", detail: "Order-intent, fill, cost, position, ledger and reconciliation concepts are modeled safely; no execution, cash flow or private accounting record exists here." },
   { layer: "Founder gateway", state: "ACCESS CONTROLLED", detail: "Private authenticated workspace boundary. The observer does not proxy or mirror private runtime payloads." },
   { layer: "Founder APIs", state: "DENIED ANONYMOUSLY", detail: "Private API capability remains outside the public observer and requires the intended founder identity boundary." },
   { layer: "Release provenance", state: "UNVERIFIED", detail: "A tested Git revision is not presented as deployed until the live release marker proves the exact production revision." },
@@ -234,6 +241,9 @@ export function assertPublicDemoInvariants(): void {
   if (demoOperatorWorkflow.some((item) => item.lane === "Protected stage" && item.state !== "CLOSED")) throw new Error("PUBLIC_DEMO_OPERATOR_PROTECTED_STAGE_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Public release" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_OPERATOR_RELEASE_INVALID");
   if (demoOperatorWorkflow.some((item) => item.lane === "Founder gateway" && item.state !== "ACCESS CONTROLLED")) throw new Error("PUBLIC_DEMO_OPERATOR_FOUNDER_BOUNDARY_INVALID");
+  if (demoSystemBoundary.some((item) => item.layer === "Admission / permits" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_ADMISSION_AUTHORITY_INVALID");
+  if (demoSystemBoundary.some((item) => item.layer === "Research engine" && item.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ENGINE_BOUNDARY_INVALID");
+  if (demoSystemBoundary.some((item) => item.layer === "Execution / accounting" && item.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_BOUNDARY_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Release provenance" && item.state !== "UNVERIFIED")) throw new Error("PUBLIC_DEMO_RELEASE_PROVENANCE_INVALID");
   if (demoSystemBoundary.some((item) => item.layer === "Public interactions" && item.state !== "READ ONLY")) throw new Error("PUBLIC_DEMO_WRITE_BOUNDARY_INVALID");
 }
