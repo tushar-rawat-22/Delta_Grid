@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "snapshot_time_utc": "2026-08-28T22:24:30Z",
+  "snapshot_time_utc": "2026-08-31T18:14:32Z",
   "snapshot_warning": "VOLATILE_SNAPSHOT_REVERIFY_BEFORE_USE",
   "repository": {
     "full_name": "tushar-rawat-22/Delta_Grid",
     "default_branch": "main",
-    "verified_main_head_before_snapshot_commit": "fed742338a1e14d36f8b99fdae6e9b3b8088ba41",
+    "verified_main_head_before_snapshot_commit": "5c7a78d92a48757908c976770de3a1c9045338cb",
     "current_main_resolution_rule": "FETCH_CURRENT_MAIN_HEAD; THIS FILE MUST NOT CLAIM ITS OWN COMMIT IS CURRENT MAIN"
   },
   "founder_availability": {
@@ -26,64 +26,62 @@
   "public_surface": {
     "observer_url": "https://deltagrid-observer.tushar142004.workers.dev",
     "founder_gateway_url": "https://deltagrid-founder-gateway.tushar142004.workers.dev",
-    "latest_observed_boundary_date_utc": "2026-08-28",
+    "latest_observed_boundary_date_utc": "2026-08-31",
     "public_home": "PASS_HTTP_200",
     "public_research_demo": "PASS_HTTP_200",
     "anonymous_founder_surfaces": "PASS_BLOCKED_OR_REDIRECTED",
     "live_public_private_boundary": "PASS"
   },
   "production_provenance": {
-    "state": "UNVERIFIED",
-    "latest_observed_marker_status": "HTTP_404",
-    "latest_observed_marker_date_utc": "2026-08-28",
-    "meaning": "PUBLIC_SITE_IS_REACHABLE_BUT_EXACT_DEPLOYED_MAIN_SHA_IS_NOT_PROVEN",
-    "security_interpretation": "NOT_EVIDENCE_OF_BREACH_OR_AUTHORITY_LEAK"
+    "state": "VERIFIED_CURRENT_MAIN_DEPLOYED",
+    "latest_verified_release_sha": "5c7a78d92a48757908c976770de3a1c9045338cb",
+    "latest_verified_release_date_utc": "2026-08-31",
+    "release_workflow_run": 29,
+    "release_workflow_attempt": 2,
+    "exact_release_live": "PASS",
+    "post_deploy_public_private_boundary": "PASS",
+    "meaning": "PUBLIC_OBSERVER_RELEASE_MARKER_AND_LIVE_BOUNDARY_PROVE_EXACT_CURRENT_MAIN_DEPLOYMENT",
+    "security_interpretation": "PUBLIC_OBSERVER_REMAINS_SANITIZED_AND_FOUNDER_SURFACES_REMAIN_ANONYMOUSLY_BLOCKED"
   },
   "release_blocker": {
-    "state": "EXTERNAL_CONFIGURATION_REQUIRED",
-    "latest_confirmed_date_utc": "2026-08-28",
+    "state": "RESOLVED",
+    "resolved_date_utc": "2026-08-31",
     "workflow": "DeltaGrid Public Observer Release",
-    "release_sha": "73689d3dcb4f5837bc5ae33e3ae9d5ac43be5494",
-    "failed_step": "Deploy exact public observer commit",
-    "confirmed_empty_environment_values": [
-      "CLOUDFLARE_API_TOKEN",
-      "CLOUDFLARE_ACCOUNT_ID"
+    "release_sha": "5c7a78d92a48757908c976770de3a1c9045338cb",
+    "resolution_evidence": [
+      "PREFLIGHT_PUBLIC_PRODUCTION_CONFIGURATION_PASS",
+      "DEPLOY_EXACT_PUBLIC_OBSERVER_COMMIT_PASS",
+      "PROVE_EXACT_RELEASE_IS_LIVE_PASS",
+      "VERIFY_LIVE_PUBLIC_PRIVATE_BOUNDARY_AFTER_RELEASE_PASS"
     ],
-    "required_human_action": "ADD_SCOPED_CLOUDFLARE_DEPLOYMENT_CREDENTIALS_TO_GITHUB_PUBLIC_PRODUCTION_ENVIRONMENT",
-    "secret_handling_rule": "NEVER_COMMIT_OR_PASTE_SECRET_VALUES_IN_CHAT_OR_REPOSITORY",
-    "parallel_work_rule": "DO_NOT_WAIT; CONTINUE RELEASE_CANDIDATE PRODUCT RESEARCH RELIABILITY UI AND DOCUMENTATION WORK"
+    "secret_handling_rule": "NEVER_COMMIT_OR_PASTE_SECRET_VALUES_IN_CHAT_OR_REPOSITORY"
   },
   "delivery": {
     "supported_readiness_operator_flow": "SHIPPED_PR_95",
-    "deployment_provenance": "BLOCKED_EXTERNAL",
+    "deployment_provenance": "VERIFIED_CURRENT_MAIN",
     "operator_release_candidate": "ACTIVE",
     "software_v1_target": "2026-09-07"
   },
   "recent_shipped_work": [
     {
-      "pr": 95,
-      "main_commit": "5345117bbdd8ad5fae7a10cf426dd42640d102b2",
-      "summary": "read-only operational readiness status flow"
+      "pr": 123,
+      "main_commit": "29874deb4cd019d689678f635d609a9f49d6847f",
+      "summary": "web security and patch dependency updates"
     },
     {
-      "pr": 96,
-      "main_commit": "b232cfa6d6731cf110fc1653a824626339b8e4e2",
-      "summary": "scheduled production parity fails closed on missing or stale release identity"
+      "pr": 124,
+      "main_commit": "c7421bfeebcbfde7a16843c1af93cfbbb1ef6bd9",
+      "summary": "sanitized execution and accounting observer model"
     },
     {
-      "pr": 97,
-      "main_commit": "71a18cac56b3bee62758a8e36e303211b406b160",
-      "summary": "public product architecture documentation and AI continuity bootstrap"
+      "pr": 125,
+      "main_commit": "223186a68efafa71f7cebe5b9226395182b07fa6",
+      "summary": "founder capability boundary in the public observer"
     },
     {
-      "pr": 98,
-      "main_commit": "73689d3dcb4f5837bc5ae33e3ae9d5ac43be5494",
-      "summary": "advance convergence state after the supported readiness flow shipped"
-    },
-    {
-      "pr": 100,
-      "main_commit": "fed742338a1e14d36f8b99fdae6e9b3b8088ba41",
-      "summary": "refresh volatile AI continuity evidence after PR #98"
+      "pr": 126,
+      "main_commit": "5c7a78d92a48757908c976770de3a1c9045338cb",
+      "summary": "observer operating boundary across public pages"
     }
   ],
   "research_and_authority_at_snapshot": {
