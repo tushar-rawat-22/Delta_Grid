@@ -38,6 +38,16 @@ test("research engine preview requires a verified result bundle without inventin
   assert.equal(demoOperatorWorkflow.find((item) => item.lane === "Research engine")?.state, "NO RESULT");
 });
 
+test("statistical review exposes required decision structure without fabricating evidence", () => {
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Statistical programme · estimand")?.state, "LOCKED DEMO");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Statistical programme · uncertainty")?.state, "NO RESULT");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Statistical programme · costs")?.state, "NO RESULT");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Multiplicity review")?.state, "REQUIRED");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Robustness review")?.state, "NO RESULT");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Candidate decision")?.state, "NONE");
+  assert.match(demoOperatorWorkflow.find((item) => item.lane === "Candidate decision")?.next ?? "", /estimand, uncertainty, costs, multiplicity and robustness/);
+});
+
 test("trial preview remains synthetic and cannot imply persistence or execution", () => {
   assert.ok(demoTrialLedger.some((entry) => entry.status === "SIMULATED"));
   assert.ok(demoTrialLedger.some((entry) => entry.status === "SANITIZED"));
