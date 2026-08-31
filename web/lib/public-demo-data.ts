@@ -47,6 +47,9 @@ export const demoResearchGates = [
   { stage: "Engine decision output", state: "NO RESULT", detail: "No canonical result bundle is applied here, so the observer does not synthesize P&L, alpha, promotion or candidate state." },
   { stage: "Execution / accounting", state: "NOT AUTHORIZED", detail: "No paper/live engine, orders, capital, broker or exchange action can run from the observer." },
   { stage: "Statistical programme", state: "NO RESULT", detail: "No qualifying statistical result is available for promotion; the observer does not synthesize significance, alpha or profitability." },
+  { stage: "Statistical programme · estimand", state: "LOCKED DEMO", detail: "The observer shows that the target quantity must be declared before results. The demo estimand is synthetic and cannot become founder evidence." },
+  { stage: "Statistical programme · uncertainty", state: "NO RESULT", detail: "No canonical estimate, interval, standard error, p-value or posterior result exists in Demo Mode; uncertainty is never fabricated." },
+  { stage: "Statistical programme · costs", state: "NO RESULT", detail: "No canonical gross or net result is available, so transaction-cost, slippage and financing sensitivity cannot be claimed as passed." },
   { stage: "Multiplicity review", state: "REQUIRED", detail: "A candidate decision must account for the declared finite search budget and multiple testing before any promotion claim." },
   { stage: "Robustness review", state: "NO RESULT", detail: "No protected split, sensitivity or robustness evidence is exposed or implied by deterministic demo fixtures." },
   { stage: "Candidate decision", state: "NONE", detail: "No strategy is selected. Software capability and green CI do not constitute research evidence or candidate admission." },
@@ -90,7 +93,7 @@ export const demoOperatorWorkflow = [
   { lane: "Dataset custody", gate: "Provenance", state: "SANITIZED", next: "Verify checksum and chronology bindings" },
   { lane: "Trial execution", gate: "Admission + authority", state: "NOT AUTHORIZED", next: "No execution until canonical gates authorize it" },
   { lane: "Research engine", gate: "Verified result bundle", state: "NO RESULT", next: "Require a canonical verified bundle before deterministic state application" },
-  { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Require multiplicity, robustness and qualifying evidence before promotion" },
+  { lane: "Candidate decision", gate: "Statistical programme", state: "NO RESULT", next: "Require estimand, uncertainty, costs, multiplicity and robustness evidence before promotion" },
   { lane: "Protected stage", gate: "RAB-1 / M104", state: "CLOSED", next: "Founder authorization remains absent" },
   { lane: "Public release", gate: "Exact revision + live marker", state: "UNVERIFIED", next: "Treat merge and green CI as insufficient until production reports the exact revision" },
   { lane: "Founder gateway", gate: "Authenticated identity boundary", state: "ACCESS CONTROLLED", next: "Keep anonymous founder APIs denied; use the private gateway only after intended authentication" },
@@ -196,6 +199,9 @@ export function assertPublicDemoInvariants(): void {
   if (demoResearchGates.some((gate) => gate.stage === "Engine decision output" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ENGINE_RESULT_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Execution / accounting" && gate.state !== "NOT AUTHORIZED")) throw new Error("PUBLIC_DEMO_EXECUTION_AUTHORITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Statistical programme" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_RESULT_CLAIM_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Statistical programme · estimand" && gate.state !== "LOCKED DEMO")) throw new Error("PUBLIC_DEMO_ESTIMAND_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Statistical programme · uncertainty" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_UNCERTAINTY_INVALID");
+  if (demoResearchGates.some((gate) => gate.stage === "Statistical programme · costs" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_COST_REVIEW_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Multiplicity review" && gate.state !== "REQUIRED")) throw new Error("PUBLIC_DEMO_MULTIPLICITY_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Robustness review" && gate.state !== "NO RESULT")) throw new Error("PUBLIC_DEMO_ROBUSTNESS_INVALID");
   if (demoResearchGates.some((gate) => gate.stage === "Candidate decision" && gate.state !== "NONE")) throw new Error("PUBLIC_DEMO_CANDIDATE_INVALID");
