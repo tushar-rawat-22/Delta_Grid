@@ -5,6 +5,7 @@ import {
   DEMO_NAV,
   PUBLIC_DEMO_IDENTITY,
   assertPublicDemoInvariants,
+  demoOperatorWorkflow,
   demoResearchGates,
   demoTrialLedger,
 } from "../lib/public-demo-data.ts";
@@ -27,6 +28,14 @@ test("public research demo exposes the founder research gate hierarchy without a
   assert.equal(protectedEvidence?.state, "UNAVAILABLE");
   assert.equal(protectedAuthorization?.state, "ABSENT");
   assert.equal(protectedOpening?.state, "CLOSED");
+});
+
+test("research engine preview requires a verified result bundle without inventing an outcome", () => {
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Result bundle verification")?.state, "UNAVAILABLE");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Deterministic engine application")?.state, "SIMULATED");
+  assert.equal(demoResearchGates.find((gate) => gate.stage === "Engine decision output")?.state, "NO RESULT");
+  assert.equal(demoOperatorWorkflow.find((item) => item.lane === "Research engine")?.gate, "Verified result bundle");
+  assert.equal(demoOperatorWorkflow.find((item) => item.lane === "Research engine")?.state, "NO RESULT");
 });
 
 test("trial preview remains synthetic and cannot imply persistence or execution", () => {
