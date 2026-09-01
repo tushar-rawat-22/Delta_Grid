@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_on": "2026-08-29",
+  "updated_on": "2026-09-02",
   "delivery_mode": "CONVERGENCE",
   "software_complete_target": "2026-09-07",
   "definition_of_software_complete": [
@@ -18,7 +18,8 @@
     "exchange adapters, broker integrations, credentials, paper/live execution, and capital activation remain out of scope unless the founder explicitly changes authority in a future decision",
     "a failed research hypothesis is recorded; the roadmap does not create rescue tuning",
     "new architecture must remove a release blocker or replace a weaker existing mechanism",
-    "temporary founder unavailability never idles unrelated safe work; park manual blockers and continue independent lanes"
+    "temporary founder unavailability never idles unrelated safe work; park manual blockers and continue independent lanes",
+    "a live or deployment blocker recorded in the roadmap must be removed when exact-main release evidence proves it closed"
   ],
   "lanes": [
     {
@@ -66,11 +67,11 @@
     },
     {
       "id": "deployment-provenance",
-      "state": "BLOCKED_EXTERNAL",
+      "state": "SHIPPED",
       "target": "2026-08-30",
       "exit_condition": "scheduled or manual production parity can bind the live observer to an exact main revision without interfering with PR boundary checks",
-      "blocker": "GitHub public-production lacks usable CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID; the public site remains reachable but the exact deployed SHA is unverified",
-      "parallel_work_rule": "continue operator-release-candidate and product-quality work while external configuration is pending",
+      "evidence": "Public Observer Release #35 / main 6feb2323b3bced523bd052191281d6e391ccedc5: production credentials/configuration passed; exact requested commit deployed; live release marker, security headers, public/private boundary, founder gateway, founder inventory gate, nine-route count, and HSTS configuration passed",
+      "next": "treat exact-main deployment provenance as a closed input to operator release-candidate verification and re-open only on contradictory current live evidence",
       "options": [
         "existing production-parity workflow with stronger surfaced revision evidence",
         "immutable deployment marker emitted by the worker build",
@@ -83,7 +84,7 @@
       "state": "ACTIVE",
       "target": "2026-09-03",
       "exit_condition": "fresh-clone/operator verification, non-authorizing readiness gate, documentation, backup/recovery, and public/founder boundary checks pass together",
-      "current_focus": "assemble one machine-backed release verdict from fresh-clone checks, read-only operational readiness, documentation/continuity, backup/recovery evidence, and the live public/private boundary; keep deployment provenance as an explicit blocker until external credentials are configured",
+      "current_focus": "assemble one machine-backed release verdict from fresh-clone checks, read-only operational readiness, documentation/continuity, backup/recovery evidence, verified deployment provenance, and the live public/private boundary; do not expand execution or capital authority",
       "options": [
         "single release checklist backed by machine checks",
         "signed release manifest if provenance needs a stronger artifact"

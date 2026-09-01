@@ -63,7 +63,8 @@ test("delivery roadmap remains re-plannable without weakening fixed safety rules
 
   const provenanceLane = roadmap.lanes.find((lane) => lane.id === "deployment-provenance");
   assert.ok(provenanceLane);
-  assert.equal(provenanceLane.state, "BLOCKED_EXTERNAL");
+  assert.equal(provenanceLane.state, "SHIPPED");
+  assert.match(provenanceLane.evidence ?? "", /Public Observer Release #35/);
 
   const releaseCandidateLane = roadmap.lanes.find((lane) => lane.id === "operator-release-candidate");
   assert.ok(releaseCandidateLane);
