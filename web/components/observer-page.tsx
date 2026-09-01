@@ -32,6 +32,9 @@ const observerBoundary = [
   },
 ] as const;
 
+const unverifiedReleaseDetail =
+  "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
+
 type ObserverPageProps = {
   title: keyof typeof titleToPage;
   purpose?: string;
@@ -61,11 +64,9 @@ export function ObserverPage({ title }: ObserverPageProps) {
         <article className="card" data-release-provenance="UNVERIFIED">
           <div className="card-topline">
             <h2>Release provenance</h2>
-            <span className="badge" data-release-provenance-status>UNVERIFIED</span>
+            <span className="badge" data-release-provenance-status="UNVERIFIED">UNVERIFIED</span>
           </div>
-          <p data-release-provenance-detail>
-            This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.
-          </p>
+          <p data-release-provenance-detail="UNVERIFIED">{unverifiedReleaseDetail}</p>
         </article>
       </section>
       <section className="card-grid" aria-label={`${content.title} details`}>
