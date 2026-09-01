@@ -8,41 +8,40 @@ import test from "node:test";
 
 const headers = readFileSync(new URL("../public/_headers", import.meta.url), "utf8");
 const observerPage = readFileSync(new URL("../components/observer-page.tsx", import.meta.url), "utf8");
+const researchLanding = readFileSync(new URL("../components/research-landing.tsx", import.meta.url), "utf8");
 const binder = fileURLToPath(new URL("../scripts/bind-public-release-provenance.mjs", import.meta.url));
-const routes = ["", "markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
+const provenanceRoutes = ["markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
 const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
-function unverifiedHtml(includeCardMarker = true) {
-  const cardMarker = includeCardMarker ? ' data-release-provenance="UNVERIFIED"' : "";
-  const card = `<article${cardMarker}><span data-release-provenance-status="UNVERIFIED">UNVERIFIED</span><p data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p></article>`;
+function unverifiedHtml() {
+  const card = `<article data-release-provenance="UNVERIFIED"><span data-release-provenance-status="UNVERIFIED">UNVERIFIED</span><p data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p></article>`;
   return `${card}<template data-next-static-payload>${card}</template>`;
 }
 
-test("guarded release binding upgrades all public routes and emits the exact public marker", () => {
+test("guarded release binding upgrades marker-bearing observer routes and emits the exact public marker", () => {
   const workspace = mkdtempSync(path.join(tmpdir(), "deltagrid-release-"));
   const root = path.join(workspace, "out");
   try {
     mkdirSync(root, { recursive: true });
-    for (const route of routes) {
-      const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
+    const landing = "<main data-public-research-landing>Research control</main>";
+    writeFileSync(path.join(root, "index.html"), landing);
+    for (const route of provenanceRoutes) {
+      const file = path.join(root, route, "index.html");
       mkdirSync(path.dirname(file), { recursive: true });
-      writeFileSync(file, unverifiedHtml(route !== ""));
+      writeFileSync(file, unverifiedHtml());
     }
 
     const sha = "a".repeat(40);
     const stdout = execFileSync(process.execPath, [binder, sha], { cwd: workspace, encoding: "utf8" });
-    assert.match(stdout, /PUBLIC_RELEASE_PROVENANCE_BOUND=9/);
+    assert.match(stdout, /PUBLIC_RELEASE_PROVENANCE_BOUND=8/);
     assert.match(stdout, new RegExp(`PUBLIC_RELEASE_SHA=${sha}`));
+    assert.equal(readFileSync(path.join(root, "index.html"), "utf8"), landing);
 
-    for (const route of routes) {
-      const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
+    for (const route of provenanceRoutes) {
+      const file = path.join(root, route, "index.html");
       const html = readFileSync(file, "utf8");
-      if (route === "") {
-        assert.doesNotMatch(html, /data-release-provenance="VERIFIED LIVE"/);
-      } else {
-        assert.equal(html.match(/data-release-provenance="VERIFIED LIVE"/g)?.length, 2);
-      }
+      assert.equal(html.match(/data-release-provenance="VERIFIED LIVE"/g)?.length, 2);
       assert.match(html, />VERIFIED LIVE<\/span>/);
       assert.match(html, /Verified live release aaaaaaaaaaaa/);
       assert.doesNotMatch(html, /data-release-provenance(?:-status|-detail)?="UNVERIFIED"/);
@@ -73,6 +72,11 @@ test("observer source stays fail closed and contains no runtime network surface"
   assert.match(observerPage, /data-release-provenance-status="UNVERIFIED">UNVERIFIED/);
   assert.doesNotMatch(observerPage, /\bfetch\s*\(/);
   assert.doesNotMatch(observerPage, /VERIFIED LIVE/);
+});
+
+test("research landing is intentionally marker-free; site-wide identity is the release JSON", () => {
+  assert.doesNotMatch(researchLanding, /data-release-provenance/);
+  assert.doesNotMatch(researchLanding, /VERIFIED LIVE/);
 });
 
 test("public static assets set conservative host-only HSTS without preload scope expansion", () => {
