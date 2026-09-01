@@ -1,5 +1,6 @@
 import { pageContent } from "../lib/site-content";
 import { EvidenceCard } from "./evidence-card";
+import { ReleaseProvenanceCard } from "./release-provenance-card";
 import { StatusStrip } from "./status-strip";
 
 const titleToPage = {
@@ -30,11 +31,6 @@ const observerBoundary = [
     value: "NONE",
     detail: "No validated profitable strategy or selected candidate is implied. Protected opening, paper/live trading, credentials, orders, leverage and allocation remain unauthorized.",
   },
-  {
-    label: "Release provenance",
-    value: "UNVERIFIED",
-    detail: "A merged and green Git revision is not presented as production-current until the live observer proves the exact deployed revision.",
-  },
 ] as const;
 
 type ObserverPageProps = {
@@ -63,6 +59,7 @@ export function ObserverPage({ title }: ObserverPageProps) {
             <p>{item.detail}</p>
           </article>
         ))}
+        <ReleaseProvenanceCard />
       </section>
       <section className="card-grid" aria-label={`${content.title} details`}>
         {content.cards.map((card) => <EvidenceCard key={card.title} card={card} />)}
