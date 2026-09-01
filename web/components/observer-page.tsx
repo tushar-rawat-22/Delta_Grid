@@ -1,6 +1,5 @@
 import { pageContent } from "../lib/site-content";
 import { EvidenceCard } from "./evidence-card";
-import { ReleaseProvenanceCard } from "./release-provenance-card";
 import { StatusStrip } from "./status-strip";
 
 const titleToPage = {
@@ -59,7 +58,15 @@ export function ObserverPage({ title }: ObserverPageProps) {
             <p>{item.detail}</p>
           </article>
         ))}
-        <ReleaseProvenanceCard />
+        <article className="card" data-release-provenance="UNVERIFIED">
+          <div className="card-topline">
+            <h2>Release provenance</h2>
+            <span className="badge" data-release-provenance-status>UNVERIFIED</span>
+          </div>
+          <p data-release-provenance-detail>
+            This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.
+          </p>
+        </article>
       </section>
       <section className="card-grid" aria-label={`${content.title} details`}>
         {content.cards.map((card) => <EvidenceCard key={card.title} card={card} />)}
