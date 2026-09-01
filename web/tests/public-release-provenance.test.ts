@@ -9,8 +9,10 @@ import test from "node:test";
 const headers = readFileSync(new URL("../public/_headers", import.meta.url), "utf8");
 const observerPage = readFileSync(new URL("../components/observer-page.tsx", import.meta.url), "utf8");
 const researchLanding = readFileSync(new URL("../components/research-landing.tsx", import.meta.url), "utf8");
+const publicResearchDemo = readFileSync(new URL("../components/public-research-demo.tsx", import.meta.url), "utf8");
 const binder = fileURLToPath(new URL("../scripts/bind-public-release-provenance.mjs", import.meta.url));
-const provenanceRoutes = ["markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
+const provenanceRoutes = ["markets", "evidence", "missions", "system", "risk", "docs", "about"];
+const markerFreeRoutes = ["", "research"];
 const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
@@ -19,13 +21,20 @@ function unverifiedHtml() {
   return `${card}<template data-next-static-payload>${card}</template>`;
 }
 
-test("guarded release binding upgrades marker-bearing observer routes and emits the exact public marker", () => {
+test("guarded release binding upgrades marker-bearing observer routes and preserves marker-free public routes", () => {
   const workspace = mkdtempSync(path.join(tmpdir(), "deltagrid-release-"));
   const root = path.join(workspace, "out");
   try {
     mkdirSync(root, { recursive: true });
-    const landing = "<main data-public-research-landing>Research control</main>";
-    writeFileSync(path.join(root, "index.html"), landing);
+    const markerFreeHtml = new Map([
+      ["", "<main data-public-research-landing>Research control</main>"],
+      ["research", "<main data-public-research-demo>Public demo</main>"],
+    ]);
+    for (const route of markerFreeRoutes) {
+      const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
+      mkdirSync(path.dirname(file), { recursive: true });
+      writeFileSync(file, markerFreeHtml.get(route) ?? "");
+    }
     for (const route of provenanceRoutes) {
       const file = path.join(root, route, "index.html");
       mkdirSync(path.dirname(file), { recursive: true });
@@ -34,10 +43,13 @@ test("guarded release binding upgrades marker-bearing observer routes and emits 
 
     const sha = "a".repeat(40);
     const stdout = execFileSync(process.execPath, [binder, sha], { cwd: workspace, encoding: "utf8" });
-    assert.match(stdout, /PUBLIC_RELEASE_PROVENANCE_BOUND=8/);
+    assert.match(stdout, /PUBLIC_RELEASE_PROVENANCE_BOUND=7/);
     assert.match(stdout, new RegExp(`PUBLIC_RELEASE_SHA=${sha}`));
-    assert.equal(readFileSync(path.join(root, "index.html"), "utf8"), landing);
 
+    for (const route of markerFreeRoutes) {
+      const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
+      assert.equal(readFileSync(file, "utf8"), markerFreeHtml.get(route));
+    }
     for (const route of provenanceRoutes) {
       const file = path.join(root, route, "index.html");
       const html = readFileSync(file, "utf8");
@@ -74,9 +86,11 @@ test("observer source stays fail closed and contains no runtime network surface"
   assert.doesNotMatch(observerPage, /VERIFIED LIVE/);
 });
 
-test("research landing is intentionally marker-free; site-wide identity is the release JSON", () => {
-  assert.doesNotMatch(researchLanding, /data-release-provenance/);
-  assert.doesNotMatch(researchLanding, /VERIFIED LIVE/);
+test("landing and interactive research demo are intentionally marker-free; site-wide identity is the release JSON", () => {
+  for (const source of [researchLanding, publicResearchDemo]) {
+    assert.doesNotMatch(source, /data-release-provenance/);
+    assert.doesNotMatch(source, /VERIFIED LIVE/);
+  }
 });
 
 test("public static assets set conservative host-only HSTS without preload scope expansion", () => {
