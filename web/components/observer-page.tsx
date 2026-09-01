@@ -30,12 +30,10 @@ const observerBoundary = [
     value: "NONE",
     detail: "No validated profitable strategy or selected candidate is implied. Protected opening, paper/live trading, credentials, orders, leverage and allocation remain unauthorized.",
   },
-  {
-    label: "Release provenance",
-    value: "UNVERIFIED",
-    detail: "A merged and green Git revision is not presented as production-current until the live observer proves the exact deployed revision.",
-  },
 ] as const;
+
+const unverifiedReleaseDetail =
+  "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
 type ObserverPageProps = {
   title: keyof typeof titleToPage;
@@ -63,6 +61,13 @@ export function ObserverPage({ title }: ObserverPageProps) {
             <p>{item.detail}</p>
           </article>
         ))}
+        <article className="card" data-release-provenance="UNVERIFIED">
+          <div className="card-topline">
+            <h2>Release provenance</h2>
+            <span className="badge" data-release-provenance-status="UNVERIFIED">UNVERIFIED</span>
+          </div>
+          <p data-release-provenance-detail="UNVERIFIED">{unverifiedReleaseDetail}</p>
+        </article>
       </section>
       <section className="card-grid" aria-label={`${content.title} details`}>
         {content.cards.map((card) => <EvidenceCard key={card.title} card={card} />)}

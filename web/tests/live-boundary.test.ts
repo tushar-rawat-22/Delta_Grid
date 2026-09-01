@@ -45,10 +45,14 @@ test("scheduled and manual production parity fail closed on missing or stale rel
   assert.doesNotMatch(workflow, /::warning title=DeltaGrid production drift/u);
 });
 
-test("manual release still hard-fails unless the exact deployed SHA is live", () => {
+test("manual release binds and still hard-fails unless the exact deployed SHA is live", () => {
+  assert.match(
+    releaseWorkflow,
+    /node scripts\/bind-public-release-provenance\.mjs "\$RELEASE_SHA"/u,
+  );
   assert.ok(
     releaseWorkflow.includes(
-      `printf '{"release_sha":"%s"}\\n' "$RELEASE_SHA" > out/deltagrid-release.json`,
+      `test "$(cat out/deltagrid-release.json)" = "{\\"release_sha\\":\\"$RELEASE_SHA\\"}"`,
     ),
   );
   assert.match(releaseWorkflow, /Prove exact release is live/u);

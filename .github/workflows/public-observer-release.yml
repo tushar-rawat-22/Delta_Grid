@@ -123,7 +123,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          printf '{"release_sha":"%s"}\n' "$RELEASE_SHA" > out/deltagrid-release.json
+          node scripts/bind-public-release-provenance.mjs "$RELEASE_SHA"
           test "$(cat out/deltagrid-release.json)" = "{\"release_sha\":\"$RELEASE_SHA\"}"
 
       - name: Deploy exact public observer commit
