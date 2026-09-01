@@ -13,8 +13,9 @@ const routes = ["", "markets", "research", "evidence", "missions", "system", "ri
 const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
-function unverifiedHtml() {
-  const card = `<article data-release-provenance="UNVERIFIED"><span data-release-provenance-status="UNVERIFIED">UNVERIFIED</span><p data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p></article>`;
+function unverifiedHtml(includeCardMarker = true) {
+  const cardMarker = includeCardMarker ? ' data-release-provenance="UNVERIFIED"' : "";
+  const card = `<article${cardMarker}><span data-release-provenance-status="UNVERIFIED">UNVERIFIED</span><p data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p></article>`;
   return `${card}<template data-next-static-payload>${card}</template>`;
 }
 
@@ -26,7 +27,7 @@ test("guarded release binding upgrades all public routes and emits the exact pub
     for (const route of routes) {
       const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
       mkdirSync(path.dirname(file), { recursive: true });
-      writeFileSync(file, unverifiedHtml());
+      writeFileSync(file, unverifiedHtml(route !== ""));
     }
 
     const sha = "a".repeat(40);
@@ -37,10 +38,13 @@ test("guarded release binding upgrades all public routes and emits the exact pub
     for (const route of routes) {
       const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
       const html = readFileSync(file, "utf8");
-      assert.match(html, /data-release-provenance="VERIFIED LIVE"/);
+      if (route === "") {
+        assert.doesNotMatch(html, /data-release-provenance="VERIFIED LIVE"/);
+      } else {
+        assert.equal(html.match(/data-release-provenance="VERIFIED LIVE"/g)?.length, 2);
+      }
       assert.match(html, />VERIFIED LIVE<\/span>/);
       assert.match(html, /Verified live release aaaaaaaaaaaa/);
-      assert.equal(html.match(/data-release-provenance="VERIFIED LIVE"/g)?.length, 2);
       assert.doesNotMatch(html, /data-release-provenance(?:-status|-detail)?="UNVERIFIED"/);
     }
     assert.equal(
