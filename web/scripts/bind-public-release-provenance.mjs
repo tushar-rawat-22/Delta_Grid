@@ -21,11 +21,10 @@ export function bindPublicReleaseProvenance(root, releaseSha) {
     let html = fs.readFileSync(file, "utf8");
 
     const before = html;
-    html = replaceAtLeastOnce(
+    html = replaceIfPresent(
       html,
       'data-release-provenance="UNVERIFIED"',
       'data-release-provenance="VERIFIED LIVE"',
-      `PUBLIC_RELEASE_CARD_BINDING_INVALID:/${route}`,
     );
     html = replaceAtLeastOnce(
       html,
@@ -59,6 +58,10 @@ export function bindPublicReleaseProvenance(root, releaseSha) {
 
   if (boundRoutes !== routes.length) throw new Error("PUBLIC_RELEASE_ROUTE_COUNT_INVALID");
   return { boundRoutes, releaseSha };
+}
+
+function replaceIfPresent(text, from, to) {
+  return text.includes(from) ? text.split(from).join(to) : text;
 }
 
 function replaceAtLeastOnce(text, from, to, code) {
