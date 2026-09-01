@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const RELEASE_SHA_PATTERN = /^[0-9a-f]{40}$/;
-const provenanceRoutes = ["markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
+const provenanceRoutes = ["markets", "evidence", "missions", "system", "risk", "docs", "about"];
 const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
