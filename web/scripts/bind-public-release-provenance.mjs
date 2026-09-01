@@ -21,26 +21,31 @@ export function bindPublicReleaseProvenance(root, releaseSha) {
     let html = fs.readFileSync(file, "utf8");
 
     const before = html;
-    html = replaceExactlyOnce(
+    html = replaceAtLeastOnce(
       html,
       'data-release-provenance="UNVERIFIED"',
       'data-release-provenance="VERIFIED LIVE"',
       `PUBLIC_RELEASE_CARD_BINDING_INVALID:/${route}`,
     );
-    html = replaceExactlyOnce(
+    html = replaceAtLeastOnce(
       html,
       'data-release-provenance-status="UNVERIFIED">UNVERIFIED</span>',
       'data-release-provenance-status="VERIFIED LIVE">VERIFIED LIVE</span>',
       `PUBLIC_RELEASE_STATUS_BINDING_INVALID:/${route}`,
     );
-    html = replaceExactlyOnce(
+    html = replaceAtLeastOnce(
       html,
       `data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p>`,
       `data-release-provenance-detail="VERIFIED LIVE">${verifiedDetail}</p>`,
       `PUBLIC_RELEASE_DETAIL_BINDING_INVALID:/${route}`,
     );
 
-    if (html === before || html.includes('data-release-provenance="UNVERIFIED"')) {
+    if (
+      html === before ||
+      html.includes('data-release-provenance="UNVERIFIED"') ||
+      html.includes('data-release-provenance-status="UNVERIFIED"') ||
+      html.includes('data-release-provenance-detail="UNVERIFIED"')
+    ) {
       throw new Error(`PUBLIC_RELEASE_BINDING_FAILED:/${route}`);
     }
     fs.writeFileSync(file, html);
@@ -56,10 +61,9 @@ export function bindPublicReleaseProvenance(root, releaseSha) {
   return { boundRoutes, releaseSha };
 }
 
-function replaceExactlyOnce(text, from, to, code) {
-  const first = text.indexOf(from);
-  if (first < 0 || text.indexOf(from, first + from.length) >= 0) throw new Error(code);
-  return `${text.slice(0, first)}${to}${text.slice(first + from.length)}`;
+function replaceAtLeastOnce(text, from, to, code) {
+  if (!text.includes(from)) throw new Error(code);
+  return text.split(from).join(to);
 }
 
 function findRoute(root, route) {
