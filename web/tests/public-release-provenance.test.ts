@@ -14,7 +14,8 @@ const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
 function unverifiedHtml() {
-  return `<article data-release-provenance="UNVERIFIED"><span data-release-provenance-status="UNVERIFIED">UNVERIFIED</span><p data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p></article>`;
+  const card = `<article data-release-provenance="UNVERIFIED"><span data-release-provenance-status="UNVERIFIED">UNVERIFIED</span><p data-release-provenance-detail="UNVERIFIED">${unverifiedDetail}</p></article>`;
+  return `${card}<template data-next-static-payload>${card}</template>`;
 }
 
 test("guarded release binding upgrades all public routes and emits the exact public marker", () => {
@@ -39,7 +40,8 @@ test("guarded release binding upgrades all public routes and emits the exact pub
       assert.match(html, /data-release-provenance="VERIFIED LIVE"/);
       assert.match(html, />VERIFIED LIVE<\/span>/);
       assert.match(html, /Verified live release aaaaaaaaaaaa/);
-      assert.doesNotMatch(html, /data-release-provenance="UNVERIFIED"/);
+      assert.equal(html.match(/data-release-provenance="VERIFIED LIVE"/g)?.length, 2);
+      assert.doesNotMatch(html, /data-release-provenance(?:-status|-detail)?="UNVERIFIED"/);
     }
     assert.equal(
       readFileSync(path.join(root, "deltagrid-release.json"), "utf8"),
