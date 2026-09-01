@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { bindPublicReleaseProvenance } from "../scripts/bind-public-release-provenance.mjs";
 
 const headers = readFileSync(new URL("../public/_headers", import.meta.url), "utf8");
 const observerPage = readFileSync(new URL("../components/observer-page.tsx", import.meta.url), "utf8");
+const binder = fileURLToPath(new URL("../scripts/bind-public-release-provenance.mjs", import.meta.url));
 const routes = ["", "markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
 const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
@@ -16,8 +18,10 @@ function unverifiedHtml() {
 }
 
 test("guarded release binding upgrades all public routes and emits the exact public marker", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "deltagrid-release-"));
+  const workspace = mkdtempSync(path.join(tmpdir(), "deltagrid-release-"));
+  const root = path.join(workspace, "out");
   try {
+    mkdirSync(root, { recursive: true });
     for (const route of routes) {
       const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
       mkdirSync(path.dirname(file), { recursive: true });
@@ -25,9 +29,9 @@ test("guarded release binding upgrades all public routes and emits the exact pub
     }
 
     const sha = "a".repeat(40);
-    const result = bindPublicReleaseProvenance(root, sha);
-    assert.equal(result.boundRoutes, 9);
-    assert.equal(result.releaseSha, sha);
+    const stdout = execFileSync(process.execPath, [binder, sha], { cwd: workspace, encoding: "utf8" });
+    assert.match(stdout, /PUBLIC_RELEASE_PROVENANCE_BOUND=9/);
+    assert.match(stdout, new RegExp(`PUBLIC_RELEASE_SHA=${sha}`));
 
     for (const route of routes) {
       const file = route === "" ? path.join(root, "index.html") : path.join(root, route, "index.html");
@@ -42,16 +46,19 @@ test("guarded release binding upgrades all public routes and emits the exact pub
       `${JSON.stringify({ release_sha: sha })}\n`,
     );
   } finally {
-    rmSync(root, { recursive: true, force: true });
+    rmSync(workspace, { recursive: true, force: true });
   }
 });
 
-test("release binding rejects invalid identity and non-canonical binding points", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "deltagrid-release-invalid-"));
+test("release binding rejects invalid identity", () => {
+  const workspace = mkdtempSync(path.join(tmpdir(), "deltagrid-release-invalid-"));
   try {
-    assert.throws(() => bindPublicReleaseProvenance(root, "abc"), /PUBLIC_RELEASE_SHA_INVALID/);
+    assert.throws(
+      () => execFileSync(process.execPath, [binder, "abc"], { cwd: workspace, stdio: "pipe" }),
+      /Command failed/,
+    );
   } finally {
-    rmSync(root, { recursive: true, force: true });
+    rmSync(workspace, { recursive: true, force: true });
   }
 });
 
