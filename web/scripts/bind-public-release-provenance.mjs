@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const RELEASE_SHA_PATTERN = /^[0-9a-f]{40}$/;
-const routes = ["", "markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
+const provenanceRoutes = ["markets", "research", "evidence", "missions", "system", "risk", "docs", "about"];
 const unverifiedDetail =
   "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
 
@@ -16,7 +16,7 @@ export function bindPublicReleaseProvenance(root, releaseSha) {
     `Verified live release ${releaseSha.slice(0, 12)}. The public release pipeline proved this exact deployed revision and rechecked the public/private boundary. This does not grant research, trading or capital authority.`;
 
   let boundRoutes = 0;
-  for (const route of routes) {
+  for (const route of provenanceRoutes) {
     const file = findRoute(root, route);
     let html = fs.readFileSync(file, "utf8");
 
@@ -56,7 +56,7 @@ export function bindPublicReleaseProvenance(root, releaseSha) {
     `${JSON.stringify({ release_sha: releaseSha })}\n`,
   );
 
-  if (boundRoutes !== routes.length) throw new Error("PUBLIC_RELEASE_ROUTE_COUNT_INVALID");
+  if (boundRoutes !== provenanceRoutes.length) throw new Error("PUBLIC_RELEASE_ROUTE_COUNT_INVALID");
   return { boundRoutes, releaseSha };
 }
 
@@ -70,9 +70,7 @@ function replaceAtLeastOnce(text, from, to, code) {
 }
 
 function findRoute(root, route) {
-  const candidates = route === ""
-    ? [path.join(root, "index.html")]
-    : [path.join(root, `${route}.html`), path.join(root, route, "index.html")];
+  const candidates = [path.join(root, `${route}.html`), path.join(root, route, "index.html")];
   for (const candidate of candidates) if (fs.existsSync(candidate)) return candidate;
   throw new Error(`PUBLIC_RELEASE_ROUTE_MISSING:/${route}`);
 }
