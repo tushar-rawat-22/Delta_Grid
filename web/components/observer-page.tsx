@@ -30,6 +30,11 @@ const observerBoundary = [
     value: "NONE",
     detail: "No validated profitable strategy or selected candidate is implied. Protected opening, paper/live trading, credentials, orders, leverage and allocation remain unauthorized.",
   },
+  {
+    label: "Identity model",
+    value: "TWO LAYERS",
+    detail: "Live release provenance identifies the deployed website revision. Research provenance identifies the separately admitted core snapshot used by the public projection. Those revisions can differ without making either claim stale or unverified.",
+  },
 ] as const;
 
 const unverifiedReleaseDetail =
