@@ -48,47 +48,57 @@ def test_declared_contradiction_blocks_pre_research_without_opening_authority():
 
 def test_missing_cost_dimensions_require_review_but_do_not_claim_a_defect():
     payload = _payload()
-    payload["known_contradictions"] = ["none declared"]
+    payload["known_contradictions"] = ["NONE"]
     payload["cost_model"] = "commission only"
     spec = normalize_hypothesis_spec(payload)
 
     preflight = review_hypothesis_preflight(spec)
 
-    assert preflight["verdict"] == "BLOCKED_PRE_RESEARCH"
+    assert preflight["verdict"] == "REVIEW_REQUIRED"
     assert [finding["code"] for finding in preflight["findings"]] == [
-        "DECLARED_CONTRADICTION",
         "COST_MODEL_DIMENSIONS_UNSTATED",
     ]
-    assert "spread, slippage, latency" in preflight["findings"][1]["detail"]
+    assert "spread, slippage, latency" in preflight["findings"][0]["detail"]
+    assert preflight["research_opened"] is False
 
 
 def test_clean_metadata_reaches_authority_review_only_not_research():
     payload = _payload()
     payload["known_contradictions"] = []
-    spec = normalize_hypothesis_spec(payload)
 
     with pytest.raises(ValueError, match="known_contradictions must not be empty"):
         normalize_hypothesis_spec(payload)
 
-    # The normalized-spec contract intentionally requires a non-empty declaration.
-    # A caller must therefore state the absence of known contradictions explicitly.
-    payload["known_contradictions"] = ["none known after specification review"]
+    payload["known_contradictions"] = ["NONE"]
     spec = normalize_hypothesis_spec(payload)
     preflight = review_hypothesis_preflight(spec)
 
-    assert preflight["verdict"] == "BLOCKED_PRE_RESEARCH"
+    assert preflight["verdict"] == "READY_FOR_AUTHORITY_REVIEW"
+    assert preflight["findings"] == []
     assert preflight["research_opened"] is False
+    assert preflight["authority_effect"] == "NONE"
+    assert verify_hypothesis_preflight(preflight)
+
+
+def test_none_sentinel_cannot_hide_a_declared_contradiction():
+    payload = _payload()
+    payload["known_contradictions"] = ["NONE", "entry semantics remain unresolved"]
+    spec = normalize_hypothesis_spec(payload)
+
+    with pytest.raises(ValueError, match="NONE cannot be combined"):
+        review_hypothesis_preflight(spec)
 
 
 def test_identical_signal_and_fill_timing_is_review_evidence():
     payload = _payload()
-    payload["known_contradictions"] = ["none known after specification review"]
+    payload["known_contradictions"] = ["NONE"]
     payload["signal_timing"] = "bar close"
     payload["fill_timing"] = "bar close"
     spec = normalize_hypothesis_spec(payload)
 
     preflight = review_hypothesis_preflight(spec)
 
+    assert preflight["verdict"] == "REVIEW_REQUIRED"
     assert any(
         finding["code"] == "SIGNAL_FILL_TIMING_IDENTICAL"
         and finding["severity"] == "REVIEW"
