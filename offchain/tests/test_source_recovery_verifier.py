@@ -7,12 +7,13 @@ from pathlib import Path
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
-VERIFIER = REPOSITORY_ROOT / "scripts" / "verify_source_recovery.py"
+MODULE = "offchain.governance.source_recovery"
 
 
 def _run(*arguments: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, str(VERIFIER), *arguments],
+        [sys.executable, "-m", MODULE, *arguments],
+        cwd=REPOSITORY_ROOT,
         check=False,
         capture_output=True,
         text=True,
