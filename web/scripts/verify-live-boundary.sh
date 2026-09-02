@@ -108,6 +108,7 @@ do
   fi
 done
 
+require_header "$TMP/home.headers" '^strict-transport-security:[[:space:]]*max-age=31536000[[:space:]]*$' 'Strict-Transport-Security'
 require_header "$TMP/home.headers" '^x-content-type-options:[[:space:]]*nosniff[[:space:]]*$' 'X-Content-Type-Options'
 require_header "$TMP/home.headers" '^x-frame-options:[[:space:]]*DENY[[:space:]]*$' 'X-Frame-Options'
 require_header "$TMP/home.headers" '^referrer-policy:[[:space:]]*no-referrer[[:space:]]*$' 'Referrer-Policy'
@@ -122,6 +123,7 @@ fi
 
 echo "PUBLIC_HOMEPAGE=PASS"
 echo "PUBLIC_SECURITY_HEADERS=PASS"
+echo "PUBLIC_HSTS=PASS"
 
 
 echo "=== PUBLIC RESEARCH DEMO ==="
@@ -157,6 +159,48 @@ done
 
 echo "PUBLIC_RESEARCH_DEMO=PASS"
 echo "PUBLIC_PRIVATE_MARKER_SCAN=PASS"
+
+
+echo "=== PUBLIC RELEASE PROVENANCE ==="
+RELEASE_CODE="$(request "$PUBLIC_BASE/deltagrid-release.json?boundary_check=$(date +%s)" "$TMP/release.headers.raw" "$TMP/release.body")"
+if [ "$RELEASE_CODE" != "200" ]; then
+  echo "FAIL: public release marker HTTP=$RELEASE_CODE" >&2
+  exit 1
+fi
+RELEASE_SHA="$(sed -n 's/.*"release_sha":"\([0-9a-f]\{40\}\)".*/\1/p' "$TMP/release.body")"
+if [[ ! "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+  echo "FAIL: public release marker does not contain one exact release SHA" >&2
+  cat "$TMP/release.body" >&2
+  exit 1
+fi
+
+EVIDENCE_CODE="$(request "$PUBLIC_BASE/evidence?release_sha=$RELEASE_SHA" "$TMP/evidence.headers.raw" "$TMP/evidence.body")"
+if [ "$EVIDENCE_CODE" != "200" ]; then
+  echo "FAIL: public evidence page HTTP=$EVIDENCE_CODE" >&2
+  exit 1
+fi
+if ! grep -Fq 'data-release-provenance-status="VERIFIED LIVE">VERIFIED LIVE</span>' "$TMP/evidence.body"; then
+  echo "FAIL: public evidence page does not render VERIFIED LIVE provenance" >&2
+  exit 1
+fi
+if ! grep -Fq 'data-release-provenance-detail="VERIFIED LIVE"' "$TMP/evidence.body"; then
+  echo "FAIL: public evidence page is missing verified release detail" >&2
+  exit 1
+fi
+if grep -Fq 'data-release-provenance-status="UNVERIFIED"' "$TMP/evidence.body" || \
+   grep -Fq 'data-release-provenance-detail="UNVERIFIED"' "$TMP/evidence.body"; then
+  echo "FAIL: public evidence page still exposes UNVERIFIED release provenance" >&2
+  exit 1
+fi
+RELEASE_SHORT="${RELEASE_SHA:0:12}"
+if ! grep -Fq "Verified live release $RELEASE_SHORT." "$TMP/evidence.body"; then
+  echo "FAIL: rendered evidence provenance does not match the live release marker" >&2
+  exit 1
+fi
+
+echo "PUBLIC_RELEASE_MARKER=PASS"
+echo "PUBLIC_RELEASE_PROVENANCE_RENDER=PASS"
+echo "PUBLIC_RELEASE_SHA=$RELEASE_SHA"
 
 
 echo "=== ROBOTS POLICY ==="
@@ -199,6 +243,9 @@ echo "=============================================="
 echo "DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS"
 echo "PUBLIC_HOME_HTTP=$HOME_CODE"
 echo "PUBLIC_RESEARCH_HTTP=$RESEARCH_CODE"
+echo "PUBLIC_EVIDENCE_HTTP=$EVIDENCE_CODE"
+echo "PUBLIC_RELEASE_HTTP=$RELEASE_CODE"
+echo "PUBLIC_RELEASE_SHA=$RELEASE_SHA"
 echo "ROBOTS_HTTP=$ROBOTS_CODE"
 echo "ANONYMOUS_PRIVATE_SURFACE_COUNT=4"
 echo "=============================================="
