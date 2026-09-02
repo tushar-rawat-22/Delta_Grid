@@ -34,7 +34,7 @@ def test_normalization_is_deterministic_and_non_authorizing():
     assert verify_hypothesis_spec(first)
 
 
-def test_normalization_deduplicates_and_sorts_metadata_lists():
+def test_normalization_deduplicates_without_reordering_semantic_lists():
     normalized = normalize_hypothesis_spec(_payload())
 
     assert normalized["entry_logic"] == ["RSI filter", "trend state"]
