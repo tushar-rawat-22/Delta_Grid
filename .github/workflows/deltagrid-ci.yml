@@ -101,6 +101,24 @@ jobs:
             offchain/tests \
             -q
 
+      - name: Verify submitted tracked-source recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONDONTWRITEBYTECODE=1 python - <<'PY'
+          import json
+          from pathlib import Path
+
+          from offchain.governance.source_recovery import verify_source_recovery
+
+          result = verify_source_recovery(Path.cwd())
+          if result["status"] != "VERIFIED":
+              raise SystemExit("SOURCE_RECOVERY_NOT_VERIFIED")
+          if result["authority_effect"] != "NONE":
+              raise SystemExit("SOURCE_RECOVERY_AUTHORITY_EFFECT_INVALID")
+          print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+          PY
+
       - name: Run founder-agent suite
         run: PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider ops/founder-agent/tests -q
 
