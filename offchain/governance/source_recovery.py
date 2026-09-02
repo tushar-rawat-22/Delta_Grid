@@ -3,12 +3,14 @@
 The proof is deliberately limited to tracked Git history at the current checkout
 HEAD. It does not inspect, copy, or make claims about founder records, protected
 evidence, private runtime data, credentials, trading state, or capital authority.
+
+This module is intentionally library-only. DeltaGrid's frozen CLI inventory is a
+separate governed surface; recovery verification must not create a new operator
+entry point merely to expose this proof.
 """
 
 from __future__ import annotations
 
-import argparse
-import json
 import subprocess
 import tempfile
 from pathlib import Path
@@ -16,7 +18,6 @@ from typing import Sequence
 
 
 VERIFIED = "VERIFIED"
-BLOCKED = "BLOCKED"
 AUTHORITY_EFFECT = "NONE"
 SOURCE_SCOPE = "TRACKED_GIT_HISTORY_AT_HEAD"
 
@@ -90,38 +91,3 @@ def verify_source_recovery(repository: Path) -> dict[str, str]:
         "source_tree_sha": source_tree_sha,
         "status": VERIFIED,
     }
-
-
-def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        description="Verify recoverability of the committed DeltaGrid source HEAD."
-    )
-    parser.add_argument(
-        "--repository",
-        type=Path,
-        default=Path(__file__).resolve().parents[2],
-        help="Repository root to verify (defaults to this checkout).",
-    )
-    return parser
-
-
-def main(argv: Sequence[str] | None = None) -> int:
-    arguments = _parser().parse_args(argv)
-    try:
-        payload = verify_source_recovery(arguments.repository)
-        returncode = 0
-    except RecoveryVerificationError as error:
-        payload = {
-            "authority_effect": AUTHORITY_EFFECT,
-            "reason_token": str(error),
-            "source_scope": SOURCE_SCOPE,
-            "status": BLOCKED,
-        }
-        returncode = 1
-
-    print(json.dumps(payload, sort_keys=True, separators=(",", ":")))
-    return returncode
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
