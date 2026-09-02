@@ -16,6 +16,7 @@ from offchain.research.hypothesis_spec import AUTHORITY_EFFECT, STATUS, verify_h
 
 PREFLIGHT_VERSION = 1
 PREFLIGHT_AUTHORITY_EFFECT = "NONE"
+NO_KNOWN_CONTRADICTIONS = "NONE"
 
 _COST_DIMENSIONS = {
     "commission": ("commission", "fee"),
@@ -37,12 +38,11 @@ def _finding(code: str, severity: str, detail: str) -> dict[str, str]:
 def review_hypothesis_preflight(spec: Mapping[str, Any]) -> dict[str, Any]:
     """Return deterministic pre-research review evidence for ``spec``.
 
-    The review is intentionally conservative. Declared contradictions block the
-    hypothesis from being described as preflight-clean. Missing common cost
-    dimensions require review but do not pretend to prove a modelling defect.
-    Even a clean result means only that the supplied metadata is internally
-    reviewable; it grants no permission to run development, validation,
-    holdout, paper, or live research.
+    ``known_contradictions`` remains mandatory in the normalized specification.
+    The exact value ``NONE`` is the only declaration that means no contradiction
+    is currently known; descriptive text is treated as an actual blocker. Missing
+    common cost dimensions require review but do not pretend to prove a modelling
+    defect. Even a clean result grants no research authority.
     """
 
     if not verify_hypothesis_spec(spec):
@@ -50,16 +50,16 @@ def review_hypothesis_preflight(spec: Mapping[str, Any]) -> dict[str, Any]:
     if spec.get("status") != STATUS or spec.get("authority_effect") != AUTHORITY_EFFECT:
         raise ValueError("hypothesis specification is not non-authorizing")
 
-    findings: list[dict[str, str]] = []
+    contradictions = spec["known_contradictions"]
+    has_none_sentinel = NO_KNOWN_CONTRADICTIONS in contradictions
+    if has_none_sentinel and len(contradictions) != 1:
+        raise ValueError("NONE cannot be combined with declared contradictions")
 
-    for contradiction in spec["known_contradictions"]:
-        findings.append(
-            _finding(
-                "DECLARED_CONTRADICTION",
-                "BLOCKER",
-                contradiction,
-            )
-        )
+    findings: list[dict[str, str]] = []
+    for contradiction in contradictions:
+        if contradiction == NO_KNOWN_CONTRADICTIONS:
+            continue
+        findings.append(_finding("DECLARED_CONTRADICTION", "BLOCKER", contradiction))
 
     cost_model = spec["cost_model"]
     missing_cost_dimensions = [
