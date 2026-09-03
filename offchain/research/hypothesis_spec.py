@@ -36,6 +36,16 @@ _REQUIRED_LIST_FIELDS = (
     "source_refs",
 )
 _ALLOWED_FIELDS = frozenset(_REQUIRED_TEXT_FIELDS + _REQUIRED_LIST_FIELDS)
+_ALLOWED_NORMALIZED_FIELDS = frozenset(
+    {
+        "spec_version",
+        "status",
+        "authority_effect",
+        "spec_sha256",
+        *_REQUIRED_TEXT_FIELDS,
+        *_REQUIRED_LIST_FIELDS,
+    }
+)
 
 
 def _clean_text(value: Any, field: str) -> str:
@@ -93,11 +103,15 @@ def verify_hypothesis_spec(spec: Mapping[str, Any]) -> bool:
 
     if not isinstance(spec, Mapping):
         return False
+    if set(spec) != _ALLOWED_NORMALIZED_FIELDS:
+        return False
     supplied_hash = spec.get("spec_sha256")
     if not isinstance(supplied_hash, str) or len(supplied_hash) != 64:
         return False
     body = dict(spec)
     body.pop("spec_sha256", None)
+    if body.get("spec_version") != SPEC_VERSION:
+        return False
     if body.get("status") != STATUS or body.get("authority_effect") != AUTHORITY_EFFECT:
         return False
     encoded = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
