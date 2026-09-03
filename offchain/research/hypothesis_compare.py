@@ -32,6 +32,20 @@ _COMPARE_FIELDS = (
     "source_refs",
 )
 _ALLOWED_STATUSES = {"IDENTICAL_DECLARATION", "DECLARATION_DELTA"}
+_ALLOWED_KEYS = {
+    "comparison_version",
+    "baseline_hypothesis_id",
+    "baseline_spec_sha256",
+    "proposed_hypothesis_id",
+    "proposed_spec_sha256",
+    "status",
+    "changed_fields",
+    "deltas",
+    "authority_effect",
+    "research_opened",
+    "quality_judgement",
+    "comparison_sha256",
+}
 
 
 def _digest(body: Mapping[str, Any]) -> str:
@@ -82,6 +96,8 @@ def verify_hypothesis_comparison(comparison: Mapping[str, Any]) -> bool:
     """Verify comparison integrity and fail-closed non-authorizing semantics."""
 
     if not isinstance(comparison, Mapping):
+        return False
+    if set(comparison) != _ALLOWED_KEYS:
         return False
     supplied_hash = comparison.get("comparison_sha256")
     if not isinstance(supplied_hash, str) or len(supplied_hash) != 64:
