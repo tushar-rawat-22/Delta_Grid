@@ -120,3 +120,13 @@ def test_authority_or_quality_escalation_invalidates_comparison():
     ranked = deepcopy(comparison)
     ranked["quality_judgement"] = "BETTER"
     assert verify_hypothesis_comparison(ranked) is False
+
+
+def test_undeclared_top_level_metadata_is_rejected_fail_closed():
+    spec = normalize_hypothesis_spec(_payload())
+    comparison = compare_hypothesis_specs(spec, spec)
+
+    injected = deepcopy(comparison)
+    injected["candidate_selected"] = True
+
+    assert verify_hypothesis_comparison(injected) is False
