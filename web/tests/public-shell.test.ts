@@ -5,12 +5,13 @@ import test from "node:test";
 const navSource = fs.readFileSync("components/public-site-nav.tsx", "utf8");
 const layoutSource = fs.readFileSync("app/layout.tsx", "utf8");
 
-test("public shell exposes the complete public product map and founder login", () => {
+test("public shell exposes the complete public product map without promoting founder login", () => {
   for (const route of ["/research", "/markets", "/evidence", "/missions", "/system", "/risk", "/docs", "/about"]) {
     assert.ok(navSource.includes(`\"${route}\"`), route);
   }
   assert.match(navSource, /Demo Mode/u);
-  assert.match(navSource, /Founder Log in/u);
+  assert.match(navSource, /Access model/u);
+  assert.doesNotMatch(navSource, /Founder Log in/u);
   assert.match(navSource, /Public demo/u);
   assert.match(navSource, /Sanitized fixtures · no writes/u);
 });
