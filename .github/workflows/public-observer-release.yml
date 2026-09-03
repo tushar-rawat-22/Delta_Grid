@@ -188,7 +188,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bash web/scripts/verify-live-boundary.sh | tee "$RUNNER_TEMP/live-boundary.txt"
+          max_attempts=12
+          for attempt in $(seq 1 "$max_attempts"); do
+            set +e
+            output="$(bash web/scripts/verify-live-boundary.sh 2>&1)"
+            status=$?
+            set -e
+            printf '%s\n' "$output" | tee "$RUNNER_TEMP/live-boundary.txt"
+            if [ "$status" -eq 0 ]; then
+              exit 0
+            fi
+            if ! grep -q '^ERROR=evidence_release_sha_mismatch$' <<<"$output"; then
+              exit "$status"
+            fi
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              echo "Evidence provenance has not converged to the release marker yet; retrying bounded verification."
+              sleep 5
+            fi
+          done
+          echo "FAIL: evidence provenance did not converge to the exact live release marker" >&2
+          exit 1
 
       - name: Publish release provenance summary
         if: always()
