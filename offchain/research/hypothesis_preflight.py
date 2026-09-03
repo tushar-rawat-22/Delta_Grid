@@ -24,6 +24,16 @@ _COST_DIMENSIONS = {
     "slippage": ("slippage",),
     "latency": ("latency",),
 }
+_ALLOWED_KEYS = {
+    "preflight_version",
+    "hypothesis_id",
+    "hypothesis_spec_sha256",
+    "verdict",
+    "findings",
+    "authority_effect",
+    "research_opened",
+    "preflight_sha256",
+}
 
 
 def _contains_any(text: str, terms: tuple[str, ...]) -> bool:
@@ -112,11 +122,15 @@ def verify_hypothesis_preflight(preflight: Mapping[str, Any]) -> bool:
 
     if not isinstance(preflight, Mapping):
         return False
+    if set(preflight) != _ALLOWED_KEYS:
+        return False
     supplied_hash = preflight.get("preflight_sha256")
     if not isinstance(supplied_hash, str) or len(supplied_hash) != 64:
         return False
     body = dict(preflight)
     body.pop("preflight_sha256", None)
+    if body.get("preflight_version") != PREFLIGHT_VERSION:
+        return False
     if body.get("authority_effect") != PREFLIGHT_AUTHORITY_EFFECT:
         return False
     if body.get("research_opened") is not False:
