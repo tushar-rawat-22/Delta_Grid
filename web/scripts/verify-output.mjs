@@ -80,9 +80,10 @@ for (const file of allFiles(root)) {
 
 for (const route of routes) {
   const html = routeOutput.get(route).text;
-  for (const marker of ["Public demo", "Open Demo", "Founder Log in", "Demo Mode", "Sanitized fixtures · no writes"]) {
+  for (const marker of ["Public demo", "Open Demo", "Access model", "Demo Mode", "Sanitized fixtures · no writes"]) {
     if (!html.includes(marker)) throw new Error(`PUBLIC_SHELL_OUTPUT_MISSING:${marker}:/${route}`);
   }
+  if (html.includes("Founder Log in")) throw new Error(`PUBLIC_SHELL_OUTPUT_FORBIDDEN:Founder Log in:/${route}`);
 }
 
 const evidenceHtml = routeOutput.get("evidence").text;
@@ -111,9 +112,9 @@ for (const marker of [
   "Candidate observation",
   "NOT AUTHORIZED",
   "Demo workspace",
-  "Founder access",
+  "Access model",
   "Public inputs",
-  "Public / founder separation",
+  "Public / restricted separation",
   "Broker connection",
   "Exchange credentials",
   "Orders",
@@ -123,6 +124,7 @@ for (const marker of [
 ]) {
   if (!overviewHtml.includes(marker)) throw new Error(`P1_3_OVERVIEW_OUTPUT_MISSING:${marker}`);
 }
+if (overviewHtml.includes("Founder access")) throw new Error("P1_3_OVERVIEW_OUTPUT_FORBIDDEN:Founder access");
 
 const researchHtml = routeOutput.get("research").text;
 for (const marker of [
@@ -159,7 +161,7 @@ console.log("STATIC_OUTPUT_INSPECTION=PASS");
 console.log("P1_3_VERIFIED_PROJECTION_RENDER=PASS");
 console.log("PUBLIC_ROUTE_COUNT=9");
 console.log("PUBLIC_SANITIZED_PRODUCT_SNAPSHOTS=PASS");
-console.log("PUBLIC_FOUNDER_LOGIN_RENDER=PASS");
+console.log("PUBLIC_RESTRICTED_ACCESS_MODEL_RENDER=PASS");
 console.log("PUBLIC_RESEARCH_DEMO_RENDER=PASS");
 console.log("PUBLIC_DEMO_PRIMARY_ENTRY=PASS");
 console.log("PUBLIC_UNIFIED_SHELL_RENDER=PASS");

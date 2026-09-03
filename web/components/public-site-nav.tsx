@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const FOUNDER_RESEARCH_URL = "https://deltagrid-founder-gateway.tushar142004.workers.dev/research";
-
 const routes = [
   ["/", "Overview"],
   ["/research", "Demo Mode"],
@@ -42,7 +40,7 @@ export function PublicSiteNav() {
 
         <div className="public-nav-actions">
           <Link className="public-demo-button" href="/research">Open Demo</Link>
-          <a className="public-login-button" href={FOUNDER_RESEARCH_URL}>Founder Log in <span aria-hidden="true">↗</span></a>
+          <Link className="public-login-button" href="/about">Access model</Link>
         </div>
       </div>
 
