@@ -118,6 +118,14 @@ def test_tampering_or_authority_escalation_invalidates_preflight():
     escalated["authority_effect"] = "OPEN_DEVELOPMENT"
     assert verify_hypothesis_preflight(escalated) is False
 
+    undeclared = deepcopy(preflight)
+    undeclared["candidate_selected"] = True
+    assert verify_hypothesis_preflight(undeclared) is False
+
+    wrong_version = deepcopy(preflight)
+    wrong_version["preflight_version"] = 999
+    assert verify_hypothesis_preflight(wrong_version) is False
+
 
 def test_corrupted_spec_is_rejected_before_review():
     spec = normalize_hypothesis_spec(_payload())
