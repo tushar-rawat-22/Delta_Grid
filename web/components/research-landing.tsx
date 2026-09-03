@@ -1,8 +1,6 @@
 import Link from "next/link";
 import styles from "./research-landing.module.css";
 
-const FOUNDER_RESEARCH_URL = "https://deltagrid-founder-gateway.tushar142004.workers.dev/research";
-
 const statusTape = [
   ["Research result", "No validated alpha", "blocked"],
   ["Selected candidate", "None selected", "neutral"],
@@ -45,7 +43,7 @@ const workbench = [
 
 const boundary = [
   ["Public surface", "Static observer and deterministic sanitized Demo Mode."],
-  ["Founder gateway", "Cloudflare Access plus independent Worker identity validation."],
+  ["Restricted workspace", "Invite-only, scoped, isolated, revocable, and unavailable without explicit founder approval plus fresh security/legal/authority review."],
   ["Private research", "Founder records, protected evidence, and private runtime state are not shipped in the public bundle."],
   ["Execution", "No public route can place, authorize, simulate, or fund an order. Provider secrets do not reach the browser."],
 ] as const;
@@ -69,7 +67,7 @@ export function ResearchLanding() {
         </div>
         <div className={styles.actions}>
           <Link href="/research">Demo workspace</Link>
-          <a href={FOUNDER_RESEARCH_URL}>Founder access ↗</a>
+          <Link href="/about">Access model</Link>
         </div>
       </header>
 
@@ -192,7 +190,7 @@ export function ResearchLanding() {
         <div className={styles.panelHeading}>
           <div>
             <p className={styles.sectionCode}>06 / BOUNDARY</p>
-            <h2 id="boundary-title">Public / founder separation</h2>
+            <h2 id="boundary-title">Public / restricted separation</h2>
           </div>
           <p>The observer is for inspection. It is not an execution console.</p>
         </div>
