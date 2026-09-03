@@ -1,4 +1,6 @@
 from copy import deepcopy
+import hashlib
+import json
 
 import pytest
 
@@ -21,6 +23,13 @@ def _payload():
         "known_contradictions": ["bullish momentum direction differs across supplied revisions"],
         "source_refs": ["docs/research-intake/2026-09-02-pine-strategy-hypotheses.md"],
     }
+
+
+def _rehash(spec):
+    body = dict(spec)
+    body.pop("spec_sha256", None)
+    encoded = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    spec["spec_sha256"] = hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 
 def test_normalization_is_deterministic_and_non_authorizing():
@@ -71,3 +80,21 @@ def test_tampering_breaks_hash_verification():
     tampered["fill_timing"] = "same bar"
 
     assert not verify_hypothesis_spec(tampered)
+
+
+def test_rehashed_undeclared_metadata_is_rejected_fail_closed():
+    normalized = normalize_hypothesis_spec(_payload())
+    injected = deepcopy(normalized)
+    injected["candidate_selected"] = True
+    _rehash(injected)
+
+    assert verify_hypothesis_spec(injected) is False
+
+
+def test_rehashed_wrong_spec_version_is_rejected_fail_closed():
+    normalized = normalize_hypothesis_spec(_payload())
+    wrong_version = deepcopy(normalized)
+    wrong_version["spec_version"] = 999
+    _rehash(wrong_version)
+
+    assert verify_hypothesis_spec(wrong_version) is False
