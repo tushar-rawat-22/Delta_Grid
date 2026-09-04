@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT_PATH = ROOT / "contracts" / "NEWS_CONTEXT_OFFLINE_REPLAY_V1.json"
+CONTRACT_PATH = ROOT / "contracts" / "fixtures" / "NEWS_CONTEXT_OFFLINE_REPLAY_V1.json"
 FIXTURE_PATH = ROOT / "contracts" / "fixtures" / "news_context_offline_replay_v1.json"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
