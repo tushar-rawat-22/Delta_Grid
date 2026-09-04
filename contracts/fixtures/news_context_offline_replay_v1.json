@@ -1,0 +1,28 @@
+{
+  "contract_id": "NEWS_CONTEXT_OFFLINE_REPLAY_V1",
+  "fixture_id": "news-context-offline-replay-v1-synthetic",
+  "fixture_kind": "SYNTHETIC_METADATA_ONLY",
+  "replay_cutoff": "2026-08-01T12:00:00Z",
+  "records": [
+    {
+      "source_family": "GDELT",
+      "source_native_ref": "gdelt:synthetic:fixture-001",
+      "published_at": "2026-08-01T10:00:00Z",
+      "first_seen_at": "2026-08-01T10:02:00Z",
+      "fetched_at": "2026-08-01T10:03:00Z",
+      "provenance_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "dedupe_key": "synthetic-gdelt-001",
+      "availability_state": "AVAILABLE"
+    },
+    {
+      "source_family": "SEC",
+      "source_native_ref": "sec:synthetic:fixture-002",
+      "published_at": "2026-08-01T10:30:00Z",
+      "first_seen_at": "2026-08-01T10:31:00Z",
+      "fetched_at": "2026-08-01T10:32:00Z",
+      "provenance_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "dedupe_key": "synthetic-sec-002",
+      "availability_state": "AVAILABLE"
+    }
+  ]
+}
