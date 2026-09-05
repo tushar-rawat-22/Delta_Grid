@@ -57,6 +57,7 @@ def validate(contract: dict, fixture: dict) -> None:
 
     cutoff = parse_utc_z(fixture.get("replay_cutoff"), "replay_cutoff")
     required = set(contract.get("required_record_fields", []))
+    available_required = set(contract.get("available_record_required_fields", []))
     allowed_sources = set(contract.get("source_families", []))
     allowed_states = set(contract.get("availability_states", []))
     forbidden = set(contract.get("forbidden_authority_fields", []))
@@ -87,11 +88,16 @@ def validate(contract: dict, fixture: dict) -> None:
             raise ContractError(f"record[{index}] duplicate dedupe_key")
         seen_dedupe.add(dedupe_key)
 
-        published = parse_utc_z(record["published_at"], f"record[{index}].published_at")
         first_seen = parse_utc_z(record["first_seen_at"], f"record[{index}].first_seen_at")
         fetched = parse_utc_z(record["fetched_at"], f"record[{index}].fetched_at")
 
         if record["availability_state"] == "AVAILABLE":
+            missing_available = sorted(available_required - record.keys())
+            if missing_available:
+                raise ContractError(
+                    f"record[{index}] AVAILABLE record missing fields: {missing_available}"
+                )
+            published = parse_utc_z(record["published_at"], f"record[{index}].published_at")
             if not record["source_native_ref"]:
                 raise ContractError(f"record[{index}] AVAILABLE record needs source_native_ref")
             if not SHA256_RE.fullmatch(record["provenance_sha256"]):
@@ -101,6 +107,15 @@ def validate(contract: dict, fixture: dict) -> None:
                     f"record[{index}] violates published <= first_seen <= fetched <= replay_cutoff"
                 )
         else:
+            invented = sorted(
+                field
+                for field in available_required
+                if field in record and record[field] not in (None, "")
+            )
+            if invented:
+                raise ContractError(
+                    f"record[{index}] missing state invents unavailable evidence: {invented}"
+                )
             if not (first_seen <= fetched <= cutoff):
                 raise ContractError(
                     f"record[{index}] missing-state observation occurs after replay_cutoff"
@@ -153,6 +168,22 @@ def self_test(contract: dict, fixture: dict) -> None:
         fixture,
         lambda data: data["records"][0].update(direction_signal="BUY"),
         "forbidden direction authority",
+    )
+    expect_failure(
+        contract,
+        fixture,
+        lambda data: data["records"][2].update(
+            published_at="2026-08-01T10:39:00Z",
+            source_native_ref="gdelt:synthetic:invented-result",
+            provenance_sha256="c" * 64,
+        ),
+        "missing state invented evidence",
+    )
+    expect_failure(
+        contract,
+        fixture,
+        lambda data: data["records"][4].update(fetched_at="2026-08-01T12:00:01Z"),
+        "missing state future observation",
     )
 
 
