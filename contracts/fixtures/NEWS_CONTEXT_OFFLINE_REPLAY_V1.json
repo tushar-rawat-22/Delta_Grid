@@ -23,13 +23,15 @@
   },
   "required_record_fields": [
     "source_family",
-    "source_native_ref",
-    "published_at",
     "first_seen_at",
     "fetched_at",
-    "provenance_sha256",
     "dedupe_key",
     "availability_state"
+  ],
+  "available_record_required_fields": [
+    "source_native_ref",
+    "published_at",
+    "provenance_sha256"
   ],
   "availability_states": [
     "AVAILABLE",
@@ -40,13 +42,15 @@
   "point_in_time_rules": {
     "timestamp_format": "UTC_RFC3339_Z",
     "available_record_order": "published_at <= first_seen_at <= fetched_at <= replay_cutoff",
+    "missing_state_order": "first_seen_at <= fetched_at <= replay_cutoff",
     "eligible_at_replay": "first_seen_at <= replay_cutoff AND fetched_at <= replay_cutoff",
     "future_known_records": "REJECT"
   },
   "provenance_rules": {
     "hash": "sha256_lower_hex_64",
     "available_record_requires_source_native_ref": true,
-    "available_record_requires_provenance_sha256": true
+    "available_record_requires_provenance_sha256": true,
+    "missing_state_must_not_invent_publication_or_content_provenance": true
   },
   "dedupe_rules": {
     "key_uniqueness": "UNIQUE_WITHIN_REPLAY_FIXTURE",
