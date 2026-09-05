@@ -21,6 +21,11 @@
     "order_submission": false,
     "capital_authority": false
   },
+  "record_schema_policy": {
+    "mode": "CLOSED",
+    "unknown_record_fields": "REJECT",
+    "authority_invariant": "Records may contain only allowed_record_fields; forbidden authority keys are rejected recursively regardless of placement or value."
+  },
   "required_record_fields": [
     "source_family",
     "first_seen_at",
@@ -29,6 +34,16 @@
     "availability_state"
   ],
   "available_record_required_fields": [
+    "source_native_ref",
+    "published_at",
+    "provenance_sha256"
+  ],
+  "allowed_record_fields": [
+    "source_family",
+    "first_seen_at",
+    "fetched_at",
+    "dedupe_key",
+    "availability_state",
     "source_native_ref",
     "published_at",
     "provenance_sha256"
