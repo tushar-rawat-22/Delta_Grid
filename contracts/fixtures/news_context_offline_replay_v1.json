@@ -23,6 +23,27 @@
       "provenance_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       "dedupe_key": "synthetic-sec-002",
       "availability_state": "AVAILABLE"
+    },
+    {
+      "source_family": "GDELT",
+      "first_seen_at": "2026-08-01T10:40:00Z",
+      "fetched_at": "2026-08-01T10:40:30Z",
+      "dedupe_key": "synthetic-gdelt-no-result-001",
+      "availability_state": "NO_RESULT"
+    },
+    {
+      "source_family": "SEC",
+      "first_seen_at": "2026-08-01T10:50:00Z",
+      "fetched_at": "2026-08-01T10:51:00Z",
+      "dedupe_key": "synthetic-sec-unavailable-001",
+      "availability_state": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "source_family": "GDELT",
+      "first_seen_at": "2026-08-01T11:00:00Z",
+      "fetched_at": "2026-08-01T11:05:00Z",
+      "dedupe_key": "synthetic-gdelt-scheduler-gap-001",
+      "availability_state": "SCHEDULER_GAP"
     }
   ]
 }
