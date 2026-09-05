@@ -37,6 +37,20 @@ def parse_utc_z(value: str, field: str) -> datetime:
     return parsed
 
 
+def find_forbidden_authority_fields(value, forbidden: set[str]) -> set[str]:
+    """Return forbidden authority keys found anywhere in a JSON-like value."""
+    found: set[str] = set()
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            if key in forbidden:
+                found.add(key)
+            found.update(find_forbidden_authority_fields(nested, forbidden))
+    elif isinstance(value, list):
+        for nested in value:
+            found.update(find_forbidden_authority_fields(nested, forbidden))
+    return found
+
+
 def validate(contract: dict, fixture: dict) -> None:
     if contract.get("contract_id") != "NEWS_CONTEXT_OFFLINE_REPLAY_V1":
         raise ContractError("unexpected contract_id")
@@ -73,7 +87,7 @@ def validate(contract: dict, fixture: dict) -> None:
         missing = sorted(required - record.keys())
         if missing:
             raise ContractError(f"record[{index}] missing required fields: {missing}")
-        forbidden_present = sorted(forbidden & record.keys())
+        forbidden_present = sorted(find_forbidden_authority_fields(record, forbidden))
         if forbidden_present:
             raise ContractError(f"record[{index}] contains forbidden authority fields: {forbidden_present}")
         if record["source_family"] not in allowed_sources:
@@ -168,6 +182,14 @@ def self_test(contract: dict, fixture: dict) -> None:
         fixture,
         lambda data: data["records"][0].update(direction_signal="BUY"),
         "forbidden direction authority",
+    )
+    expect_failure(
+        contract,
+        fixture,
+        lambda data: data["records"][0].update(
+            metadata={"analysis": {"direction_signal": "BUY"}}
+        ),
+        "nested forbidden direction authority",
     )
     expect_failure(
         contract,
