@@ -72,11 +72,22 @@ def validate(contract: dict, fixture: dict) -> None:
     cutoff = parse_utc_z(fixture.get("replay_cutoff"), "replay_cutoff")
     required = set(contract.get("required_record_fields", []))
     available_required = set(contract.get("available_record_required_fields", []))
+    allowed_fields = set(contract.get("allowed_record_fields", []))
     allowed_sources = set(contract.get("source_families", []))
     allowed_states = set(contract.get("availability_states", []))
     forbidden = set(contract.get("forbidden_authority_fields", []))
-    seen_dedupe = set()
+    schema_policy = contract.get("record_schema_policy", {})
 
+    if schema_policy.get("mode") != "CLOSED" or schema_policy.get("unknown_record_fields") != "REJECT":
+        raise ContractError("record schema must remain CLOSED and reject unknown fields")
+    if not forbidden:
+        raise ContractError("forbidden_authority_fields must remain non-empty")
+    if allowed_fields != required | available_required:
+        raise ContractError("allowed_record_fields must exactly match required and AVAILABLE-only fields")
+    if forbidden & allowed_fields:
+        raise ContractError("forbidden authority fields cannot be admitted by the record schema")
+
+    seen_dedupe = set()
     records = fixture.get("records")
     if not isinstance(records, list) or not records:
         raise ContractError("fixture records must be a non-empty list")
@@ -87,6 +98,9 @@ def validate(contract: dict, fixture: dict) -> None:
         missing = sorted(required - record.keys())
         if missing:
             raise ContractError(f"record[{index}] missing required fields: {missing}")
+        unexpected = sorted(record.keys() - allowed_fields)
+        if unexpected:
+            raise ContractError(f"record[{index}] contains unknown fields: {unexpected}")
         forbidden_present = sorted(find_forbidden_authority_fields(record, forbidden))
         if forbidden_present:
             raise ContractError(f"record[{index}] contains forbidden authority fields: {forbidden_present}")
@@ -112,9 +126,9 @@ def validate(contract: dict, fixture: dict) -> None:
                     f"record[{index}] AVAILABLE record missing fields: {missing_available}"
                 )
             published = parse_utc_z(record["published_at"], f"record[{index}].published_at")
-            if not record["source_native_ref"]:
-                raise ContractError(f"record[{index}] AVAILABLE record needs source_native_ref")
-            if not SHA256_RE.fullmatch(record["provenance_sha256"]):
+            if not isinstance(record["source_native_ref"], str) or not record["source_native_ref"]:
+                raise ContractError(f"record[{index}] AVAILABLE record needs string source_native_ref")
+            if not isinstance(record["provenance_sha256"], str) or not SHA256_RE.fullmatch(record["provenance_sha256"]):
                 raise ContractError(f"record[{index}] AVAILABLE record needs lowercase SHA-256")
             if not (published <= first_seen <= fetched <= cutoff):
                 raise ContractError(
@@ -144,6 +158,46 @@ def expect_failure(contract: dict, fixture: dict, mutate, label: str) -> None:
     except ContractError:
         return
     raise AssertionError(f"negative self-test did not fail: {label}")
+
+
+def authority_mutation_matrix():
+    """Adversarial placements that must never acquire authority in replay records."""
+    return [
+        (
+            "top-level forbidden key",
+            lambda data: data["records"][0].update(direction_signal="BUY"),
+        ),
+        (
+            "nested dict forbidden key",
+            lambda data: data["records"][0].update(
+                source_native_ref={"metadata": {"direction_signal": "BUY"}}
+            ),
+        ),
+        (
+            "nested list forbidden key",
+            lambda data: data["records"][0].update(
+                source_native_ref=[{"direction_signal": "BUY"}]
+            ),
+        ),
+        (
+            "renamed authority field",
+            lambda data: data["records"][0].update(directionSignal="BUY"),
+        ),
+        (
+            "unknown metadata container",
+            lambda data: data["records"][0].update(
+                metadata={"signal_direction": "BUY"}
+            ),
+        ),
+        (
+            "missing-state forbidden null",
+            lambda data: data["records"][2].update(direction_signal=None),
+        ),
+        (
+            "missing-state forbidden empty",
+            lambda data: data["records"][3].update(direction_signal=""),
+        ),
+    ]
 
 
 def self_test(contract: dict, fixture: dict) -> None:
@@ -177,20 +231,8 @@ def self_test(contract: dict, fixture: dict) -> None:
         ),
         "dedupe collision",
     )
-    expect_failure(
-        contract,
-        fixture,
-        lambda data: data["records"][0].update(direction_signal="BUY"),
-        "forbidden direction authority",
-    )
-    expect_failure(
-        contract,
-        fixture,
-        lambda data: data["records"][0].update(
-            metadata={"analysis": {"direction_signal": "BUY"}}
-        ),
-        "nested forbidden direction authority",
-    )
+    for label, mutate in authority_mutation_matrix():
+        expect_failure(contract, fixture, mutate, label)
     expect_failure(
         contract,
         fixture,
