@@ -1,0 +1,47 @@
+{
+  "contract_id": "NEWS_CONTEXT_SCHEDULER_CATCHUP_V1",
+  "fixture_id": "news-context-scheduler-catchup-v1-synthetic",
+  "fixture_kind": "SYNTHETIC_METADATA_ONLY",
+  "scenarios": [
+    {
+      "scenario_id": "routine-success",
+      "source_family": "GDELT",
+      "previous_watermark": "2026-08-01T09:00:00Z",
+      "invocation_time": "2026-08-01T10:00:00Z",
+      "expected_window_start": "2026-08-01T08:55:00Z",
+      "expected_window_end": "2026-08-01T10:00:00Z",
+      "manifest_persisted": true,
+      "expected_next_watermark": "2026-08-01T10:00:00Z"
+    },
+    {
+      "scenario_id": "scheduler-gap-catchup",
+      "source_family": "SEC",
+      "previous_watermark": "2026-08-01T10:00:00Z",
+      "invocation_time": "2026-08-01T12:30:00Z",
+      "expected_window_start": "2026-08-01T09:55:00Z",
+      "expected_window_end": "2026-08-01T12:30:00Z",
+      "manifest_persisted": true,
+      "expected_next_watermark": "2026-08-01T12:30:00Z"
+    },
+    {
+      "scenario_id": "manifest-persistence-failure",
+      "source_family": "GDELT",
+      "previous_watermark": "2026-08-01T12:30:00Z",
+      "invocation_time": "2026-08-01T13:30:00Z",
+      "expected_window_start": "2026-08-01T12:25:00Z",
+      "expected_window_end": "2026-08-01T13:30:00Z",
+      "manifest_persisted": false,
+      "expected_next_watermark": "2026-08-01T12:30:00Z"
+    },
+    {
+      "scenario_id": "retry-after-persistence-failure",
+      "source_family": "GDELT",
+      "previous_watermark": "2026-08-01T12:30:00Z",
+      "invocation_time": "2026-08-01T13:30:00Z",
+      "expected_window_start": "2026-08-01T12:25:00Z",
+      "expected_window_end": "2026-08-01T13:30:00Z",
+      "manifest_persisted": true,
+      "expected_next_watermark": "2026-08-01T13:30:00Z"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "contract_id": "NEWS_CONTEXT_SCHEDULER_CATCHUP_V1",
+  "schema_version": 1,
+  "status": "PROPOSED_OFFLINE_ONLY",
+  "authority_effect": "NONE",
+  "purpose": "Deterministic synthetic-only scheduler catch-up contract for future News Context collection. It defines watermark, overlap, idempotence and persistence semantics without activating external fetch or research evaluation.",
+  "scope": {
+    "external_fetch": false,
+    "live_ingest": false,
+    "retained_external_corpus": false,
+    "economic_evaluation": false,
+    "protected_split_opening": false,
+    "direction_signal": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "credential_access": false,
+    "order_submission": false,
+    "capital_authority": false
+  },
+  "source_families": [
+    "GDELT",
+    "SEC"
+  ],
+  "planner": {
+    "watermark_semantics": "LAST_DURABLY_PERSISTED_WINDOW_END",
+    "overlap_seconds": 300,
+    "window_start_rule": "durable_watermark_minus_overlap",
+    "window_end_rule": "invocation_time",
+    "future_window": "REJECT",
+    "watermark_advance_rule": "ONLY_AFTER_MANIFEST_PERSISTED",
+    "watermark_regression": "REJECT"
+  },
+  "idempotence": {
+    "manifest_identity": "sha256(source_family|previous_watermark|window_start|window_end)",
+    "same_inputs_same_manifest": true,
+    "rerun_duplicate_action": "NOOP_AFTER_DEDUPE"
+  },
+  "failure_semantics": {
+    "persistence_failure_advances_watermark": false,
+    "scheduler_gap_requires_catchup": true,
+    "source_unavailable_distinct_from_scheduler_gap": true,
+    "no_result_distinct_from_scheduler_gap": true
+  },
+  "evidence_boundary": {
+    "fixtures": "SYNTHETIC_METADATA_ONLY",
+    "software_test_is_alpha_evidence": false,
+    "news_direction_authority": false
+  }
+}
