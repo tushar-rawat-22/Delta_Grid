@@ -23,6 +23,7 @@
   ],
   "planner": {
     "watermark_semantics": "LAST_DURABLY_PERSISTED_WINDOW_END",
+    "timestamp_format": "RFC3339_UTC_SECONDS_Z",
     "overlap_seconds": 300,
     "window_start_rule": "durable_watermark_minus_overlap",
     "window_end_rule": "invocation_time",

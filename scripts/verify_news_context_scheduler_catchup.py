@@ -33,6 +33,9 @@ def parse_utc_z(value: str, field: str) -> datetime:
         raise ContractError(f"{field} is not a valid RFC3339 timestamp") from exc
     if parsed.tzinfo != timezone.utc:
         raise ContractError(f"{field} must be UTC")
+    canonical = parsed.strftime("%Y-%m-%dT%H:%M:%SZ")
+    if value != canonical:
+        raise ContractError(f"{field} must use canonical RFC3339 UTC second precision")
     return parsed
 
 
@@ -63,6 +66,8 @@ def validate(contract: dict, fixture: dict) -> None:
     planner = contract.get("planner", {})
     if planner.get("watermark_semantics") != "LAST_DURABLY_PERSISTED_WINDOW_END":
         raise ContractError("watermark must represent the last durably persisted window end")
+    if planner.get("timestamp_format") != "RFC3339_UTC_SECONDS_Z":
+        raise ContractError("scheduler timestamps must use canonical UTC second precision")
     if planner.get("window_start_rule") != "durable_watermark_minus_overlap":
         raise ContractError("window start rule changed")
     if planner.get("window_end_rule") != "invocation_time":
@@ -234,6 +239,18 @@ def self_test(contract: dict, fixture: dict) -> None:
         fixture,
         lambda data: data["scenarios"][0].update(previous_watermark="2026-08-01T10:00:01Z"),
         "future durable watermark",
+    )
+    expect_failure(
+        contract,
+        fixture,
+        lambda data: data["scenarios"][0].update(
+            previous_watermark="2026-08-01T09:00:00.000Z",
+            invocation_time="2026-08-01T10:00:00.000Z",
+            expected_window_start="2026-08-01T08:55:00.000Z",
+            expected_window_end="2026-08-01T10:00:00.000Z",
+            expected_next_watermark="2026-08-01T10:00:00.000Z",
+        ),
+        "semantically identical timestamps create a second manifest spelling",
     )
 
 
