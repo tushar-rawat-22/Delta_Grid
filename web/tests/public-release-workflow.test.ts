@@ -3,6 +3,7 @@ import fs from "node:fs";
 import test from "node:test";
 
 const workflow = fs.readFileSync("../.github/workflows/public-observer-release.yml", "utf8");
+const liveBoundary = fs.readFileSync("scripts/verify-live-boundary.sh", "utf8");
 
 test("automatic public release runs only after successful main push CI", () => {
   assert.match(workflow, /workflow_run:/u);
@@ -77,6 +78,38 @@ test("public release proves the deployed observer is the requested commit before
   assert.match(workflow, /Cache-Control: no-cache/u);
   assert.match(workflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
   assert.match(workflow, /deployed public observer does not report requested release SHA/u);
+});
+
+test("public release retries only the classified evidence SHA convergence mismatch", () => {
+  const mismatchCheck = liveBoundary.indexOf('Verified live release $RELEASE_SHORT.');
+  const mismatchMarker = liveBoundary.indexOf('ERROR=evidence_release_sha_mismatch', mismatchCheck);
+  const mismatchFailure = liveBoundary.indexOf(
+    "FAIL: rendered evidence provenance does not match the live release marker",
+    mismatchCheck,
+  );
+
+  assert.ok(mismatchCheck >= 0);
+  assert.ok(mismatchMarker > mismatchCheck);
+  assert.ok(mismatchFailure > mismatchMarker);
+  assert.match(workflow, /max_attempts=12/u);
+  assert.match(workflow, /\^ERROR=evidence_release_sha_mismatch\$/u);
+  assert.match(workflow, /Evidence provenance has not converged to the release marker yet; retrying bounded verification\./u);
+});
+
+test("generic evidence failures are not mislabeled as release convergence races", () => {
+  const evidenceHttpCheck = liveBoundary.indexOf('if [ "$EVIDENCE_CODE" != "200" ]');
+  const verifiedStatusCheck = liveBoundary.indexOf(
+    'data-release-provenance-status="VERIFIED LIVE">VERIFIED LIVE</span>',
+  );
+  const mismatchCheck = liveBoundary.indexOf('Verified live release $RELEASE_SHORT.');
+
+  assert.ok(evidenceHttpCheck >= 0);
+  assert.ok(verifiedStatusCheck > evidenceHttpCheck);
+  assert.ok(mismatchCheck > verifiedStatusCheck);
+  assert.doesNotMatch(
+    liveBoundary.slice(evidenceHttpCheck, mismatchCheck),
+    /ERROR=evidence_release_sha_mismatch/u,
+  );
 });
 
 test("public release records version provenance and checks the live isolation boundary", () => {
