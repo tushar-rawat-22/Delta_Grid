@@ -194,6 +194,7 @@ if grep -Fq 'data-release-provenance-status="UNVERIFIED"' "$TMP/evidence.body" |
 fi
 RELEASE_SHORT="${RELEASE_SHA:0:12}"
 if ! grep -Fq "Verified live release $RELEASE_SHORT." "$TMP/evidence.body"; then
+  echo "ERROR=evidence_release_sha_mismatch" >&2
   echo "FAIL: rendered evidence provenance does not match the live release marker" >&2
   exit 1
 fi
