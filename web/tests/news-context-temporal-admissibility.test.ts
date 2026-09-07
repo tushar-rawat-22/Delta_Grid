@@ -31,9 +31,11 @@ test("first-seen time, not publication time, controls historical admissibility",
   const atSeen = replayNewsContextAt([base], "2026-09-07T09:10:00Z");
   assert.equal(atSeen.decisions[0].status, "admissible");
 
-  // Mandatory negative control: a published-at-only resolver leaks this event.
-  assert.equal(Date.parse(base.published_at!) <= Date.parse("2026-09-07T09:05:00Z"), true);
-  assert.equal(beforeSeen.decisions[0].status === "admissible", false);
+  // Mandatory negative control: a published-at-only resolver would admit the
+  // event at 09:05 even though the actual replay correctly keeps it future.
+  const publishedOnlyWouldAdmit =
+    Date.parse(base.published_at!) <= Date.parse("2026-09-07T09:05:00Z");
+  assert.equal(publishedOnlyWouldAdmit, true);
 });
 
 test("late arrival across a market-session boundary remains late", () => {
@@ -75,6 +77,53 @@ test("ordinary duplicates canonicalize without moving the original first-seen ti
   assert.equal(replay.decisions.length, 1);
   assert.equal(replay.decisions[0].status, "admissible");
   assert.equal(replay.decisions[0].first_seen_at, base.first_seen_at);
+});
+
+test("invalid duplicate temporal provenance poisons the canonical event", () => {
+  const malformedDuplicate = {
+    ...base,
+    source: "source-b",
+    first_seen_at: "not-a-timestamp",
+    fetched_at: "2026-09-07T09:20:00Z",
+  } satisfies NewsTemporalObservation;
+  const missingDuplicate = {
+    ...base,
+    source: "source-c",
+    first_seen_at: null,
+    fetched_at: "2026-09-07T09:21:00Z",
+  } satisfies NewsTemporalObservation;
+  const invertedDuplicate = {
+    ...base,
+    source: "source-d",
+    first_seen_at: "2026-09-07T09:22:00Z",
+    fetched_at: "2026-09-07T09:21:00Z",
+  } satisfies NewsTemporalObservation;
+
+  assert.equal(
+    replayNewsContextAt([base, malformedDuplicate], "2026-09-07T09:30:00Z").decisions[0].reason,
+    "malformed_temporal_provenance",
+  );
+  assert.equal(
+    replayNewsContextAt([base, missingDuplicate], "2026-09-07T09:30:00Z").decisions[0].reason,
+    "missing_temporal_provenance",
+  );
+  assert.equal(
+    replayNewsContextAt([base, invertedDuplicate], "2026-09-07T09:30:00Z").decisions[0].reason,
+    "inverted_temporal_provenance",
+  );
+});
+
+test("duplicate immutable provenance disagreement remains explicit", () => {
+  const changedPublication = {
+    ...base,
+    source: "source-b",
+    published_at: "2026-09-07T09:00:30Z",
+    fetched_at: "2026-09-07T09:20:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const replay = replayNewsContextAt([base, changedPublication], "2026-09-07T09:30:00Z");
+  assert.equal(replay.decisions[0].status, "unavailable");
+  assert.equal(replay.decisions[0].reason, "source_disagreement");
 });
 
 test("missing, malformed and inverted timestamps fail closed", () => {
