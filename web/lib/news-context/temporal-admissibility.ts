@@ -111,6 +111,17 @@ function uncertaintyFailure(
   return null;
 }
 
+function deterministicObservationOrder(
+  a: NewsTemporalObservation,
+  b: NewsTemporalObservation,
+): number {
+  const aFetched = parseTimestamp(a.fetched_at);
+  const bFetched = parseTimestamp(b.fetched_at);
+  const aKey = aFetched === null || Number.isNaN(aFetched) ? Number.POSITIVE_INFINITY : aFetched;
+  const bKey = bFetched === null || Number.isNaN(bFetched) ? Number.POSITIVE_INFINITY : bFetched;
+  return aKey - bKey || a.source.localeCompare(b.source);
+}
+
 function canonicalize(
   observations: readonly NewsTemporalObservation[],
 ): readonly NewsTemporalObservation[] {
@@ -123,28 +134,26 @@ function canonicalize(
 
   const result: NewsTemporalObservation[] = [];
   for (const [canonicalId, group] of grouped) {
-    const sorted = [...group].sort((a, b) => {
-      const aFetched = parseTimestamp(a.fetched_at);
-      const bFetched = parseTimestamp(b.fetched_at);
-      const aKey = aFetched === null || Number.isNaN(aFetched) ? Number.POSITIVE_INFINITY : aFetched;
-      const bKey = bFetched === null || Number.isNaN(bFetched) ? Number.POSITIVE_INFINITY : bFetched;
-      return aKey - bKey || a.source.localeCompare(b.source);
-    });
+    const sorted = [...group].sort(deterministicObservationOrder);
+
+    // A duplicate with broken temporal provenance cannot be hidden by a valid
+    // earlier fetch. Preserve one deterministic invalid observation so the
+    // canonical event fails closed in temporalFailure().
+    const invalid = [...group]
+      .filter((candidate) => temporalFailure(candidate) !== null)
+      .sort((a, b) => a.source.localeCompare(b.source))[0];
+    if (invalid) {
+      result.push(invalid);
+      continue;
+    }
 
     const anchor = sorted[0];
-    const anchorFirstSeen = parseTimestamp(anchor.first_seen_at);
-    const retroactive = sorted.slice(1).some((candidate) => {
-      const candidateFirstSeen = parseTimestamp(candidate.first_seen_at);
-      return (
-        anchorFirstSeen !== null &&
-        !Number.isNaN(anchorFirstSeen) &&
-        candidateFirstSeen !== null &&
-        !Number.isNaN(candidateFirstSeen) &&
-        candidateFirstSeen < anchorFirstSeen
-      );
-    });
+    const anchorFirstSeen = parseTimestamp(anchor.first_seen_at)!;
+    const firstSeenConflict = sorted.slice(1).some(
+      (candidate) => parseTimestamp(candidate.first_seen_at)! !== anchorFirstSeen,
+    );
 
-    if (retroactive) {
+    if (firstSeenConflict) {
       result.push({
         ...anchor,
         canonical_id: canonicalId,
@@ -152,6 +161,22 @@ function canonicalize(
       });
       continue;
     }
+
+    const immutableConflict = sorted.slice(1).some(
+      (candidate) =>
+        candidate.published_at !== anchor.published_at ||
+        candidate.entity_mapping !== anchor.entity_mapping ||
+        candidate.source_state !== anchor.source_state,
+    );
+    if (immutableConflict) {
+      result.push({
+        ...anchor,
+        canonical_id: canonicalId,
+        source_state: "disagreement",
+      });
+      continue;
+    }
+
     result.push(anchor);
   }
 
@@ -185,15 +210,8 @@ export function replayNewsContextAt(
           .filter((item) => item.canonical_id === observation.canonical_id)
           .map((item) => parseTimestamp(item.first_seen_at))
           .filter((value): value is number => value !== null && !Number.isNaN(value));
-        const fetchedValues = observations
-          .filter((item) => item.canonical_id === observation.canonical_id)
-          .map((item) => parseTimestamp(item.fetched_at))
-          .filter((value): value is number => value !== null && !Number.isNaN(value));
-        if (
-          firstSeenValues.length > 1 &&
-          fetchedValues.length > 1 &&
-          Math.min(...firstSeenValues) < parseTimestamp(observation.first_seen_at)!
-        ) {
+        const canonicalFirstSeen = parseTimestamp(observation.first_seen_at)!;
+        if (firstSeenValues.some((value) => value !== canonicalFirstSeen)) {
           return {
             ...uncertainty,
             reason: "retroactive_first_seen_conflict",
