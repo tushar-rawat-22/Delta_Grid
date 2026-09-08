@@ -303,5 +303,5 @@ try {
 } finally {
   cdp?.close();
   await Promise.all([stopChild(chrome), stopChild(server)]);
-  await rm(profileDir, { recursive: true, force: true });
+  await rm(profileDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 }
