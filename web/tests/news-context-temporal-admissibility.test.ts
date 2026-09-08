@@ -28,14 +28,15 @@ test("first-seen time, not publication time, controls historical admissibility",
   assert.equal(beforeSeen.decisions[0].reason, "future_first_seen");
   assert.equal(beforeSeen.interval_state, "no_events");
 
-  const atSeen = replayNewsContextAt([base], "2026-09-07T09:10:00Z");
-  assert.equal(atSeen.decisions[0].status, "admissible");
-
-  // Mandatory negative control: a published-at-only resolver would admit the
-  // event at 09:05 even though the actual replay correctly keeps it future.
+  // Mandatory negative control: publication time alone would leak this item
+  // into the historical replay before DeltaGrid actually observed it.
   const publishedOnlyWouldAdmit =
     Date.parse(base.published_at!) <= Date.parse("2026-09-07T09:05:00Z");
   assert.equal(publishedOnlyWouldAdmit, true);
+
+  const atSeen = replayNewsContextAt([base], "2026-09-07T09:10:00Z");
+  assert.equal(atSeen.decisions[0].status, "admissible");
+  assert.equal(atSeen.decisions[0].reason, "known_at_decision_time");
 });
 
 test("late arrival across a market-session boundary remains late", () => {
@@ -186,6 +187,21 @@ test("replay output is deterministic regardless of duplicate input order", () =>
   const forward = replayNewsContextAt([base, refetch], "2026-09-07T09:30:00Z");
   const reverse = replayNewsContextAt([refetch, base], "2026-09-07T09:30:00Z");
   assert.deepEqual(forward, reverse);
+});
+
+test("equal-key conflicting duplicates fail closed identically in either input order", () => {
+  const ambiguousDuplicate = {
+    ...base,
+    entity_mapping: "ambiguous",
+  } satisfies NewsTemporalObservation;
+
+  const forward = replayNewsContextAt([base, ambiguousDuplicate], "2026-09-07T09:30:00Z");
+  const reverse = replayNewsContextAt([ambiguousDuplicate, base], "2026-09-07T09:30:00Z");
+
+  assert.deepEqual(forward, reverse);
+  assert.equal(forward.interval_state, "unavailable");
+  assert.equal(forward.decisions[0].status, "unavailable");
+  assert.equal(forward.decisions[0].reason, "source_disagreement");
 });
 
 test("decision time must itself carry an explicit UTC offset", () => {
