@@ -194,5 +194,13 @@ jobs:
         working-directory: web
         run: npm run check
 
+      - name: Run dependency-free browser acceptance
+        working-directory: web
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v google-chrome
+          node scripts/verify-browser-acceptance.mjs
+
       - name: Inspect founder Worker dry-run bundle
         run: node web/scripts/verify-founder-bundle.mjs /tmp/deltagrid-founder-worker/worker.js
