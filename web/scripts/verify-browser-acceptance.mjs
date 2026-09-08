@@ -192,14 +192,31 @@ async function navigate(cdp, path, width, height) {
   );
 }
 
+async function stopChild(child) {
+  if (child.exitCode !== null || child.signalCode !== null) return;
+
+  const exited = new Promise((resolve) => child.once("exit", () => resolve(true)));
+  child.kill("SIGTERM");
+  const graceful = await Promise.race([exited, delay(2000).then(() => false)]);
+  if (graceful || child.exitCode !== null || child.signalCode !== null) return;
+
+  const killed = new Promise((resolve) => child.once("exit", resolve));
+  child.kill("SIGKILL");
+  await killed;
+}
+
 const chromeBinary = process.env.CHROME_BIN || "google-chrome";
 const profileDir = await mkdtemp(join(tmpdir(), "deltagrid-browser-"));
-const next = spawn("./node_modules/.bin/next", ["start", "-H", HOST, "-p", String(PORT)], {
-  cwd: new URL("..", import.meta.url),
-  stdio: ["ignore", "pipe", "pipe"],
-});
-next.stdout.pipe(process.stdout);
-next.stderr.pipe(process.stderr);
+const server = spawn(
+  "python",
+  ["-m", "http.server", String(PORT), "--bind", HOST, "--directory", "out"],
+  {
+    cwd: new URL("..", import.meta.url),
+    stdio: ["ignore", "pipe", "pipe"],
+  },
+);
+server.stdout.pipe(process.stdout);
+server.stderr.pipe(process.stderr);
 
 const chrome = spawn(
   chromeBinary,
@@ -243,7 +260,6 @@ try {
   console.log(JSON.stringify({ path: "/__deltagrid_missing_route__", status: 404 }));
 } finally {
   cdp?.close();
-  chrome.kill("SIGTERM");
-  next.kill("SIGTERM");
+  await Promise.all([stopChild(chrome), stopChild(server)]);
   await rm(profileDir, { recursive: true, force: true });
 }
