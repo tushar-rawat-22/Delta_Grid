@@ -353,7 +353,18 @@ verifyDevToolsActivePortContract();
 
 const chromeBinary = process.env.CHROME_BIN || "google-chrome";
 const profileDir = await mkdtemp(join(tmpdir(), "deltagrid-browser-"));
-const server = spawn("python", ["-m", "http.server", String(PORT), "--bind", HOST, "--directory", "out"], { cwd: new URL("..", import.meta.url), stdio: ["ignore", "pipe", "pipe"] });
+const staticServerScript = String.raw`import functools, http.server, os, sys
+class StaticExportHandler(http.server.SimpleHTTPRequestHandler):
+    def translate_path(self, path):
+        translated = super().translate_path(path)
+        if os.path.isdir(translated):
+            sibling_html = translated.rstrip(os.sep) + ".html"
+            if os.path.isfile(sibling_html):
+                return sibling_html
+        return translated
+handler = functools.partial(StaticExportHandler, directory="out")
+http.server.ThreadingHTTPServer((sys.argv[2], int(sys.argv[1])), handler).serve_forever()`;
+const server = spawn("python", ["-c", staticServerScript, String(PORT), HOST], { cwd: new URL("..", import.meta.url), stdio: ["ignore", "pipe", "pipe"] });
 server.stdout.pipe(process.stdout);
 server.stderr.pipe(process.stderr);
 const chrome = spawn(chromeBinary, ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage", "--remote-debugging-port=0", `--user-data-dir=${profileDir}`, "about:blank"], { stdio: ["ignore", "pipe", "pipe"] });
