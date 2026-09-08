@@ -8,6 +8,16 @@ const statusTape = [
   ["Capital", "Blocked", "blocked"],
 ] as const;
 
+const falsificationLoop = [
+  ["01", "Hypothesis", "State the claim before touching evidence."],
+  ["02", "Point-in-time data", "Use only information knowable at the decision timestamp."],
+  ["03", "Experiment", "Run deterministic, pre-specified comparisons."],
+  ["04", "Realistic costs", "Apply execution and friction assumptions before judging results."],
+  ["05", "Falsification", "Try to break the claim with controls and adverse cases."],
+  ["06", "Evidence", "Retain provenance, failures, and uncertainty."],
+  ["07", "Decision", "Reject, archive, or advance only within explicit authority."],
+] as const;
+
 const programme = [
   ["RAB-1", "Prospective research programme", "LOCKED", "No result opened"],
   ["M101", "Data custody and admission", "GATED", "Metadata / permit boundary"],
@@ -59,10 +69,10 @@ export function ResearchLanding() {
       <header className={styles.masthead}>
         <div className={styles.identity}>
           <p className={styles.kicker}>DeltaGrid / public research observer</p>
-          <h1>Research control</h1>
+          <h1>Falsify the claim before trusting the result.</h1>
           <p>
-            Read-only status for research scope, evidence boundaries, and sanitized system views.
-            Private founder state is separate.
+            A read-only view of how DeltaGrid moves from a market hypothesis to evidence and a bounded decision.
+            No public surface carries trading authority.
           </p>
         </div>
         <div className={styles.actions}>
@@ -71,20 +81,47 @@ export function ResearchLanding() {
         </div>
       </header>
 
-      <section className={styles.statusTape} aria-label="Current DeltaGrid status">
-        {statusTape.map(([label, value, tone]) => (
-          <div className={styles.statusCell} key={label}>
-            <span>{label}</span>
-            <strong className={tone === "blocked" ? styles.valueBlocked : styles.valueNeutral}>{value}</strong>
+      <section className={styles.heroGrid} aria-label="Research falsification loop and current authority">
+        <div className={styles.loopPanel}>
+          <div className={styles.loopHeading}>
+            <p>Research loop</p>
+            <span>Hypothesis → evidence → bounded decision</span>
           </div>
-        ))}
+          <ol className={styles.loopTrack}>
+            {falsificationLoop.map(([index, label, description]) => (
+              <li key={label}>
+                <span className={styles.loopIndex}>{index}</span>
+                <div>
+                  <strong>{label}</strong>
+                  <p>{description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <aside className={styles.authorityPanel} aria-label="Current DeltaGrid authority">
+          <div className={styles.authorityHeading}>
+            <p>Current authority</p>
+            <span>Research control · read-only observer</span>
+          </div>
+          <div className={styles.authorityGrid}>
+            {statusTape.map(([label, value, tone]) => (
+              <div className={styles.authorityCell} key={label}>
+                <span>{label}</span>
+                <strong className={tone === "blocked" ? styles.valueBlocked : styles.valueNeutral}>{value}</strong>
+              </div>
+            ))}
+          </div>
+          <p className={styles.authorityNote}>No broker connection · no order path · public authority effect: none.</p>
+        </aside>
       </section>
 
       <div className={styles.executiveGrid}>
         <section className={styles.primaryPanel} aria-labelledby="programme-title">
           <div className={styles.panelHeading}>
             <div>
-              <p className={styles.sectionCode}>01 / PROGRAMME</p>
+              <p className={styles.sectionCode}>Programme</p>
               <h2 id="programme-title">Research progression</h2>
             </div>
             <p>Capability and authority remain separate. A built component does not grant the next stage.</p>
@@ -115,7 +152,7 @@ export function ResearchLanding() {
         </section>
 
         <aside className={styles.sidePanel} aria-labelledby="posture-title">
-          <p className={styles.sectionCode}>02 / POSTURE</p>
+          <p className={styles.sectionCode}>Posture</p>
           <h2 id="posture-title">Control posture</h2>
           <dl className={styles.controlList}>
             <div><dt>Broker connection</dt><dd>None</dd></div>
@@ -131,7 +168,7 @@ export function ResearchLanding() {
       <section className={styles.section} aria-labelledby="coverage-title">
         <div className={styles.panelHeading}>
           <div>
-            <p className={styles.sectionCode}>03 / COVERAGE</p>
+            <p className={styles.sectionCode}>Coverage</p>
             <h2 id="coverage-title">Configured research surface</h2>
           </div>
           <p>Counts describe the sanitized workspace configuration, not an investment universe or an authorization to collect new protected data.</p>
@@ -152,7 +189,7 @@ export function ResearchLanding() {
         <section className={styles.section} aria-labelledby="inputs-title">
           <div className={styles.panelHeading}>
             <div>
-              <p className={styles.sectionCode}>04 / DATA</p>
+              <p className={styles.sectionCode}>Data</p>
               <h2 id="inputs-title">Public inputs</h2>
             </div>
           </div>
@@ -172,7 +209,7 @@ export function ResearchLanding() {
         <section className={styles.section} aria-labelledby="workbench-title">
           <div className={styles.panelHeading}>
             <div>
-              <p className={styles.sectionCode}>05 / WORKBENCH</p>
+              <p className={styles.sectionCode}>Workbench</p>
               <h2 id="workbench-title">Review surfaces</h2>
             </div>
           </div>
@@ -189,7 +226,7 @@ export function ResearchLanding() {
       <section className={styles.section} aria-labelledby="boundary-title">
         <div className={styles.panelHeading}>
           <div>
-            <p className={styles.sectionCode}>06 / BOUNDARY</p>
+            <p className={styles.sectionCode}>Boundary</p>
             <h2 id="boundary-title">Public / restricted separation</h2>
           </div>
           <p>The observer is for inspection. It is not an execution console.</p>
