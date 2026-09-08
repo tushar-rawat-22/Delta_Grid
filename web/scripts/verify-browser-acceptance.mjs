@@ -7,13 +7,47 @@ const HOST = "127.0.0.1";
 const PORT = 3000;
 const DEBUG_PORT = 9222;
 const BASE_URL = `http://${HOST}:${PORT}`;
-const AUTHORITY_MARKERS = [
-  "No validated alpha",
-  "Paper/live disabled",
-  "Capital blocked",
-];
+const EXPECTED_AUTHORITY_STATE = new Map([
+  ["Research result", "No validated alpha"],
+  ["Paper / live", "Disabled"],
+  ["Capital", "Blocked"],
+]);
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function assertAuthorityState(authorityPairs, context) {
+  const observed = new Map(authorityPairs);
+  for (const [label, expectedValue] of EXPECTED_AUTHORITY_STATE) {
+    const actualValue = observed.get(label);
+    if (actualValue !== expectedValue) {
+      throw new Error(
+        `${context} authority state mismatch for ${label}: expected ${expectedValue}, received ${actualValue ?? "MISSING"}`,
+      );
+    }
+  }
+}
+
+function verifyAuthorityAssertionContract() {
+  const canonical = [...EXPECTED_AUTHORITY_STATE.entries()];
+  assertAuthorityState(canonical, "semantic preflight canonical");
+
+  const mutations = [
+    canonical.filter(([label]) => label !== "Capital"),
+    canonical.map(([label, value]) => [label, label === "Paper / live" ? "Enabled" : value]),
+  ];
+  for (const mutation of mutations) {
+    let rejected = false;
+    try {
+      assertAuthorityState(mutation, "semantic preflight mutation");
+    } catch {
+      rejected = true;
+    }
+    if (!rejected) {
+      throw new Error("Semantic authority assertion accepted a protected-state mutation");
+    }
+  }
+  console.log("BROWSER_AUTHORITY_ASSERTION_CONTRACT=PASS");
+}
 
 async function waitForHttp(url, attempts = 80, pauseMs = 250) {
   let lastError;
@@ -144,11 +178,18 @@ async function navigate(cdp, path, width, height) {
     cdp,
     `(() => ({
       title: document.title,
-      bodyText: document.body?.innerText ?? "",
       bodyWidth: document.body?.scrollWidth ?? 0,
       rootWidth: document.documentElement?.scrollWidth ?? 0,
       viewportWidth: window.innerWidth,
-      readyState: document.readyState
+      readyState: document.readyState,
+      authorityRegions: Array.from(document.querySelectorAll('[aria-label^="Current DeltaGrid"]')).map((region) => ({
+        label: region.getAttribute("aria-label"),
+        pairs: Array.from(region.querySelectorAll("div")).map((cell) => {
+          const label = cell.querySelector(":scope > span")?.textContent?.trim();
+          const value = cell.querySelector(":scope > strong")?.textContent?.trim();
+          return label && value ? [label, value] : null;
+        }).filter(Boolean)
+      }))
     }))()`,
   );
 
@@ -162,11 +203,10 @@ async function navigate(cdp, path, width, height) {
       `${path} at ${width}px horizontally overflows: body=${pageState.bodyWidth}, root=${pageState.rootWidth}, viewport=${pageState.viewportWidth}`,
     );
   }
-  for (const marker of AUTHORITY_MARKERS) {
-    if (!pageState.bodyText.includes(marker)) {
-      throw new Error(`${path} at ${width}px is missing authority marker: ${marker}`);
-    }
-  }
+
+  const authorityPairs = pageState.authorityRegions.flatMap((region) => region.pairs);
+  assertAuthorityState(authorityPairs, `${path} at ${width}px`);
+
   if (consoleErrors.length) {
     throw new Error(`${path} at ${width}px console errors: ${consoleErrors.join(" | ")}`);
   }
@@ -187,7 +227,7 @@ async function navigate(cdp, path, width, height) {
       console_errors: 0,
       runtime_exceptions: 0,
       server_errors: 0,
-      authority_markers: AUTHORITY_MARKERS,
+      authority_state: Object.fromEntries(EXPECTED_AUTHORITY_STATE),
     }),
   );
 }
@@ -204,6 +244,8 @@ async function stopChild(child) {
   child.kill("SIGKILL");
   await killed;
 }
+
+verifyAuthorityAssertionContract();
 
 const chromeBinary = process.env.CHROME_BIN || "google-chrome";
 const profileDir = await mkdtemp(join(tmpdir(), "deltagrid-browser-"));
