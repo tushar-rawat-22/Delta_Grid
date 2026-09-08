@@ -178,9 +178,10 @@ function canonicalize(
       continue;
     }
 
+    const anchorPublished = parseTimestamp(anchor.published_at)!;
     const immutableConflict = sorted.slice(1).some(
       (candidate) =>
-        candidate.published_at !== anchor.published_at ||
+        parseTimestamp(candidate.published_at)! !== anchorPublished ||
         candidate.entity_mapping !== anchor.entity_mapping ||
         candidate.source_state !== anchor.source_state,
     );
