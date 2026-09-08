@@ -111,6 +111,13 @@ function uncertaintyFailure(
   return null;
 }
 
+function compareNullableText(a: string | null, b: string | null): number {
+  if (a === b) return 0;
+  if (a === null) return -1;
+  if (b === null) return 1;
+  return a.localeCompare(b);
+}
+
 function deterministicObservationOrder(
   a: NewsTemporalObservation,
   b: NewsTemporalObservation,
@@ -119,7 +126,16 @@ function deterministicObservationOrder(
   const bFetched = parseTimestamp(b.fetched_at);
   const aKey = aFetched === null || Number.isNaN(aFetched) ? Number.POSITIVE_INFINITY : aFetched;
   const bKey = bFetched === null || Number.isNaN(bFetched) ? Number.POSITIVE_INFINITY : bFetched;
-  return aKey - bKey || a.source.localeCompare(b.source);
+  return (
+    aKey - bKey ||
+    a.source.localeCompare(b.source) ||
+    compareNullableText(a.first_seen_at, b.first_seen_at) ||
+    compareNullableText(a.published_at, b.published_at) ||
+    compareNullableText(a.fetched_at, b.fetched_at) ||
+    a.entity_mapping.localeCompare(b.entity_mapping) ||
+    a.source_state.localeCompare(b.source_state) ||
+    a.canonical_id.localeCompare(b.canonical_id)
+  );
 }
 
 function canonicalize(
@@ -141,7 +157,7 @@ function canonicalize(
     // canonical event fails closed in temporalFailure().
     const invalid = [...group]
       .filter((candidate) => temporalFailure(candidate) !== null)
-      .sort((a, b) => a.source.localeCompare(b.source))[0];
+      .sort(deterministicObservationOrder)[0];
     if (invalid) {
       result.push(invalid);
       continue;
@@ -172,6 +188,7 @@ function canonicalize(
       result.push({
         ...anchor,
         canonical_id: canonicalId,
+        entity_mapping: "resolved",
         source_state: "disagreement",
       });
       continue;
