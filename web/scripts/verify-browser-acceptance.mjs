@@ -12,6 +12,12 @@ const EXPECTED_AUTHORITY_STATE = new Map([
   ["Paper / live", "Disabled"],
   ["Capital", "Blocked"],
 ]);
+const PUBLIC_ROUTES = ["/", "/research", "/markets", "/evidence", "/risk", "/system", "/missions"];
+const VIEWPORTS = [
+  { width: 1440, height: 1000, reducedMotion: false },
+  { width: 390, height: 844, reducedMotion: false },
+  { width: 320, height: 720, reducedMotion: true },
+];
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -177,10 +183,16 @@ async function evaluate(cdp, expression) {
   return result.result?.value;
 }
 
-async function navigate(cdp, path, width, height) {
+async function pressTab(cdp) {
+  await cdp.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "Tab", code: "Tab", windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9 });
+  await cdp.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Tab", code: "Tab", windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9 });
+}
+
+async function navigate(cdp, path, width, height, reducedMotion = false) {
   const consoleErrors = [];
   const exceptions = [];
   const serverErrors = [];
+  const networkFailures = [];
   let active = true;
   cdp.on("Runtime.consoleAPICalled", ({ type, args = [] }) => {
     if (active && ["error", "assert"].includes(type)) consoleErrors.push(args.map((arg) => arg.value ?? arg.description ?? "").join(" "));
@@ -191,35 +203,114 @@ async function navigate(cdp, path, width, height) {
   cdp.on("Network.responseReceived", ({ response }) => {
     if (active && response.status >= 500) serverErrors.push(`${response.status} ${response.url}`);
   });
+  cdp.on("Network.loadingFailed", ({ errorText, canceled }) => {
+    if (active && !canceled) networkFailures.push(errorText ?? "Network loading failed");
+  });
   await cdp.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: width <= 390 });
+  await cdp.send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-reduced-motion", value: reducedMotion ? "reduce" : "no-preference" }],
+  });
   const loaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
   await cdp.send("Page.navigate", { url: `${BASE_URL}${path}` });
   await loaded;
   await delay(350);
   const pageState = await evaluate(cdp, `(() => ({
     title: document.title,
+    pathname: location.pathname,
     bodyWidth: document.body?.scrollWidth ?? 0,
     rootWidth: document.documentElement?.scrollWidth ?? 0,
     viewportWidth: window.innerWidth,
     readyState: document.readyState,
+    reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
     authorityRegions: Array.from(document.querySelectorAll('[aria-label^="Current DeltaGrid"]')).map((region) => ({
       pairs: Array.from(region.querySelectorAll("div")).map((cell) => {
         const label = cell.querySelector(":scope > span")?.textContent?.trim();
         const value = cell.querySelector(":scope > strong")?.textContent?.trim();
         return label && value ? [label, value] : null;
       }).filter(Boolean)
-    }))
+    })),
+    focusableCount: Array.from(document.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((element) => {
+      const rect = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
+    }).length,
+    unsafeSameOriginTargets: Array.from(document.querySelectorAll('a[href], form[action]')).map((element) => element.href || element.action).filter(Boolean).filter((target) => {
+      const url = new URL(target, location.href);
+      return url.origin === location.origin && /(?:^|\\/)(?:admin|private|founder)(?:\\/|$)/i.test(url.pathname);
+    }),
+    demoControlCount: document.querySelectorAll('nav[aria-label="Demo research workspace"] button').length,
   }))()`);
-  active = false;
   if (pageState.readyState !== "complete") throw new Error(`${path} at ${width}px did not reach complete readyState`);
+  if (pageState.pathname !== path) throw new Error(`${path} at ${width}px navigated to unexpected pathname ${pageState.pathname}`);
   if (pageState.bodyWidth > pageState.viewportWidth || pageState.rootWidth > pageState.viewportWidth) {
     throw new Error(`${path} at ${width}px horizontally overflows: body=${pageState.bodyWidth}, root=${pageState.rootWidth}, viewport=${pageState.viewportWidth}`);
   }
-  assertAuthorityState(pageState.authorityRegions.flatMap((region) => region.pairs), `${path} at ${width}px`);
+  if (path === "/") {
+    assertAuthorityState(pageState.authorityRegions.flatMap((region) => region.pairs), `${path} at ${width}px`);
+  }
+  if (reducedMotion && !pageState.reducedMotion) throw new Error(`${path} at ${width}px did not honor reduced-motion emulation`);
+  if (pageState.focusableCount < 1) throw new Error(`${path} at ${width}px exposes no keyboard-focusable public control`);
+  if (pageState.unsafeSameOriginTargets.length) {
+    throw new Error(`${path} at ${width}px exposes private/admin same-origin targets: ${pageState.unsafeSameOriginTargets.join(" | ")}`);
+  }
+
+  await pressTab(cdp);
+  const focusState = await evaluate(cdp, `(() => {
+    const element = document.activeElement;
+    if (!element || element === document.body || element === document.documentElement) return null;
+    const rect = element.getBoundingClientRect();
+    return { tag: element.tagName, visible: rect.width > 0 && rect.height > 0 };
+  })()`);
+  if (!focusState?.visible) throw new Error(`${path} at ${width}px keyboard Tab did not reach a visible focus target`);
+
+  if (path === "/research" && width === 390) {
+    const controls = await evaluate(cdp, `Array.from(document.querySelectorAll('nav[aria-label="Demo research workspace"] button')).map((button) => button.textContent?.trim()).filter(Boolean)`);
+    for (let index = 0; index < controls.length; index += 1) {
+      await evaluate(cdp, `(() => { const buttons = document.querySelectorAll('nav[aria-label="Demo research workspace"] button'); buttons[${index}]?.click(); })()`);
+      await delay(25);
+      const selected = await evaluate(cdp, `document.querySelector('nav[aria-label="Demo research workspace"] button:nth-of-type(${index + 1})')?.textContent?.trim()`);
+      if (!selected) throw new Error(`/research demo control ${index + 1} disappeared after activation`);
+    }
+    if (controls.length !== pageState.demoControlCount || controls.length < 1) {
+      throw new Error(`/research demo-control matrix changed during activation: before=${pageState.demoControlCount} exercised=${controls.length}`);
+    }
+  }
+
+  active = false;
   if (consoleErrors.length) throw new Error(`${path} at ${width}px console errors: ${consoleErrors.join(" | ")}`);
   if (exceptions.length) throw new Error(`${path} at ${width}px runtime exceptions: ${exceptions.join(" | ")}`);
   if (serverErrors.length) throw new Error(`${path} at ${width}px observed 5xx responses: ${serverErrors.join(" | ")}`);
-  console.log(JSON.stringify({ path, width, height, title: pageState.title, overflow: false, console_errors: 0, runtime_exceptions: 0, server_errors: 0, authority_state: Object.fromEntries(EXPECTED_AUTHORITY_STATE) }));
+  if (networkFailures.length) throw new Error(`${path} at ${width}px network failures: ${networkFailures.join(" | ")}`);
+  console.log(JSON.stringify({
+    path,
+    width,
+    height,
+    title: pageState.title,
+    overflow: false,
+    reduced_motion: reducedMotion,
+    keyboard_focus: true,
+    console_errors: 0,
+    runtime_exceptions: 0,
+    server_errors: 0,
+    network_failures: 0,
+    unsafe_same_origin_targets: 0,
+    demo_controls_exercised: path === "/research" && width === 390 ? pageState.demoControlCount : 0,
+    authority_state: path === "/" ? Object.fromEntries(EXPECTED_AUTHORITY_STATE) : "root_contract_only",
+  }));
+}
+
+async function reloadDeepLink(cdp, path) {
+  const loaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
+  await cdp.send("Page.navigate", { url: `${BASE_URL}${path}` });
+  await loaded;
+  const reloaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
+  await cdp.send("Page.reload", { ignoreCache: true });
+  await reloaded;
+  const state = await evaluate(cdp, `({ pathname: location.pathname, readyState: document.readyState })`);
+  if (state.pathname !== path || state.readyState !== "complete") {
+    throw new Error(`Deep-link reload failed for ${path}: ${JSON.stringify(state)}`);
+  }
+  console.log(JSON.stringify({ path, deep_link_reload: true }));
 }
 
 async function stopChild(child) {
@@ -253,8 +344,15 @@ try {
   cdp = createCdp(target.webSocketDebuggerUrl);
   await cdp.ready();
   await Promise.all([cdp.send("Page.enable"), cdp.send("Runtime.enable"), cdp.send("Network.enable")]);
-  await navigate(cdp, "/", 1440, 1000);
-  await navigate(cdp, "/", 390, 844);
+
+  for (const route of PUBLIC_ROUTES) {
+    for (const viewport of VIEWPORTS) {
+      await navigate(cdp, route, viewport.width, viewport.height, viewport.reducedMotion);
+    }
+  }
+
+  await reloadDeepLink(cdp, "/research");
+
   const missing = await fetch(`${BASE_URL}/__deltagrid_missing_route__`, { redirect: "manual" });
   if (missing.status !== 404) throw new Error(`Missing-route contract expected 404, received ${missing.status}`);
   console.log(JSON.stringify({ path: "/__deltagrid_missing_route__", status: 404 }));
