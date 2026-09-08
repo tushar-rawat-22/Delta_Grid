@@ -21,6 +21,28 @@ const VIEWPORTS = [
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function normalizePublicPath(pathname) {
+  if (pathname === "/") return "/";
+  return pathname.replace(/\/+$/, "");
+}
+
+function assertPublicPath(actual, expected, context) {
+  if (normalizePublicPath(actual) !== normalizePublicPath(expected)) {
+    throw new Error(`${context} navigated to unexpected pathname ${actual}`);
+  }
+}
+
+function verifyPublicPathContract() {
+  assertPublicPath("/research", "/research", "path preflight canonical");
+  assertPublicPath("/research/", "/research", "path preflight static-directory canonicalization");
+  for (const invalid of ["/research-private", "/research/admin", "/", "/markets/"]) {
+    let rejected = false;
+    try { assertPublicPath(invalid, "/research", "path preflight mutation"); } catch { rejected = true; }
+    if (!rejected) throw new Error(`Public path contract accepted non-equivalent route ${invalid}`);
+  }
+  console.log("BROWSER_PUBLIC_PATH_CONTRACT=PASS");
+}
+
 function assertAuthorityState(authorityPairs, context) {
   const observed = new Map(authorityPairs);
   for (const [label, expectedValue] of EXPECTED_AUTHORITY_STATE) {
@@ -241,7 +263,7 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     demoControlCount: document.querySelectorAll('nav[aria-label="Demo research workspace"] button').length,
   }))()`);
   if (pageState.readyState !== "complete") throw new Error(`${path} at ${width}px did not reach complete readyState`);
-  if (pageState.pathname !== path) throw new Error(`${path} at ${width}px navigated to unexpected pathname ${pageState.pathname}`);
+  assertPublicPath(pageState.pathname, path, `${path} at ${width}px`);
   if (pageState.bodyWidth > pageState.viewportWidth || pageState.rootWidth > pageState.viewportWidth) {
     throw new Error(`${path} at ${width}px horizontally overflows: body=${pageState.bodyWidth}, root=${pageState.rootWidth}, viewport=${pageState.viewportWidth}`);
   }
@@ -307,7 +329,8 @@ async function reloadDeepLink(cdp, path) {
   await cdp.send("Page.reload", { ignoreCache: true });
   await reloaded;
   const state = await evaluate(cdp, `({ pathname: location.pathname, readyState: document.readyState })`);
-  if (state.pathname !== path || state.readyState !== "complete") {
+  assertPublicPath(state.pathname, path, `deep-link reload ${path}`);
+  if (state.readyState !== "complete") {
     throw new Error(`Deep-link reload failed for ${path}: ${JSON.stringify(state)}`);
   }
   console.log(JSON.stringify({ path, deep_link_reload: true }));
@@ -324,6 +347,7 @@ async function stopChild(child) {
   await killed;
 }
 
+verifyPublicPathContract();
 verifyAuthorityAssertionContract();
 verifyDevToolsActivePortContract();
 
