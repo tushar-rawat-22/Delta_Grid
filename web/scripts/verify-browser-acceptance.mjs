@@ -1,13 +1,11 @@
 import { spawn } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const HOST = "127.0.0.1";
 const PORT = 3000;
-const DEBUG_PORT = 9222;
 const BASE_URL = `http://${HOST}:${PORT}`;
-const CDP_BASE_URL = `http://${HOST}:${DEBUG_PORT}`;
 const CDP_STARTUP_TIMEOUT_MS = 8000;
 const EXPECTED_AUTHORITY_STATE = new Map([
   ["Research result", "No validated alpha"],
@@ -42,19 +40,44 @@ function verifyAuthorityAssertionContract() {
   console.log("BROWSER_AUTHORITY_ASSERTION_CONTRACT=PASS");
 }
 
-function isTransientCdpBootstrapError(error) {
-  const cause = error?.cause ?? error;
-  return ["ECONNREFUSED", "ECONNRESET", "EPIPE"].includes(cause?.code);
+function parseDevToolsActivePort(content) {
+  const [portLine, browserPath, ...extra] = content.trim().split(/\r?\n/);
+  if (extra.length || !portLine || !browserPath) {
+    throw new Error("DevToolsActivePort must contain exactly a port and browser websocket path");
+  }
+  if (!/^\d+$/.test(portLine)) throw new Error("DevToolsActivePort port is not numeric");
+  const port = Number(portLine);
+  if (!Number.isSafeInteger(port) || port < 1 || port > 65535) {
+    throw new Error("DevToolsActivePort port is outside the valid TCP range");
+  }
+  if (!/^\/devtools\/browser\/[A-Za-z0-9._-]+$/.test(browserPath)) {
+    throw new Error("DevToolsActivePort browser websocket path is malformed");
+  }
+  return {
+    port,
+    browserPath,
+    httpBaseUrl: `http://${HOST}:${port}`,
+    browserWebSocketUrl: `ws://${HOST}:${port}${browserPath}`,
+  };
 }
 
-function verifyCdpStartupClassifierContract() {
-  const transient = Object.assign(new Error("connect refused"), { code: "ECONNREFUSED" });
-  const wrapped = new TypeError("fetch failed", { cause: transient });
-  const persistent = new Error("protocol mismatch");
-  if (!isTransientCdpBootstrapError(wrapped) || isTransientCdpBootstrapError(persistent)) {
-    throw new Error("CDP startup classifier contract failed");
+function verifyDevToolsActivePortContract() {
+  const parsed = parseDevToolsActivePort("43123\n/devtools/browser/test-id\n");
+  if (parsed.port !== 43123 || parsed.browserWebSocketUrl !== "ws://127.0.0.1:43123/devtools/browser/test-id") {
+    throw new Error("DevToolsActivePort canonical parse failed");
   }
-  console.log("BROWSER_CDP_STARTUP_CLASSIFIER=PASS");
+  for (const invalid of [
+    "",
+    "not-a-port\n/devtools/browser/test-id\n",
+    "70000\n/devtools/browser/test-id\n",
+    "43123\n/devtools/page/test-id\n",
+    "43123\n/devtools/browser/test-id\nextra\n",
+  ]) {
+    let rejected = false;
+    try { parseDevToolsActivePort(invalid); } catch { rejected = true; }
+    if (!rejected) throw new Error(`DevToolsActivePort parser accepted malformed readiness metadata: ${JSON.stringify(invalid)}`);
+  }
+  console.log("BROWSER_DEVTOOLS_ACTIVE_PORT_CONTRACT=PASS");
 }
 
 async function waitForHttp(url, attempts = 80, pauseMs = 250) {
@@ -63,19 +86,6 @@ async function waitForHttp(url, attempts = 80, pauseMs = 250) {
     try {
       const response = await fetch(url, { redirect: "manual" });
       if (response.status < 500) return response;
-      lastError = new Error(`${url} returned ${response.status}`);
-    } catch (error) { lastError = error; }
-    await delay(pauseMs);
-  }
-  throw lastError ?? new Error(`Timed out waiting for ${url}`);
-}
-
-async function waitForJson(url, attempts = 80, pauseMs = 100) {
-  let lastError;
-  for (let attempt = 0; attempt < attempts; attempt += 1) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) return await response.json();
       lastError = new Error(`${url} returned ${response.status}`);
     } catch (error) { lastError = error; }
     await delay(pauseMs);
@@ -122,36 +132,43 @@ function createCdp(wsUrl) {
   };
 }
 
-async function createTargetAfterCdpHandshake(chrome) {
+async function waitForChromeDebugger(chrome, profileDir) {
+  const readinessPath = join(profileDir, "DevToolsActivePort");
   const deadline = Date.now() + CDP_STARTUP_TIMEOUT_MS;
-  let lastTransient;
   while (Date.now() < deadline) {
     if (chrome.exitCode !== null || chrome.signalCode !== null) {
-      throw new Error(`Chrome exited before CDP became ready: exit=${chrome.exitCode} signal=${chrome.signalCode}`);
+      throw new Error(`Chrome exited before debugger readiness: exit=${chrome.exitCode} signal=${chrome.signalCode}`);
     }
+    let content;
     try {
-      const version = await waitForJson(`${CDP_BASE_URL}/json/version`, 1, 0);
-      if (!version.webSocketDebuggerUrl) throw new Error("Chrome CDP version response omitted webSocketDebuggerUrl");
-      const browserCdp = createCdp(version.webSocketDebuggerUrl);
-      try {
-        await browserCdp.ready();
-        await browserCdp.send("Browser.getVersion");
-      } finally {
-        browserCdp.close();
-      }
-      const response = await fetch(`${CDP_BASE_URL}/json/new?about:blank`, { method: "PUT" });
-      if (!response.ok) throw new Error(`Could not create Chrome target: ${response.status}`);
-      const target = await response.json();
-      if (!target.webSocketDebuggerUrl) throw new Error("Chrome target omitted webSocketDebuggerUrl");
-      console.log("BROWSER_CDP_STARTUP_HANDSHAKE=PASS");
-      return target;
+      content = await readFile(readinessPath, "utf8");
     } catch (error) {
-      if (!isTransientCdpBootstrapError(error)) throw error;
-      lastTransient = error;
-      await delay(100);
+      if (error?.code !== "ENOENT") throw error;
+      await delay(50);
+      continue;
     }
+    const readiness = parseDevToolsActivePort(content);
+    const browserCdp = createCdp(readiness.browserWebSocketUrl);
+    try {
+      await browserCdp.ready();
+      await browserCdp.send("Browser.getVersion");
+    } catch (error) {
+      throw new Error("Chrome published DevToolsActivePort but browser-level CDP handshake failed", { cause: error });
+    } finally {
+      browserCdp.close();
+    }
+    console.log("BROWSER_CDP_STARTUP_HANDSHAKE=PASS");
+    return readiness;
   }
-  throw new Error(`Chrome CDP startup remained unavailable for ${CDP_STARTUP_TIMEOUT_MS}ms`, { cause: lastTransient });
+  throw new Error(`Chrome did not publish DevToolsActivePort within ${CDP_STARTUP_TIMEOUT_MS}ms`);
+}
+
+async function createTarget(readiness) {
+  const response = await fetch(`${readiness.httpBaseUrl}/json/new?about:blank`, { method: "PUT" });
+  if (!response.ok) throw new Error(`Could not create Chrome target: ${response.status}`);
+  const target = await response.json();
+  if (!target.webSocketDebuggerUrl) throw new Error("Chrome target omitted webSocketDebuggerUrl");
+  return target;
 }
 
 async function evaluate(cdp, expression) {
@@ -217,21 +234,22 @@ async function stopChild(child) {
 }
 
 verifyAuthorityAssertionContract();
-verifyCdpStartupClassifierContract();
+verifyDevToolsActivePortContract();
 
 const chromeBinary = process.env.CHROME_BIN || "google-chrome";
 const profileDir = await mkdtemp(join(tmpdir(), "deltagrid-browser-"));
 const server = spawn("python", ["-m", "http.server", String(PORT), "--bind", HOST, "--directory", "out"], { cwd: new URL("..", import.meta.url), stdio: ["ignore", "pipe", "pipe"] });
 server.stdout.pipe(process.stdout);
 server.stderr.pipe(process.stderr);
-const chrome = spawn(chromeBinary, ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage", `--remote-debugging-port=${DEBUG_PORT}`, `--user-data-dir=${profileDir}`, "about:blank"], { stdio: ["ignore", "pipe", "pipe"] });
+const chrome = spawn(chromeBinary, ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage", "--remote-debugging-port=0", `--user-data-dir=${profileDir}`, "about:blank"], { stdio: ["ignore", "pipe", "pipe"] });
 chrome.stdout.pipe(process.stdout);
 chrome.stderr.pipe(process.stderr);
 
 let cdp;
 try {
   await waitForHttp(`${BASE_URL}/`);
-  const target = await createTargetAfterCdpHandshake(chrome);
+  const readiness = await waitForChromeDebugger(chrome, profileDir);
+  const target = await createTarget(readiness);
   cdp = createCdp(target.webSocketDebuggerUrl);
   await cdp.ready();
   await Promise.all([cdp.send("Page.enable"), cdp.send("Runtime.enable"), cdp.send("Network.enable")]);
