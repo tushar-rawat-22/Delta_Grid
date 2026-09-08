@@ -188,6 +188,21 @@ test("replay output is deterministic regardless of duplicate input order", () =>
   assert.deepEqual(forward, reverse);
 });
 
+test("equal-key conflicting duplicates fail closed identically in either input order", () => {
+  const ambiguousDuplicate = {
+    ...base,
+    entity_mapping: "ambiguous",
+  } satisfies NewsTemporalObservation;
+
+  const forward = replayNewsContextAt([base, ambiguousDuplicate], "2026-09-07T09:30:00Z");
+  const reverse = replayNewsContextAt([ambiguousDuplicate, base], "2026-09-07T09:30:00Z");
+
+  assert.deepEqual(forward, reverse);
+  assert.equal(forward.interval_state, "unavailable");
+  assert.equal(forward.decisions[0].status, "unavailable");
+  assert.equal(forward.decisions[0].reason, "source_disagreement");
+});
+
 test("decision time must itself carry an explicit UTC offset", () => {
   assert.throws(
     () => replayNewsContextAt([base], "2026-09-07 09:10:00"),
