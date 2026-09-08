@@ -40,7 +40,7 @@ const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{
 function parseTimestamp(value: string | null): number | null {
   if (value === null) return null;
 
-  const match = ISO_TIMESTAMP.exec(value);
+  const match = value.match(ISO_TIMESTAMP);
   if (!match) return Number.NaN;
 
   const year = Number(match[1]);
