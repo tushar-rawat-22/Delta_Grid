@@ -46,6 +46,11 @@ function parseTimestamp(value: string | null): number | null {
   return Number.isFinite(parsed) ? parsed : Number.NaN;
 }
 
+function canonicalSourceIdentity(value: string): string | null {
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
 function temporalFailure(
   observation: NewsTemporalObservation,
 ): NewsTemporalDecisionWithoutSources | null {
@@ -83,7 +88,7 @@ function temporalFailure(
 function uncertaintyFailure(
   observation: NewsTemporalObservation,
 ): NewsTemporalDecisionWithoutSources | null {
-  if (observation.source.trim().length === 0) {
+  if (canonicalSourceIdentity(observation.source) === null) {
     return {
       canonical_id: observation.canonical_id,
       status: "unavailable",
@@ -138,9 +143,11 @@ function deterministicObservationOrder(
   const bFetched = parseTimestamp(b.fetched_at);
   const aKey = aFetched === null || Number.isNaN(aFetched) ? Number.POSITIVE_INFINITY : aFetched;
   const bKey = bFetched === null || Number.isNaN(bFetched) ? Number.POSITIVE_INFINITY : bFetched;
+  const aSource = canonicalSourceIdentity(a.source) ?? a.source;
+  const bSource = canonicalSourceIdentity(b.source) ?? b.source;
   return (
     aKey - bKey ||
-    a.source.localeCompare(b.source) ||
+    aSource.localeCompare(bSource) ||
     compareNullableText(a.first_seen_at, b.first_seen_at) ||
     compareNullableText(a.published_at, b.published_at) ||
     compareNullableText(a.fetched_at, b.fetched_at) ||
@@ -157,8 +164,8 @@ function canonicalSources(
   return [...new Set(
     observations
       .filter((observation) => observation.canonical_id === canonicalId)
-      .map((observation) => observation.source)
-      .filter((source) => source.trim().length > 0),
+      .map((observation) => canonicalSourceIdentity(observation.source))
+      .filter((source): source is string => source !== null),
   )].sort((a, b) => a.localeCompare(b));
 }
 
@@ -179,7 +186,7 @@ function canonicalize(
     // Missing source identity is provenance failure. A later duplicate with no
     // attributable source cannot be hidden behind an otherwise valid anchor.
     const missingSourceIdentity = [...group]
-      .filter((candidate) => candidate.source.trim().length === 0)
+      .filter((candidate) => canonicalSourceIdentity(candidate.source) === null)
       .sort(deterministicObservationOrder)[0];
     if (missingSourceIdentity) {
       result.push(missingSourceIdentity);
