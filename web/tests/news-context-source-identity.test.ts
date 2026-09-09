@@ -39,7 +39,7 @@ test("a later duplicate with missing source identity poisons the canonical event
   assert.deepEqual(replay.decisions[0].sources, ["source-a"]);
 });
 
-test("valid source identity remains exact and deterministic", () => {
+test("valid source identity remains deterministic", () => {
   const secondSource = {
     ...base,
     source: "source-z",
@@ -49,4 +49,16 @@ test("valid source identity remains exact and deterministic", () => {
   const replay = replayNewsContextAt([secondSource, base], "2026-09-07T09:30:00Z");
   assert.equal(replay.decisions[0].status, "admissible");
   assert.deepEqual(replay.decisions[0].sources, ["source-a", "source-z"]);
+});
+
+test("source identity whitespace cannot manufacture source diversity", () => {
+  const paddedDuplicate = {
+    ...base,
+    source: "  source-a\t",
+    fetched_at: "2026-09-07T09:20:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const replay = replayNewsContextAt([paddedDuplicate, base], "2026-09-07T09:30:00Z");
+  assert.equal(replay.decisions[0].status, "admissible");
+  assert.deepEqual(replay.decisions[0].sources, ["source-a"]);
 });
