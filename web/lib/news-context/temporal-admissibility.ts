@@ -23,6 +23,7 @@ export type NewsTemporalDecision = Readonly<{
     | "retroactive_first_seen_conflict"
     | "ambiguous_entity_mapping"
     | "missing_entity_mapping"
+    | "missing_source_identity"
     | "source_stale"
     | "source_missing"
     | "source_disagreement";
@@ -82,6 +83,14 @@ function temporalFailure(
 function uncertaintyFailure(
   observation: NewsTemporalObservation,
 ): NewsTemporalDecisionWithoutSources | null {
+  if (observation.source.trim().length === 0) {
+    return {
+      canonical_id: observation.canonical_id,
+      status: "unavailable",
+      reason: "missing_source_identity",
+      first_seen_at: observation.first_seen_at,
+    };
+  }
   if (observation.entity_mapping === "ambiguous") {
     return {
       canonical_id: observation.canonical_id,
@@ -148,7 +157,8 @@ function canonicalSources(
   return [...new Set(
     observations
       .filter((observation) => observation.canonical_id === canonicalId)
-      .map((observation) => observation.source),
+      .map((observation) => observation.source)
+      .filter((source) => source.trim().length > 0),
   )].sort((a, b) => a.localeCompare(b));
 }
 
@@ -165,6 +175,16 @@ function canonicalize(
   const result: NewsTemporalObservation[] = [];
   for (const [canonicalId, group] of grouped) {
     const sorted = [...group].sort(deterministicObservationOrder);
+
+    // Missing source identity is provenance failure. A later duplicate with no
+    // attributable source cannot be hidden behind an otherwise valid anchor.
+    const missingSourceIdentity = [...group]
+      .filter((candidate) => candidate.source.trim().length === 0)
+      .sort(deterministicObservationOrder)[0];
+    if (missingSourceIdentity) {
+      result.push(missingSourceIdentity);
+      continue;
+    }
 
     // A duplicate with broken temporal provenance cannot be hidden by a valid
     // earlier fetch. Preserve one deterministic invalid observation so the
