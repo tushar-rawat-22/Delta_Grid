@@ -35,7 +35,10 @@ export type NewsTemporalReplay = Readonly<{
   decisions: readonly NewsTemporalDecision[];
 }>;
 
-const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,9}))?(Z|[+-](\d{2}):(\d{2}))$/;
+// Date.parse() only preserves millisecond precision. Accepting additional
+// fractional digits would silently collapse distinct source timestamps and
+// could hide temporal/source disagreement, so unsupported precision fails closed.
+const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-](\d{2}):(\d{2}))$/;
 
 function parseTimestamp(value: string | null): number | null {
   if (value === null) return null;
