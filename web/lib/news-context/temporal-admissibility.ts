@@ -27,7 +27,10 @@ export type NewsTemporalDecision = Readonly<{
     | "source_missing"
     | "source_disagreement";
   first_seen_at: string | null;
+  sources: readonly string[];
 }>;
+
+type NewsTemporalDecisionWithoutSources = Omit<NewsTemporalDecision, "sources">;
 
 export type NewsTemporalReplay = Readonly<{
   decision_time: string;
@@ -44,7 +47,7 @@ function parseTimestamp(value: string | null): number | null {
 
 function temporalFailure(
   observation: NewsTemporalObservation,
-): NewsTemporalDecision | null {
+): NewsTemporalDecisionWithoutSources | null {
   const published = parseTimestamp(observation.published_at);
   const firstSeen = parseTimestamp(observation.first_seen_at);
   const fetched = parseTimestamp(observation.fetched_at);
@@ -78,7 +81,7 @@ function temporalFailure(
 
 function uncertaintyFailure(
   observation: NewsTemporalObservation,
-): NewsTemporalDecision | null {
+): NewsTemporalDecisionWithoutSources | null {
   if (observation.entity_mapping === "ambiguous") {
     return {
       canonical_id: observation.canonical_id,
@@ -136,6 +139,17 @@ function deterministicObservationOrder(
     a.source_state.localeCompare(b.source_state) ||
     a.canonical_id.localeCompare(b.canonical_id)
   );
+}
+
+function canonicalSources(
+  observations: readonly NewsTemporalObservation[],
+  canonicalId: string,
+): readonly string[] {
+  return [...new Set(
+    observations
+      .filter((observation) => observation.canonical_id === canonicalId)
+      .map((observation) => observation.source),
+  )].sort((a, b) => a.localeCompare(b));
 }
 
 function canonicalize(
@@ -215,8 +229,9 @@ export function replayNewsContextAt(
   }
 
   const decisions = canonicalize(observations).map((observation): NewsTemporalDecision => {
+    const sources = canonicalSources(observations, observation.canonical_id);
     const temporal = temporalFailure(observation);
-    if (temporal) return temporal;
+    if (temporal) return { ...temporal, sources };
 
     const uncertainty = uncertaintyFailure(observation);
     if (uncertainty) {
@@ -233,10 +248,11 @@ export function replayNewsContextAt(
           return {
             ...uncertainty,
             reason: "retroactive_first_seen_conflict",
+            sources,
           };
         }
       }
-      return uncertainty;
+      return { ...uncertainty, sources };
     }
 
     const firstSeen = parseTimestamp(observation.first_seen_at)!;
@@ -246,6 +262,7 @@ export function replayNewsContextAt(
         status: "future",
         reason: "future_first_seen",
         first_seen_at: observation.first_seen_at,
+        sources,
       };
     }
 
@@ -254,6 +271,7 @@ export function replayNewsContextAt(
       status: "admissible",
       reason: "known_at_decision_time",
       first_seen_at: observation.first_seen_at,
+      sources,
     };
   });
 
