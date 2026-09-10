@@ -62,3 +62,27 @@ test("source identity whitespace cannot manufacture source diversity", () => {
   assert.equal(replay.decisions[0].status, "admissible");
   assert.deepEqual(replay.decisions[0].sources, ["source-a"]);
 });
+
+test("future first-seen source identity does not leak into earlier replay provenance", () => {
+  const futureSource = {
+    ...base,
+    source: "source-future",
+    first_seen_at: "2026-09-07T09:40:00Z",
+    fetched_at: "2026-09-07T09:41:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const replay = replayNewsContextAt([base, futureSource], "2026-09-07T09:30:00Z");
+  assert.deepEqual(replay.decisions[0].sources, ["source-a"]);
+});
+
+test("a source appears in provenance once its first-seen time is knowable", () => {
+  const laterSource = {
+    ...base,
+    source: "source-later",
+    first_seen_at: "2026-09-07T09:40:00Z",
+    fetched_at: "2026-09-07T09:41:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const replay = replayNewsContextAt([base, laterSource], "2026-09-07T09:45:00Z");
+  assert.deepEqual(replay.decisions[0].sources, ["source-a", "source-later"]);
+});
