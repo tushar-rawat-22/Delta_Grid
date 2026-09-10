@@ -261,7 +261,7 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     }).length,
     unsafeSameOriginTargets: Array.from(document.querySelectorAll('a[href], form[action]')).map((element) => element.href || element.action).filter(Boolean).filter((target) => {
       const url = new URL(target, location.href);
-      return url.origin === location.origin && /(?:^|\/)(?:admin|private|founder)(?:\/|$)/i.test(url.pathname);
+      return url.origin === location.origin && /(?:^|\\/)(?:admin|private|founder)(?:\\/|$)/i.test(url.pathname);
     }),
     demoControlCount: document.querySelectorAll('nav[aria-label="Demo research workspace"] button').length,
   }))()`);
