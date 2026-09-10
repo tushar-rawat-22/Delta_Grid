@@ -160,10 +160,15 @@ function deterministicObservationOrder(
 function canonicalSources(
   observations: readonly NewsTemporalObservation[],
   canonicalId: string,
+  decisionTime: number,
 ): readonly string[] {
   return [...new Set(
     observations
       .filter((observation) => observation.canonical_id === canonicalId)
+      .filter((observation) => {
+        const firstSeen = parseTimestamp(observation.first_seen_at);
+        return firstSeen !== null && !Number.isNaN(firstSeen) && firstSeen <= decisionTime;
+      })
       .map((observation) => canonicalSourceIdentity(observation.source))
       .filter((source): source is string => source !== null),
   )].sort((a, b) => a.localeCompare(b));
@@ -256,7 +261,7 @@ export function replayNewsContextAt(
   }
 
   const decisions = canonicalize(observations).map((observation): NewsTemporalDecision => {
-    const sources = canonicalSources(observations, observation.canonical_id);
+    const sources = canonicalSources(observations, observation.canonical_id, parsedDecisionTime);
     const temporal = temporalFailure(observation);
     if (temporal) return { ...temporal, sources };
 
