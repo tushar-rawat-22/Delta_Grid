@@ -209,3 +209,51 @@ test("decision time must itself carry an explicit UTC offset", () => {
     /offset-aware ISO timestamp/,
   );
 });
+
+test("canonical replay preserves sorted unique source identity", () => {
+  const secondSource = {
+    ...base,
+    source: "source-z",
+    fetched_at: "2026-09-07T09:20:00Z",
+  } satisfies NewsTemporalObservation;
+  const repeatedSource = {
+    ...base,
+    source: "source-a",
+    fetched_at: "2026-09-07T09:21:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const replay = replayNewsContextAt(
+    [secondSource, repeatedSource, base],
+    "2026-09-07T09:30:00Z",
+  );
+
+  assert.deepEqual(replay.decisions[0].sources, ["source-a", "source-z"]);
+});
+
+test("source disagreement keeps the identities that produced the rejection", () => {
+  const changedPublication = {
+    ...base,
+    source: "source-b",
+    published_at: "2026-09-07T09:00:30Z",
+    fetched_at: "2026-09-07T09:20:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const replay = replayNewsContextAt([changedPublication, base], "2026-09-07T09:30:00Z");
+
+  assert.equal(replay.decisions[0].reason, "source_disagreement");
+  assert.deepEqual(replay.decisions[0].sources, ["source-a", "source-b"]);
+});
+
+test("source provenance is invariant to duplicate input order", () => {
+  const secondSource = {
+    ...base,
+    source: "source-z",
+    fetched_at: "2026-09-07T09:20:00Z",
+  } satisfies NewsTemporalObservation;
+
+  const forward = replayNewsContextAt([base, secondSource], "2026-09-07T09:30:00Z");
+  const reverse = replayNewsContextAt([secondSource, base], "2026-09-07T09:30:00Z");
+
+  assert.deepEqual(forward.decisions[0].sources, ["source-a", "source-z"]);
+  assert.deepEqual(forward, reverse);
+});
