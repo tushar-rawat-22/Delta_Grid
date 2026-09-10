@@ -12,6 +12,23 @@ test("public rollback requires both an exact Worker version and release commit",
   assert.match(workflow, /ROLLBACK_PUBLIC_OBSERVER/u);
 });
 
+test("public rollback binds the target Worker version to the requested release before mutating production", () => {
+  const preflightIndex = workflow.indexOf("Verify target version exists and matches release provenance before rollback");
+  const viewIndex = workflow.indexOf('wrangler versions view "$TARGET_VERSION_ID"');
+  const messageIndex = workflow.indexOf('target.annotations?.["workers/message"]');
+  const expectedIndex = workflow.indexOf("DeltaGrid public observer ${expectedReleaseSha}");
+  const passIndex = workflow.indexOf("ROLLBACK_TARGET_PROVENANCE=PASS");
+  const rollbackIndex = workflow.indexOf('wrangler rollback "$TARGET_VERSION_ID"');
+
+  assert.ok(preflightIndex >= 0);
+  assert.ok(viewIndex > preflightIndex);
+  assert.ok(messageIndex > viewIndex);
+  assert.ok(expectedIndex > messageIndex);
+  assert.ok(passIndex > expectedIndex);
+  assert.ok(rollbackIndex > passIndex);
+  assert.match(workflow, /Rollback target version is not bound to the requested release SHA/u);
+});
+
 test("public rollback proves exact live release provenance before boundary verification", () => {
   const rollbackIndex = workflow.indexOf('wrangler rollback "$TARGET_VERSION_ID"');
   const provenanceIndex = workflow.indexOf("Verify exact live release provenance after rollback");

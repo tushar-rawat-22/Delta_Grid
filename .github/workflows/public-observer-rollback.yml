@@ -90,7 +90,7 @@ jobs:
         working-directory: web
         run: npm run verify:public-deploy
 
-      - name: Verify target version exists before rollback
+      - name: Verify target version exists and matches release provenance before rollback
         working-directory: web
         shell: bash
         env:
@@ -102,10 +102,28 @@ jobs:
             --json \
             --config wrangler.jsonc \
             > "$RUNNER_TEMP/rollback-target.json"
-          grep -Fq "$TARGET_VERSION_ID" "$RUNNER_TEMP/rollback-target.json" || {
-            echo "Requested version was not returned by Cloudflare"
-            exit 1
+
+          node --input-type=module - "$RUNNER_TEMP/rollback-target.json" "$TARGET_VERSION_ID" "$TARGET_RELEASE_SHA" <<'NODE'
+          import fs from "node:fs";
+
+          const [path, expectedVersionId, expectedReleaseSha] = process.argv.slice(2);
+          const target = JSON.parse(fs.readFileSync(path, "utf8"));
+          const versionId = target.id ?? target.version_id;
+          const message = target.annotations?.["workers/message"];
+          const expectedMessage = `DeltaGrid public observer ${expectedReleaseSha}`;
+
+          if (versionId !== expectedVersionId) {
+            console.error("Requested version was not returned by Cloudflare");
+            process.exit(1);
           }
+          if (message !== expectedMessage) {
+            console.error("Rollback target version is not bound to the requested release SHA");
+            console.error(`expected_message=${expectedMessage}`);
+            console.error(`observed_message=${message ?? "missing"}`);
+            process.exit(1);
+          }
+          console.log("ROLLBACK_TARGET_PROVENANCE=PASS");
+          NODE
 
       - name: Record pre-rollback deployment state
         working-directory: web
@@ -198,6 +216,7 @@ jobs:
             echo "Workflow run: \`${GITHUB_RUN_ID}\`"
             echo
             for item in \
+              "rollback-target.json:Verified rollback target" \
               "pre-rollback-deployment.txt:Pre-rollback deployment" \
               "post-rollback-deployment.txt:Post-rollback deployment" \
               "post-rollback-release.json:Post-rollback release marker" \
