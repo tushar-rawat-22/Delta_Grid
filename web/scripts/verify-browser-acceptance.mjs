@@ -6,7 +6,7 @@ import { join } from "node:path";
 const HOST = "127.0.0.1";
 const PORT = 3000;
 const BASE_URL = `http://${HOST}:${PORT}`;
-const CDP_STARTUP_TIMEOUT_MS = 8000;
+const CDP_STARTUP_TIMEOUT_MS = 20000;
 const EXPECTED_AUTHORITY_STATE = new Map([
   ["Research result", "No validated alpha"],
   ["Paper / live", "Disabled"],
@@ -162,7 +162,8 @@ function createCdp(wsUrl) {
 
 async function waitForChromeDebugger(chrome, profileDir) {
   const readinessPath = join(profileDir, "DevToolsActivePort");
-  const deadline = Date.now() + CDP_STARTUP_TIMEOUT_MS;
+  const startedAt = Date.now();
+  const deadline = startedAt + CDP_STARTUP_TIMEOUT_MS;
   while (Date.now() < deadline) {
     if (chrome.exitCode !== null || chrome.signalCode !== null) {
       throw new Error(`Chrome exited before debugger readiness: exit=${chrome.exitCode} signal=${chrome.signalCode}`);
@@ -185,7 +186,9 @@ async function waitForChromeDebugger(chrome, profileDir) {
     } finally {
       browserCdp.close();
     }
+    const startupMs = Date.now() - startedAt;
     console.log("BROWSER_CDP_STARTUP_HANDSHAKE=PASS");
+    console.log(JSON.stringify({ browser_cdp_startup_ms: startupMs, browser_cdp_startup_timeout_ms: CDP_STARTUP_TIMEOUT_MS }));
     return readiness;
   }
   throw new Error(`Chrome did not publish DevToolsActivePort within ${CDP_STARTUP_TIMEOUT_MS}ms`);
