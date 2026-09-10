@@ -39,9 +39,42 @@ export type NewsTemporalReplay = Readonly<{
   decisions: readonly NewsTemporalDecision[];
 }>;
 
+// Date.parse() only preserves millisecond precision. Accepting additional
+// fractional digits would silently collapse distinct source timestamps and
+// could hide temporal/source disagreement, so unsupported precision fails closed.
+const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-](\d{2}):(\d{2}))$/;
+
 function parseTimestamp(value: string | null): number | null {
   if (value === null) return null;
-  if (!/(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return Number.NaN;
+
+  const match = value.match(ISO_TIMESTAMP);
+  if (!match) return Number.NaN;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const offsetHour = match[8] === "Z" ? 0 : Number(match[9]);
+  const offsetMinute = match[8] === "Z" ? 0 : Number(match[10]);
+
+  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (
+    month < 1 ||
+    month > 12 ||
+    day < 1 ||
+    day > daysInMonth[month - 1] ||
+    hour > 23 ||
+    minute > 59 ||
+    second > 59 ||
+    offsetHour > 23 ||
+    offsetMinute > 59
+  ) {
+    return Number.NaN;
+  }
+
   const parsed = Date.parse(value);
   return Number.isFinite(parsed) ? parsed : Number.NaN;
 }
@@ -188,8 +221,6 @@ function canonicalize(
   for (const [canonicalId, group] of grouped) {
     const sorted = [...group].sort(deterministicObservationOrder);
 
-    // Missing source identity is provenance failure. A later duplicate with no
-    // attributable source cannot be hidden behind an otherwise valid anchor.
     const missingSourceIdentity = [...group]
       .filter((candidate) => canonicalSourceIdentity(candidate.source) === null)
       .sort(deterministicObservationOrder)[0];
@@ -198,9 +229,6 @@ function canonicalize(
       continue;
     }
 
-    // A duplicate with broken temporal provenance cannot be hidden by a valid
-    // earlier fetch. Preserve one deterministic invalid observation so the
-    // canonical event fails closed in temporalFailure().
     const invalid = [...group]
       .filter((candidate) => temporalFailure(candidate) !== null)
       .sort(deterministicObservationOrder)[0];
