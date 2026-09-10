@@ -386,7 +386,9 @@ try {
     }
   }
 
-  await reloadDeepLink(cdp, "/research");
+  for (const route of PUBLIC_ROUTES) {
+    await reloadDeepLink(cdp, route);
+  }
 
   const missing = await fetch(`${BASE_URL}/__deltagrid_missing_route__`, { redirect: "manual" });
   if (missing.status !== 404) throw new Error(`Missing-route contract expected 404, received ${missing.status}`);
