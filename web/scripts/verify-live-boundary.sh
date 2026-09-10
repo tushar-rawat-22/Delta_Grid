@@ -39,6 +39,19 @@ require_header() {
   fi
 }
 
+verify_security_headers() {
+  local file="$1"
+  local context="$2"
+  require_header "$file" '^strict-transport-security:[[:space:]]*max-age=31536000[[:space:]]*$' "$context Strict-Transport-Security"
+  require_header "$file" '^x-content-type-options:[[:space:]]*nosniff[[:space:]]*$' "$context X-Content-Type-Options"
+  require_header "$file" '^x-frame-options:[[:space:]]*DENY[[:space:]]*$' "$context X-Frame-Options"
+  require_header "$file" '^referrer-policy:[[:space:]]*no-referrer[[:space:]]*$' "$context Referrer-Policy"
+  require_header "$file" '^permissions-policy:' "$context Permissions-Policy"
+  require_header "$file" '^content-security-policy:' "$context Content-Security-Policy"
+  require_header "$file" '^cross-origin-opener-policy:[[:space:]]*same-origin[[:space:]]*$' "$context Cross-Origin-Opener-Policy"
+  require_header "$file" '^cross-origin-resource-policy:[[:space:]]*same-origin[[:space:]]*$' "$context Cross-Origin-Resource-Policy"
+}
+
 verify_anonymous_denied() {
   local label="$1"
   local url="$2"
@@ -108,14 +121,7 @@ do
   fi
 done
 
-require_header "$TMP/home.headers" '^strict-transport-security:[[:space:]]*max-age=31536000[[:space:]]*$' 'Strict-Transport-Security'
-require_header "$TMP/home.headers" '^x-content-type-options:[[:space:]]*nosniff[[:space:]]*$' 'X-Content-Type-Options'
-require_header "$TMP/home.headers" '^x-frame-options:[[:space:]]*DENY[[:space:]]*$' 'X-Frame-Options'
-require_header "$TMP/home.headers" '^referrer-policy:[[:space:]]*no-referrer[[:space:]]*$' 'Referrer-Policy'
-require_header "$TMP/home.headers" '^permissions-policy:' 'Permissions-Policy'
-require_header "$TMP/home.headers" '^content-security-policy:' 'Content-Security-Policy'
-require_header "$TMP/home.headers" '^cross-origin-opener-policy:[[:space:]]*same-origin[[:space:]]*$' 'Cross-Origin-Opener-Policy'
-require_header "$TMP/home.headers" '^cross-origin-resource-policy:[[:space:]]*same-origin[[:space:]]*$' 'Cross-Origin-Resource-Policy'
+verify_security_headers "$TMP/home.headers" "public homepage"
 
 if [[ "$PUBLIC_BASE" == *.workers.dev ]]; then
   require_header "$TMP/home.headers" '^x-robots-tag:[[:space:]]*noindex,[[:space:]]*nofollow[[:space:]]*$' 'workers.dev X-Robots-Tag'
@@ -124,6 +130,22 @@ fi
 echo "PUBLIC_HOMEPAGE=PASS"
 echo "PUBLIC_SECURITY_HEADERS=PASS"
 echo "PUBLIC_HSTS=PASS"
+
+
+echo "=== PUBLIC ROUTE SECURITY HEADERS ==="
+for route in research markets evidence risk system missions; do
+  route_headers_raw="$TMP/${route}.route.headers.raw"
+  route_headers="$TMP/${route}.route.headers"
+  route_body="$TMP/${route}.route.body"
+  route_code="$(request "$PUBLIC_BASE/$route" "$route_headers_raw" "$route_body")"
+  clean_headers "$route_headers_raw" > "$route_headers"
+  if [ "$route_code" != "200" ]; then
+    echo "FAIL: public /$route route HTTP=$route_code" >&2
+    exit 1
+  fi
+  verify_security_headers "$route_headers" "public /$route"
+done
+echo "PUBLIC_ROUTE_SECURITY_HEADERS=PASS"
 
 
 echo "=== PUBLIC RESEARCH DEMO ==="
