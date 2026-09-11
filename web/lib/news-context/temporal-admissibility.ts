@@ -347,6 +347,17 @@ export function replayNewsContextAt(
     const temporal = temporalFailure(observation);
     if (temporal) return { ...temporal, sources };
 
+    const firstSeen = parseTimestamp(observation.first_seen_at)!;
+    if (firstSeen > parsedDecisionTime) {
+      return {
+        canonical_id: observation.canonical_id,
+        status: "future",
+        reason: "future_first_seen",
+        first_seen_at: observation.first_seen_at,
+        sources,
+      };
+    }
+
     const uncertainty = uncertaintyFailure(observation);
     if (uncertainty) {
       if (
@@ -367,17 +378,6 @@ export function replayNewsContextAt(
         }
       }
       return { ...uncertainty, sources };
-    }
-
-    const firstSeen = parseTimestamp(observation.first_seen_at)!;
-    if (firstSeen > parsedDecisionTime) {
-      return {
-        canonical_id: observation.canonical_id,
-        status: "future",
-        reason: "future_first_seen",
-        first_seen_at: observation.first_seen_at,
-        sources,
-      };
     }
 
     return {
