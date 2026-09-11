@@ -11,6 +11,7 @@ request() {
   local url="$1"
   local headers="$2"
   local body="$3"
+  local method="${4:-GET}"
   curl \
     --silent \
     --show-error \
@@ -19,6 +20,7 @@ request() {
     --retry 2 \
     --retry-delay 1 \
     --retry-all-errors \
+    --request "$method" \
     --dump-header "$headers" \
     --output "$body" \
     --write-out '%{http_code}' \
@@ -56,6 +58,7 @@ verify_anonymous_denied() {
   local label="$1"
   local url="$2"
   local stem="$3"
+  local method="${4:-GET}"
   local upper_stem
   local headers_raw="$TMP/${stem}.headers.raw"
   local headers="$TMP/${stem}.headers"
@@ -65,7 +68,7 @@ verify_anonymous_denied() {
   upper_stem="$(printf '%s' "$stem" | tr '[:lower:]' '[:upper:]')"
 
   echo "=== $label ==="
-  code="$(request "$url" "$headers_raw" "$body")"
+  code="$(request "$url" "$headers_raw" "$body" "$method")"
   clean_headers "$headers_raw" > "$headers"
 
   case "$code" in
@@ -261,6 +264,21 @@ verify_anonymous_denied \
   "$FOUNDER_BASE/agent/v1/status" \
   "machine_api"
 
+# These bodyless POSTs target founder-auth-gated write routes. If Cloudflare Access
+# is ever missing, founder authentication still rejects the requests before any
+# command/research mutation is reached. No credentials, CSRF token, or payload are sent.
+verify_anonymous_denied \
+  "FOUNDER ACTION MUTATION ANONYMOUS BOUNDARY" \
+  "$FOUNDER_BASE/founder/actions" \
+  "founder_action_mutation" \
+  "POST"
+
+verify_anonymous_denied \
+  "FOUNDER RESEARCH MUTATION ANONYMOUS BOUNDARY" \
+  "$FOUNDER_BASE/api/research/v1/records" \
+  "founder_research_mutation" \
+  "POST"
+
 
 echo "=============================================="
 echo "DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS"
@@ -270,5 +288,6 @@ echo "PUBLIC_EVIDENCE_HTTP=$EVIDENCE_CODE"
 echo "PUBLIC_RELEASE_HTTP=$RELEASE_CODE"
 echo "PUBLIC_RELEASE_SHA=$RELEASE_SHA"
 echo "ROBOTS_HTTP=$ROBOTS_CODE"
-echo "ANONYMOUS_PRIVATE_SURFACE_COUNT=4"
+echo "ANONYMOUS_PRIVATE_SURFACE_COUNT=6"
+echo "ANONYMOUS_MUTATION_SURFACE_COUNT=2"
 echo "=============================================="
