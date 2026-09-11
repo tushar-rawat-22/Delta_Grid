@@ -295,6 +295,39 @@ function canonicalize(
   return result.sort((a, b) => a.canonical_id.localeCompare(b.canonical_id));
 }
 
+function observationsKnownAtDecisionTime(
+  observations: readonly NewsTemporalObservation[],
+  decisionTime: number,
+): readonly NewsTemporalObservation[] {
+  const grouped = new Map<string, NewsTemporalObservation[]>();
+  for (const observation of observations) {
+    const group = grouped.get(observation.canonical_id) ?? [];
+    group.push(observation);
+    grouped.set(observation.canonical_id, group);
+  }
+
+  const result: NewsTemporalObservation[] = [];
+  for (const group of grouped.values()) {
+    const knownOrUnplaceable = group.filter((observation) => {
+      const firstSeen = parseTimestamp(observation.first_seen_at);
+      return firstSeen === null || Number.isNaN(firstSeen) || firstSeen <= decisionTime;
+    });
+
+    if (knownOrUnplaceable.length > 0) {
+      result.push(...knownOrUnplaceable);
+      continue;
+    }
+
+    // The event exists in the source history but every valid observation was
+    // first seen after the decision time. Keep one deterministic representative
+    // so replay preserves the existing future/no_events result without letting
+    // future duplicate disagreement leak backward into historical state.
+    result.push([...group].sort(deterministicObservationOrder)[0]);
+  }
+
+  return result;
+}
+
 export function replayNewsContextAt(
   observations: readonly NewsTemporalObservation[],
   decisionTime: string,
@@ -308,8 +341,9 @@ export function replayNewsContextAt(
     return { decision_time: decisionTime, interval_state: "no_events", decisions: [] };
   }
 
-  const decisions = canonicalize(observations).map((observation): NewsTemporalDecision => {
-    const sources = canonicalSources(observations, observation.canonical_id, parsedDecisionTime);
+  const replayObservations = observationsKnownAtDecisionTime(observations, parsedDecisionTime);
+  const decisions = canonicalize(replayObservations).map((observation): NewsTemporalDecision => {
+    const sources = canonicalSources(replayObservations, observation.canonical_id, parsedDecisionTime);
     const temporal = temporalFailure(observation);
     if (temporal) return { ...temporal, sources };
 
@@ -317,9 +351,9 @@ export function replayNewsContextAt(
     if (uncertainty) {
       if (
         uncertainty.reason === "source_disagreement" &&
-        observations.filter((item) => item.canonical_id === observation.canonical_id).length > 1
+        replayObservations.filter((item) => item.canonical_id === observation.canonical_id).length > 1
       ) {
-        const firstSeenValues = observations
+        const firstSeenValues = replayObservations
           .filter((item) => item.canonical_id === observation.canonical_id)
           .map((item) => parseTimestamp(item.first_seen_at))
           .filter((value): value is number => value !== null && !Number.isNaN(value));
