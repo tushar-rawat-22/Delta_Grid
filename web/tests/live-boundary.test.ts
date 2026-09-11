@@ -67,6 +67,7 @@ test("live boundary workflow needs no deployment or founder credentials", () => 
   assert.doesNotMatch(verifier, /Authorization:/u);
   assert.doesNotMatch(verifier, /Cookie:/u);
   assert.doesNotMatch(verifier, /CF-Access-Client/u);
+  assert.doesNotMatch(verifier, /--data|--form/u);
 });
 
 test("live monitor configures the private Worker as a base, not one privileged path", () => {
@@ -88,6 +89,8 @@ test("live verifier checks public availability and all anonymous private surface
     "/founder",
     "/api/research/v1/bootstrap",
     "/agent/v1/status",
+    "/founder/actions",
+    "/api/research/v1/records",
   ]) {
     assert.ok(verifier.includes(`$FOUNDER_BASE${privatePath}`), privatePath);
   }
@@ -95,7 +98,8 @@ test("live verifier checks public availability and all anonymous private surface
   assert.match(verifier, /verify_anonymous_denied/u);
   assert.ok(verifier.includes("cloudflareaccess\\.com"));
   assert.match(verifier, /401\|403/u);
-  assert.match(verifier, /ANONYMOUS_PRIVATE_SURFACE_COUNT=4/u);
+  assert.match(verifier, /ANONYMOUS_PRIVATE_SURFACE_COUNT=6/u);
+  assert.match(verifier, /ANONYMOUS_MUTATION_SURFACE_COUNT=2/u);
   assert.match(verifier, /DELTAGRID_LIVE_PUBLIC_PRIVATE_BOUNDARY=PASS/u);
 });
 
@@ -109,8 +113,23 @@ test("public homepage verification follows stable authority semantics, not old m
   assert.match(verifier, /grep -Fqi/u);
 });
 
-test("anonymous machine-path check is non-mutating and detects missing edge isolation", () => {
-  assert.match(verifier, /\$FOUNDER_BASE\/agent\/v1\/status/u);
-  assert.doesNotMatch(verifier, /--request\s+POST|\s-X\s+POST/u);
-  assert.doesNotMatch(verifier, /--data|--form/u);
+test("anonymous mutation probes are bodyless and target founder-auth-gated write surfaces", () => {
+  assert.match(verifier, /local method="\$\{4:-GET\}"/u);
+  assert.match(verifier, /--request "\$method"/u);
+  assert.match(
+    verifier,
+    /\$FOUNDER_BASE\/founder\/actions" \\\n  "founder_action_mutation" \\\n  "POST"/u,
+  );
+  assert.match(
+    verifier,
+    /\$FOUNDER_BASE\/api\/research\/v1\/records" \\\n  "founder_research_mutation" \\\n  "POST"/u,
+  );
+  assert.match(verifier, /No credentials, CSRF token, or payload are sent/u);
+});
+
+test("anonymous machine-path check remains non-mutating", () => {
+  assert.match(
+    verifier,
+    /\$FOUNDER_BASE\/agent\/v1\/status" \\\n  "machine_api"\n/u,
+  );
 });
