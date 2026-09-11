@@ -23,10 +23,12 @@ export type NewsTemporalDecision = Readonly<{
     | "retroactive_first_seen_conflict"
     | "ambiguous_entity_mapping"
     | "missing_entity_mapping"
+    | "malformed_entity_mapping"
     | "missing_source_identity"
     | "source_stale"
     | "source_missing"
-    | "source_disagreement";
+    | "source_disagreement"
+    | "malformed_source_state";
   first_seen_at: string | null;
   sources: readonly string[];
 }>;
@@ -43,6 +45,8 @@ export type NewsTemporalReplay = Readonly<{
 // fractional digits would silently collapse distinct source timestamps and
 // could hide temporal/source disagreement, so unsupported precision fails closed.
 const ISO_TIMESTAMP = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-](\d{2}):(\d{2}))$/;
+const ENTITY_MAPPING_STATES = new Set<EntityMappingState>(["resolved", "ambiguous", "missing"]);
+const SOURCE_STATES = new Set<SourceState>(["available", "stale", "missing", "disagreement"]);
 
 function parseTimestamp(value: string | null): number | null {
   if (value === null) return null;
@@ -129,6 +133,14 @@ function uncertaintyFailure(
       first_seen_at: observation.first_seen_at,
     };
   }
+  if (!ENTITY_MAPPING_STATES.has(observation.entity_mapping)) {
+    return {
+      canonical_id: observation.canonical_id,
+      status: "unavailable",
+      reason: "malformed_entity_mapping",
+      first_seen_at: observation.first_seen_at,
+    };
+  }
   if (observation.entity_mapping === "ambiguous") {
     return {
       canonical_id: observation.canonical_id,
@@ -142,6 +154,14 @@ function uncertaintyFailure(
       canonical_id: observation.canonical_id,
       status: "unavailable",
       reason: "missing_entity_mapping",
+      first_seen_at: observation.first_seen_at,
+    };
+  }
+  if (!SOURCE_STATES.has(observation.source_state)) {
+    return {
+      canonical_id: observation.canonical_id,
+      status: "unavailable",
+      reason: "malformed_source_state",
       first_seen_at: observation.first_seen_at,
     };
   }
