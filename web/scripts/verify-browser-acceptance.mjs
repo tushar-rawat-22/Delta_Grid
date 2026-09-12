@@ -328,15 +328,48 @@ async function reloadDeepLink(cdp, path) {
   const loaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
   await cdp.send("Page.navigate", { url: `${BASE_URL}${path}` });
   await loaded;
+
+  const consoleErrors = [];
+  const exceptions = [];
+  const serverErrors = [];
+  const networkFailures = [];
+  let active = true;
+  cdp.on("Runtime.consoleAPICalled", ({ type, args = [] }) => {
+    if (active && ["error", "assert"].includes(type)) consoleErrors.push(args.map((arg) => arg.value ?? arg.description ?? "").join(" "));
+  });
+  cdp.on("Runtime.exceptionThrown", ({ exceptionDetails }) => {
+    if (active) exceptions.push(exceptionDetails?.exception?.description ?? exceptionDetails?.text ?? "Runtime exception");
+  });
+  cdp.on("Network.responseReceived", ({ response }) => {
+    if (active && response.status >= 500) serverErrors.push(`${response.status} ${response.url}`);
+  });
+  cdp.on("Network.loadingFailed", ({ errorText, canceled }) => {
+    if (active && !canceled) networkFailures.push(errorText ?? "Network loading failed");
+  });
+
   const reloaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
   await cdp.send("Page.reload", { ignoreCache: true });
   await reloaded;
+  await delay(350);
+  active = false;
+
   const state = await evaluate(cdp, `({ pathname: location.pathname, readyState: document.readyState })`);
   assertPublicPath(state.pathname, path, `deep-link reload ${path}`);
   if (state.readyState !== "complete") {
     throw new Error(`Deep-link reload failed for ${path}: ${JSON.stringify(state)}`);
   }
-  console.log(JSON.stringify({ path, deep_link_reload: true }));
+  if (consoleErrors.length) throw new Error(`deep-link reload ${path} console errors: ${consoleErrors.join(" | ")}`);
+  if (exceptions.length) throw new Error(`deep-link reload ${path} runtime exceptions: ${exceptions.join(" | ")}`);
+  if (serverErrors.length) throw new Error(`deep-link reload ${path} observed 5xx responses: ${serverErrors.join(" | ")}`);
+  if (networkFailures.length) throw new Error(`deep-link reload ${path} network failures: ${networkFailures.join(" | ")}`);
+  console.log(JSON.stringify({
+    path,
+    deep_link_reload: true,
+    console_errors: 0,
+    runtime_exceptions: 0,
+    server_errors: 0,
+    network_failures: 0,
+  }));
 }
 
 async function stopChild(child) {
