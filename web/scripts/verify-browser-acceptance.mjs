@@ -372,6 +372,79 @@ async function reloadDeepLink(cdp, path) {
   }));
 }
 
+async function navigateMissingRoute(cdp, path) {
+  const preflight = await fetch(`${BASE_URL}${path}`, { redirect: "manual" });
+  if (preflight.status !== 404) {
+    throw new Error(`Missing-route contract expected 404, received ${preflight.status}`);
+  }
+
+  const consoleErrors = [];
+  const exceptions = [];
+  const serverErrors = [];
+  const networkFailures = [];
+  const documentStatuses = [];
+  let active = true;
+  cdp.on("Runtime.consoleAPICalled", ({ type, args = [] }) => {
+    if (active && ["error", "assert"].includes(type)) consoleErrors.push(args.map((arg) => arg.value ?? arg.description ?? "").join(" "));
+  });
+  cdp.on("Runtime.exceptionThrown", ({ exceptionDetails }) => {
+    if (active) exceptions.push(exceptionDetails?.exception?.description ?? exceptionDetails?.text ?? "Runtime exception");
+  });
+  cdp.on("Network.responseReceived", ({ type, response }) => {
+    if (!active) return;
+    if (response.status >= 500) serverErrors.push(`${response.status} ${response.url}`);
+    if (type === "Document" && new URL(response.url).pathname === path) documentStatuses.push(response.status);
+  });
+  cdp.on("Network.loadingFailed", ({ errorText, canceled }) => {
+    if (active && !canceled) networkFailures.push(errorText ?? "Network loading failed");
+  });
+
+  const loaded = new Promise((resolve) => cdp.on("Page.loadEventFired", resolve));
+  await cdp.send("Page.navigate", { url: `${BASE_URL}${path}` });
+  await loaded;
+  await delay(350);
+  active = false;
+
+  const state = await evaluate(cdp, `(() => ({
+    pathname: location.pathname,
+    readyState: document.readyState,
+    bodyText: document.body?.innerText ?? "",
+    unsafeSameOriginTargets: Array.from(document.querySelectorAll('a[href], form[action]')).map((element) => element.href || element.action).filter(Boolean).filter((target) => {
+      const url = new URL(target, location.href);
+      return url.origin === location.origin && /(?:^|\\/)(?:admin|private|founder)(?:\\/|$)/i.test(url.pathname);
+    }),
+  }))()`);
+  assertPublicPath(state.pathname, path, `missing-route browser ${path}`);
+  if (state.readyState !== "complete") throw new Error(`Missing-route browser did not reach complete readyState: ${JSON.stringify(state)}`);
+  if (documentStatuses.length !== 1 || documentStatuses[0] !== 404) {
+    throw new Error(`Missing-route browser expected one 404 document response, received ${JSON.stringify(documentStatuses)}`);
+  }
+  if (!state.bodyText.trim()) throw new Error("Missing-route browser rendered an empty error surface");
+  const protectedMarkers = state.bodyText.match(/\b(?:admin|private|founder|credential|secret|token|permit|protected\s+split)\b/gi) ?? [];
+  if (protectedMarkers.length) {
+    throw new Error(`Missing-route browser leaked protected-looking terms: ${[...new Set(protectedMarkers.map((value) => value.toLowerCase()))].join(" | ")}`);
+  }
+  if (state.unsafeSameOriginTargets.length) {
+    throw new Error(`Missing-route browser exposes private/admin same-origin targets: ${state.unsafeSameOriginTargets.join(" | ")}`);
+  }
+  if (consoleErrors.length) throw new Error(`missing-route browser ${path} console errors: ${consoleErrors.join(" | ")}`);
+  if (exceptions.length) throw new Error(`missing-route browser ${path} runtime exceptions: ${exceptions.join(" | ")}`);
+  if (serverErrors.length) throw new Error(`missing-route browser ${path} observed 5xx responses: ${serverErrors.join(" | ")}`);
+  if (networkFailures.length) throw new Error(`missing-route browser ${path} network failures: ${networkFailures.join(" | ")}`);
+  console.log(JSON.stringify({
+    path,
+    status: 404,
+    browser_rendered: true,
+    ready_state: "complete",
+    console_errors: 0,
+    runtime_exceptions: 0,
+    server_errors: 0,
+    network_failures: 0,
+    protected_surface_markers: 0,
+    unsafe_same_origin_targets: 0,
+  }));
+}
+
 async function stopChild(child) {
   if (child.exitCode !== null || child.signalCode !== null) return;
   const exited = new Promise((resolve) => child.once("exit", () => resolve(true)));
@@ -426,9 +499,7 @@ try {
     await reloadDeepLink(cdp, route);
   }
 
-  const missing = await fetch(`${BASE_URL}/__deltagrid_missing_route__`, { redirect: "manual" });
-  if (missing.status !== 404) throw new Error(`Missing-route contract expected 404, received ${missing.status}`);
-  console.log(JSON.stringify({ path: "/__deltagrid_missing_route__", status: 404 }));
+  await navigateMissingRoute(cdp, "/__deltagrid_missing_route__");
 } finally {
   cdp?.close();
   await Promise.all([stopChild(chrome), stopChild(server)]);
