@@ -7,10 +7,11 @@ const HOST = "127.0.0.1";
 const PORT = 3000;
 const BASE_URL = `http://${HOST}:${PORT}`;
 const CDP_STARTUP_TIMEOUT_MS = 20000;
-const EXPECTED_AUTHORITY_STATE = new Map([
-  ["Research result", "No validated alpha"],
-  ["Paper / live", "Disabled"],
-  ["Capital", "Blocked"],
+const EXPECTED_RESEARCH_STATE = new Map([
+  ["Question", "Spot trade-flow after costs?"],
+  ["Stage", "Development closed"],
+  ["Decision", "4 of 4 rejected"],
+  ["Authority", "Effect NONE"],
 ]);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -113,11 +114,11 @@ async function evaluate(cdp, expression) {
   return result.result?.value;
 }
 
-function assertAuthorityState(pairs, context) {
+function assertResearchState(pairs, context) {
   const observed = new Map(pairs);
-  for (const [label, expected] of EXPECTED_AUTHORITY_STATE) {
+  for (const [label, expected] of EXPECTED_RESEARCH_STATE) {
     if (observed.get(label) !== expected) {
-      throw new Error(`${context} authority mismatch for ${label}: ${observed.get(label) ?? "MISSING"}`);
+      throw new Error(`${context} research state mismatch for ${label}: ${observed.get(label) ?? "MISSING"}`);
     }
   }
 }
@@ -127,7 +128,7 @@ async function captureState(cdp) {
     pathname: location.pathname,
     readyState: document.readyState,
     bodyText: document.body?.innerText ?? "",
-    authorityPairs: Array.from(document.querySelectorAll('[aria-label^="Current DeltaGrid"] div')).map((cell) => {
+    researchPairs: Array.from(document.querySelectorAll('[aria-label="Current research status"] div')).map((cell) => {
       const label = cell.querySelector(":scope > span")?.textContent?.trim();
       const value = cell.querySelector(":scope > strong")?.textContent?.trim();
       return label && value ? [label, value] : null;
@@ -147,7 +148,7 @@ async function navigateOnline(cdp) {
   const state = await captureState(cdp);
   if (state.pathname !== "/" || state.readyState !== "complete" || !state.bodyText.trim()) throw new Error(`Online baseline invalid: ${JSON.stringify(state)}`);
   if (state.unsafeSameOriginTargets.length) throw new Error(`Online baseline exposes private targets: ${state.unsafeSameOriginTargets.join(" | ")}`);
-  assertAuthorityState(state.authorityPairs, "online baseline");
+  assertResearchState(state.researchPairs, "online baseline");
   return state;
 }
 
@@ -164,7 +165,7 @@ async function proveOfflineContinuity(cdp, baseline) {
   if (offline.pathname !== baseline.pathname || offline.readyState !== "complete") throw new Error(`Offline document continuity failed: ${JSON.stringify(offline)}`);
   if (offline.bodyText !== baseline.bodyText) throw new Error("Already-rendered observer state changed while connectivity was unavailable");
   if (offline.unsafeSameOriginTargets.length) throw new Error(`Offline observer exposes private targets: ${offline.unsafeSameOriginTargets.join(" | ")}`);
-  assertAuthorityState(offline.authorityPairs, "offline continuity");
+  assertResearchState(offline.researchPairs, "offline continuity");
   console.log(JSON.stringify({ offline_continuity: true, network_probe: "rejected", rendered_state_preserved: true, authority_effect: "NONE" }));
 }
 
@@ -195,7 +196,7 @@ async function proveRecovery(cdp, baseline) {
   const recovered = await captureState(cdp);
   if (recovered.pathname !== baseline.pathname || recovered.readyState !== "complete" || !recovered.bodyText.trim()) throw new Error(`Recovered document invalid: ${JSON.stringify(recovered)}`);
   if (recovered.unsafeSameOriginTargets.length) throw new Error(`Recovered observer exposes private targets: ${recovered.unsafeSameOriginTargets.join(" | ")}`);
-  assertAuthorityState(recovered.authorityPairs, "recovered observer");
+  assertResearchState(recovered.researchPairs, "recovered observer");
   if (consoleErrors.length) throw new Error(`Recovery console errors: ${consoleErrors.join(" | ")}`);
   if (exceptions.length) throw new Error(`Recovery runtime exceptions: ${exceptions.join(" | ")}`);
   if (serverErrors.length) throw new Error(`Recovery observed 5xx responses: ${serverErrors.join(" | ")}`);

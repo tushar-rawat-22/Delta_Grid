@@ -60,6 +60,15 @@
   font-size: .82rem;
 }
 
+.decision code {
+  display: block;
+  margin-top: .45rem;
+  color: #9f8d8b;
+  font-size: .58rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .body {
   display: grid;
   grid-template-columns: minmax(0, 2.2fr) minmax(250px, .8fr);

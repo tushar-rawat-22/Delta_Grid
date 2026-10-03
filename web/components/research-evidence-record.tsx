@@ -13,6 +13,7 @@ export function ResearchEvidenceRecord() {
         <div className={styles.decision}>
           <span>Controlling decision</span>
           <strong>{alphaSearchBRecord.decisionLabel}</strong>
+          <code>{alphaSearchBRecord.decision}</code>
         </div>
       </header>
 
