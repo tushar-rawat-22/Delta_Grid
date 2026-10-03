@@ -10,10 +10,11 @@
     "esbuild@0.28.1": true,
     "fsevents@2.3.3": true,
     "unrs-resolver@1.12.2": true,
-    "workerd@1.20260917.1": true
+    "workerd@1.20260926.1": true
   },
   "scripts": {
     "install:locked-safe": "node scripts/install-locked-safe.mjs",
+    "audit:locked": "node scripts/audit-dependencies.mjs",
     "dev": "next dev",
     "dev:research": "vite --config research-app/vite.config.ts",
     "build": "next build",
@@ -38,7 +39,7 @@
   },
   "dependencies": {
     "jose": "6.2.12",
-    "next": "16.3.5",
+    "next": "16.3.8",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
@@ -48,10 +49,10 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.1",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.5",
+    "eslint-config-next": "16.3.8",
     "typescript": "6.0.3",
     "vite": "8.3.0",
-    "wrangler": "4.134.0"
+    "wrangler": "4.144.0"
   },
   "overrides": {
     "js-yaml": "4.3.2",

@@ -71,7 +71,7 @@ jobs:
 
       - name: Audit release dependency graph
         working-directory: web
-        run: npm audit --audit-level=low
+        run: npm run audit:locked
 
       - name: Run complete web and founder release gate
         working-directory: web

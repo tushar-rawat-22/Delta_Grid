@@ -171,7 +171,7 @@ jobs:
 
       - name: Audit web dependency graph
         working-directory: web
-        run: npm audit --audit-level=low
+        run: npm run audit:locked
 
       - name: Verify admitted projection against the pinned core
         shell: bash
