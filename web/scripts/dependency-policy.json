@@ -34,7 +34,17 @@
     },
     {
       "name": "workerd",
-      "version": "1.20260917.1"
+      "version": "1.20260926.1"
+    }
+  ],
+  "auditExceptions": [
+    {
+      "advisory": "GHSA-vfj7-8cjw-p6xm",
+      "package": "braces",
+      "version": "3.0.3",
+      "reach": "dev-only",
+      "expiresOn": "2026-11-03",
+      "rationale": "No patched braces release exists; the affected package is confined to the eslint-config-next lint toolchain."
     }
   ]
 }

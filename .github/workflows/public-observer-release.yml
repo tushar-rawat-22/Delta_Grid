@@ -105,7 +105,7 @@ jobs:
       - name: Audit release dependency graph
         if: steps.current.outputs.deploy == 'true'
         working-directory: web
-        run: npm audit --audit-level=low
+        run: npm run audit:locked
 
       - name: Run complete web and founder release gate
         if: steps.current.outputs.deploy == 'true'
