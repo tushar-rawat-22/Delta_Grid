@@ -1,5 +1,6 @@
 import { pageContent } from "../lib/site-content";
 import { EvidenceCard } from "./evidence-card";
+import { ResearchEvidenceRecord } from "./research-evidence-record";
 import { StatusStrip } from "./status-strip";
 
 const titleToPage = {
@@ -56,6 +57,7 @@ export function ObserverPage({ title }: ObserverPageProps) {
         <p className="lede">{content.summary}</p>
       </section>
       {page === "overview" ? <StatusStrip /> : null}
+      {page === "evidence" ? <ResearchEvidenceRecord /> : null}
       <section className="card-grid" aria-label="Public observer operating boundary">
         {observerBoundary.map((item) => (
           <article className="card" key={item.label}>

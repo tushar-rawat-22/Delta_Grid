@@ -1,21 +1,14 @@
 import Link from "next/link";
+import { alphaSearchBRecord } from "../lib/public-research-record";
 import styles from "./research-landing.module.css";
 
-const statusTape = [
-  ["Research result", "No validated alpha", "blocked"],
-  ["Selected candidate", "None selected", "neutral"],
-  ["Paper / live", "Disabled", "blocked"],
-  ["Capital", "Blocked", "blocked"],
-] as const;
-
-const falsificationLoop = [
-  ["01", "Hypothesis", "State the claim before touching evidence."],
-  ["02", "Point-in-time data", "Use only information knowable at the decision timestamp."],
-  ["03", "Experiment", "Run deterministic, pre-specified comparisons."],
-  ["04", "Realistic costs", "Apply execution and friction assumptions before judging results."],
-  ["05", "Falsification", "Try to break the claim with controls and adverse cases."],
-  ["06", "Evidence", "Retain provenance, failures, and uncertainty."],
-  ["07", "Decision", "Reject, archive, or advance only within explicit authority."],
+const researchStatus = [
+  ["Question", "Spot trade-flow after costs?"],
+  ["Stage", "Development closed"],
+  ["Evidence", `${alphaSearchBRecord.sourceRecords.length} linked source records`],
+  ["Decision", `${alphaSearchBRecord.rejectedCandidateCount} of ${alphaSearchBRecord.candidateCount} rejected`],
+  ["Published", alphaSearchBRecord.publicationDateLabel],
+  ["Authority", `Effect ${alphaSearchBRecord.authorityEffect}`],
 ] as const;
 
 const programme = [
@@ -68,52 +61,63 @@ export function ResearchLanding() {
     <main className={styles.shell}>
       <header className={styles.masthead}>
         <div className={styles.identity}>
-          <p className={styles.kicker}>DeltaGrid / public research observer</p>
-          <h1>Falsify the claim before trusting the result.</h1>
+          <p className={styles.kicker}>DeltaGrid / Research Cockpit</p>
+          <h1>A quantitative research system built to reject weak claims.</h1>
           <p>
-            A read-only view of how DeltaGrid moves from a market hypothesis to evidence and a bounded decision.
-            No public surface carries trading authority.
+            Inspect the question, costs, controls, evidence and decision behind a real closed experiment.
+            DeltaGrid currently has no validated alpha, selected candidate or trading authority.
           </p>
         </div>
         <div className={styles.actions}>
-          <Link href="/research">Demo workspace</Link>
-          <Link href="/about">Access model</Link>
+          <Link className={styles.primaryAction} href="/evidence#alpha-search-b">Inspect rejected experiment</Link>
+          <Link className={styles.secondaryAction} href="/research">Open sanitized demo</Link>
         </div>
       </header>
 
-      <section className={styles.heroGrid} aria-label="Research falsification loop and current authority">
-        <div className={styles.loopPanel}>
-          <div className={styles.loopHeading}>
-            <p>Research loop</p>
-            <span>Hypothesis → evidence → bounded decision</span>
+      <section className={styles.statusStrip} aria-label="Current research status">
+        {researchStatus.map(([label, value]) => (
+          <div key={label}>
+            <span>{label}</span>
+            <strong>{value}</strong>
           </div>
-          <ol className={styles.loopTrack}>
-            {falsificationLoop.map(([index, label, description]) => (
+        ))}
+      </section>
+
+      <section className={styles.featuredRecord} aria-labelledby="featured-record-title">
+        <div className={styles.recordStory}>
+          <div className={styles.recordHeading}>
+            <div>
+              <p className={styles.recordEyebrow}><span>Closed record</span> {alphaSearchBRecord.label}</p>
+              <h2 id="featured-record-title">{alphaSearchBRecord.question}</h2>
+            </div>
+            <span className={styles.rejectedState}>{alphaSearchBRecord.decisionLabel}</span>
+          </div>
+          <p className={styles.recordSummary}>{alphaSearchBRecord.summary}</p>
+          <ol className={styles.lineage} aria-label="Alpha Search B experiment lineage">
+            {alphaSearchBRecord.lineage.map(([index, label, detail]) => (
               <li key={label}>
-                <span className={styles.loopIndex}>{index}</span>
-                <div>
-                  <strong>{label}</strong>
-                  <p>{description}</p>
-                </div>
+                <span>{index}</span>
+                <strong>{label}</strong>
+                <p>{detail}</p>
               </li>
             ))}
           </ol>
+          <Link className={styles.recordAction} href="/evidence#alpha-search-b">
+            Inspect evidence and provenance <span aria-hidden="true">→</span>
+          </Link>
         </div>
 
-        <aside className={styles.authorityPanel} aria-label="Current DeltaGrid authority">
-          <div className={styles.authorityHeading}>
-            <p>Current authority</p>
-            <span>Research control · read-only observer</span>
-          </div>
-          <div className={styles.authorityGrid}>
-            {statusTape.map(([label, value, tone]) => (
-              <div className={styles.authorityCell} key={label}>
-                <span>{label}</span>
-                <strong className={tone === "blocked" ? styles.valueBlocked : styles.valueNeutral}>{value}</strong>
-              </div>
-            ))}
-          </div>
-          <p className={styles.authorityNote}>No broker connection · no order path · public authority effect: none.</p>
+        <aside className={styles.stopPanel} aria-labelledby="why-stopped-title">
+          <p className={styles.sectionCode}>Why it stopped</p>
+          <h2 id="why-stopped-title">Failure is the finding.</h2>
+          <p>Costs, sample gates, statistical controls and unchanged replication prevented a favorable-looking partial result from advancing.</p>
+          <dl>
+            <div><dt>Selected candidate</dt><dd>None</dd></div>
+            <div><dt>Validation opened</dt><dd>No</dd></div>
+            <div><dt>Holdout opened</dt><dd>No</dd></div>
+            <div><dt>Paper / live trading</dt><dd>Not authorized</dd></div>
+          </dl>
+          <p className={styles.authorityNote}>No broker connection · no order path · public authority effect: NONE.</p>
         </aside>
       </section>
 
