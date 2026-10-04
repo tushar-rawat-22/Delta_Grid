@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const landing = readFileSync(new URL("../components/research-landing.tsx", import.meta.url), "utf8");
+const landing = [
+  readFileSync(new URL("../components/research-landing.tsx", import.meta.url), "utf8"),
+  readFileSync(new URL("../lib/public-research-record.ts", import.meta.url), "utf8"),
+].join("\n");
 const shell = readFileSync(new URL("../app/public-shell.css", import.meta.url), "utf8");
 const roadmapSource = readFileSync(new URL("../../docs/DELIVERY_ROADMAP.json", import.meta.url), "utf8");
 const roadmap = JSON.parse(roadmapSource) as {
@@ -15,10 +18,9 @@ const roadmap = JSON.parse(roadmapSource) as {
 
 test("public observer keeps the durable research and authority markers prominent", () => {
   for (const marker of [
-    "No validated alpha",
-    "None selected",
-    "Disabled",
-    "Blocked",
+    "no validated alpha",
+    "no candidate advanced",
+    "Not authorized",
     "Candidate observation",
     "NOT AUTHORIZED",
     "authority effect NONE",

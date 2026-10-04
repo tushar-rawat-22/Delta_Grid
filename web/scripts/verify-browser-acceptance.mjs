@@ -21,6 +21,23 @@ const VIEWPORTS = [
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const EXPECTED_RESEARCH_STATE = new Map([
+  ["Question", "Spot trade-flow after costs?"],
+  ["Stage", "Development closed"],
+  ["Decision", "4 of 4 rejected"],
+  ["Authority", "Effect NONE"],
+]);
+
+function assertResearchState(researchPairs, context) {
+  const observed = new Map(researchPairs);
+  for (const [label, expectedValue] of EXPECTED_RESEARCH_STATE) {
+    const actualValue = observed.get(label);
+    if (actualValue !== expectedValue) {
+      throw new Error(`${context} research state mismatch for ${label}: expected ${expectedValue}, received ${actualValue ?? "MISSING"}`);
+    }
+  }
+}
+
 function normalizePublicPath(pathname) {
   if (pathname === "/") return "/";
   return pathname.replace(/\/+$/, "");
@@ -247,7 +264,7 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     viewportWidth: window.innerWidth,
     readyState: document.readyState,
     reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
-    authorityRegions: Array.from(document.querySelectorAll('[aria-label^="Current DeltaGrid"]')).map((region) => ({
+    researchRegions: Array.from(document.querySelectorAll('[aria-label="Current research status"]')).map((region) => ({
       pairs: Array.from(region.querySelectorAll("div")).map((cell) => {
         const label = cell.querySelector(":scope > span")?.textContent?.trim();
         const value = cell.querySelector(":scope > strong")?.textContent?.trim();
@@ -271,7 +288,7 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     throw new Error(`${path} at ${width}px horizontally overflows: body=${pageState.bodyWidth}, root=${pageState.rootWidth}, viewport=${pageState.viewportWidth}`);
   }
   if (path === "/") {
-    assertAuthorityState(pageState.authorityRegions.flatMap((region) => region.pairs), `${path} at ${width}px`);
+    assertResearchState(pageState.researchRegions.flatMap((region) => region.pairs), `${path} at ${width}px`);
   }
   if (reducedMotion && !pageState.reducedMotion) throw new Error(`${path} at ${width}px did not honor reduced-motion emulation`);
   if (pageState.focusableCount < 1) throw new Error(`${path} at ${width}px exposes no keyboard-focusable public control`);
@@ -320,7 +337,7 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     network_failures: 0,
     unsafe_same_origin_targets: 0,
     demo_controls_exercised: path === "/research" && width === 390 ? pageState.demoControlCount : 0,
-    authority_state: path === "/" ? Object.fromEntries(EXPECTED_AUTHORITY_STATE) : "root_contract_only",
+    research_state: path === "/" ? Object.fromEntries(EXPECTED_RESEARCH_STATE) : "root_contract_only",
   }));
 }
 
