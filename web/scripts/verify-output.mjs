@@ -87,6 +87,7 @@ for (const route of routes) {
 }
 
 const evidenceHtml = routeOutput.get("evidence").text;
+const evidenceText = evidenceHtml.replaceAll("<!-- -->", "");
 for (const marker of [
   "Verified projection",
   "Alpha Search B",
@@ -98,7 +99,7 @@ for (const marker of [
   "0e13dae7cddddff1110d79630682bfbc1495f1bc23d5ea95cf15e2906fb967c4",
   "bf288d8b6349c2843b5196fa1857ae9c464773bbcf7cad9d821785ea67dfb6e8",
 ]) {
-  if (!evidenceHtml.includes(marker)) throw new Error(`P1_3_EVIDENCE_OUTPUT_MISSING:${marker}`);
+  if (!evidenceText.includes(marker)) throw new Error(`P1_3_EVIDENCE_OUTPUT_MISSING:${marker}`);
 }
 
 const overviewHtml = routeOutput.get("").text;
