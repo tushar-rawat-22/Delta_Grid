@@ -194,12 +194,16 @@ jobs:
         working-directory: web
         run: npm run check
 
-      - name: Run dependency-free browser acceptance
+      - name: Run release-bound hydrated browser acceptance
         working-directory: web
         shell: bash
+        env:
+          DELTAGRID_PUBLIC_RELEASE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
           command -v google-chrome
+          npm run build:public
+          node scripts/bind-public-release-provenance.mjs "$DELTAGRID_PUBLIC_RELEASE_SHA"
           node scripts/verify-browser-acceptance.mjs
 
       - name: Inspect founder Worker dry-run bundle

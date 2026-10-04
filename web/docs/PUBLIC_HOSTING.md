@@ -50,7 +50,9 @@ Before deployment:
 3. the repository must be clean;
 4. locked dependencies are installed;
 5. the complete web/founder gate passes;
-6. the static public deployment boundary is re-verified.
+6. the static public deployment boundary is re-verified;
+7. the exact release SHA is supplied while Next renders both the initial HTML and its React Server Component payload; and
+8. a dependency-free browser gate proves the exact marker and `VERIFIED LIVE` card survive hydration without React hydration errors or an `UNVERIFIED` fallback.
 
 The manual local command is:
 
@@ -59,7 +61,7 @@ cd web
 npm run deploy:public
 ```
 
-The repository also contains `.github/workflows/public-observer-release.yml` for controlled production releases. It requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub secrets and an exact `release_sha` input. The Cloudflare token should be scoped only to the account and permissions needed to deploy this Worker.
+The repository also contains `.github/workflows/public-observer-release.yml` for controlled production releases. It requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub secrets and an exact `release_sha` input. The release SHA is a build-time-only input to the static export; the deployed Worker gains no runtime environment binding. The workflow repeats the hydrated-browser proof against the live endpoint after deployment. The Cloudflare token should be scoped only to the account and permissions needed to deploy this Worker.
 
 ### Public Observer rollback
 

@@ -117,14 +117,19 @@ jobs:
         working-directory: web
         run: npm run verify:public-deploy
 
-      - name: Bind public build to requested release
+      - name: Build and prove release-bound hydrated observer
         if: steps.current.outputs.deploy == 'true'
         working-directory: web
         shell: bash
+        env:
+          DELTAGRID_PUBLIC_RELEASE_SHA: ${{ env.RELEASE_SHA }}
         run: |
           set -euo pipefail
+          npm run build:public
           node scripts/bind-public-release-provenance.mjs "$RELEASE_SHA"
           test "$(cat out/deltagrid-release.json)" = "{\"release_sha\":\"$RELEASE_SHA\"}"
+          command -v google-chrome
+          node scripts/verify-browser-acceptance.mjs
 
       - name: Deploy exact public observer commit
         if: steps.current.outputs.deploy == 'true'
@@ -208,6 +213,18 @@ jobs:
           done
           echo "FAIL: evidence provenance did not converge to the exact live release marker" >&2
           exit 1
+
+      - name: Verify live hydrated release state
+        if: steps.current.outputs.deploy == 'true'
+        working-directory: web
+        shell: bash
+        env:
+          DELTAGRID_BROWSER_BASE_URL: ${{ env.DELTAGRID_PUBLIC_BASE }}
+          DELTAGRID_PUBLIC_RELEASE_SHA: ${{ env.RELEASE_SHA }}
+        run: |
+          set -euo pipefail
+          command -v google-chrome
+          node scripts/verify-browser-acceptance.mjs
 
       - name: Publish release provenance summary
         if: always()

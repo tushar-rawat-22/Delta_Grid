@@ -58,6 +58,9 @@ test("manual release binds and still hard-fails unless the exact deployed SHA is
   assert.match(releaseWorkflow, /Prove exact release is live/u);
   assert.match(releaseWorkflow, /FAIL: deployed public observer does not report requested release SHA/u);
   assert.match(releaseWorkflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
+  assert.match(releaseWorkflow, /Build and prove release-bound hydrated observer/u);
+  assert.match(releaseWorkflow, /Verify live hydrated release state/u);
+  assert.match(releaseWorkflow, /DELTAGRID_BROWSER_BASE_URL: \$\{\{ env\.DELTAGRID_PUBLIC_BASE \}\}/u);
 });
 
 test("live boundary workflow needs no deployment or founder credentials", () => {
