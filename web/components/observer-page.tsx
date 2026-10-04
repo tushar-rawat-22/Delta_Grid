@@ -1,4 +1,5 @@
 import { pageContent } from "../lib/site-content";
+import { publicReleaseProvenance } from "../lib/public-release-provenance";
 import { EvidenceCard } from "./evidence-card";
 import { ResearchEvidenceRecord } from "./research-evidence-record";
 import { StatusStrip } from "./status-strip";
@@ -38,9 +39,6 @@ const observerBoundary = [
   },
 ] as const;
 
-const unverifiedReleaseDetail =
-  "This build has not been bound to a verified live release. Production deployment must prove the exact deployed revision before this status changes.";
-
 type ObserverPageProps = {
   title: keyof typeof titleToPage;
   purpose?: string;
@@ -49,6 +47,7 @@ type ObserverPageProps = {
 export function ObserverPage({ title }: ObserverPageProps) {
   const page = titleToPage[title];
   const content = pageContent[page];
+  const releaseProvenance = publicReleaseProvenance();
   return (
     <main>
       <section className="hero">
@@ -68,12 +67,18 @@ export function ObserverPage({ title }: ObserverPageProps) {
             <p>{item.detail}</p>
           </article>
         ))}
-        <article className="card" data-release-provenance="UNVERIFIED">
+        <article
+          className="card"
+          data-release-provenance={releaseProvenance.status}
+          data-release-sha={releaseProvenance.releaseSha ?? undefined}
+        >
           <div className="card-topline">
             <h2>Release provenance</h2>
-            <span className="badge" data-release-provenance-status="UNVERIFIED">UNVERIFIED</span>
+            <span className="badge" data-release-provenance-status={releaseProvenance.status}>
+              {releaseProvenance.status}
+            </span>
           </div>
-          <p data-release-provenance-detail="UNVERIFIED">{unverifiedReleaseDetail}</p>
+          <p data-release-provenance-detail={releaseProvenance.status}>{releaseProvenance.detail}</p>
         </article>
       </section>
       <section className="card-grid" aria-label={`${content.title} details`}>

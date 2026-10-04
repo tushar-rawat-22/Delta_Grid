@@ -5,7 +5,11 @@ import { join } from "node:path";
 
 const HOST = "127.0.0.1";
 const PORT = 3000;
-const BASE_URL = `http://${HOST}:${PORT}`;
+const LOCAL_BASE_URL = `http://${HOST}:${PORT}`;
+const BASE_URL = (process.env.DELTAGRID_BROWSER_BASE_URL || LOCAL_BASE_URL).replace(/\/+$/u, "");
+const USE_LOCAL_STATIC_SERVER = BASE_URL === LOCAL_BASE_URL;
+const EXPECTED_RELEASE_SHA = process.env.DELTAGRID_PUBLIC_RELEASE_SHA || "";
+const PYTHON_BIN = process.env.PYTHON_BIN || "python";
 const CDP_STARTUP_TIMEOUT_MS = 20000;
 const EXPECTED_AUTHORITY_STATE = new Map([
   ["Research result", "No validated alpha"],
@@ -13,6 +17,7 @@ const EXPECTED_AUTHORITY_STATE = new Map([
   ["Capital", "Blocked"],
 ]);
 const PUBLIC_ROUTES = ["/", "/research", "/markets", "/evidence", "/risk", "/system", "/missions"];
+const RELEASE_PROVENANCE_ROUTES = new Set(["/markets", "/evidence", "/risk", "/system", "/missions"]);
 const VIEWPORTS = [
   { width: 1440, height: 1000, reducedMotion: false },
   { width: 390, height: 844, reducedMotion: false },
@@ -20,6 +25,11 @@ const VIEWPORTS = [
 ];
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+if (!/^https?:\/\//u.test(BASE_URL)) throw new Error("BROWSER_BASE_URL_INVALID");
+if (EXPECTED_RELEASE_SHA && !/^[0-9a-f]{40}$/u.test(EXPECTED_RELEASE_SHA)) {
+  throw new Error("BROWSER_RELEASE_SHA_INVALID");
+}
 
 const EXPECTED_RESEARCH_STATE = new Map([
   ["Question", "Spot trade-flow after costs?"],
@@ -232,12 +242,16 @@ async function pressTab(cdp) {
 
 async function navigate(cdp, path, width, height, reducedMotion = false) {
   const consoleErrors = [];
+  const consoleWarnings = [];
   const exceptions = [];
   const serverErrors = [];
   const networkFailures = [];
   let active = true;
   cdp.on("Runtime.consoleAPICalled", ({ type, args = [] }) => {
-    if (active && ["error", "assert"].includes(type)) consoleErrors.push(args.map((arg) => arg.value ?? arg.description ?? "").join(" "));
+    if (!active) return;
+    const message = args.map((arg) => arg.value ?? arg.description ?? "").join(" ");
+    if (["error", "assert"].includes(type)) consoleErrors.push(message);
+    if (["warning", "warn"].includes(type)) consoleWarnings.push(message);
   });
   cdp.on("Runtime.exceptionThrown", ({ exceptionDetails }) => {
     if (active) exceptions.push(exceptionDetails?.exception?.description ?? exceptionDetails?.text ?? "Runtime exception");
@@ -318,8 +332,52 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     }
   }
 
+  let releaseAcceptance = "not_applicable";
+  if (EXPECTED_RELEASE_SHA && RELEASE_PROVENANCE_ROUTES.has(path)) {
+    const releaseSamples = [];
+    for (let sample = 0; sample < 5; sample += 1) {
+      releaseSamples.push(await evaluate(cdp, `(() => {
+        const card = document.querySelector('[data-release-provenance]');
+        const status = document.querySelector('[data-release-provenance-status]');
+        const detail = document.querySelector('[data-release-provenance-detail]');
+        return {
+          cardStatus: card?.getAttribute('data-release-provenance') ?? null,
+          releaseSha: card?.getAttribute('data-release-sha') ?? null,
+          statusAttribute: status?.getAttribute('data-release-provenance-status') ?? null,
+          statusText: status?.textContent?.trim() ?? null,
+          detailAttribute: detail?.getAttribute('data-release-provenance-detail') ?? null,
+          detailText: detail?.textContent?.trim() ?? null,
+        };
+      })()`));
+      await delay(100);
+    }
+    const marker = await evaluate(cdp, `(async () => {
+      const response = await fetch('/deltagrid-release.json?hydrated_browser=${EXPECTED_RELEASE_SHA}', { cache: 'no-store' });
+      return { status: response.status, body: await response.text() };
+    })()`);
+    const expectedMarker = `${JSON.stringify({ release_sha: EXPECTED_RELEASE_SHA })}\n`;
+    if (marker.status !== 200 || marker.body !== expectedMarker) {
+      throw new Error(`${path} at ${width}px exact release marker mismatch: ${JSON.stringify(marker)}`);
+    }
+    for (const [sample, state] of releaseSamples.entries()) {
+      if (
+        state.cardStatus !== "VERIFIED LIVE" ||
+        state.releaseSha !== EXPECTED_RELEASE_SHA ||
+        state.statusAttribute !== "VERIFIED LIVE" ||
+        state.statusText !== "VERIFIED LIVE" ||
+        state.detailAttribute !== "VERIFIED LIVE" ||
+        state.detailText !== `Verified live release ${EXPECTED_RELEASE_SHA.slice(0, 12)}. The public release pipeline proved this exact deployed revision and rechecked the public/private boundary. This does not grant research, trading or capital authority.`
+      ) {
+        throw new Error(`${path} at ${width}px release provenance fell back after hydration at sample ${sample}: ${JSON.stringify(state)}`);
+      }
+    }
+    releaseAcceptance = "verified_live_after_hydration";
+  }
+
   active = false;
   if (consoleErrors.length) throw new Error(`${path} at ${width}px console errors: ${consoleErrors.join(" | ")}`);
+  const hydrationWarnings = consoleWarnings.filter((message) => /hydration|hydrated|did not match|react(?: error)? #?418/iu.test(message));
+  if (hydrationWarnings.length) throw new Error(`${path} at ${width}px hydration warnings: ${hydrationWarnings.join(" | ")}`);
   if (exceptions.length) throw new Error(`${path} at ${width}px runtime exceptions: ${exceptions.join(" | ")}`);
   if (serverErrors.length) throw new Error(`${path} at ${width}px observed 5xx responses: ${serverErrors.join(" | ")}`);
   if (networkFailures.length) throw new Error(`${path} at ${width}px network failures: ${networkFailures.join(" | ")}`);
@@ -332,12 +390,15 @@ async function navigate(cdp, path, width, height, reducedMotion = false) {
     reduced_motion: reducedMotion,
     keyboard_focus: true,
     console_errors: 0,
+    hydration_warnings: 0,
     runtime_exceptions: 0,
     server_errors: 0,
     network_failures: 0,
     unsafe_same_origin_targets: 0,
     demo_controls_exercised: path === "/research" && width === 390 ? pageState.demoControlCount : 0,
     research_state: path === "/" ? Object.fromEntries(EXPECTED_RESEARCH_STATE) : "root_contract_only",
+    release_provenance: releaseAcceptance,
+    release_sha: releaseAcceptance === "verified_live_after_hydration" ? EXPECTED_RELEASE_SHA : "not_applicable",
   }));
 }
 
@@ -490,9 +551,11 @@ class StaticExportHandler(http.server.SimpleHTTPRequestHandler):
         return translated
 handler = functools.partial(StaticExportHandler, directory="out")
 http.server.ThreadingHTTPServer((sys.argv[2], int(sys.argv[1])), handler).serve_forever()`;
-const server = spawn("python", ["-c", staticServerScript, String(PORT), HOST], { cwd: new URL("..", import.meta.url), stdio: ["ignore", "pipe", "pipe"] });
-server.stdout.pipe(process.stdout);
-server.stderr.pipe(process.stderr);
+const server = USE_LOCAL_STATIC_SERVER
+  ? spawn(PYTHON_BIN, ["-c", staticServerScript, String(PORT), HOST], { cwd: new URL("..", import.meta.url), stdio: ["ignore", "pipe", "pipe"] })
+  : undefined;
+server?.stdout.pipe(process.stdout);
+server?.stderr.pipe(process.stderr);
 const chrome = spawn(chromeBinary, ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage", "--remote-debugging-port=0", `--user-data-dir=${profileDir}`, "about:blank"], { stdio: ["ignore", "pipe", "pipe"] });
 chrome.stdout.pipe(process.stdout);
 chrome.stderr.pipe(process.stderr);
@@ -519,6 +582,6 @@ try {
   await navigateMissingRoute(cdp, "/__deltagrid_missing_route__");
 } finally {
   cdp?.close();
-  await Promise.all([stopChild(chrome), stopChild(server)]);
+  await Promise.all([stopChild(chrome), ...(server ? [stopChild(server)] : [])]);
   await rm(profileDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 }

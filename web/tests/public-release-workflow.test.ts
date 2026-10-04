@@ -38,7 +38,7 @@ test("superseded automatic releases skip before build or deployment while manual
   assert.match(workflow, /Refusing to deploy a commit that is not current main/u);
 
   const guardedSteps = workflow.match(/if: steps\.current\.outputs\.deploy == 'true'/gu) ?? [];
-  assert.equal(guardedSteps.length, 11);
+  assert.equal(guardedSteps.length, 12);
 });
 
 test("Cloudflare production credentials are scoped to preflight and Cloudflare CLI steps", () => {
@@ -64,7 +64,7 @@ test("Cloudflare production credentials are scoped to preflight and Cloudflare C
 });
 
 test("public release proves the deployed observer is the requested commit before boundary checks", () => {
-  const markerIndex = workflow.indexOf("Bind public build to requested release");
+  const markerIndex = workflow.indexOf("Build and prove release-bound hydrated observer");
   const deployIndex = workflow.indexOf("wrangler deploy");
   const identityIndex = workflow.indexOf("Prove exact release is live");
   const liveIndex = workflow.indexOf("verify-live-boundary.sh");
@@ -78,6 +78,23 @@ test("public release proves the deployed observer is the requested commit before
   assert.match(workflow, /Cache-Control: no-cache/u);
   assert.match(workflow, /PUBLIC_RELEASE_IDENTITY=PASS/u);
   assert.match(workflow, /deployed public observer does not report requested release SHA/u);
+  assert.match(workflow.slice(markerIndex, deployIndex), /DELTAGRID_PUBLIC_RELEASE_SHA: \$\{\{ env\.RELEASE_SHA \}\}/u);
+  assert.match(workflow.slice(markerIndex, deployIndex), /verify-browser-acceptance\.mjs/u);
+});
+
+test("public release requires live hydrated-browser acceptance after deployment", () => {
+  const deployIndex = workflow.indexOf("wrangler deploy");
+  const boundaryIndex = workflow.indexOf("Verify live public/private boundary after release");
+  const hydratedIndex = workflow.indexOf("Verify live hydrated release state");
+  const summaryIndex = workflow.indexOf("Publish release provenance summary");
+
+  assert.ok(deployIndex >= 0);
+  assert.ok(boundaryIndex > deployIndex);
+  assert.ok(hydratedIndex > boundaryIndex);
+  assert.ok(summaryIndex > hydratedIndex);
+  assert.match(workflow.slice(hydratedIndex, summaryIndex), /DELTAGRID_BROWSER_BASE_URL: \$\{\{ env\.DELTAGRID_PUBLIC_BASE \}\}/u);
+  assert.match(workflow.slice(hydratedIndex, summaryIndex), /DELTAGRID_PUBLIC_RELEASE_SHA: \$\{\{ env\.RELEASE_SHA \}\}/u);
+  assert.match(workflow.slice(hydratedIndex, summaryIndex), /verify-browser-acceptance\.mjs/u);
 });
 
 test("public release retries only the classified evidence SHA convergence mismatch", () => {

@@ -22,10 +22,22 @@ const forbidden = [
   [/process\.env\.(?!NODE_ENV\b)/u, "runtime_environment_surface"],
 ];
 
+const releaseProvenanceSource = "lib/public-release-provenance.ts";
+const allowedBuildEnvironmentAccess = "process.env.DELTAGRID_PUBLIC_RELEASE_SHA";
+
 for (const file of files) {
   const text = fs.readFileSync(file, "utf8");
+  const inspectedText = file === releaseProvenanceSource
+    ? text.replaceAll(allowedBuildEnvironmentAccess, "")
+    : text;
+  if (
+    file === releaseProvenanceSource &&
+    text.split(allowedBuildEnvironmentAccess).length !== 2
+  ) {
+    throw new Error("PUBLIC_RELEASE_BUILD_INPUT_INVALID");
+  }
   for (const [pattern, label] of forbidden) {
-    if (pattern.test(text)) throw new Error(`FORBIDDEN_${label.toUpperCase()}:${file}`);
+    if (pattern.test(inspectedText)) throw new Error(`FORBIDDEN_${label.toUpperCase()}:${file}`);
   }
 }
 
