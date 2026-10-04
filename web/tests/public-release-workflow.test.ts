@@ -129,6 +129,16 @@ test("generic evidence failures are not mislabeled as release convergence races"
   );
 });
 
+test("missing-route browser gate allows public Founder Mode copy but keeps founder-private leak markers", () => {
+  const browserVerifier = fs.readFileSync("scripts/verify-browser-acceptance.mjs", "utf8");
+
+  assert.doesNotMatch(browserVerifier, /admin\|private\|founder\|credential/u);
+  assert.match(browserVerifier, /founder\\s\+\(\?:workspace\|control\\s\+plane\|action\|research\)/u);
+  for (const marker of ["admin", "private", "credential", "secret", "token", "permit", "protected\\s+split"]) {
+    assert.ok(browserVerifier.includes(marker), marker);
+  }
+});
+
 test("public release records version provenance and checks the live isolation boundary", () => {
   const deployIndex = workflow.indexOf("wrangler deploy");
   const statusIndex = workflow.indexOf("deployments status");
