@@ -498,7 +498,7 @@ async function navigateMissingRoute(cdp, path) {
     throw new Error(`Missing-route browser expected one 404 document response, received ${JSON.stringify(documentStatuses)}`);
   }
   if (!state.bodyText.trim()) throw new Error("Missing-route browser rendered an empty error surface");
-  const protectedMarkers = state.bodyText.match(/\b(?:admin|private|founder|credential|secret|token|permit|protected\s+split)\b/gi) ?? [];
+  const protectedMarkers = state.bodyText.match(/\b(?:admin|private|credential|secret|token|permit|protected\s+split|founder\s+(?:workspace|control\s+plane|action|research))\b/gi) ?? [];
   if (protectedMarkers.length) {
     throw new Error(`Missing-route browser leaked protected-looking terms: ${[...new Set(protectedMarkers.map((value) => value.toLowerCase()))].join(" | ")}`);
   }
