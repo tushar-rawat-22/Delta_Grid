@@ -29,6 +29,15 @@ test("public observer keeps the durable research and authority markers prominent
   }
 });
 
+test("first-impression copy states the complete research chain and its authority boundary", () => {
+  assert.match(
+    landing,
+    /frozen hypothesis[\s\S]*public data[\s\S]*realistic costs[\s\S]*falsification[\s\S]*preserved evidence[\s\S]*controlling decision/iu,
+  );
+  assert.match(landing, /no validated alpha[\s\S]*trading or capital authority/iu);
+  assert.match(landing, />Trace hypothesis to decision<\/Link>/u);
+});
+
 test("observer landing is a dense research console rather than a screenshot-led marketing page", () => {
   assert.doesNotMatch(landing, /next\/image/i);
   assert.doesNotMatch(landing, /snapshots?/i);

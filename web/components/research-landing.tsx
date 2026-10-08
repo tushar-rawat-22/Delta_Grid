@@ -64,12 +64,13 @@ export function ResearchLanding() {
           <p className={styles.kicker}>DeltaGrid / Research Cockpit</p>
           <h1>A quantitative research system built to reject weak claims.</h1>
           <p>
-            Inspect the question, costs, controls, evidence and decision behind a real closed experiment.
-            DeltaGrid currently has no validated alpha, selected candidate or trading authority.
+            Trace a frozen hypothesis through causally available public data, realistic costs,
+            falsification controls, preserved evidence and the controlling decision. DeltaGrid
+            currently has no validated alpha, selected candidate, trading or capital authority.
           </p>
         </div>
         <div className={styles.actions}>
-          <Link className={styles.primaryAction} href="/evidence#alpha-search-b">Inspect rejected experiment</Link>
+          <Link className={styles.primaryAction} href="/evidence#alpha-search-b">Trace hypothesis to decision</Link>
           <Link className={styles.secondaryAction} href="/research">Open sanitized demo</Link>
         </div>
       </header>

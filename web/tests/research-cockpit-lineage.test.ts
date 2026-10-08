@@ -27,7 +27,7 @@ test("featured record exposes the complete lineage and one direct evidence actio
   assert.equal(alphaSearchBRecord.sourceRecords.length, 17);
   assert.match(landing, /href="\/evidence#alpha-search-b"/u);
   assert.match(landing, /Current research status/u);
-  assert.match(landing, /Inspect rejected experiment/u);
+  assert.match(landing, /Trace hypothesis to decision/u);
   assert.match(observerPage, /page === "evidence" \? <ResearchEvidenceRecord \/>/u);
   assert.match(evidenceRecord, /id=\{alphaSearchBRecord\.id\}/u);
 });
