@@ -16,8 +16,8 @@ const EXPECTED_AUTHORITY_STATE = new Map([
   ["Paper / live", "Disabled"],
   ["Capital", "Blocked"],
 ]);
-const PUBLIC_ROUTES = ["/", "/research", "/markets", "/evidence", "/risk", "/system", "/missions"];
-const RELEASE_PROVENANCE_ROUTES = new Set(["/markets", "/evidence", "/risk", "/system", "/missions"]);
+const PUBLIC_ROUTES = ["/", "/research", "/markets", "/evidence", "/risk", "/system", "/missions", "/docs", "/about"];
+const RELEASE_PROVENANCE_ROUTES = new Set(["/markets", "/evidence", "/risk", "/system", "/missions", "/docs", "/about"]);
 const VIEWPORTS = [
   { width: 1440, height: 1000, reducedMotion: false },
   { width: 390, height: 844, reducedMotion: false },
