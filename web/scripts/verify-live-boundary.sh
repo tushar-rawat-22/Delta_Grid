@@ -136,7 +136,7 @@ echo "PUBLIC_HSTS=PASS"
 
 
 echo "=== PUBLIC ROUTE SECURITY HEADERS ==="
-for route in research markets evidence risk system missions; do
+for route in research markets evidence risk system missions docs about; do
   route_headers_raw="$TMP/${route}.route.headers.raw"
   route_headers="$TMP/${route}.route.headers"
   route_body="$TMP/${route}.route.body"
