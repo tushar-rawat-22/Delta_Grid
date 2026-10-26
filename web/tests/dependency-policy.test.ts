@@ -25,6 +25,7 @@ type LockFixture = {
 };
 
 const verifyScript = path.resolve("scripts/verify-dependencies.mjs");
+const installScript = path.resolve("scripts/install-locked-safe.mjs");
 const baselinePackage = JSON.parse(fs.readFileSync("package.json", "utf8")) as PackageFixture;
 
 function lockFor(pkg: PackageFixture): LockFixture {
@@ -99,6 +100,31 @@ test("an unapproved install script still fails closed", () => {
   });
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /INSTALL_SCRIPT_LOCK_SURFACE_MISMATCH/u);
+});
+
+test("the locked installer rejects an unapproved install script before npm ci", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "deltagrid-locked-installer-"));
+  try {
+    const pkg = structuredClone(baselinePackage);
+    const lock = lockFor(pkg);
+    lock.packages["node_modules/unreviewed-installer"] = {
+      version: "1.0.0",
+      hasInstallScript: true,
+    };
+    fs.writeFileSync(path.join(directory, "package.json"), `${JSON.stringify(pkg, null, 2)}\n`);
+    fs.writeFileSync(path.join(directory, "package-lock.json"), `${JSON.stringify(lock, null, 2)}\n`);
+
+    const result = spawnSync(process.execPath, [installScript], {
+      cwd: directory,
+      encoding: "utf8",
+    });
+
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /INSTALL_SCRIPT_LOCK_SURFACE_MISMATCH/u);
+    assert.doesNotMatch(result.stdout, /LOCKED_DEPENDENCY_INSTALL=PASS/u);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test("non-exact direct dependency versions remain forbidden", () => {
