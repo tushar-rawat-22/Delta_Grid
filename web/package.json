@@ -7,10 +7,10 @@
     "node": ">=24.12 <25"
   },
   "allowScripts": {
-    "esbuild@0.28.1": true,
+    "esbuild@0.28.2": true,
     "fsevents@2.3.3": true,
     "unrs-resolver@1.12.2": true,
-    "workerd@1.20260926.1": true
+    "workerd@1.20261023.1": true
   },
   "scripts": {
     "install:locked-safe": "node scripts/install-locked-safe.mjs",
@@ -52,10 +52,11 @@
     "eslint-config-next": "16.4.2",
     "typescript": "6.0.3",
     "vite": "8.3.5",
-    "wrangler": "4.152.0"
+    "wrangler": "4.153.0"
   },
   "overrides": {
     "js-yaml": "4.3.2",
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "zod": "4.6.6"
   }
 }
