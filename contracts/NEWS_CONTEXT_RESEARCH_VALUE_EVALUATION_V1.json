@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "deltagrid-news-context-research-value-evaluation-v1",
+  "contract_version": 1,
+  "status": "IMPLEMENTED_NON_AUTHORIZING_EVIDENCE_GATE",
+  "purpose": "Fail closed when supplied News Context research-value evidence lacks a frozen baseline comparison, required null controls, causal feature timing, chronological partitions, overlap protection, realistic explicit costs, provenance, or bounded claims.",
+  "scope": {
+    "evidence_validation_only": true,
+    "generates_market_data": false,
+    "trains_model": false,
+    "runs_strategy": false,
+    "opens_protected_data": false,
+    "creates_research_result": false,
+    "creates_alpha_or_profitability_evidence": false
+  },
+  "frozen_comparison": {
+    "frozen_protocol_commitment_required": true,
+    "required_variants": [
+      "baseline",
+      "baseline_plus_feature",
+      "lagged",
+      "shuffled",
+      "placebo"
+    ],
+    "required_evaluation_partitions": [
+      "validation",
+      "holdout"
+    ],
+    "selection_partition": "validation",
+    "holdout_used_for_selection": false,
+    "minimum_sample_count_frozen_before_results": true,
+    "feature_must_exceed_every_comparator_net_of_costs": true,
+    "equal_sample_count_within_partition": true
+  },
+  "temporal_policy": {
+    "partitions": [
+      "train",
+      "validation",
+      "holdout"
+    ],
+    "chronological_order_required": true,
+    "point_in_time_feature_availability_required": true,
+    "feature_available_at_lte_transformed_at_lte_decision_time": true,
+    "source_provenance_per_feature_observation_required": true,
+    "temporal_replay_commitment_per_feature_observation_required": true,
+    "overlap_separation_ms": "label_horizon_ms+feature_dependency_horizon_ms+purge_ms+embargo_ms",
+    "nonzero_purge_and_embargo_required_when_overlap_risk_exists": true,
+    "validation_evidence_precedes_holdout_open": true,
+    "holdout_evidence_follows_holdout_open": true
+  },
+  "cost_policy": {
+    "fixed_before_protocol": true,
+    "integer_basis_points_only": true,
+    "fee_per_side_positive": true,
+    "round_trip_spread_positive": true,
+    "round_trip_slippage_positive": true,
+    "liquidity_impact_explicit": true,
+    "maximum_participation_bps_ceiling": 1000,
+    "positive_minimum_daily_notional_required": true,
+    "cost_model_and_source_provenance_hashes_required": true,
+    "every_result_binds_the_exact_cost_model_hash": true,
+    "net_return_identity": "net_return_bps=gross_return_bps-assessed_cost_bps",
+    "assessed_cost_identity": "assessed_cost_bps=round_trip_count*(2*fee_bps_per_side+spread_bps_round_trip+slippage_bps_round_trip+liquidity_impact_bps_round_trip)"
+  },
+  "fail_closed_conditions": [
+    "missing_or_invalid_provenance",
+    "invalid_or_overlapping_partitions",
+    "insufficient_purge_or_embargo",
+    "feature_available_after_decision_time",
+    "invalid_or_optimistic_zero_cost_assumptions",
+    "missing_lagged_shuffled_or_placebo_control",
+    "result_below_frozen_minimum_sample_count",
+    "holdout_used_for_selection",
+    "mismatched_dataset_or_variant_identity",
+    "invalid_cost_accounting",
+    "baseline_plus_feature_not_strictly_better_than_every_control_net_of_costs",
+    "unsupported_performance_or_authority_claim"
+  ],
+  "decision": {
+    "passing_status": "eligible_for_bounded_review",
+    "failing_status": "rejected",
+    "performance_claim": "none",
+    "authority_effect": "none"
+  },
+  "authority_ceiling": {
+    "validated_alpha": false,
+    "profitability": false,
+    "human_acceptance": false,
+    "invite_readiness": false,
+    "research_authorization": false,
+    "validation_or_holdout_authorization": false,
+    "paper_trading": false,
+    "live_trading": false,
+    "exchange_or_broker_access": false,
+    "credentials": false,
+    "orders": false,
+    "capital": false,
+    "self_promotion": false
+  }
+}

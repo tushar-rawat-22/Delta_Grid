@@ -146,6 +146,32 @@ hypothesis across all economic families. One-sided Monte Carlo evidence uses
 all `m`; it is never reset per family. Exact deterministic retries do not create
 fresh hypotheses or randomness, and cannot erase failed attempts.
 
+## News Context bounded evidence gate
+
+The issue #155 News Context acceptance path includes a deterministic,
+non-authorizing research-value evidence gate. Its machine contract is
+[`NEWS_CONTEXT_RESEARCH_VALUE_EVALUATION_V1.json`](../contracts/NEWS_CONTEXT_RESEARCH_VALUE_EVALUATION_V1.json).
+The gate validates supplied evidence; it does not collect market data, create a
+feature, run a model or strategy, open protected data, or manufacture a result.
+
+A complete evidence package must bind a frozen baseline and
+baseline-plus-feature specification, lagged, shuffled and placebo controls,
+chronological train/validation/holdout identities, point-in-time feature
+availability, purge and embargo separation for label or dependency overlap,
+and a cost model fixed before evaluation. Fees, spread, slippage, liquidity
+impact, capacity and cost provenance are explicit. Every validation and
+holdout comparison is net of the same reconciled cost model. Missing
+provenance, future feature availability, invalid partitions, missing controls,
+cost-accounting errors, holdout selection, or unsupported performance claims
+reject the package.
+
+Passing this software gate means only `eligible_for_bounded_review` with
+authority effect `none`. The repository contains synthetic positive and
+negative regression fixtures for the validator, not market evidence. No News
+Context alpha, predictive value, profitability, human acceptance, invite
+readiness, research authorization, protected-stage authorization, paper/live
+trading, order, exchange, credential, or capital claim follows from a pass.
+
 ## Promotion and rejection
 
 A candidate advances only when it passes every fixed gate for its current

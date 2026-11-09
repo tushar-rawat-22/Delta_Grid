@@ -465,6 +465,21 @@
       "notes": "Authorizes only Mission 99 local market-data custody, metadata-safe legacy audit, immutable releases, independent certification, recovery inspection, and synthetic-only resolution. It grants no network refresh, real-data research, strategy, performance, model, signal, portfolio, exchange, credential, order, paper, live, or capital authority."
     },
     {
+      "path": "contracts/NEWS_CONTEXT_RESEARCH_VALUE_EVALUATION_V1.json",
+      "classification": "MACHINE_REFERENCE",
+      "audience": "Maintainers, software verification, research-integrity reviewers, and issue #155 acceptance reviewers",
+      "purpose": "Current machine-readable non-authorizing News Context research-value evidence gate",
+      "authority_level": "CURRENT_SUPPORTING_EVIDENCE_CONTRACT",
+      "conflicts_with_current_state": false,
+      "test_dependent": true,
+      "checksum_dependent": false,
+      "referenced_by_other_records": true,
+      "ai_tone_severity": 0,
+      "readability_severity": 1,
+      "recommended_treatment": "LEAVE_UNCHANGED",
+      "notes": "Requires frozen baseline and feature comparisons, lagged/shuffled/placebo controls, causal availability, chronological partitions, overlap protection, explicit costs and provenance. It validates supplied evidence only and grants no research, protected-data, alpha, profitability, model, paper/live trading, exchange, credential, order, capital, or invite authority."
+    },
+    {
       "path": "contracts/foundry.toml",
       "classification": "MACHINE_REFERENCE",
       "audience": "Software, tests, verification tools, and technical reviewers",
