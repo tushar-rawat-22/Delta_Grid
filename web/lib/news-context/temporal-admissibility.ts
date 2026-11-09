@@ -21,6 +21,7 @@ export type NewsTemporalDecision = Readonly<{
     | "malformed_temporal_provenance"
     | "inverted_temporal_provenance"
     | "retroactive_first_seen_conflict"
+    | "missing_canonical_identity"
     | "ambiguous_entity_mapping"
     | "missing_entity_mapping"
     | "malformed_entity_mapping"
@@ -83,9 +84,27 @@ function parseTimestamp(value: string | null): number | null {
   return Number.isFinite(parsed) ? parsed : Number.NaN;
 }
 
-function canonicalSourceIdentity(value: string): string | null {
+function canonicalTextIdentity(value: unknown): string | null {
+  if (typeof value !== "string") return null;
   const normalized = value.trim();
   return normalized.length > 0 ? normalized : null;
+}
+
+function canonicalSourceIdentity(value: unknown): string | null {
+  return canonicalTextIdentity(value);
+}
+
+function canonicalEventIdentity(value: unknown): string | null {
+  return canonicalTextIdentity(value);
+}
+
+function normalizeObservationIdentity(
+  observation: NewsTemporalObservation,
+): NewsTemporalObservation {
+  return {
+    ...observation,
+    canonical_id: canonicalEventIdentity(observation.canonical_id) ?? "",
+  };
 }
 
 function temporalFailure(
@@ -125,6 +144,14 @@ function temporalFailure(
 function uncertaintyFailure(
   observation: NewsTemporalObservation,
 ): NewsTemporalDecisionWithoutSources | null {
+  if (canonicalEventIdentity(observation.canonical_id) === null) {
+    return {
+      canonical_id: observation.canonical_id,
+      status: "unavailable",
+      reason: "missing_canonical_identity",
+      first_seen_at: observation.first_seen_at,
+    };
+  }
   if (canonicalSourceIdentity(observation.source) === null) {
     return {
       canonical_id: observation.canonical_id,
@@ -196,17 +223,17 @@ function deterministicObservationOrder(
   const bFetched = parseTimestamp(b.fetched_at);
   const aKey = aFetched === null || Number.isNaN(aFetched) ? Number.POSITIVE_INFINITY : aFetched;
   const bKey = bFetched === null || Number.isNaN(bFetched) ? Number.POSITIVE_INFINITY : bFetched;
-  const aSource = canonicalSourceIdentity(a.source) ?? a.source;
-  const bSource = canonicalSourceIdentity(b.source) ?? b.source;
+  const aSource = canonicalSourceIdentity(a.source) ?? "";
+  const bSource = canonicalSourceIdentity(b.source) ?? "";
   return (
     aKey - bKey ||
     aSource.localeCompare(bSource) ||
     compareNullableText(a.first_seen_at, b.first_seen_at) ||
     compareNullableText(a.published_at, b.published_at) ||
     compareNullableText(a.fetched_at, b.fetched_at) ||
-    a.entity_mapping.localeCompare(b.entity_mapping) ||
-    a.source_state.localeCompare(b.source_state) ||
-    a.canonical_id.localeCompare(b.canonical_id)
+    String(a.entity_mapping).localeCompare(String(b.entity_mapping)) ||
+    String(a.source_state).localeCompare(String(b.source_state)) ||
+    String(a.canonical_id).localeCompare(String(b.canonical_id))
   );
 }
 
@@ -341,7 +368,11 @@ export function replayNewsContextAt(
     return { decision_time: decisionTime, interval_state: "no_events", decisions: [] };
   }
 
-  const replayObservations = observationsKnownAtDecisionTime(observations, parsedDecisionTime);
+  const normalizedObservations = observations.map(normalizeObservationIdentity);
+  const replayObservations = observationsKnownAtDecisionTime(
+    normalizedObservations,
+    parsedDecisionTime,
+  );
   const decisions = canonicalize(replayObservations).map((observation): NewsTemporalDecision => {
     const sources = canonicalSources(replayObservations, observation.canonical_id, parsedDecisionTime);
     const temporal = temporalFailure(observation);
