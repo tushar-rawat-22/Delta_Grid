@@ -315,6 +315,9 @@ WEB_DOCUMENTS = {
     "web/docs/RESEARCH_ENGINE.md",
     "web/docs/SECURITY_BOUNDARY.md",
 }
+ISSUE_155_DOCUMENTS = {
+    "contracts/NEWS_CONTEXT_RESEARCH_VALUE_EVALUATION_V1.json",
+}
 
 EXPECTED_MISSION_96A_REGISTRY_ENTRIES = {
     "contracts/DELTAGRID_RESEARCH_CONTROL_PLANE_V1.json": {
@@ -851,6 +854,7 @@ def test_banner_target_registry_entries_record_completed_treatment() -> None:
                     | RAB1_DOCUMENTS
                     | P1_DOCUMENTS
                     | WEB_DOCUMENTS
+                    | ISSUE_155_DOCUMENTS
             )
     ]
     base_non_target_entries = [
@@ -1000,10 +1004,10 @@ def test_registry_documents_have_exact_required_fields() -> None:
 def test_registry_covers_exact_approved_inventory() -> None:
     registered = documents_by_path()
     approved = approved_inventory()
-    assert len(approved) == 208
+    assert len(approved) == 209
     assert approved <= set(registered)
     assert set(registered) == approved | set(FOUNDATION_DOCUMENTS)
-    assert len(registered) == 211
+    assert len(registered) == 212
     assert {
         path: registered[path]
         for path in EXPECTED_MISSION_96A_REGISTRY_ENTRIES
