@@ -209,6 +209,10 @@ The remaining roadmap is planning direction rather than authorization.
 - [Safety invariants](SAFETY_INVARIANTS.md)
 - [Future strategy intake policy](FUTURE_STRATEGY_INTAKE_POLICY.md)
 
+The research policy also records the implemented, non-authorizing News Context
+research-value evidence gate. Its exact machine rules are in
+[`NEWS_CONTEXT_RESEARCH_VALUE_EVALUATION_V1.json`](../contracts/NEWS_CONTEXT_RESEARCH_VALUE_EVALUATION_V1.json).
+
 The first three are current internal policies aligned with the final freeze.
 They explain the research, risk, and authorization controls that apply today
 without expanding any authorization. The future strategy intake policy is the
