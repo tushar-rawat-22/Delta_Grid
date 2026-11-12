@@ -477,7 +477,7 @@
       "ai_tone_severity": 0,
       "readability_severity": 1,
       "recommended_treatment": "LEAVE_UNCHANGED",
-      "notes": "Requires frozen baseline and feature comparisons, lagged/shuffled/placebo controls, causal availability, chronological partitions, overlap protection, explicit costs and provenance. It validates supplied evidence only and grants no research, protected-data, alpha, profitability, model, paper/live trading, exchange, credential, order, capital, or invite authority."
+      "notes": "Requires frozen baseline and feature comparisons, lagged/shuffled/placebo controls, causal availability, distinct chronological partition commitments, a closed evidence schema, overlap protection, explicit costs and provenance. It validates supplied evidence only and grants no research, protected-data, alpha, profitability, model, paper/live trading, exchange, credential, order, capital, or invite authority."
     },
     {
       "path": "contracts/foundry.toml",

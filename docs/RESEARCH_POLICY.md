@@ -161,9 +161,9 @@ availability, purge and embargo separation for label or dependency overlap,
 and a cost model fixed before evaluation. Fees, spread, slippage, liquidity
 impact, capacity and cost provenance are explicit. Every validation and
 holdout comparison is net of the same reconciled cost model. Missing
-provenance, future feature availability, invalid partitions, missing controls,
-cost-accounting errors, holdout selection, or unsupported performance claims
-reject the package.
+provenance, undeclared evidence fields, reused partition dataset commitments,
+future feature availability, invalid partitions, missing controls, cost-accounting
+errors, holdout selection, or unsupported performance claims reject the package.
 
 Passing this software gate means only `eligible_for_bounded_review` with
 authority effect `none`. The repository contains synthetic positive and

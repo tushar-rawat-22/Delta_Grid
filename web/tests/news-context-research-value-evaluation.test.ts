@@ -257,6 +257,20 @@ test("overlapping partitions and absent overlap protection fail closed", () => {
   assert(decision.reasons.includes("insufficient_purge_or_embargo"));
 });
 
+test("partition identities cannot alias across train, validation and holdout", () => {
+  const evidence = mutableEvidence();
+  evidence.partitions[2].dataset_sha256 = evidence.partitions[1].dataset_sha256;
+  for (const resultRow of evidence.results) {
+    if (resultRow.partition === "holdout") {
+      resultRow.dataset_sha256 = evidence.partitions[1].dataset_sha256;
+    }
+  }
+
+  const decision = evaluateNewsContextResearchValue(evidence);
+  assert.equal(decision.status, "rejected");
+  assert(decision.reasons.includes("partition_identity_overlap"));
+});
+
 test("optimistic zero fees, spread and slippage are invalid costs", () => {
   const evidence = mutableEvidence();
   evidence.costs.fee_bps_per_side = 0;
@@ -353,6 +367,15 @@ test("unsupported alpha or profitability claims are never emitted", () => {
   assert(decision.reasons.includes("unsupported_performance_claim"));
   assert.equal(decision.performance_claim, "none");
   assert.equal(decision.authority_effect, "none");
+});
+
+test("undeclared authority claims cannot bypass the non-authorizing schema", () => {
+  const evidence = mutableEvidence();
+  setRuntimeField(evidence, "live_trading_authorized", true);
+
+  const decision = evaluateNewsContextResearchValue(evidence);
+  assert.equal(decision.status, "rejected");
+  assert(decision.reasons.includes("unexpected_evidence_field"));
 });
 
 test("feature evidence that does not beat the frozen controls is rejected", () => {

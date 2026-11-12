@@ -15,9 +15,11 @@ export type NewsResearchVariant = (typeof NEWS_CONTEXT_RESEARCH_VALUE_VARIANTS)[
 
 export type NewsResearchValueRejectionReason =
   | "invalid_contract_identity"
+  | "unexpected_evidence_field"
   | "missing_provenance"
   | "invalid_frozen_protocol"
   | "invalid_partition_boundary"
+  | "partition_identity_overlap"
   | "partition_order_violation"
   | "insufficient_purge_or_embargo"
   | "invalid_control_specification"
@@ -138,9 +140,11 @@ const PARTITIONS: readonly NewsResearchPartitionName[] = ["train", "validation",
 const EVALUATION_PARTITIONS: readonly NewsResearchEvaluationPartition[] = ["validation", "holdout"];
 const REASON_ORDER: readonly NewsResearchValueRejectionReason[] = [
   "invalid_contract_identity",
+  "unexpected_evidence_field",
   "missing_provenance",
   "invalid_frozen_protocol",
   "invalid_partition_boundary",
+  "partition_identity_overlap",
   "partition_order_violation",
   "insufficient_purge_or_embargo",
   "invalid_control_specification",
@@ -159,6 +163,21 @@ function record(value: unknown): UnknownRecord | null {
   return typeof value === "object" && value !== null && !Array.isArray(value)
     ? value as UnknownRecord
     : null;
+}
+
+function hasOnlyDeclaredKeys(value: UnknownRecord, declared: readonly string[]): boolean {
+  const allowed = new Set(declared);
+  return Object.keys(value).every((key) => allowed.has(key));
+}
+
+function rejectUndeclaredKeys(
+  value: UnknownRecord | null,
+  declared: readonly string[],
+  reasons: Set<NewsResearchValueRejectionReason>,
+): void {
+  if (value && !hasOnlyDeclaredKeys(value, declared)) {
+    reasons.add("unexpected_evidence_field");
+  }
 }
 
 function nonBlank(value: unknown): value is string {
@@ -221,6 +240,7 @@ function partitionMap(
       reasons.add("invalid_partition_boundary");
       continue;
     }
+    rejectUndeclaredKeys(raw, ["name", "start", "end", "dataset_sha256"], reasons);
     if (partitions.has(name as NewsResearchPartitionName)) {
       reasons.add("invalid_partition_boundary");
       continue;
@@ -237,6 +257,12 @@ function partitionMap(
   }
 
   if (partitions.size !== PARTITIONS.length) reasons.add("invalid_partition_boundary");
+  if (
+    partitions.size === PARTITIONS.length &&
+    new Set([...partitions.values()].map(({ raw }) => raw.dataset_sha256)).size !== PARTITIONS.length
+  ) {
+    reasons.add("partition_identity_overlap");
+  }
   return partitions;
 }
 
@@ -292,6 +318,23 @@ function validateProtocol(
     reasons.add("invalid_frozen_protocol");
     return specs;
   }
+  rejectUndeclaredKeys(protocol, [
+    "selection_partition",
+    "holdout_used_for_selection",
+    "minimum_sample_count",
+    "label_horizon_ms",
+    "feature_dependency_horizon_ms",
+    "purge_ms",
+    "embargo_ms",
+    "baseline_spec_sha256",
+    "feature_spec_sha256",
+    "lagged_spec_sha256",
+    "lag_ms",
+    "shuffled_spec_sha256",
+    "shuffle_seed",
+    "placebo_spec_sha256",
+    "placebo_seed",
+  ], reasons);
   if (protocol.selection_partition !== "validation" || protocol.holdout_used_for_selection !== false) {
     reasons.add("holdout_selection_violation");
   }
@@ -336,6 +379,17 @@ function validateCosts(
   frozenAt: number | null,
   reasons: Set<NewsResearchValueRejectionReason>,
 ): { modelSha: string; roundTripCostBps: number } | null {
+  rejectUndeclaredKeys(value, [
+    "model_sha256",
+    "provenance_sha256",
+    "fixed_at",
+    "fee_bps_per_side",
+    "spread_bps_round_trip",
+    "slippage_bps_round_trip",
+    "liquidity_impact_bps_round_trip",
+    "max_participation_bps",
+    "minimum_daily_notional_minor_units",
+  ], reasons);
   if (!value || !sha256(value.model_sha256) || !sha256(value.provenance_sha256)) {
     reasons.add("missing_provenance");
     return null;
@@ -392,6 +446,15 @@ function validateFeatureAvailability(
       reasons.add("temporal_leakage");
       continue;
     }
+    rejectUndeclaredKeys(raw, [
+      "observation_id",
+      "partition",
+      "source_provenance_sha256",
+      "temporal_replay_sha256",
+      "feature_available_at",
+      "transformed_at",
+      "decision_time",
+    ], reasons);
     if (identities.has(raw.observation_id)) {
       reasons.add("temporal_leakage");
     }
@@ -446,6 +509,20 @@ function validateResults(
       reasons.add("result_scope_mismatch");
       continue;
     }
+    rejectUndeclaredKeys(raw, [
+      "partition",
+      "variant",
+      "variant_spec_sha256",
+      "cost_model_sha256",
+      "dataset_sha256",
+      "result_sha256",
+      "evaluated_at",
+      "sample_count",
+      "round_trip_count",
+      "gross_return_bps",
+      "assessed_cost_bps",
+      "net_return_bps",
+    ], reasons);
     const key = `${partitionName}:${variant}`;
     if (results.has(key)) {
       reasons.add("result_scope_mismatch");
@@ -548,6 +625,19 @@ export function evaluateNewsContextResearchValue(
   const reasons = new Set<NewsResearchValueRejectionReason>();
   const root = record(evidence);
   if (!root) reasons.add("invalid_contract_identity");
+  rejectUndeclaredKeys(root, [
+    "contract_id",
+    "contract_version",
+    "frozen_at",
+    "claim",
+    "provenance",
+    "protocol",
+    "costs",
+    "partitions",
+    "feature_availability",
+    "holdout_opened_at",
+    "results",
+  ], reasons);
 
   if (
     root?.contract_id !== NEWS_CONTEXT_RESEARCH_VALUE_CONTRACT_ID ||
@@ -556,6 +646,7 @@ export function evaluateNewsContextResearchValue(
     reasons.add("invalid_contract_identity");
   }
   const claim = record(root?.claim);
+  rejectUndeclaredKeys(claim, ["scope", "performance_claim", "authority_effect"], reasons);
   if (
     claim?.scope !== "bounded_comparative_evidence_only" ||
     claim?.performance_claim !== "none" || claim?.authority_effect !== "none"
@@ -563,6 +654,12 @@ export function evaluateNewsContextResearchValue(
     reasons.add("unsupported_performance_claim");
   }
   const provenance = record(root?.provenance);
+  rejectUndeclaredKeys(provenance, [
+    "code_sha256",
+    "dataset_manifest_sha256",
+    "feature_source_sha256",
+    "frozen_protocol_sha256",
+  ], reasons);
   if (
     !provenance || !sha256(provenance.code_sha256) ||
     !sha256(provenance.dataset_manifest_sha256) || !sha256(provenance.feature_source_sha256) ||

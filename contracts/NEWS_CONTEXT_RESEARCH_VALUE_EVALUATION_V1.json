@@ -39,6 +39,7 @@
       "holdout"
     ],
     "chronological_order_required": true,
+    "distinct_partition_dataset_commitments_required": true,
     "point_in_time_feature_availability_required": true,
     "feature_available_at_lte_transformed_at_lte_decision_time": true,
     "source_provenance_per_feature_observation_required": true,
@@ -63,8 +64,10 @@
     "assessed_cost_identity": "assessed_cost_bps=round_trip_count*(2*fee_bps_per_side+spread_bps_round_trip+slippage_bps_round_trip+liquidity_impact_bps_round_trip)"
   },
   "fail_closed_conditions": [
+    "undeclared_evidence_field",
     "missing_or_invalid_provenance",
     "invalid_or_overlapping_partitions",
+    "reused_partition_dataset_commitment",
     "insufficient_purge_or_embargo",
     "feature_available_after_decision_time",
     "invalid_or_optimistic_zero_cost_assumptions",
